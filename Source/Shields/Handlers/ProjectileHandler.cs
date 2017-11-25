@@ -86,7 +86,7 @@ namespace FrontierDevelopments.Shields.Handlers
                     var ray = new Ray2D(position, Vector2.Lerp(origin, destination, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
                     
                     // the shield has blocked the projectile - invert to get if harmony should allow the original block
-                    return !Mod.ShieldManager.ImpactShield(projectile.Map, origin3, ray, 1, (shield, point) =>
+                    return !Mod.ShieldManager.ImpactShield(projectile.Map, origin, ray, 1, (shield, point) =>
                     {
                         if (shield.Damage(projectile.def.projectile.damageAmountBase, point))
                         {
