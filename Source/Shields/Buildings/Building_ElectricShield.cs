@@ -109,7 +109,6 @@ namespace FrontierDevelopments.Shields.Buildings
             var drawn = -DrawPowerOneTick(-charge);
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
-            Log.Message("drawn = " + drawn);
             if (drawn < charge) return false;
             RenderImpactEffect(position);
             PlayBulletImpactSound(position);
