@@ -40,9 +40,9 @@
                 <maxRadius>10</maxRadius>
             </li>
             <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
-                <grams>200</grams>
+                <grams>800</grams>
                 <specificHeat>.385</specificHeat>
-                <conductivity>399</conductivity>
+                <conductivity>100</conductivity>
                 <minorThreshold>100</minorThreshold>
                 <majorThreshold>150</majorThreshold>
                 <criticalThreshold>200</criticalThreshold>
