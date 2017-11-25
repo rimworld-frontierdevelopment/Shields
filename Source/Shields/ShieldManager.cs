@@ -36,41 +36,53 @@ namespace FrontierDevelopments.Shields
 
         public bool ImpactShield(Map map, Vector2 origin, Ray2D ray, float limit, Func<IShield, Vector2, bool> onColission)
         {
-            foreach(var shield in _shieldsMap[map.uniqueID])
+            try
             {
-                if (shield.IsActive() && !shield.Collision(origin))
+                foreach(var shield in _shieldsMap[map.uniqueID])
                 {
-                    var point = shield.Collision(ray, limit);
-                    if (point != null)
+                    if (shield?.IsActive() == true && !shield.Collision(origin))
                     {
-                        if (onColission(shield, point.Value)) return true;
+                        var point = shield.Collision(ray, limit);
+                        if (point != null)
+                        {
+                            if (onColission(shield, point.Value)) return true;
+                        }
                     }
                 }
             }
+            catch (KeyNotFoundException) {}
             return false;
         }
 
         public bool ImpactShield(Map map, Vector2 position, Func<IShield, Vector2, bool> onColission)
         {
-            foreach (var shield in _shieldsMap[map.uniqueID])
+            try
             {
-                if (shield.IsActive()
-                    && shield.Collision(position)
-                    && onColission(shield, position)) return true;
+                foreach (var shield in _shieldsMap[map.uniqueID])
+                {
+                    if (shield?.IsActive() == true
+                        && shield.Collision(position)
+                        && onColission(shield, position)) return true;
+                }
             }
+            catch (KeyNotFoundException) {}
             return false;
         }
         
         public bool ImpactShield(Map map, Vector2 position, Vector2 origin, Vector2 destination, Func<IShield, Vector2, bool> onColission)
         {
-            foreach (var shield in _shieldsMap[map.uniqueID])
+            try
             {
-                if (shield.IsActive()
-                    && !shield.Collision(origin)
-                    && shield.Collision(destination)
-                    && shield.Collision(position)
-                    && onColission(shield, position)) return true;
+                foreach (var shield in _shieldsMap[map.uniqueID])
+                {
+                    if (shield?.IsActive() == true
+                        && !shield.Collision(origin)
+                        && shield.Collision(destination)
+                        && shield.Collision(position)
+                        && onColission(shield, position)) return true;
+                }
             }
+            catch (KeyNotFoundException) {}
             return false;
         }
     }
