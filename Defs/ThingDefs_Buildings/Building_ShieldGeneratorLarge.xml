@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Things>
+    <ThingDef ParentName="ShieldBase">
+        <defName>Building_ShieldGeneratorLarge</defName>
+        <label>Large shield generator</label>
+        <description>Creates a larger shield capable of sustaining more heat before collapsing.</description>
+        <researchPrerequisites>
+            <li>ShieldGeneratorLarge</li>
+        </researchPrerequisites>
+        <graphicData>
+            <texPath>Things/Buildings/ShieldGeneratorLarge</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(2,2)</drawSize>
+        </graphicData>
+        <uiIconPath>Things/Buildings/ShieldGeneratorLarge</uiIconPath>
+        <comps>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="FrontierDevelopments.Shields.CompProperties.CompProperties_ShieldRadial">
+                <minRadius>5</minRadius>
+                <maxRadius>25</maxRadius>
+            </li>
+            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
+                <grams>500</grams>
+                <specificHeat>.385</specificHeat>
+                <conductivity>399</conductivity>
+                <minorThreshold>100</minorThreshold>
+                <majorThreshold>150</majorThreshold>
+                <criticalThreshold>200</criticalThreshold>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>7</glowRadius>
+                <glowColor>(100,200,255,0)</glowColor>
+            </li>
+        </comps>
+        <staticSunShadowHeight>1.0</staticSunShadowHeight>
+        <statBases>
+            <MaxHitPoints>1000</MaxHitPoints>
+            <WorkToBuild>3000</WorkToBuild>
+            <Flammability>1.0</Flammability>
+            <Beauty>-8</Beauty>
+        </statBases>
+        <costList>
+            <Steel>200</Steel>
+            <Plasteel>100</Plasteel>
+            <Component>20</Component>
+        </costList>
+        <size>(2,2)</size>
+        <placeWorkers>
+            <li>PlaceWorker_Heater</li>
+        </placeWorkers>
+        <specialDisplayRadius>25</specialDisplayRadius>
+    </ThingDef>
+</Things>
+

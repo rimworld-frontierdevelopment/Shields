@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Things>
+    <ThingDef ParentName="ShieldBase">
+        <defName>Building_ShieldGeneratorPortable</defName>
+        <label>Portable shield generator</label>
+        <minifiedDef>MinifiedShieldGeneratorPortable</minifiedDef>
+        <description>Creates a portable shield generator.</description>
+        <researchPrerequisites>
+            <li>ShieldGeneratorPortable</li>
+        </researchPrerequisites>
+        <graphicData>
+            <texPath>Things/Buildings/PortableShield</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(1,1)</drawSize>
+        </graphicData>
+        <uiIconPath>Things/Buildings/PortableShield</uiIconPath>
+        <passability>Standable</passability>
+        <statBases>
+            <MaxHitPoints>250</MaxHitPoints>
+            <WorkToBuild>1000</WorkToBuild>
+            <Flammability>1.0</Flammability>
+            <Beauty>-2</Beauty>
+        </statBases>
+        <costList>
+            <Steel>80</Steel>
+            <Plasteel>40</Plasteel>
+            <Component>10</Component>
+        </costList>
+        <staticSunShadowHeight>0</staticSunShadowHeight>
+        <comps>
+            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_PowerPlantTrader">
+                <transmitsPower>true</transmitsPower>
+            </li>
+            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_BatteryInternal">
+                <storedEnergyMax>1000</storedEnergyMax>
+                <efficiency>0.5</efficiency>
+                <startElectricalFires>false</startElectricalFires>
+                <transmitsPower>true</transmitsPower>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="FrontierDevelopments.Shields.CompProperties.CompProperties_ShieldRadial">
+                <minRadius>3</minRadius>
+                <maxRadius>3</maxRadius>
+            </li>
+            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
+                <grams>100</grams>
+                <specificHeat>.385</specificHeat>
+                <conductivity>399</conductivity>
+                <minorThreshold>100</minorThreshold>
+                <majorThreshold>150</majorThreshold>
+                <criticalThreshold>200</criticalThreshold>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>3</glowRadius>
+                <glowColor>(100,200,255,0)</glowColor>
+            </li>
+        </comps>
+        <placeWorkers>
+            <li>PlaceWorker_Heater</li>
+        </placeWorkers>
+        <specialDisplayRadius>3</specialDisplayRadius>
+    </ThingDef>
+</Things>

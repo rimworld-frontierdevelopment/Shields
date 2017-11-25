@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+    
+    <IncidentDef>
+        <defName>HeatSinkOverTemperatureBreakdown</defName>
+        <label>heatsink over temperature breakdown</label>
+        <category>Misc</category>
+        <targetType>15</targetType>
+        <workerClass>FrontierDevelopments.General.IncidentWorkers.IncidentWorker_HeatSinkOverTemperature</workerClass>
+        <baseChance>25</baseChance>
+        <minRefireDays>0</minRefireDays>
+    </IncidentDef>
+</Defs>

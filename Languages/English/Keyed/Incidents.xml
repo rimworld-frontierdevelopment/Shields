@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+    <fd.shields.incident.minor.title>Shield Zzzt!</fd.shields.incident.minor.title>
+    <fd.shields.incident.minor.body>An overheating shield emitter coil had a short circuit draining {0}Wd of energy from the power network.</fd.shields.incident.minor.body>
+
+    <fd.shields.incident.major.title>Shield breakdown</fd.shields.incident.major.title>
+    <fd.shields.incident.major.body>An overheating shield emitter coil has broken down and drained {0}Wd of energy from the power network.</fd.shields.incident.major.body>
+
+    <fd.shields.incident.critical.title>Shield explosion</fd.shields.incident.critical.title>
+    <fd.shields.incident.critical.body>An overheating shield emitter coil exploded and drained {0}Wd of energy from the power network.</fd.shields.incident.critical.body>
+</LanguageData>

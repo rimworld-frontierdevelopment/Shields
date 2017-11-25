@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!-- ======================= Minified things ========================= -->
+
+  <ThingDef ParentName="MinifiedBase" Name="MinifiedShieldBase" Abstract="True">
+    <thingCategories>
+      <li>WeaponsTurrets</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="MinifiedShieldBase">
+    <defName>MinifiedShieldGeneratorPortable</defName>
+    <label>Portable shield generator</label>
+    <statBases>
+      <Mass>12</Mass>
+    </statBases>
+  </ThingDef>
+
+</Defs>

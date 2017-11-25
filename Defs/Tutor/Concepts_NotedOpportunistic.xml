@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+	<!--===================== Concepts taught through the learning readout, when opportunities arise ===================-->
+
+	<ConceptDef>
+		<defName>FD_Shields</defName>
+		<label>FD: Shield Generators</label>
+		<priority>50</priority>
+		<needsOpportunity>True</needsOpportunity>
+		<helpText>Shields stop incoming projectiles at the cost of battery power.  They don't stop people from moving through them, however.  They use a low amount of power when idle and draw directly from batteries when stopping incoming fire.\n\nIn order to use the shield you must have at least one battery.  Selecting a shield generator will tell you if the shield needs either batteries or power.  Automatic and sustained fire will drain power faster so multiple batteries are recommended.
+		</helpText>
+		<highlightTags>
+			<li>FD_Shields</li>
+		</highlightTags>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>FD_CoilTemperature</defName>
+		<label>FD: Shield Coil Temperature</label>
+		<priority>50</priority>
+		<needsOpportunity>True</needsOpportunity>
+		<helpText>Shield coils heat up as the shield absorbs incoming projectiles.  The generator will slowly exchange that heat with the room it's in until it reaches ambient temperature.  Shields have an automatic safety shut-off when the coils reach 125C and will explode if it exceeds 200C.
+		</helpText>
+		<highlightTags>
+			<li>FD_ShieldsPortable</li>
+		</highlightTags>
+	</ConceptDef>
+
+	<ConceptDef>
+		<defName>FD_ShieldsPortable</defName>
+		<label>FD: Portable Shield Generators</label>
+		<priority>50</priority>
+		<needsOpportunity>True</needsOpportunity>
+		<helpText>Portable Shields are miniaturizable emplacements which allow you to move the generator for your purposes.  They come with a small internal nuclear generator and battery which can power the unit as a standalone.\n\nIt can be connected to a normal power grid and will act as a normal generator and battery.  The internal generator runs on uranium and will automatically fill the battery and stop when it is full.
+		</helpText>
+		<highlightTags>
+			<li>FD_ShieldsPortable</li>
+		</highlightTags>
+	</ConceptDef>
+
+</Defs>

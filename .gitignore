@@ -1,0 +1,7 @@
+*.suo
+*.exe
+
+**/bin
+**/obj
+
+.idea

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+    
+    <!-- Power section -->
+    <fd.settings.shield.power.heading>Power</fd.settings.shield.power.heading>
+
+    <fd.settings.shield.power.per_tile.label>Power to tile</fd.settings.shield.power.per_tile.label>
+    <fd.settings.shield.power.minimum_online.label>Minimum power online</fd.settings.shield.power.minimum_online.label>
+
+    <!-- Integrity section -->
+    <fd.settings.shield.integrity.heading>Integrity</fd.settings.shield.integrity.heading>
+
+    <fd.settings.shield.integrity.power_per_damage.label>Power per damage</fd.settings.shield.integrity.power_per_damage.label>
+    <fd.settings.shield.integrity.drop_pod_damage.label>Drop pod damage</fd.settings.shield.integrity.drop_pod_damage.label>
+
+    <!-- Thermal section-->
+    <fd.settings.shield.thermal.heading>Thermal</fd.settings.shield.thermal.heading>
+
+    <fd.settings.shield.thermal.per_power.label>Heat per power</fd.settings.shield.thermal.per_power.label>
+
+    <fd.settings.shield.thermal.label>Enable shield heat</fd.settings.shield.thermal.label>
+    <fd.settings.shield.thermal.description>Enables shield heat. Can cause shields to malfunction and generate incidents</fd.settings.shield.thermal.description>
+
+    <fd.settings.shield.minor_thermal_incidents.label>Enable minor thermal incidents</fd.settings.shield.minor_thermal_incidents.label>
+    <fd.settings.shield.minor_thermal_incidents.description>Incidents are limited affecting the shield only</fd.settings.shield.minor_thermal_incidents.description>
+
+    <fd.settings.shield.major_thermal_incidents.label>Enable major thermal incidents</fd.settings.shield.major_thermal_incidents.label>
+    <fd.settings.shield.major_thermal_incidents.description>Incidents can affect the shield and power network</fd.settings.shield.major_thermal_incidents.description>
+
+    <fd.settings.shield.critical_thermal_incidents.label>Enable critical thermal incidents</fd.settings.shield.critical_thermal_incidents.label>
+    <fd.settings.shield.critical_thermal_incidents.description>Incidents can affect the shield, power network, and map</fd.settings.shield.critical_thermal_incidents.description>
+</LanguageData>

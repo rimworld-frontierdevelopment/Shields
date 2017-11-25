@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Things>
+	<ThingDef Name="ShieldBase" Abstract="True">
+		<category>Building</category>
+		<soundImpactDefault>BulletImpactMetal</soundImpactDefault>
+		<selectable>true</selectable>
+		<thingClass>FrontierDevelopments.Shields.Buildings.Building_ElectricShield</thingClass>
+		<altitudeLayer>Building</altitudeLayer>
+		<leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+		<filthLeaving>BuildingRubble</filthLeaving>
+		<blockLight>true</blockLight>
+		<drawerType>MapMeshAndRealTime</drawerType>
+		<fillPercent>1</fillPercent>
+		<size>(1,1)</size>
+		<rotatable>false</rotatable>
+		<terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+		<repairEffect>Repair</repairEffect>
+		<designationCategory>Security</designationCategory>
+		<holdsRoof>false</holdsRoof>
+		<passability>Impassable</passability>
+		<tickerType>Normal</tickerType>
+	</ThingDef>
+</Things>

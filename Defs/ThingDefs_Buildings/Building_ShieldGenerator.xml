@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Things>
+    <ThingDef ParentName="ShieldBase">
+        <defName>Building_ShieldGenerator</defName>
+        <label>Shield Generator</label>
+        <description>Creates a stationary defensive shield to block incoming fire.</description>
+        <researchPrerequisites>
+            <li>ShieldGenerator</li>
+        </researchPrerequisites>
+        <graphicData>
+            <texPath>Things/Buildings/ShieldGenerator</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <drawSize>(1,1)</drawSize>
+            <shadowData>
+                <volume>(0.3, 0.4, 0.4)</volume>
+                <offset>(0,0,-0.3)</offset>
+            </shadowData>
+        </graphicData>
+        <uiIconPath>Things/Buildings/ShieldGenerator</uiIconPath>
+        <statBases>
+            <MaxHitPoints>500</MaxHitPoints>
+            <WorkToBuild>2000</WorkToBuild>
+            <Flammability>1.0</Flammability>
+            <Beauty>-2</Beauty>
+        </statBases>
+        <costList>
+            <Steel>100</Steel>
+            <Plasteel>50</Plasteel>
+            <Component>15</Component>
+        </costList>
+        <specialDisplayRadius>10</specialDisplayRadius>
+        <comps>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+            </li>
+            <li Class="CompProperties_Flickable"/>
+            <li Class="CompProperties_Breakdownable"/>
+            <li Class="FrontierDevelopments.Shields.CompProperties.CompProperties_ShieldRadial">
+                <minRadius>3</minRadius>
+                <maxRadius>10</maxRadius>
+            </li>
+            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
+                <grams>200</grams>
+                <specificHeat>.385</specificHeat>
+                <conductivity>399</conductivity>
+                <minorThreshold>100</minorThreshold>
+                <majorThreshold>150</majorThreshold>
+                <criticalThreshold>200</criticalThreshold>
+            </li>
+            <li Class="CompProperties_Glower">
+                <glowRadius>5</glowRadius>
+                <glowColor>(100,200,255,0)</glowColor>
+            </li>
+        </comps>
+        <placeWorkers>
+            <li>PlaceWorker_Heater</li>
+        </placeWorkers>
+    </ThingDef>
+</Things>
