@@ -65,6 +65,7 @@
     <Compile Include="Shields\Buildings\Building_ShieldBase.cs" />
     <Compile Include="Shields\CompProperties\CompProperties_ShieldRadial.cs" />
     <Compile Include="Shields\Comps\Comp_ShieldRadial.cs" />
+    <Compile Include="Shields\Handlers\SkyfallerHandler.cs" />
     <Compile Include="Shields\Mod.cs" />
     <Compile Include="Shields\Handlers\ActiveDropPodHandler.cs" />
     <Compile Include="Shields\Handlers\ProjectileHandler.cs" />

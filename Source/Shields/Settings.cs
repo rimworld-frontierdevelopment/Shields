@@ -13,6 +13,7 @@ namespace FrontierDevelopments.Shields
         // Integrity
         public float PowerPerDamage = 1.0f;
         public int DropPodDamage = 100;
+        public int SkyfallerDamage = 1000;
 
         // Thermal
         public bool EnableThermal = true;
@@ -67,6 +68,13 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.integrity.drop_pod_damage.label".Translate(), 
                 ref DropPodDamage, 
                 ref dropPodDamageBuffer);
+            
+            var skyfallerDamageBuffer = SkyfallerDamage.ToString();
+            Widgets.TextFieldNumericLabeled(
+                list.GetRect(Text.LineHeight),
+                "fd.settings.shield.integrity.skyfaller_damage.label".Translate(), 
+                ref SkyfallerDamage, 
+                ref skyfallerDamageBuffer);
             
             // Thermal
             Heading(list, "fd.settings.shield.thermal.heading".Translate());
