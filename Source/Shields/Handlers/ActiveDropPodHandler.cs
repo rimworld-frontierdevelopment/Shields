@@ -2,6 +2,7 @@
 using System.Linq;
 using Harmony;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Handlers
@@ -21,7 +22,9 @@ namespace FrontierDevelopments.Shields.Handlers
                 try
                 {
                     var pod = __instance;
-                    return !Mod.ShieldManager.ImpactShield(pod.Map, pod.Position.ToVector3(), (shield, point) =>
+                    if (pod?.Map == null) return true;
+                    var position = new Vector2(pod.Position.x, pod.Position.z);
+                    return !Mod.ShieldManager.ImpactShield(pod.Map, position, (shield, point) =>
                     {
                         if (shield.Damage(Mod.Settings.DropPodDamage, point))
                         {
