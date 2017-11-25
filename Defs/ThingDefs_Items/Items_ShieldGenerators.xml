@@ -5,7 +5,7 @@
 
   <ThingDef ParentName="MinifiedBase" Name="MinifiedShieldBase" Abstract="True">
     <thingCategories>
-      <li>WeaponsTurrets</li>
+      <li>Items</li>
     </thingCategories>
   </ThingDef>
 
