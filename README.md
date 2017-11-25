@@ -9,9 +9,9 @@ Allows for the building shield generators. Shields will stop projectiles that tr
 - Shield strength is the stored energy on your power net
 - Shields generators will heat up as the shields absorb damage and will shut off if they overheat
 - Shields come in three sizes:
-  - small (3) 
-  - medium (10)
-  - large (25)
+- small (3m)
+- medium (3m - 10m)
+- large (5m - 25m)
 - The small shield is minifiable and portable and contains an internal battery (1000 Wd, 50% efficient)
 - Larger shields can soak more heat before the shield collapses
 

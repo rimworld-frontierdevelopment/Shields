@@ -32,5 +32,14 @@ Allows for the building shield generators. Shields will stop projectiles that tr
 **Optionally Supported Mods:**
 - Combat Extended (CE): Use the CE support expansion
 - RedistHeat: Cool shields with ducts
+		
+		
+Special Thanks to:
+
+JohnnyNova: Code Lead
+Jetpack Maniac: Code, documentation
+Halno: Building and UI Art:
+Morgloz: Thermal shutoff button UI used from RedistHeat (it's good, get it)
+Jaxxa: Inspired this mod from his ED-ShieldsBasic mod
 	</description>
 </ModMetaData>
