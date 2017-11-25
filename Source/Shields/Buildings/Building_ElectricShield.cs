@@ -193,7 +193,7 @@ namespace FrontierDevelopments.Shields.Buildings
             Find.LetterStack.ReceiveLetter(
                 title,
                 body.Replace("{0}", ((int)drained).ToString()), 
-                LetterDefOf.BadNonUrgent, 
+                LetterDefOf.NegativeEvent, 
                 new TargetInfo(Position, Map));
         }
 

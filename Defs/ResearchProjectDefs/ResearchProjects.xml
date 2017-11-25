@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ResearchProjectDefs>
+<Defs>
 
 	<ResearchTabDef>
 		<defName>EnhancedDevelopment</defName>
@@ -45,4 +45,4 @@
 		<researchViewY>6</researchViewY>
 	</ResearchProjectDef>
 
-</ResearchProjectDefs>
+</Defs>

@@ -23,7 +23,7 @@ namespace FrontierDevelopments.General.IncidentWorkers
                    && GetTargets((Map)target).Any();
         }
 
-        public override bool TryExecute(IncidentParms parms)
+        protected override bool TryExecuteWorker(IncidentParms parms)
         {
             var map = (Map) parms.target;
             var target = GetTargets(map).RandomElement();

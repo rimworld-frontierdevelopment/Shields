@@ -5,7 +5,12 @@
         <defName>HeatSinkOverTemperatureBreakdown</defName>
         <label>heatsink over temperature breakdown</label>
         <category>Misc</category>
-        <targetType>15</targetType>
+        <targetTypes>
+            <li>Caravan</li>
+            <li>MapRaidBeacon</li>
+            <li>MapPlayerHome</li>
+            <li>MapMisc</li>
+        </targetTypes>
         <workerClass>FrontierDevelopments.General.IncidentWorkers.IncidentWorker_HeatSinkOverTemperature</workerClass>
         <baseChance>25</baseChance>
         <minRefireDays>0</minRefireDays>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Things>
+<Defs>
     <ThingDef ParentName="ShieldBase">
         <defName>Building_ShieldGeneratorPortable</defName>
         <label>Portable shield generator</label>
@@ -61,4 +61,4 @@
         </placeWorkers>
         <specialDisplayRadius>3</specialDisplayRadius>
     </ThingDef>
-</Things>
+</Defs>

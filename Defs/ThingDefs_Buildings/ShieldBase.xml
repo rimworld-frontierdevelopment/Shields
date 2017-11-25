@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Things>
+<Defs>
 	<ThingDef Name="ShieldBase" Abstract="True">
 		<category>Building</category>
 		<soundImpactDefault>BulletImpactMetal</soundImpactDefault>
@@ -20,4 +20,4 @@
 		<passability>Impassable</passability>
 		<tickerType>Normal</tickerType>
 	</ThingDef>
-</Things>
+</Defs>
