@@ -3,7 +3,7 @@
 	<name>Shield Generators by Frontier Developments</name>
 	<targetVersion>0.17.1557</targetVersion>
 	<author>JohnnyNova and Jetpack Maniac</author>
-	<url>https://github.com/jetpack-maniac/ED-Shields</url>
+	<url>https://github.com/JonnyNova/Rimworld-Shields</url>
 	<description>Version: 1.0
 Allows for the building shield generators. Shields will stop projectiles that try to enter it but allow weapons to be fired out.  This includes bullets, rockets, mortar rounds, pods of **any** variety (enemies via drop pods, cargo pods, escape pods, and yes, **your** pods).  Shields have low idle power use and high power usage when stopping projectiles.  Shield strength is determined from stored battery power.  More batteries equals more protection.
 
@@ -14,9 +14,9 @@ Allows for the building shield generators. Shields will stop projectiles that tr
 - Shield strength is the stored energy on your power net
 - Shields generators will heat up as the shields absorb damage and will shut off if they overheat
 - Shields come in three sizes:
-- small (3)
-- medium (10)
-- large (25)
+- small (3m)
+- medium (3m - 10m)
+- large (5m - 25m)
 - The small shield is minifiable and portable and contains an internal battery (1000 Wd, 50% efficient)
 - Larger shields can soak more heat before the shield collapses
 
