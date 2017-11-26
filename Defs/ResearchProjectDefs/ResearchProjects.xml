@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
-
 	<ResearchProjectDef>
 		<defName>ShieldGenerator</defName>
 		<label>Shield Generator</label>
@@ -39,5 +38,4 @@
 		<researchViewX>12</researchViewX>
 		<researchViewY>6</researchViewY>
 	</ResearchProjectDef>
-
 </Defs>
