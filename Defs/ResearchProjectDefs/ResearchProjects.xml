@@ -1,11 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ResearchProjectDefs>
 
-	<ResearchTabDef>
-		<defName>EnhancedDevelopment</defName>
-		<label>Enhanced Development</label>
-	</ResearchTabDef>
-
 	<ResearchProjectDef>
 		<defName>ShieldGenerator</defName>
 		<label>Shield Generator</label>
