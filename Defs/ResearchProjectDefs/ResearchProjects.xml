@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<ResearchProjectDefs>
+<Defs>
 
 	<ResearchProjectDef>
 		<defName>ShieldGenerator</defName>
@@ -30,7 +30,7 @@
 	<ResearchProjectDef>
 		<defName>ShieldGeneratorPortable</defName>
 		<label>Portable Shield</label>
-		<description>A portable shield generator with small internal battery and nuclear-powered generator.</description>
+		<description>A portable shield generator with small internal battery.</description>
 		<baseCost>2000</baseCost>
 		<techLevel>Spacer</techLevel>
 		<prerequisites>
@@ -40,4 +40,4 @@
 		<researchViewY>6</researchViewY>
 	</ResearchProjectDef>
 
-</ResearchProjectDefs>
+</Defs>
