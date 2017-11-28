@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using FrontierDevelopments.General;
 using Harmony;
 using RimWorld;
 using UnityEngine;
@@ -61,11 +62,8 @@ namespace FrontierDevelopments.Shields.Handlers
                 var ticksToImpact = (int)TicksToImpactField.GetValue(projectile);
                 var startingTicksToImpact = (int)StartingTicksToImpactProperty.GetValue(projectile, null);
 
-                var origin3 = (Vector3) OriginField.GetValue(projectile);
-                var destination3 = (Vector3) DestinationField.GetValue(projectile);
-
-                var origin = new Vector2(origin3.x, origin3.z);
-                var destination = new Vector2(destination3.x, destination3.z);
+                var origin = Common.ToVector2((Vector3) OriginField.GetValue(projectile));
+                var destination = Common.ToVector2((Vector3) DestinationField.GetValue(projectile));
                 var position = Vector2.Lerp(origin, destination, 1.0f - ticksToImpact / (float)startingTicksToImpact);
                 
                 try

@@ -52,6 +52,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="General\Common.cs" />
     <Compile Include="General\CompProperties\CompProperties_BatteryInternal.cs" />
     <Compile Include="General\CompProperties\CompProperties_HeatSink.cs" />
     <Compile Include="General\CompProperties\CompProperties_PowerPlantTrader.cs" />

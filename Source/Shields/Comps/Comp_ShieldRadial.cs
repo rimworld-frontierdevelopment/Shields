@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FrontierDevelopments.General;
 using FrontierDevelopments.Shields.CompProperties;
 using FrontierDevelopments.Shields.Windows;
 using RimWorld;
@@ -64,7 +65,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool Collision(Vector2 vector)
         {
-            return Vector2.Distance(new Vector2(parent.Position.x + 0.5f, parent.Position.z + 0.5f), vector) < _fieldRadius + 0.5f;
+            return Vector2.Distance(Common.ToVector2(parent.Position), vector) < _fieldRadius + 0.5f;
         }
 
         public Vector2? Collision(Ray2D ray, float limit)
@@ -84,12 +85,12 @@ namespace FrontierDevelopments.Shields.Comps
         
         public void Draw()
         {
-            var position = parent.Position.ToVector3();
+            var position = Common.ToVector3(parent.Position);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(_fieldRadius * 2.2);
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
             var matrix = new Matrix4x4();
-            matrix.SetTRS(position + new Vector3(0.5f, 0, 0.5f), Quaternion.AngleAxis(0, Vector3.up), scaling);
+            matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
             Graphics.DrawMesh(MeshPool.plane10, matrix, Resources.ShieldMat, 0);
         }
         
