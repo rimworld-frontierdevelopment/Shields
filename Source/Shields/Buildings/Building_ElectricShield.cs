@@ -4,6 +4,7 @@ using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.Shields.Comps;
+using FrontierDevelopments.Shields.Windows;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -59,10 +60,19 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public override void Tick()
         {
-            _powerTrader.PowerOutput = BasePowerConsumption - _additionalPowerDraw;
+            if (_powerTrader?.PowerNet != null)
+            {
+                var availThisTick = _powerTrader.PowerNet.CurrentEnergyGainRate() +
+                                    _powerTrader.PowerNet.CurrentStoredEnergy() * 60000;
+                var powerWanted = BasePowerConsumption - _additionalPowerDraw;
+                if (availThisTick + powerWanted < 0)
+                {
+                    powerWanted = -availThisTick;
+                }
+                _powerTrader.PowerOutput = powerWanted;
+            }
             base.Tick();
             _additionalPowerDraw = 0;
-
         }
 
         private bool HasPowerNet()
@@ -105,12 +115,17 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public override bool Damage(int damage, Vector2 position)
         {
+            if (!IsActive()) return false;
             // convert watts per day to watts per tickk
             var charge = damage * 60000 * Mod.Settings.PowerPerDamage;
             var drawn = -DrawPowerOneTick(-charge);
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
-            if (drawn < charge) return false;
+            if (drawn < charge)
+            {
+                Messages.Message("fd.shields.incident.out_of_power.body".Translate(), this, MessageTypeDefOf.NegativeEvent);
+                return false;
+            }
             RenderImpactEffect(position);
             PlayBulletImpactSound(position);
             return true;    
