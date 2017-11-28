@@ -83,7 +83,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private void PlayBulletImpactSound(Vector2 position)
         {
-            Resources.HitSoundDef.PlayOneShot(new TargetInfo(new IntVec3((int)position.x, 0, (int)position.y), Map));
+            SoundDefOf.EnergyShieldAbsorbDamage.PlayOneShot(new TargetInfo(new IntVec3((int)position.x, 0, (int)position.y), Map));
         }
 
         private float DrawPowerOneTick(float amount)
