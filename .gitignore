@@ -5,3 +5,6 @@
 **/obj
 
 .idea
+
+Assemblies/
+!Assemblies/0Harmony.dll
