@@ -1,4 +1,5 @@
 ﻿using System;
+using FrontierDevelopments.General;
 using Harmony;
 using RimWorld;
 using Verse;
@@ -21,7 +22,7 @@ namespace FrontierDevelopments.Shields.Handlers
                 try
                 {
                     var skyfaller = __instance;
-                    return !Mod.ShieldManager.ImpactShield(skyfaller.Map, skyfaller.Position.ToVector3(), (shield, point) =>
+                    return !Mod.ShieldManager.ImpactShield(skyfaller.Map, Common.ToVector2(skyfaller.Position.ToVector3()), (shield, point) =>
                     {
                         if (skyfaller.ticksToImpact < 5 && shield.Damage(Mod.Settings.SkyfallerDamage, point))
                         {
