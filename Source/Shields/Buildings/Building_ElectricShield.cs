@@ -66,7 +66,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool HasPowerNet()
         {
-            return _powerTrader.PowerNet != null;
+            return _powerTrader?.PowerNet != null;
         }
         
         public override bool IsActive()
