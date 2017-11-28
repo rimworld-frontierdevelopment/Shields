@@ -16,8 +16,9 @@ namespace FrontierDevelopments.Shields.Handlers
         private static readonly FieldInfo OriginField = typeof(Projectile).GetField("origin", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo DestinationField = typeof(Projectile).GetField("destination", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly FieldInfo TicksToImpactField = typeof(Projectile).GetField("ticksToImpact", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo AssignedTargetField = typeof(Projectile).GetField("assignedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo IntendedTargetField = typeof(Projectile).GetField("intendedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly PropertyInfo StartingTicksToImpactProperty = typeof(Projectile).GetProperty("StartingTicksToImpact", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly MethodInfo DetonationField = typeof(CompExplosive).GetMethod("Detonate", BindingFlags.Instance | BindingFlags.NonPublic);
 
         static ProjectileHandler()
         {
@@ -36,15 +37,20 @@ namespace FrontierDevelopments.Shields.Handlers
                 Enabled = false;
                 Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.ticksToImpact");
             }
+            if (AssignedTargetField == null)
+            {
+                Enabled = false;
+                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.assignedTarget");
+            }
+            if (IntendedTargetField == null)
+            {
+                Enabled = false;
+                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.intendedTarget");
+            }
             if (StartingTicksToImpactProperty == null)
             {
                 Enabled = false;
                 Log.Error("Frontier Developments Shields :: Projectile handler reflection error on property Projectile.StartingTicksToImpact");
-            }
-            if (DetonationField == null)
-            {
-                Enabled = false;
-                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on property CompExplosive.Detonate");
             }
             
             Log.Message("Frontier Developments Shields :: Projectile handler " + (Enabled ? "enabled" : "disabled due to errors"));
@@ -71,7 +77,7 @@ namespace FrontierDevelopments.Shields.Handlers
                     if (projectile.def.projectile.flyOverhead)
                     {
                         // the shield has blocked the projectile - invert to get if harmony should allow the original block
-                        return !Mod.ShieldManager.ImpactShield(projectile.Map, position, origin, destination, (shield, vector3) =>
+                        return !Mod.ShieldManager.ImpactShield(projectile.Map, position, origin, destination, (shield, vector2) =>
                             {
                                 if (shield.Damage(projectile.def.projectile.damageAmountBase, position))
                                 {
@@ -81,21 +87,16 @@ namespace FrontierDevelopments.Shields.Handlers
                                 return false;
                             });
                     }
-                    var ray = new Ray2D(position, Vector2.Lerp(origin, destination, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
                     
-                    // the shield has blocked the projectile - invert to get if harmony should allow the original block
-                    return !Mod.ShieldManager.ImpactShield(projectile.Map, origin, ray, 1, (shield, point) =>
+                    var ray = new Ray2D(position, Vector2.Lerp(origin, destination, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
+                    Mod.ShieldManager.ImpactShield(projectile.Map, origin, ray, 1, (shield, point) =>
                     {
                         if (shield.Damage(projectile.def.projectile.damageAmountBase, point))
                         {
-                            var explosive = projectile.TryGetComp<CompExplosive>();
-                            if (explosive != null)
-                            {
-                                projectile.Position = new IntVec3((int)point.x, (int)projectile.def.Altitude, (int)point.y);
-                                object[] parameters = { projectile.Map };
-                                DetonationField.Invoke(explosive, parameters);
-                            }
-                            projectile.Destroy();
+                            DestinationField.SetValue(projectile, Common.ToVector3(point, projectile.def.Altitude));
+                            TicksToImpactField.SetValue(projectile, 0);
+                            AssignedTargetField.SetValue(projectile, null);
+                            IntendedTargetField.SetValue(projectile, null);
                             return true;
                         }
                         return false;
