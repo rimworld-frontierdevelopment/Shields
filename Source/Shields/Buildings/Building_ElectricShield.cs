@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.Shields.Comps;
 using RimWorld;
@@ -49,7 +50,7 @@ namespace FrontierDevelopments.Shields.Buildings
             _powerTrader = GetComp<CompPowerTrader>();
             _shield = GetComp<Comp_ShieldRadial>();
             _heatSink = GetComp<Comp_HeatSink>();
-            _heatSink.CanBreakdown = () => IsActive();
+            _heatSink.CanBreakdown = IsActive;
             _heatSink.MinorBreakdown = () => BreakdownMessage("fd.shields.incident.minor.title".Translate(), "fd.shields.incident.minor.body".Translate(), DoMinorBreakdown());
             _heatSink.MajorBreakdown = () => BreakdownMessage("fd.shields.incident.major.title".Translate(), "fd.shields.incident.major.body".Translate(), DoMajorBreakdown());
             _heatSink.CricticalBreakdown = () => BreakdownMessage("fd.shields.incident.critical.title".Translate(), "fd.shields.incident.critical.body".Translate(), DoCriticalBreakdown());
@@ -78,12 +79,12 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private void RenderImpactEffect(Vector2 position)
         {
-            MoteMaker.ThrowLightningGlow(new Vector3(position.x, 0, position.y), Map, 0.5f);
+            MoteMaker.ThrowLightningGlow(Common.ToVector3(position), Map, 0.5f);
         }
 
         private void PlayBulletImpactSound(Vector2 position)
         {
-            SoundDefOf.EnergyShieldAbsorbDamage.PlayOneShot(new TargetInfo(new IntVec3((int)position.x, 0, (int)position.y), Map));
+            SoundDefOf.EnergyShieldAbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
         }
 
         private float DrawPowerOneTick(float amount)
