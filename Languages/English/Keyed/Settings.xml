@@ -12,7 +12,7 @@
 
     <fd.settings.shield.integrity.power_per_damage.label>Power per damage</fd.settings.shield.integrity.power_per_damage.label>
     <fd.settings.shield.integrity.drop_pod_damage.label>Drop pod damage</fd.settings.shield.integrity.drop_pod_damage.label>
-    <fd.settings.shield.integrity.skyfaller.label>Meteorite damage</fd.settings.shield.integrity.skyfaller.label>
+    <fd.settings.shield.integrity.skyfaller_damage.label>Meteorite damage</fd.settings.shield.integrity.skyfaller_damage.label>
 
     <!-- Thermal section-->
     <fd.settings.shield.thermal.heading>Thermal</fd.settings.shield.thermal.heading>
