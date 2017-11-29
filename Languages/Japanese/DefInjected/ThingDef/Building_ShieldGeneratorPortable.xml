@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <Building_ShieldGeneratorPortable.label>シールド発生装置(可搬型)を建築する</Building_ShieldGeneratorPortable.label>
+  <Building_ShieldGeneratorPortable.label>小型シールド</Building_ShieldGeneratorPortable.label>
   <Building_ShieldGeneratorPortable.description>移動可能な可搬型の防御シールド発生装置を建築します。</Building_ShieldGeneratorPortable.description>
   <Building_ShieldGeneratorPortable_Blueprint.label>シールド発生装置(可搬型)(設計)</Building_ShieldGeneratorPortable_Blueprint.label>
   <Building_ShieldGeneratorPortable_Blueprint_Install.label>シールド発生装置(可搬型)(移動先)</Building_ShieldGeneratorPortable_Blueprint_Install.label>
