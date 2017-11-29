@@ -4,7 +4,6 @@ using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.Shields.Comps;
-using FrontierDevelopments.Shields.Windows;
 using RimWorld;
 using UnityEngine;
 using Verse;
