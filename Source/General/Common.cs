@@ -5,6 +5,11 @@ namespace FrontierDevelopments.General
 {
     public static class Common
     {
+        public static bool RectOverlaps(CellRect one, CellRect two)
+        {
+            return one.minX <= two.maxX && one.maxX >= two.minX && one.maxZ >= two.minZ && one.minZ <= two.maxZ;
+        }
+        
         public static IntVec3 ToIntVec3(IntVec2 intVec2, int y = 0)
         {
             return new IntVec3(intVec2.x, y, intVec2.z);

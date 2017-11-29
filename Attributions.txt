@@ -1,8 +1,13 @@
 JonnyNova - Code Lead
 Jetpack_Maniac - Code, Documentation
+Halno: Building and UI art
 
-Halno - Building and UI art
-
-Morgloz - RedistHeat, Thermal Shutoff button base art
+Morgloz: RedistHeat
+ColdTold: Centralized Climate Control
+NoImageAvailable: Combat Extended
 
 Jaxxa - inspiration drawn from ED-ShieldsBasic
+
+Translations:
+Russian (Русский): kr33man from http://lttlword.ru
+Japanese (日本語): Proxyer
