@@ -85,7 +85,7 @@ namespace FrontierDevelopments.Shields.Comps
         
         public void Draw(CellRect cameraRect)
         {
-            if (!cameraRect.Overlaps(CellRect.CenteredOn(parent.Position, Radius))) return;
+            if (!Common.RectOverlaps(cameraRect, CellRect.CenteredOn(parent.Position, Radius))) return;
             var position = Common.ToVector3(parent.Position);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(_fieldRadius * 2.2);
