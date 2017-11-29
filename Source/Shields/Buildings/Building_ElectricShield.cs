@@ -141,13 +141,6 @@ namespace FrontierDevelopments.Shields.Buildings
             return _shield.Collision(ray, limit);
         }
 
-        public override void Draw()
-        {
-            base.Draw();
-            if (!IsActive()) return;
-            _shield.Draw();
-        }
-
         public override string GetInspectString()
         {
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_CoilTemperature"), OpportunityType.Important);
@@ -242,6 +235,12 @@ namespace FrontierDevelopments.Shields.Buildings
                 DamageDefOf.Flame,
                 this);
             return DoMajorBreakdown();
+        }
+
+        public override void DrawShield()
+        {
+            if (!IsActive()) return;
+            _shield.Draw();
         }
     }
 }

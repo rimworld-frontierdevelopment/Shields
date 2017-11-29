@@ -22,10 +22,13 @@ namespace FrontierDevelopments.Shields.Buildings
             Mod.ShieldManager.Del(Map, this);
             base.Destroy(mode);
         }
-        
+
+        public IntVec3 EmitterPosition() => Position;
+
         public abstract bool IsActive();
         public abstract bool Collision(Vector2 point);
         public abstract Vector2? Collision(Ray2D ray, float limit);
         public abstract bool Damage(int damage, Vector2 position);
+        public abstract void DrawShield();
     }
 }
