@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <Building_ShieldGenerator.label>通常シールド</Building_ShieldGenerator.label>
+  <Building_ShieldGenerator.description>内側への射撃を阻止するために防御シールド発生装置を建築します。</Building_ShieldGenerator.description>
+  <Building_ShieldGenerator_Blueprint.label>シールド発生装置(設計)</Building_ShieldGenerator_Blueprint.label>
+  <Building_ShieldGenerator_Frame.label>シールド発生装置(施工)</Building_ShieldGenerator_Frame.label>
+  <Building_ShieldGenerator_Frame.description>内側への射撃を阻止するために防御シールド発生装置を建築します。</Building_ShieldGenerator_Frame.description>
+
+
+</LanguageData>
