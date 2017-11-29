@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <fd.shields.incident.minor.title>シールドがバチバチした!</fd.shields.incident.minor.title>
+  <fd.shields.incident.minor.body>シールド放熱コイルのオーバーヒートによってショート(短絡)が発生して、接続された電力網から{0} Wdの電力エネルギーが放電されました。</fd.shields.incident.minor.body>
+
+  <fd.shields.incident.major.title>シールドが故障</fd.shields.incident.major.title>
+  <fd.shields.incident.major.body>シールド放熱コイルのオーバーヒートによって故障して、接続された電力網から{0} Wdの電気エネルギーが放電されました。</fd.shields.incident.major.body>
+
+  <fd.shields.incident.critical.title>シールドが爆発した</fd.shields.incident.critical.title>
+  <fd.shields.incident.critical.body>シールド放熱コイルのオーバーヒートによって爆発して、接続された電力網から{0} Wdの電気エネルギーが放電されました。</fd.shields.incident.critical.body>
+
+</LanguageData>
