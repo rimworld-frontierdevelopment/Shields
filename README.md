@@ -1,4 +1,6 @@
-Version 1.0 for B18
+# Frontier Developments Shields
+
+**Version: 1.0.4**
 
 Allows for the building shield generators. Shields will stop projectiles that try to enter it but allow weapons to be fired out. This includes bullets, rockets, mortar rounds, pods of **any** variety (enemies via drop pods, cargo pods, escape pods, and yes, **your** pods). Shields have low idle power use and high power usage when stopping projectiles. Shield strength is determined from stored battery power. More batteries equals more protection.
 
