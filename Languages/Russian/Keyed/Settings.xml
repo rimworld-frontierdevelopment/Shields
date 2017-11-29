@@ -1,0 +1,34 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <!-- Power section -->
+  <fd.settings.shield.power.heading>Энергия</fd.settings.shield.power.heading>
+
+  <fd.settings.shield.power.per_tile.label>Мощность на тайл</fd.settings.shield.power.per_tile.label>
+  <fd.settings.shield.power.minimum_online.label>Минимальная мощность в сети</fd.settings.shield.power.minimum_online.label>
+
+  <!-- Integrity section -->
+  <fd.settings.shield.integrity.heading>Целостность</fd.settings.shield.integrity.heading>
+
+  <fd.settings.shield.integrity.power_per_damage.label>Мощность за каждый урон</fd.settings.shield.integrity.power_per_damage.label>
+  <fd.settings.shield.integrity.drop_pod_damage.label>Урон от падения капсулы</fd.settings.shield.integrity.drop_pod_damage.label>
+  <fd.settings.shield.integrity.skyfaller.label>Урон метеоритом</fd.settings.shield.integrity.skyfaller.label>
+
+  <!-- Thermal section-->
+  <fd.settings.shield.thermal.heading>Тепловой</fd.settings.shield.thermal.heading>
+
+  <fd.settings.shield.thermal.per_power.label>Тепло за энергию</fd.settings.shield.thermal.per_power.label>
+
+  <fd.settings.shield.thermal.label>Включить тепло щита</fd.settings.shield.thermal.label>
+  <fd.settings.shield.thermal.description>Позволяет щиту греться. Может привести к сбоям в работе щитов и возникновению инцидентов.</fd.settings.shield.thermal.description>
+
+  <fd.settings.shield.minor_thermal_incidents.label>Включить незначительные тепловые инциденты</fd.settings.shield.minor_thermal_incidents.label>
+  <fd.settings.shield.minor_thermal_incidents.description>Инциденты ограничены воздействием только на щит</fd.settings.shield.minor_thermal_incidents.description>
+
+  <fd.settings.shield.major_thermal_incidents.label>Включить значительные тепловые инциденты</fd.settings.shield.major_thermal_incidents.label>
+  <fd.settings.shield.major_thermal_incidents.description>Инциденты ограничены воздействием только на щит и сеть электропитания</fd.settings.shield.major_thermal_incidents.description>
+
+  <fd.settings.shield.critical_thermal_incidents.label>Включить критические тепловые инциденты</fd.settings.shield.critical_thermal_incidents.label>
+  <fd.settings.shield.critical_thermal_incidents.description>Инциденты могут влиять на щит, сеть электропитания и карту</fd.settings.shield.critical_thermal_incidents.description>
+
+</LanguageData>
