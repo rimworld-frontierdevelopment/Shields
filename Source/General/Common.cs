@@ -5,6 +5,11 @@ namespace FrontierDevelopments.General
 {
     public static class Common
     {
+        public static IntVec3 ToIntVec3(IntVec2 intVec2, int y = 0)
+        {
+            return new IntVec3(intVec2.x, y, intVec2.z);
+        }
+
         public static IntVec3 ToIntVec3(Vector2 vector2, int y = 0)
         {
             return new IntVec3((int)vector2.x, y, (int)vector2.y);

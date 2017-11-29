@@ -10,6 +10,18 @@ namespace FrontierDevelopments.Shields
     {
         private readonly Dictionary<int, List<IShield>> _shieldsMap = new Dictionary<int, List<IShield>>();
         
+        public IEnumerable<IShield> Shields(Map map)
+        {
+            try
+            {
+                return _shieldsMap[map.uniqueID];
+            }
+            catch (KeyNotFoundException)
+            {
+                return Enumerable.Empty<IShield>();
+            }
+        }
+
         public void Add(Map map, IShield shield)
         {
             List<IShield> shields;
