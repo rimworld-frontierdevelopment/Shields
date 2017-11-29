@@ -6,6 +6,7 @@ using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.Shields.Comps;
 using FrontierDevelopments.Shields.Windows;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -27,6 +28,8 @@ namespace FrontierDevelopments.Shields.Buildings
         private CompPowerTrader _powerTrader;
         private Comp_ShieldRadial _shield;
         private Comp_HeatSink _heatSink;
+
+        private bool _activeLastTick;
 
         private bool _thermalShutoff;
         private float _additionalPowerDraw;
@@ -55,11 +58,13 @@ namespace FrontierDevelopments.Shields.Buildings
             _heatSink.MinorBreakdown = () => BreakdownMessage("fd.shields.incident.minor.title".Translate(), "fd.shields.incident.minor.body".Translate(), DoMinorBreakdown());
             _heatSink.MajorBreakdown = () => BreakdownMessage("fd.shields.incident.major.title".Translate(), "fd.shields.incident.major.body".Translate(), DoMajorBreakdown());
             _heatSink.CricticalBreakdown = () => BreakdownMessage("fd.shields.incident.critical.title".Translate(), "fd.shields.incident.critical.body".Translate(), DoCriticalBreakdown());
+            _activeLastTick = IsActive();
             base.SpawnSetup(map, respawningAfterLoad);
         }
 
         public override void Tick()
         {
+            var active = IsActive();
             if (_powerTrader?.PowerNet != null)
             {
                 var availThisTick = _powerTrader.PowerNet.CurrentEnergyGainRate() +
@@ -72,7 +77,10 @@ namespace FrontierDevelopments.Shields.Buildings
                 _powerTrader.PowerOutput = powerWanted;
             }
             base.Tick();
+            if(_activeLastTick && !active)
+                Messages.Message("fd.shields.incident.out_of_power.body".Translate(), new GlobalTargetInfo(Position, Map), MessageSound.Negative);
             _additionalPowerDraw = 0;
+            _activeLastTick = active;
         }
 
         private bool HasPowerNet()
@@ -121,11 +129,7 @@ namespace FrontierDevelopments.Shields.Buildings
             var drawn = -DrawPowerOneTick(-charge);
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
-            if (drawn < charge)
-            {
-                Messages.Message("fd.shields.incident.out_of_power.body".Translate(), this, MessageTypeDefOf.NegativeEvent);
-                return false;
-            }
+            if (drawn < charge) return false;
             RenderImpactEffect(position);
             PlayBulletImpactSound(position);
             return true;    
