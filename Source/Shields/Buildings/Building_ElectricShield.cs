@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.Shields.Comps;
+using FrontierDevelopments.Shields.Windows;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -49,7 +51,7 @@ namespace FrontierDevelopments.Shields.Buildings
             _powerTrader = GetComp<CompPowerTrader>();
             _shield = GetComp<Comp_ShieldRadial>();
             _heatSink = GetComp<Comp_HeatSink>();
-            _heatSink.CanBreakdown = () => IsActive();
+            _heatSink.CanBreakdown = IsActive;
             _heatSink.MinorBreakdown = () => BreakdownMessage("fd.shields.incident.minor.title".Translate(), "fd.shields.incident.minor.body".Translate(), DoMinorBreakdown());
             _heatSink.MajorBreakdown = () => BreakdownMessage("fd.shields.incident.major.title".Translate(), "fd.shields.incident.major.body".Translate(), DoMajorBreakdown());
             _heatSink.CricticalBreakdown = () => BreakdownMessage("fd.shields.incident.critical.title".Translate(), "fd.shields.incident.critical.body".Translate(), DoCriticalBreakdown());
@@ -58,15 +60,24 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public override void Tick()
         {
-            _powerTrader.PowerOutput = BasePowerConsumption - _additionalPowerDraw;
+            if (_powerTrader?.PowerNet != null)
+            {
+                var availThisTick = _powerTrader.PowerNet.CurrentEnergyGainRate() +
+                                    _powerTrader.PowerNet.CurrentStoredEnergy() * 60000;
+                var powerWanted = BasePowerConsumption - _additionalPowerDraw;
+                if (availThisTick + powerWanted < 0)
+                {
+                    powerWanted = -availThisTick;
+                }
+                _powerTrader.PowerOutput = powerWanted;
+            }
             base.Tick();
             _additionalPowerDraw = 0;
-
         }
 
         private bool HasPowerNet()
         {
-            return _powerTrader.PowerNet != null;
+            return _powerTrader?.PowerNet != null;
         }
         
         public override bool IsActive()
@@ -78,12 +89,12 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private void RenderImpactEffect(Vector2 position)
         {
-            MoteMaker.ThrowLightningGlow(new Vector3(position.x, 0, position.y), Map, 0.5f);
+            MoteMaker.ThrowLightningGlow(Common.ToVector3(position), Map, 0.5f);
         }
 
         private void PlayBulletImpactSound(Vector2 position)
         {
-            Resources.HitSoundDef.PlayOneShot(new TargetInfo(new IntVec3((int)position.x, 0, (int)position.y), Map));
+            SoundDefOf.EnergyShieldAbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
         }
 
         private float DrawPowerOneTick(float amount)
@@ -104,12 +115,17 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public override bool Damage(int damage, Vector2 position)
         {
+            if (!IsActive()) return false;
             // convert watts per day to watts per tickk
             var charge = damage * 60000 * Mod.Settings.PowerPerDamage;
             var drawn = -DrawPowerOneTick(-charge);
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
-            if (drawn < charge) return false;
+            if (drawn < charge)
+            {
+                Messages.Message("fd.shields.incident.out_of_power.body".Translate(), this, MessageTypeDefOf.NegativeEvent);
+                return false;
+            }
             RenderImpactEffect(position);
             PlayBulletImpactSound(position);
             return true;    
@@ -123,13 +139,6 @@ namespace FrontierDevelopments.Shields.Buildings
         public override Vector2? Collision(Ray2D ray, float limit)
         {
             return _shield.Collision(ray, limit);
-        }
-
-        public override void Draw()
-        {
-            base.Draw();
-            if (!IsActive()) return;
-            _shield.Draw();
         }
 
         public override string GetInspectString()
@@ -226,6 +235,12 @@ namespace FrontierDevelopments.Shields.Buildings
                 DamageDefOf.Flame,
                 this);
             return DoMajorBreakdown();
+        }
+
+        public override void DrawShield()
+        {
+            if (!IsActive()) return;
+            _shield.Draw();
         }
     }
 }

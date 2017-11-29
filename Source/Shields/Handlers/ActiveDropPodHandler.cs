@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using FrontierDevelopments.General;
 using Harmony;
 using RimWorld;
 using UnityEngine;
@@ -23,8 +24,7 @@ namespace FrontierDevelopments.Shields.Handlers
                 {
                     var pod = __instance;
                     if (pod?.Map == null) return true;
-                    var position = new Vector2(pod.Position.x, pod.Position.z);
-                    return !Mod.ShieldManager.ImpactShield(pod.Map, position, (shield, point) =>
+                    Mod.ShieldManager.ImpactShield(pod.Map, Common.ToVector2(pod.Position), (shield, point) =>
                     {
                         if (shield.Damage(Mod.Settings.DropPodDamage, point))
                         {
