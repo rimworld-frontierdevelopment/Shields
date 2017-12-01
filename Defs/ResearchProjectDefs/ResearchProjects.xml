@@ -3,8 +3,8 @@
 
 	<ResearchProjectDef>
 		<defName>ShieldGenerator</defName>
-		<label>Shield Generator</label>
-		<description>This shield generator will stop incoming projectiles while allowing ones out providing the ultimate in static defenses.  Also protects against artillery, hostile pod insertion, falling meteors, super-space laser orbital bombardments, etc.  You name it, we stop it.</description>
+		<label>Générateur de champ énergétique</label>
+		<description>Générateur permettant de déployer un bouclier qui bloque les projectiles venant de l'extérieur. Le moyen de défense ultime pour votre colonie. Il bloque aussi l'artillerie, les raids de capsules, les météores, les bombardements orbitaux etc...</description>
 		<baseCost>2000</baseCost>
 		<techLevel>Spacer</techLevel>
 		<prerequisites>
@@ -15,9 +15,9 @@
 	</ResearchProjectDef>
 
 	<ResearchProjectDef>
-		<defName>ShieldGeneratorLarge</defName>
+		<defName>Grand générateur de champ</defName>
 		<label>Large Shield</label>
-		<description>This larger vartiety shield generator can sustain a larger field and more heat before collapsing.</description>
+		<description>Cette version élargie permet de générer un bouclier plus grand et plus résistant.</description>
 		<baseCost>2500</baseCost>
 		<techLevel>Spacer</techLevel>
 		<prerequisites>
@@ -28,9 +28,9 @@
 	</ResearchProjectDef>
 
 	<ResearchProjectDef>
-		<defName>ShieldGeneratorPortable</defName>
+		<defName>Générateur de champ portable</defName>
 		<label>Portable Shield</label>
-		<description>A portable shield generator with small internal battery and nuclear-powered generator.</description>
+		<description>Une version portable du générateur de bouclier avec batterie et pile atomique intégrée.</description>
 		<baseCost>2000</baseCost>
 		<techLevel>Spacer</techLevel>
 		<prerequisites>
