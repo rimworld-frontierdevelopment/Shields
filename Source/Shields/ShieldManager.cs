@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Harmony;
 using UnityEngine;
 using Verse;
 
@@ -8,6 +9,15 @@ namespace FrontierDevelopments.Shields
 {
     public class ShieldManager
     {
+        [HarmonyPatch(typeof(SavedGameLoader), "LoadGameFromSaveFile")]
+        static class ShieldManager_SavedGameLoader_LoadGameFromSaveFile
+        {
+            static void Prefix()
+            {
+                Mod.ShieldManager._shieldsMap.Clear();
+            }
+        }
+
         private readonly Dictionary<int, List<IShield>> _shieldsMap = new Dictionary<int, List<IShield>>();
         
         public IEnumerable<IShield> Shields(Map map)
