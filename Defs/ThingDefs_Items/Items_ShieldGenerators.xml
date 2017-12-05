@@ -11,7 +11,7 @@
 
   <ThingDef ParentName="MinifiedShieldBase">
     <defName>MinifiedShieldGeneratorPortable</defName>
-    <label>Générateur de champ portable</label>
+    <label>Portable shield generator</label>
     <statBases>
       <Mass>12</Mass>
     </statBases>

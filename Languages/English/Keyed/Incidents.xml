@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
     
-    <fd.shields.incident.out_of_power.body>Un générateur de champ est à court d'électricité et s'est éteint</fd.shields.incident.out_of_power.body>
+    <fd.shields.incident.out_of_power.body>A shield generator has ran out of power and has gone offline</fd.shields.incident.out_of_power.body>
     
-    <fd.shields.incident.minor.title>Zzzt! (Bouclier)</fd.shields.incident.minor.title>
-    <fd.shields.incident.minor.body>Un circuit d'absorption de bouclier en surchauffe a court-ciruité {0}Wj stockés sur le réseau.</fd.shields.incident.minor.body>
+    <fd.shields.incident.minor.title>Shield Zzzt!</fd.shields.incident.minor.title>
+    <fd.shields.incident.minor.body>An overheating shield emitter coil had a short circuit draining {0}Wd of energy from the power network.</fd.shields.incident.minor.body>
 
     <fd.shields.incident.major.title>Shield breakdown</fd.shields.incident.major.title>
-    <fd.shields.incident.major.body>Un circuit d'absorption de bouclier en surchauffe est tombé en panne et a court-ciruité {0}Wj stockés sur le réseau.</fd.shields.incident.major.body>
+    <fd.shields.incident.major.body>An overheating shield emitter coil has broken down and drained {0}Wd of energy from the power network.</fd.shields.incident.major.body>
 
     <fd.shields.incident.critical.title>Shield explosion</fd.shields.incident.critical.title>
-    <fd.shields.incident.critical.body>Un circuit d'absorption de bouclier en surchauffe a explosé et court-ciruité {0}Wj stockés sur le réseau.</fd.shields.incident.critical.body>
+    <fd.shields.incident.critical.body>An overheating shield emitter coil exploded and drained {0}Wd of energy from the power network.</fd.shields.incident.critical.body>
 </LanguageData>
