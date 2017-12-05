@@ -3,7 +3,7 @@
     <ThingDef ParentName="ShieldBase">
         <defName>Building_ShieldGeneratorLarge</defName>
         <label>Large shield generator</label>
-        <description>Place une version plus puissante du générateur de bouclier capable d'absorber plus d'énergie.</description>
+        <description>Creates a larger shield capable of sustaining more heat before collapsing.</description>
         <researchPrerequisites>
             <li>ShieldGeneratorLarge</li>
         </researchPrerequisites>

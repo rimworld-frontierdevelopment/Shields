@@ -1,14 +1,14 @@
-?<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
 	<!--===================== Concepts taught through the learning readout, when opportunities arise ===================-->
 
 	<ConceptDef>
 		<defName>FD_Shields</defName>
-		<label>FD: Générateurs de champ</label>
+		<label>FD: Shield Generators</label>
 		<priority>50</priority>
 		<needsOpportunity>True</needsOpportunity>
-		<helpText>Les boucliers transforment en chaleur l'énergie des projectiles venant de l'extérieur. Cela est fait en utilisant l'énergie stockée dans les batteries. Ils n'arrêtent cependant pas les personnes. Ils consomment très peu d'électricité au repos, la consommation augmente quand ils arrêtent les attaques. Il est recommandé d'utiliser des batteries, car les boucliers ont une consommation instantannée très élevée, en particulier lorsqu'ils absorbent des tirs nourris.
+		<helpText>Shields stop incoming projectiles at the cost of battery power.  They don't stop people from moving through them, however.  They use a low amount of power when idle and draw increased power when stopping incoming fire.\n\nIt is recommended to use batteries, as shields have a very high instant power draw.  Automatic and sustained fire will drain power faster so multiple batteries are recommended.
 		</helpText>
 		<highlightTags>
 			<li>FD_Shields</li>
@@ -17,10 +17,10 @@
 
 	<ConceptDef>
 		<defName>FD_CoilTemperature</defName>
-		<label>FD: Température du circuit d'absorption</label>
+		<label>FD: Shield Coil Temperature</label>
 		<priority>50</priority>
 		<needsOpportunity>True</needsOpportunity>
-		<helpText>Le circuit d'absorption du bouclier chauffe lorsque le bouclier absorbe les attaques. Le générateur échangera lentement cette chaleur avec l'air ambiant jusqu'à égalisation des températures.\n\nAu-dessus de 100 C : Danger mineur, possibilité de court-circuits sur le réseau électrique.\n\n Au-dessus de 150 C : Danger modéré, le bouclier peut se rompre en plus de causer des court-circuits.\n\n Au-dessus de 200 C : Danger critique, le générateur entre en court-circuit et explose.
+		<helpText>Shield coils heat up as the shield absorbs incoming projectiles.  The generator will slowly exchange that heat with the room it's in until it reaches ambient temperature.\n\nOver 100C: Minor failure, shield can cause shorts on the power network.\n\nOver 150C: Moderate failure, shields can cause shorts and might breakdown.\n\n Over 200C: Critical failure, shield will short, breakdown, and suffer damage in an explosion.
 		</helpText>
 		<highlightTags>
 			<li>FD_CoilTemperature</li>
@@ -29,10 +29,10 @@
 
 	<ConceptDef>
 		<defName>FD_ShieldsPortable</defName>
-		<label>FD: Générateurs portables</label>
+		<label>FD: Portable Shield Generators</label>
 		<priority>50</priority>
 		<needsOpportunity>True</needsOpportunity>
-		<helpText>Les générateurs de bouclier portables peuvent désinstallés et réinstaller en fonction de la situation. Ils sont équipés d'une batterie interne pour les rendre autonomes.\n\n Ils peuvent être connectés sur un réseau électrique et feront fonction de batterie. Le rayon ne peut être modifié sur cette version.
+		<helpText>Portable Shields are miniaturizable emplacements which allow you to move the generator for your purposes.  They come with a small internal battery which can power the unit as a standalone.\n\nIt can be connected to a normal power grid and will act as a normal battery.  These shields have a fixed projection radius.
 		</helpText>
 		<highlightTags>
 			<li>FD_ShieldsPortable</li>
