@@ -2,7 +2,7 @@
 <Defs>
     <ThingDef ParentName="ShieldBase">
         <defName>Building_ShieldGenerator</defName>
-        <label>Shield Generator</label>
+        <label>Shield generator</label>
         <description>Creates a stationary defensive shield to block incoming fire.</description>
         <researchPrerequisites>
             <li>ShieldGenerator</li>
