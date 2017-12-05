@@ -2,9 +2,9 @@
 <Things>
     <ThingDef ParentName="ShieldBase">
         <defName>Building_ShieldGeneratorPortable</defName>
-        <label>Générateur de champ portable</label>
+        <label>Portable shield generator</label>
         <minifiedDef>MinifiedShieldGeneratorPortable</minifiedDef>
-        <description>Créé un générateur de bouclier portable</description>
+        <description>Creates a portable shield generator.</description>
         <researchPrerequisites>
             <li>ShieldGeneratorPortable</li>
         </researchPrerequisites>
