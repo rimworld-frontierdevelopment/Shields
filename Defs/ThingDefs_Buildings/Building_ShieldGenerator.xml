@@ -2,8 +2,8 @@
 <Things>
     <ThingDef ParentName="ShieldBase">
         <defName>Building_ShieldGenerator</defName>
-        <label>Shield Generator</label>
-        <description>Creates a stationary defensive shield to block incoming fire.</description>
+        <label>Générateur de champ énergétique</label>
+        <description>Place un générateur de bouclier immobile absorbant les tirs venant de l'extérieur.</description>
         <researchPrerequisites>
             <li>ShieldGenerator</li>
         </researchPrerequisites>

@@ -3,7 +3,7 @@
     
     <IncidentDef>
         <defName>HeatSinkOverTemperatureBreakdown</defName>
-        <label>heatsink over temperature breakdown</label>
+        <label>Désactivation du bouclier : température limite atteinte</label>
         <category>Misc</category>
         <targetType>15</targetType>
         <workerClass>FrontierDevelopments.General.IncidentWorkers.IncidentWorker_HeatSinkOverTemperature</workerClass>
