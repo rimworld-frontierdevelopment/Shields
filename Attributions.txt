@@ -9,5 +9,6 @@ NoImageAvailable: Combat Extended
 Jaxxa - inspiration drawn from ED-ShieldsBasic
 
 Translations:
+French (Français): MaximGi
 Russian (Русский): kr33man from http://lttlword.ru
 Japanese (日本語): Proxyer
