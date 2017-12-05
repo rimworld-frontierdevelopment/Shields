@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+    
+    <!-- Power section -->
+    <fd.settings.shield.power.heading>Puissance</fd.settings.shield.power.heading>
+
+    <fd.settings.shield.power.per_tile.label>Puissance par carré</fd.settings.shield.power.per_tile.label>
+    <fd.settings.shield.power.minimum_online.label>Puissance minimale consommée</fd.settings.shield.power.minimum_online.label>
+
+    <!-- Integrity section -->
+    <fd.settings.shield.integrity.heading>Intégrité</fd.settings.shield.integrity.heading>
+
+    <fd.settings.shield.integrity.power_per_damage.label>Puissance par unité de dommage</fd.settings.shield.integrity.power_per_damage.label>
+    <fd.settings.shield.integrity.drop_pod_damage.label>Dommage par capsule de transport</fd.settings.shield.integrity.drop_pod_damage.label>
+
+    <!-- Thermal section-->
+    <fd.settings.shield.thermal.heading>Thermique</fd.settings.shield.thermal.heading>
+
+    <fd.settings.shield.thermal.per_power.label>Energie thermique par unité de puissance</fd.settings.shield.thermal.per_power.label>
+
+    <fd.settings.shield.thermal.label>Dissipation thermique</fd.settings.shield.thermal.label>
+    <fd.settings.shield.thermal.description>Active la fonction de dissipation thermique des boucliers. Peut créer des pannes de bouclier et des incidents</fd.settings.shield.thermal.description>
+
+    <fd.settings.shield.minor_thermal_incidents.label>Incidents de température mineurs</fd.settings.shield.minor_thermal_incidents.label>
+    <fd.settings.shield.minor_thermal_incidents.description>Les incidents ne concernent que le bouclier</fd.settings.shield.minor_thermal_incidents.description>
+
+    <fd.settings.shield.major_thermal_incidents.label>Incidents de température majeurs</fd.settings.shield.major_thermal_incidents.label>
+    <fd.settings.shield.major_thermal_incidents.description>Les incidents concernent le bouclier et le réseau électrique</fd.settings.shield.major_thermal_incidents.description>
+
+    <fd.settings.shield.critical_thermal_incidents.label>Incidents de température critiques</fd.settings.shield.critical_thermal_incidents.label>
+    <fd.settings.shield.critical_thermal_incidents.description>Les incidents concernent le bouclier et le réseau électrique et la map</fd.settings.shield.critical_thermal_incidents.description>
+</LanguageData>
