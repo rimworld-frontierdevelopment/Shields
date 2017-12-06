@@ -3,7 +3,7 @@
     <radius.label>Rayon</radius.label>
     <radius.description>Spécifier le rayon du bouclier</radius.description>
     <thermal_shutoff.label>Mise en securité thermique</thermal_shutoff.label>
-    <thermal_shutoff.description>Protège le générateur contre les dommages résultants d'une surchauffe</thermal_shutoff.description>
+    <thermal_shutoff.description>Autoriser la mise en sécurité en cas de surchauffe</thermal_shutoff.description>
     <charge_internal_battery.label>Charger la batterie interne</charge_internal_battery.label>
     <charge_internal_battery.description>Transfère l'énergie des batteries connectées dans la batterie interne</charge_internal_battery.description>
 
