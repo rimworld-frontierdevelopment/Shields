@@ -1,14 +1,10 @@
-So, this is what I did :
-I forked the entire Rimworld-shield folder to my profile (i guess that's what I did)
-Then I translated every file that I could find into french, leaving labels alone so the code still works...right ?
-
 Some remarks if someone comes across this translation :
 
 - "Shield generator" has been (litteraly) translated to "Energy field generator", as translating directly to the 
 french word "générateur de bouclier" (shield generator) would sound weird. French people would be more familiar with the notion
 of energy field, which ACTS AS a shield but is not a shield...Let's hope I'm clear
 
-- breakdown has no équivalent in french, so it was translated depending on context, provided the meaning of something broken 
+- breakdown has no equivalent in french, so it was translated depending on context, provided the meaning of something broken 
 was conveyed
 
 - The specific word "Heatsink" translates to "radiateur" in french, which is a more global word to describe something that dissipates
@@ -34,4 +30,4 @@ French people would find weird that an entire nuclear power plant is in that tin
 That's it !
 Have fun
 
-Maxime Girard/(I'm a banana on steam)
+@I'm a banana
