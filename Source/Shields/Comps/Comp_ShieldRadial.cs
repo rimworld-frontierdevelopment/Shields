@@ -12,7 +12,7 @@ namespace FrontierDevelopments.Shields.Comps
     {
         private int _cellCount;
         private int _fieldRadius;
-        private bool _renderField;
+        private bool _renderField = true;
         
         public CompProperties_ShieldRadial Props => 
             (CompProperties_ShieldRadial)props;
@@ -94,6 +94,7 @@ namespace FrontierDevelopments.Shields.Comps
         
         public void Draw(CellRect cameraRect)
         {
+            if (!_renderField) return;
             if (!cameraRect.Overlaps(CellRect.CenteredOn(parent.Position, Radius))) return;
             var position = Common.ToVector3(parent.Position);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
