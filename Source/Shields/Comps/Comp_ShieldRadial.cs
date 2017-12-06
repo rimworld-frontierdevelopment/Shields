@@ -50,6 +50,7 @@ namespace FrontierDevelopments.Shields.Comps
             
             yield return new Command_Toggle
             {
+                icon = Resources.UiBlank,
                 defaultDesc = "fd.shield.render_field.description".Translate(),
                 defaultLabel = "fd.shield.render_field.label".Translate(),
                 isActive = () => _renderField,
