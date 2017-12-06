@@ -6,15 +6,43 @@ using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace FrontierDevelopments.Shields
 {
     public class Harmony_DropCellFinder
     {
+        public static bool IsGoodDropSpot(IntVec3 c, Map map, bool allowFogged, bool canRoofPunch)
+        {
+            return DropCellFinder.IsGoodDropSpot(c, map, allowFogged, canRoofPunch)
+               && !Mod.ShieldManager.ImpactShield(map, Common.ToVector2(c));
+        }
+
         public static bool AnyAdjacentGoodDropSpot(IntVec3 c, Map map, bool allowFogged, bool canRoofPunch)
         {
-          if (!DropCellFinder.IsGoodDropSpot(c + IntVec3.North, map, allowFogged, canRoofPunch) && !DropCellFinder.IsGoodDropSpot(c + IntVec3.East, map, allowFogged, canRoofPunch) && !DropCellFinder.IsGoodDropSpot(c + IntVec3.South, map, allowFogged, canRoofPunch))
-            return DropCellFinder.IsGoodDropSpot(c + IntVec3.West, map, allowFogged, canRoofPunch);
+          if (!IsGoodDropSpot(c + IntVec3.North, map, allowFogged, canRoofPunch)
+              && !IsGoodDropSpot(c + IntVec3.East, map, allowFogged, canRoofPunch)
+              && !IsGoodDropSpot(c + IntVec3.South, map, allowFogged, canRoofPunch))
+            return IsGoodDropSpot(c + IntVec3.West, map, allowFogged, canRoofPunch);
+          return true;
+        }
+      
+        public static bool TryFindDropSpotNear(IntVec3 center, Map map, out IntVec3 result, bool allowFogged, bool canRoofPunch)
+        {
+          if (DebugViewSettings.drawDestSearch)
+            map.debugDrawer.FlashCell(center, 1f, nameof (center), 50);
+          Predicate<IntVec3> validator = (c => IsGoodDropSpot(c, map, allowFogged, canRoofPunch) 
+                                               && map.reachability.CanReach(center, (LocalTargetInfo) c, PathEndMode.OnCell, TraverseMode.PassDoors, Danger.Deadly));
+          var squareRadius = 5;
+          while (!CellFinder.TryFindRandomCellNear(center, map, squareRadius, validator, out result))
+          {
+            squareRadius += 3;
+            if (squareRadius > 16)
+            {
+              result = center;
+              return false;
+            }
+          }
           return true;
         }
 
@@ -23,8 +51,6 @@ namespace FrontierDevelopments.Shields
         {
             static bool Prefix(out IntVec3 __result, Map map)
             {
-                Log.Message("running patched TradeDropSpot");
-              
                 IEnumerable<Building> collection = map.listerBuildings.allBuildingsColonist.Where(b => b.def.IsCommsConsole);
                 IEnumerable<Building> buildings = map.listerBuildings.allBuildingsColonist.Where(b => b.def.IsOrbitalTradeBeacon);
                 Building building = buildings.FirstOrDefault(b =>
@@ -34,7 +60,8 @@ namespace FrontierDevelopments.Shields
                 if (building != null)
                 {
                   var position = building.Position;
-                  if (!DropCellFinder.TryFindDropSpotNear(position, map, out __result, false, false))
+                  IntVec3 result;
+                  if (TryFindDropSpotNear(position, map, out result, false, false))
                   {
                     Log.Error("Could find no good TradeDropSpot near dropCenter " + position + ". Using a random standable unfogged cell.");
                     __result = CellFinderLoose.RandomCellWith(c =>
@@ -44,6 +71,7 @@ namespace FrontierDevelopments.Shields
                       return false;
                     }, map);
                   }
+                  __result = result;
                   return false;
                 }
                 var remainingBuildings = new List<Building>();
@@ -54,9 +82,7 @@ namespace FrontierDevelopments.Shields
                   var comp = b.TryGetComp<CompPowerTrader>();
                   return comp != null ? !comp.PowerOn : false;
                 });
-                var validator = (Predicate<IntVec3>) (c => 
-                  DropCellFinder.IsGoodDropSpot(c, map, false, false)
-                  && !Mod.ShieldManager.ImpactShield(map, Common.ToVector2(c)));
+                var validator = (Predicate<IntVec3>) (c => IsGoodDropSpot(c, map, false, false));
                 if (!remainingBuildings.Any())
                 {
                   remainingBuildings.AddRange(map.listerBuildings.allBuildingsColonist);
@@ -72,8 +98,14 @@ namespace FrontierDevelopments.Shields
                 {
                   for (var index = 0; index < remainingBuildings.Count; ++index)
                   {
-                    if (CellFinder.TryFindRandomCellNear(remainingBuildings[index].Position, map, squareRadius, validator, out __result))
+                    IntVec3 result;
+                    if (CellFinder.TryFindRandomCellNear(remainingBuildings[index].Position, map, squareRadius,
+                          validator, out result)
+                        && !Mod.ShieldManager.ImpactShield(map, Common.ToVector2(result)))
+                    {
+                      __result = result;
                       return false;
+                    }
                   }
                   squareRadius = Mathf.RoundToInt(squareRadius * 1.1f);
                 }
