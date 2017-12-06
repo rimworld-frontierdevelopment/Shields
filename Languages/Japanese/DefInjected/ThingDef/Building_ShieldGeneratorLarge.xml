@@ -3,8 +3,8 @@
 
   <Building_ShieldGeneratorLarge.label>大型シールド</Building_ShieldGeneratorLarge.label>
   <Building_ShieldGeneratorLarge.description>シールドが崩壊するまで、もっと多くの放熱に耐えられる大きな防御シールド発生装置を建築します。</Building_ShieldGeneratorLarge.description>
-  <Building_ShieldGeneratorLarge_Blueprint.label>大型シールド発生装置(設計)</Building_ShieldGeneratorLarge_Blueprint.label>
-  <Building_ShieldGeneratorLarge_Frame.label>大型シールド発生装置(施工)</Building_ShieldGeneratorLarge_Frame.label>
+  <Building_ShieldGeneratorLarge_Blueprint.label>大型シールド(設計)</Building_ShieldGeneratorLarge_Blueprint.label>
+  <Building_ShieldGeneratorLarge_Frame.label>大型シールド(施工)</Building_ShieldGeneratorLarge_Frame.label>
   <Building_ShieldGeneratorLarge_Frame.description>シールドが崩壊するまで、もっと多くの放熱に耐えられる大きな防御シールド発生装置を建築します。</Building_ShieldGeneratorLarge_Frame.description>
 
 
