@@ -6,6 +6,8 @@
   <thermal_shutoff.description>過熱によるシールド放熱コイルの損傷を防ぎます。</thermal_shutoff.description>
   <charge_internal_battery.label>内蔵バッテリーを充電する</charge_internal_battery.label>
   <charge_internal_battery.description>接続されているすべてのバッテリーの電力を消費して内蔵バッテリーを充電します。</charge_internal_battery.description>
+  <fd.shield.render_field.label>防御範囲表示</fd.shield.render_field.label>
+  <fd.shield.render_field.description>シールドが防御できる範囲を視覚的に表示します。 (シールド半径のみ)</fd.shield.render_field.description>
 
   <fd.heatsink.temperature>ヒートシンク温度</fd.heatsink.temperature>
 
