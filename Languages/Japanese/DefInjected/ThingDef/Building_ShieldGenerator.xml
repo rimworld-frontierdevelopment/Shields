@@ -3,8 +3,10 @@
 
   <Building_ShieldGenerator.label>通常シールド</Building_ShieldGenerator.label>
   <Building_ShieldGenerator.description>内側への射撃を阻止するために防御シールド発生装置を建築します。</Building_ShieldGenerator.description>
+
   <Building_ShieldGenerator_Blueprint.label>通常シールド(設計)</Building_ShieldGenerator_Blueprint.label>
   <Building_ShieldGenerator_Frame.label>通常シールド(施工)</Building_ShieldGenerator_Frame.label>
+
   <Building_ShieldGenerator_Frame.description>内側への射撃を阻止するために防御シールド発生装置を建築します。</Building_ShieldGenerator_Frame.description>
 
 

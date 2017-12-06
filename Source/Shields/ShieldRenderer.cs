@@ -12,7 +12,7 @@ namespace FrontierDevelopments.Shields
             {
                 foreach (var shield in Mod.ShieldManager.Shields(Find.VisibleMap))
                 {
-                    shield.DrawShield();
+                    shield.DrawShield(Find.CameraDriver.CurrentViewRect);
                 }
             }
         }

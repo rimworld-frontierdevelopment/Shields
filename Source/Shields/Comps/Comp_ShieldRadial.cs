@@ -12,6 +12,7 @@ namespace FrontierDevelopments.Shields.Comps
     {
         private int _cellCount;
         private int _fieldRadius;
+        private bool _renderField = true;
         
         public CompProperties_ShieldRadial Props => 
             (CompProperties_ShieldRadial)props;
@@ -46,6 +47,15 @@ namespace FrontierDevelopments.Shields.Comps
         {
             foreach (var current in base.CompGetGizmosExtra())
                 yield return current;
+            
+            yield return new Command_Toggle
+            {
+                icon = Resources.UiBlank,
+                defaultDesc = "fd.shield.render_field.description".Translate(),
+                defaultLabel = "fd.shield.render_field.label".Translate(),
+                isActive = () => _renderField,
+                toggleAction = () => _renderField = !_renderField
+            };
 
             if (parent.Faction == Faction.OfPlayer)
             {
@@ -83,8 +93,10 @@ namespace FrontierDevelopments.Shields.Comps
             return _cellCount;
         }
         
-        public void Draw()
+        public void Draw(CellRect cameraRect)
         {
+            if (!_renderField) return;
+            if (!cameraRect.Overlaps(CellRect.CenteredOn(parent.Position, Radius))) return;
             var position = Common.ToVector3(parent.Position);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(_fieldRadius * 2.2);
@@ -102,6 +114,7 @@ namespace FrontierDevelopments.Shields.Comps
         public override void PostExposeData()
         {
             Scribe_Values.Look(ref _fieldRadius, "radius");
+            Scribe_Values.Look(ref _renderField, "renderField", true);
         }
     }
 }
