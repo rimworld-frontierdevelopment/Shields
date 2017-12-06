@@ -76,6 +76,19 @@ namespace FrontierDevelopments.Shields
             return false;
         }
 
+        public bool ImpactShield(Map map, Vector2 position)
+        {
+            try
+            {
+                foreach (var shield in _shieldsMap[map.uniqueID])
+                {
+                    if (shield?.IsActive() == true && shield.Collision(position)) return true;
+                }
+            }
+            catch (KeyNotFoundException) {}
+            return false;
+        }
+        
         public bool ImpactShield(Map map, Vector2 position, Func<IShield, Vector2, bool> onColission)
         {
             try
