@@ -2,7 +2,7 @@
 <LanguageData>
 
   <Building_ShieldGeneratorPortable.label>Générateur de champ portable</Building_ShieldGeneratorPortable.label>
-  <Building_ShieldGeneratorPortable.description>Créé un générateur de bouclier portable</Building_ShieldGeneratorPortable.description>
+  <Building_ShieldGeneratorPortable.description>Version portative du générateur de champ. Se déploie comme un mortier. Batterie incluse.</Building_ShieldGeneratorPortable.description>
 
   <!--<Building_ShieldGenerator_Blueprint.label></Building_ShieldGenerator_Blueprint.label>-->
   <!--<Building_ShieldGeneratorPortable_Blueprint_Install.label></Building_ShieldGeneratorPortable_Blueprint_Install.label>-->

@@ -4,7 +4,7 @@
     <!-- Concepts taught through the learning readout, when opportunities arise -->
 
     <FD_Shields.label>FD: Générateurs de champ</FD_Shields.label>
-    <FD_Shields.helpText>Les boucliers transforment en chaleur l'énergie des projectiles venant de l'extérieur. Cela est fait en utilisant l'énergie stockée dans les batteries. Ils n'arrêtent cependant pas les personnes. Ils consomment très peu d'électricité au repos, la consommation augmente quand ils arrêtent les attaques. Il est recommandé d'utiliser des batteries, car les boucliers ont une consommation instantannée très élevée, en particulier lorsqu'ils absorbent des tirs nourris.
+    <FD_Shields.helpText>Les boucliers transforment en chaleur l'énergie des projectiles venant de l'extérieur en utilisant l'énergie stockée dans les batteries. Ils n'arrêtent cependant pas les personnes. Ils consomment très peu d'électricité au repos, la consommation augmente quand ils arrêtent les attaques. Il est recommandé d'utiliser des batteries, car les boucliers ont une consommation instantannée très élevée, en particulier lorsqu'ils absorbent des tirs nourris.
     </FD_Shields.helpText>
 
     <FD_CoilTemperature.label>FD: Température du circuit d'absorption</FD_CoilTemperature.label>
