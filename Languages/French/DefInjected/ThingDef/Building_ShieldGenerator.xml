@@ -2,7 +2,7 @@
 <LanguageData>
 
   <Building_ShieldGenerator.label>Générateur de champ énergétique</Building_ShieldGenerator.label>
-  <Building_ShieldGenerator.description>Place un générateur de bouclier immobile absorbant les tirs venant de l'extérieur.</Building_ShieldGenerator.description>
+  <Building_ShieldGenerator.description>Génère un bouclier statique absorbant les tirs venant de l'extérieur.</Building_ShieldGenerator.description>
 
   <!--<Building_ShieldGenerator_Blueprint.label></Building_ShieldGenerator_Blueprint.label>-->
   <!--<Building_ShieldGenerator_Frame.label></Building_ShieldGenerator_Frame.label>-->
