@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
+
+  <fd.shields.incident.out_of_power.body>シールド発生装置の電力が切れて、シールドがオフラインになりました。</fd.shields.incident.out_of_power.body>
+
   <fd.shields.incident.minor.title>シールドがバチバチした!</fd.shields.incident.minor.title>
   <fd.shields.incident.minor.body>シールド放熱コイルのオーバーヒートによってショート(短絡)が発生して、接続された電力網から{0} Wdの電力エネルギーが放電されました。</fd.shields.incident.minor.body>
 

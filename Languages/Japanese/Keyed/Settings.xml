@@ -12,7 +12,8 @@
 
   <fd.settings.shield.integrity.power_per_damage.label>ダメージ毎の電力</fd.settings.shield.integrity.power_per_damage.label>
   <fd.settings.shield.integrity.drop_pod_damage.label>落下ポッドのダメージ</fd.settings.shield.integrity.drop_pod_damage.label>
-  <fd.settings.shield.integrity.skyfaller.label>隕石のダメージ</fd.settings.shield.integrity.skyfaller.label>
+  
+  <fd.settings.shield.integrity.skyfaller_damage.label>隕石のダメージ</fd.settings.shield.integrity.skyfaller_damage.label>
 
   <!-- Thermal section-->
   <fd.settings.shield.thermal.heading>放熱</fd.settings.shield.thermal.heading>
