@@ -1,5 +1,9 @@
 # Frontier Developments Shields
 
+**Version 1.0.6**
+- French translation fixes
+- Japanese translation fixes
+
 **Version 1.0.5**
 - Added ModSync support
 - Added visibility toggle to shields
