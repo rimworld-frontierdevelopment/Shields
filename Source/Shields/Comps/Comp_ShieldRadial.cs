@@ -37,12 +37,6 @@ namespace FrontierDevelopments.Shields.Comps
             }
         }
 
-        public override void Initialize(Verse.CompProperties props)
-        {
-            base.Initialize(props);
-            Radius = Props.maxRadius;
-        }
-
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (var current in base.CompGetGizmosExtra())
@@ -113,7 +107,7 @@ namespace FrontierDevelopments.Shields.Comps
         
         public override void PostExposeData()
         {
-            Scribe_Values.Look(ref _fieldRadius, "radius");
+            Scribe_Values.Look(ref _fieldRadius, "radius", Props.maxRadius);
             Scribe_Values.Look(ref _renderField, "renderField", true);
         }
     }
