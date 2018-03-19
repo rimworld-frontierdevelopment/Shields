@@ -90,7 +90,7 @@ namespace FrontierDevelopments.Shields.Comps
             return null;
         }
 
-        public override void PostDraw()
+        public void Draw()
         {
             if (!_renderField) return;
             var position = Common.ToVector3(parent.Position);
