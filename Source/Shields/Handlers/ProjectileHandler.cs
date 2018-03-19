@@ -87,8 +87,11 @@ namespace FrontierDevelopments.Shields.Handlers
                                 return false;
                             });
                     }
-                    
-                    var ray = new Ray2D(position, Vector2.Lerp(origin, destination, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
+
+                    var ray = new Ray(
+                        Common.ToVector3(position), 
+                        Common.ToVector3(
+                            Vector2.Lerp(origin, destination, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact)));
                     Mod.ShieldManager.ImpactShield(projectile.Map, origin, ray, 1, (shield, point) =>
                     {
                         if (shield.Damage(projectile.def.projectile.damageAmountBase, point))

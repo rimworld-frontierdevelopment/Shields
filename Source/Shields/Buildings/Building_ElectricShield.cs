@@ -120,7 +120,7 @@ namespace FrontierDevelopments.Shields.Buildings
             return amount - gainAndBatteriesCover;
         }
 
-        public override bool Damage(int damage, Vector2 position)
+        public override bool Damage(int damage, Vector3 position)
         {
             if (!IsActive()) return false;
             // convert watts per day to watts per tickk
@@ -129,17 +129,17 @@ namespace FrontierDevelopments.Shields.Buildings
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
             if (drawn < charge) return false;
-            RenderImpactEffect(position);
-            PlayBulletImpactSound(position);
+            RenderImpactEffect(Common.ToVector2(position));
+            PlayBulletImpactSound(Common.ToVector2(position));
             return true;    
         }
 
-        public override bool Collision(Vector2 vector)
+        public override bool Collision(Vector3 vector)
         {
             return _shield.Collision(vector);
         }
 
-        public override Vector2? Collision(Ray2D ray, float limit)
+        public override Vector3? Collision(Ray ray, float limit)
         {
             return _shield.Collision(ray, limit);
         }
