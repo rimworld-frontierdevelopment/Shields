@@ -33,7 +33,7 @@ namespace FrontierDevelopments.Shields.Buildings
         private bool _thermalShutoff = true;
         private float _additionalPowerDraw;
 
-        private float BasePowerConsumption => -_shield.ProtectedCellCount() * Mod.Settings.PowerPerTile;
+        private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
 
         public ShieldStatus Status
         {
