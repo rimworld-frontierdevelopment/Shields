@@ -67,12 +67,12 @@ namespace FrontierDevelopments.Shields.Comps
             }
         }
 
-        public bool Collision(Vector2 vector)
+        public bool Collision(Vector3 vector)
         {
-            return Vector2.Distance(Common.ToVector2(parent.Position), vector) < _fieldRadius + 0.5f;
+            return Vector3.Distance(Common.ToVector3(parent.Position), vector) < _fieldRadius + 0.5f;
         }
 
-        public Vector2? Collision(Ray2D ray, float limit)
+        public Vector3? Collision(Ray ray, float limit)
         {
             var point = ray.GetPoint(limit);
             if (Collision(point))
