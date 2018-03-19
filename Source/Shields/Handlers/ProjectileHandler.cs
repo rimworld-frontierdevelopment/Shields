@@ -70,16 +70,19 @@ namespace FrontierDevelopments.Shields.Handlers
 
                 var origin = Common.ToVector2((Vector3) OriginField.GetValue(projectile));
                 var destination = Common.ToVector2((Vector3) DestinationField.GetValue(projectile));
-                var position = Vector2.Lerp(origin, destination, 1.0f - ticksToImpact / (float)startingTicksToImpact);
+
+                var position3 = Common.ToVector3(Vector2.Lerp(origin, destination, 1.0f - ticksToImpact / (float)startingTicksToImpact));
+                var origin3 = Common.ToVector3(origin);
+                var destination3 = Common.ToVector3(destination);
                 
                 try
                 {
                     if (projectile.def.projectile.flyOverhead)
                     {
                         // the shield has blocked the projectile - invert to get if harmony should allow the original block
-                        return !Mod.ShieldManager.ImpactShield(projectile.Map, position, origin, destination, (shield, vector2) =>
+                        return !Mod.ShieldManager.ImpactShield(projectile.Map, position3, origin, destination, (shield, vector2) =>
                             {
-                                if (shield.Damage(projectile.def.projectile.damageAmountBase, position))
+                                if (shield.Damage(projectile.def.projectile.damageAmountBase, position3))
                                 {
                                     projectile.Destroy();
                                     return true;
@@ -89,10 +92,9 @@ namespace FrontierDevelopments.Shields.Handlers
                     }
 
                     var ray = new Ray(
-                        Common.ToVector3(position), 
-                        Common.ToVector3(
-                            Vector2.Lerp(origin, destination, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact)));
-                    Mod.ShieldManager.ImpactShield(projectile.Map, origin, ray, 1, (shield, point) =>
+                        position3, 
+                        Vector3.Lerp(origin3, destination3, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
+                    Mod.ShieldManager.ImpactShield(projectile.Map, origin3, ray, 1, (shield, point) =>
                     {
                         if (shield.Damage(projectile.def.projectile.damageAmountBase, point))
                         {
