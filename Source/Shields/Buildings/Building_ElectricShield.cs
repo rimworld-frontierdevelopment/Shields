@@ -25,6 +25,7 @@ namespace FrontierDevelopments.Shields.Buildings
         }
         
         private CompPowerTrader _powerTrader;
+        private CompFlickable _flickable;
         private Comp_ShieldRadial _shield;
         private Comp_HeatSink _heatSink;
 
@@ -51,6 +52,7 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
             _powerTrader = GetComp<CompPowerTrader>();
+            _flickable = GetComp<CompFlickable>();
             _shield = GetComp<Comp_ShieldRadial>();
             _heatSink = GetComp<Comp_HeatSink>();
             _heatSink.CanBreakdown = IsActive;
@@ -76,8 +78,8 @@ namespace FrontierDevelopments.Shields.Buildings
                 _powerTrader.PowerOutput = powerWanted;
             }
             base.Tick();
-            if(_activeLastTick && !active)
-                Messages.Message("fd.shields.incident.out_of_power.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
+            if(_activeLastTick && !active && _flickable.SwitchIsOn)
+                Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             _additionalPowerDraw = 0;
             _activeLastTick = active;
         }
