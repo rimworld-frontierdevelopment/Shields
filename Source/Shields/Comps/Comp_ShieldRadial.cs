@@ -10,10 +10,18 @@ namespace FrontierDevelopments.Shields.Comps
 {
     public class Comp_ShieldRadial : ThingComp
     {
-        private int _cellCount;
         private int _fieldRadius;
+        private int _cellCount;
         private bool _renderField = true;
-        
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
+        }
+
+        public int ProtectedCellCount => _cellCount;
+
         public CompProperties_ShieldRadial Props => 
             (CompProperties_ShieldRadial)props;
 
@@ -80,11 +88,6 @@ namespace FrontierDevelopments.Shields.Comps
                 return ray.origin;
             }
             return null;
-        }
-
-        public int ProtectedCellCount()
-        {
-            return _cellCount;
         }
 
         public override void PostDraw()
