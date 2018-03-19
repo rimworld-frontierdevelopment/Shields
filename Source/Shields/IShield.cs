@@ -9,6 +9,5 @@ namespace FrontierDevelopments.Shields
         bool Collision(Vector3 point);
         Vector3? Collision(Ray ray, float limit);
         bool Damage(int damage, Vector3 position);
-        void DrawShield(CellRect cameraRect);
     }
 }

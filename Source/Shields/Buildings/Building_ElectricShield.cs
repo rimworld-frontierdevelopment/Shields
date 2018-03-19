@@ -239,11 +239,5 @@ namespace FrontierDevelopments.Shields.Buildings
                 this);
             return DoMajorBreakdown();
         }
-
-        public override void DrawShield(CellRect cameraRect)
-        {
-            if (!IsActive()) return;
-            _shield.Draw(cameraRect);
-        }
     }
 }
