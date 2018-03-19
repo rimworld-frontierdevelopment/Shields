@@ -86,11 +86,10 @@ namespace FrontierDevelopments.Shields.Comps
         {
             return _cellCount;
         }
-        
-        public void Draw(CellRect cameraRect)
+
+        public override void PostDraw()
         {
             if (!_renderField) return;
-            if (!cameraRect.Overlaps(CellRect.CenteredOn(parent.Position, Radius))) return;
             var position = Common.ToVector3(parent.Position);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(_fieldRadius * 2.2);
@@ -99,7 +98,7 @@ namespace FrontierDevelopments.Shields.Comps
             matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
             Graphics.DrawMesh(MeshPool.plane10, matrix, Resources.ShieldMat, 0);
         }
-        
+
         public override void PostDrawExtraSelectionOverlays()
         {
             GenDraw.DrawRadiusRing(parent.Position, _fieldRadius);

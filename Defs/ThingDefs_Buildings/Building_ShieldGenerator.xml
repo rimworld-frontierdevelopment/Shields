@@ -16,6 +16,7 @@
                 <offset>(0,0,-0.3)</offset>
             </shadowData>
         </graphicData>
+        <drawOffscreen>true</drawOffscreen>
         <uiIconPath>Things/Buildings/ShieldGenerator</uiIconPath>
         <statBases>
             <MaxHitPoints>500</MaxHitPoints>
