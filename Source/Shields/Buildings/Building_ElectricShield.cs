@@ -146,6 +146,12 @@ namespace FrontierDevelopments.Shields.Buildings
             return _shield.Collision(ray, limit);
         }
 
+        public override void Draw()
+        {
+            base.Draw();
+            if(IsActive()) _shield.Draw();
+        }
+
         public override string GetInspectString()
         {
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_CoilTemperature"), OpportunityType.Important);
