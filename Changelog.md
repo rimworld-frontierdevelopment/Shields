@@ -1,5 +1,8 @@
 # Frontier Developments Shields
 
+**Version 1.0.7**
+- Updated to 1.0
+
 **Version 1.0.6**
 - French translation fixes
 - Japanese translation fixes
