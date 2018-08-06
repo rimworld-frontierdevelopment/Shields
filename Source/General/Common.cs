@@ -39,10 +39,5 @@ namespace FrontierDevelopments.General
         {
             return new Vector3(intVec3.x + 0.5f, intVec3.y + 0.5f, intVec3.z + 0.5f);
         }
-        
-        public static Vector3 ToVector3WithY(IntVec3 intVec3, float y)
-        {
-            return new Vector3(intVec3.x + 0.5f, y + 0.5f, intVec3.z + 0.5f);
-        }
     }
 }

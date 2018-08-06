@@ -17,10 +17,10 @@ namespace FrontierDevelopments.General.IncidentWorkers
                 .Where(c => c.CanBreakdown());
         }
 
-        protected override bool CanFireNowSub(IIncidentTarget target)
+        protected override bool CanFireNowSub(IncidentParms parms)
         {
             return Mod.Settings.EnableThermal 
-                   && GetTargets((Map)target).Any();
+                   && GetTargets((Map)parms.target).Any();
         }
 
         protected override bool TryExecuteWorker(IncidentParms parms)

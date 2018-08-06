@@ -2,7 +2,6 @@
 using FrontierDevelopments.General;
 using Harmony;
 using RimWorld;
-using RimWorld.Planet;
 using Verse;
 using Verse.Sound;
 
@@ -23,22 +22,14 @@ namespace FrontierDevelopments.Shields.Handlers
                 try
                 {
                     var skyfaller = __instance;
-                    return !Mod.ShieldManager.ImpactShield(skyfaller.Map, Common.ToVector3WithY(skyfaller.Position, 0), (shield, point) =>
+                    return !Mod.ShieldManager.ImpactShield(skyfaller.Map, Common.ToVector2(skyfaller.Position.ToVector3()), (shield, point) =>
                     {
-                        if (shield.IsActive() && skyfaller.ticksToImpact <= 1)
+                        if (skyfaller.ticksToImpact <= 1 && shield.Damage(Mod.Settings.SkyfallerDamage, point))
                         {
-                            if(shield.Damage(Mod.Settings.SkyfallerDamage, point))
-                            {
-                                skyfaller.def.skyfaller.impactSound?.PlayOneShot(
-                                    SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
-                                skyfaller.Destroy();
-                                Messages.Message("fd.shields.incident.skyfaller.blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NeutralEvent);
-                                return true;
-                            }
-                            else
-                            {
-                                Messages.Message("fd.shields.incident.skyfaller.not_blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NegativeEvent);
-                            }
+                            skyfaller.def.skyfaller.impactSound?.PlayOneShot(
+                                SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
+                            skyfaller.Destroy();
+                            return true;
                         }
                         return false;
                     });

@@ -72,6 +72,7 @@
     <Compile Include="Shields\Handlers\ActiveDropPodHandler.cs" />
     <Compile Include="Shields\Handlers\ProjectileHandler.cs" />
     <Compile Include="Shields\IShield.cs" />
+    <Compile Include="Shields\ShieldRenderer.cs" />
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
   </ItemGroup>

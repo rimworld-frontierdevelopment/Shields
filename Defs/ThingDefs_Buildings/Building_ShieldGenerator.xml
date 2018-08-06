@@ -26,7 +26,7 @@
         <costList>
             <Steel>100</Steel>
             <Plasteel>50</Plasteel>
-            <Component>15</Component>
+            <ComponentIndustrial>15</ComponentIndustrial>
         </costList>
         <specialDisplayRadius>10</specialDisplayRadius>
         <comps>
