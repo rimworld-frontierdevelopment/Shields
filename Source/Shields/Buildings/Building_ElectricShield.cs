@@ -120,7 +120,7 @@ namespace FrontierDevelopments.Shields.Buildings
             return amount - gainAndBatteriesCover;
         }
 
-        public override bool Damage(int damage, Vector2 position)
+        public override bool Damage(int damage, Vector3 position)
         {
             if (!IsActive()) return false;
             // convert watts per day to watts per tickk

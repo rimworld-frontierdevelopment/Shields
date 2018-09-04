@@ -26,7 +26,7 @@ namespace FrontierDevelopments.Shields.Buildings
         public abstract bool IsActive();
         public abstract bool Collision(Vector2 point);
         public abstract Vector2? Collision(Ray2D ray, float limit);
-        public abstract bool Damage(int damage, Vector2 position);
+        public abstract bool Damage(int damage, Vector3 position);
         public abstract void DrawShield(CellRect cameraRect);
     }
 }
