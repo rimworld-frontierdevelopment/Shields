@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-    <fd.shields.incident.offline.body>A shield generator has gone offline</fd.shields.incident.offline.body>
     
-    <fd.shields.incident.skyfaller.blocked.body>A skyfaller has impacted on a shield and was blocked</fd.shields.incident.skyfaller.blocked.body>
-    <fd.shields.incident.skyfaller.not_blocked.body>A skyfaller has impacted on a shield and was not blocked!</fd.shields.incident.skyfaller.not_blocked.body>
-
-    <fd.shields.incident.droppod.blocked.body>A drop pod has impacted on a shield and was blocked</fd.shields.incident.droppod.blocked.body>
-    <fd.shields.incident.droppod.not_blocked.body>A drop pod has impacted on a shield and was not blocked!</fd.shields.incident.droppod.not_blocked.body>
+    <fd.shields.incident.out_of_power.body>A shield generator has ran out of power and has gone offline</fd.shields.incident.out_of_power.body>
     
     <fd.shields.incident.minor.title>Shield Zzzt!</fd.shields.incident.minor.title>
     <fd.shields.incident.minor.body>An overheating shield emitter coil had a short circuit draining {0}Wd of energy from the power network.</fd.shields.incident.minor.body>

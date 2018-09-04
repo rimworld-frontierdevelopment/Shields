@@ -9,7 +9,7 @@ namespace FrontierDevelopments.Shields
 {
     public class ShieldManager
     {
-        [HarmonyPatch(typeof(SavedGameLoader), "LoadGameFromSaveFile")]
+        [HarmonyPatch(typeof(SavedGameLoaderNow), "LoadGameFromSaveFileNow")]
         static class ShieldManager_SavedGameLoader_LoadGameFromSaveFile
         {
             static void Prefix()
@@ -56,7 +56,7 @@ namespace FrontierDevelopments.Shields
             catch (KeyNotFoundException) {}
         }
 
-        public bool ImpactShield(Map map, Vector3 origin, Ray ray, float limit, Func<IShield, Vector3, bool> onColission)
+        public bool ImpactShield(Map map, Vector2 origin, Ray2D ray, float limit, Func<IShield, Vector2, bool> onColission)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
 
-        public bool ImpactShield(Map map, Vector3 position)
+        public bool ImpactShield(Map map, Vector2 position)
         {
             try
             {
@@ -89,7 +89,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
         
-        public bool ImpactShield(Map map, Vector3 position, Func<IShield, Vector3, bool> onColission)
+        public bool ImpactShield(Map map, Vector2 position, Func<IShield, Vector2, bool> onColission)
         {
             try
             {
@@ -104,7 +104,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
         
-        public bool ImpactShield(Map map, Vector3 position, Vector3 origin, Vector3 destination, Func<IShield, Vector3, bool> onColission)
+        public bool ImpactShield(Map map, Vector2 position, Vector2 origin, Vector2 destination, Func<IShield, Vector2, bool> onColission)
         {
             try
             {

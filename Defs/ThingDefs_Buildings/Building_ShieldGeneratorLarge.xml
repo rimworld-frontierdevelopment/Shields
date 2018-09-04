@@ -46,7 +46,7 @@
         <costList>
             <Steel>200</Steel>
             <Plasteel>100</Plasteel>
-            <Component>20</Component>
+            <ComponentIndustrial>20</ComponentIndustrial>
         </costList>
         <size>(2,2)</size>
         <placeWorkers>

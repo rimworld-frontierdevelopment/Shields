@@ -13,6 +13,9 @@
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>(1,1)</drawSize>
         </graphicData>
+	    <thingCategories>
+	      <li>Items</li>
+	    </thingCategories>
         <uiIconPath>Things/Buildings/PortableShield</uiIconPath>
         <passability>Standable</passability>
         <statBases>
@@ -20,11 +23,12 @@
             <WorkToBuild>1000</WorkToBuild>
             <Flammability>1.0</Flammability>
             <Beauty>-2</Beauty>
+			<Mass>12</Mass>
         </statBases>
         <costList>
             <Steel>80</Steel>
             <Plasteel>40</Plasteel>
-            <Component>10</Component>
+            <ComponentIndustrial>10</ComponentIndustrial>
         </costList>
         <staticSunShadowHeight>0</staticSunShadowHeight>
         <comps>
@@ -34,7 +38,7 @@
             <li Class="FrontierDevelopments.General.CompProperties.CompProperties_BatteryInternal">
                 <storedEnergyMax>1000</storedEnergyMax>
                 <efficiency>0.5</efficiency>
-                <startElectricalFires>false</startElectricalFires>
+                <shortCircuitInRain>false</shortCircuitInRain>
                 <transmitsPower>true</transmitsPower>
             </li>
             <li Class="CompProperties_Flickable"/>

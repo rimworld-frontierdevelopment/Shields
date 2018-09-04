@@ -11,7 +11,7 @@ namespace FrontierDevelopments.Shields.Buildings
             Mod.ShieldManager.Add(Map, this);
         }
         
-        public override void DeSpawn()
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             Mod.ShieldManager.Del(Map, this);
             base.DeSpawn();
@@ -24,8 +24,9 @@ namespace FrontierDevelopments.Shields.Buildings
         }
 
         public abstract bool IsActive();
-        public abstract bool Collision(Vector3 point);
-        public abstract Vector3? Collision(Ray ray, float limit);
+        public abstract bool Collision(Vector2 point);
+        public abstract Vector2? Collision(Ray2D ray, float limit);
         public abstract bool Damage(int damage, Vector3 position);
+        public abstract void DrawShield(CellRect cameraRect);
     }
 }

@@ -27,7 +27,7 @@ namespace FrontierDevelopments.Shields.Handlers
                     {
                         if (shield.IsActive() && skyfaller.ticksToImpact <= 1)
                         {
-                            if(shield.Damage(Mod.Settings.SkyfallerDamage, point))
+                            if (shield.Damage(Mod.Settings.SkyfallerDamage, point))
                             {
                                 skyfaller.def.skyfaller.impactSound?.PlayOneShot(
                                     SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
@@ -43,7 +43,7 @@ namespace FrontierDevelopments.Shields.Handlers
                         return false;
                     });
                 }
-                catch (InvalidOperationException) {}
+                catch (InvalidOperationException) { }
                 return true;
             }
         }

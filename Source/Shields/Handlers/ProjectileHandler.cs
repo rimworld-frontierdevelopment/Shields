@@ -16,7 +16,7 @@ namespace FrontierDevelopments.Shields.Handlers
         private static readonly FieldInfo OriginField = typeof(Projectile).GetField("origin", BindingFlags.NonPublic | BindingFlags.Instance);
         private static readonly FieldInfo DestinationField = typeof(Projectile).GetField("destination", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly FieldInfo TicksToImpactField = typeof(Projectile).GetField("ticksToImpact", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly FieldInfo AssignedTargetField = typeof(Projectile).GetField("assignedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
+        private static readonly FieldInfo UsedTargetField = typeof(Projectile).GetField("usedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly FieldInfo IntendedTargetField = typeof(Projectile).GetField("intendedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly PropertyInfo StartingTicksToImpactProperty = typeof(Projectile).GetProperty("StartingTicksToImpact", BindingFlags.Instance | BindingFlags.NonPublic);
 
@@ -37,7 +37,7 @@ namespace FrontierDevelopments.Shields.Handlers
                 Enabled = false;
                 Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.ticksToImpact");
             }
-            if (AssignedTargetField == null)
+            if (UsedTargetField == null)
             {
                 Enabled = false;
                 Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.assignedTarget");
@@ -70,19 +70,16 @@ namespace FrontierDevelopments.Shields.Handlers
 
                 var origin = Common.ToVector2((Vector3) OriginField.GetValue(projectile));
                 var destination = Common.ToVector2((Vector3) DestinationField.GetValue(projectile));
-
-                var position3 = Common.ToVector3(Vector2.Lerp(origin, destination, 1.0f - ticksToImpact / (float)startingTicksToImpact));
-                var origin3 = Common.ToVector3(origin);
-                var destination3 = Common.ToVector3(destination);
+                var position = Vector2.Lerp(origin, destination, 1.0f - ticksToImpact / (float)startingTicksToImpact);
                 
                 try
                 {
                     if (projectile.def.projectile.flyOverhead)
                     {
                         // the shield has blocked the projectile - invert to get if harmony should allow the original block
-                        return !Mod.ShieldManager.ImpactShield(projectile.Map, position3, origin, destination, (shield, vector2) =>
+                        return !Mod.ShieldManager.ImpactShield(projectile.Map, position, origin, destination, (shield, vector2) =>
                             {
-                                if (shield.Damage(projectile.def.projectile.damageAmountBase, position3))
+                                if (shield.Damage(projectile.def.projectile.GetDamageAmount(1f), position))
                                 {
                                     projectile.Destroy();
                                     return true;
@@ -90,17 +87,15 @@ namespace FrontierDevelopments.Shields.Handlers
                                 return false;
                             });
                     }
-
-                    var ray = new Ray(
-                        position3, 
-                        Vector3.Lerp(origin3, destination3, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
-                    Mod.ShieldManager.ImpactShield(projectile.Map, origin3, ray, 1, (shield, point) =>
+                    
+                    var ray = new Ray2D(position, Vector2.Lerp(origin, destination, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
+                    Mod.ShieldManager.ImpactShield(projectile.Map, origin, ray, 1, (shield, point) =>
                     {
-                        if (shield.Damage(projectile.def.projectile.damageAmountBase, point))
+                        if (shield.Damage(projectile.def.projectile.GetDamageAmount(1f), point))
                         {
                             DestinationField.SetValue(projectile, Common.ToVector3(point, projectile.def.Altitude));
                             TicksToImpactField.SetValue(projectile, 0);
-                            AssignedTargetField.SetValue(projectile, null);
+                            UsedTargetField.SetValue(projectile, null);
                             IntendedTargetField.SetValue(projectile, null);
                             return true;
                         }

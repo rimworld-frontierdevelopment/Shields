@@ -3,7 +3,7 @@
 	<ResearchProjectDef>
 		<defName>ShieldGenerator</defName>
 		<label>Shield Generator</label>
-		<description>This shield generator will stop incoming projectiles while allowing ones out providing the ultimate in static defenses. Also protects bullets, against artillery, hostile pod insertion, etc. You name it, we stop it.</description>
+		<description>This shield generator will stop incoming projectiles while allowing ones out providing the ultimate in static defenses.  Also protects against artillery, hostile pod insertion, falling meteors, super-space laser orbital bombardments, etc.  You name it, we stop it.</description>
 		<baseCost>2000</baseCost>
 		<techLevel>Spacer</techLevel>
 		<prerequisites>

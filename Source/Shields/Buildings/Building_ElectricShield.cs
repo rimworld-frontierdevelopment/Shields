@@ -25,7 +25,6 @@ namespace FrontierDevelopments.Shields.Buildings
         }
         
         private CompPowerTrader _powerTrader;
-        private CompFlickable _flickable;
         private Comp_ShieldRadial _shield;
         private Comp_HeatSink _heatSink;
 
@@ -34,7 +33,7 @@ namespace FrontierDevelopments.Shields.Buildings
         private bool _thermalShutoff = true;
         private float _additionalPowerDraw;
 
-        private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
+        private float BasePowerConsumption => -_shield.ProtectedCellCount() * Mod.Settings.PowerPerTile;
 
         public ShieldStatus Status
         {
@@ -52,7 +51,6 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
             _powerTrader = GetComp<CompPowerTrader>();
-            _flickable = GetComp<CompFlickable>();
             _shield = GetComp<Comp_ShieldRadial>();
             _heatSink = GetComp<Comp_HeatSink>();
             _heatSink.CanBreakdown = IsActive;
@@ -78,8 +76,8 @@ namespace FrontierDevelopments.Shields.Buildings
                 _powerTrader.PowerOutput = powerWanted;
             }
             base.Tick();
-            if(_activeLastTick && !active && _flickable.SwitchIsOn)
-                Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
+            if(_activeLastTick && !active)
+                Messages.Message("fd.shields.incident.out_of_power.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             _additionalPowerDraw = 0;
             _activeLastTick = active;
         }
@@ -103,7 +101,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private void PlayBulletImpactSound(Vector2 position)
         {
-            SoundDefOf.EnergyShieldAbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
+            SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
         }
 
         private float DrawPowerOneTick(float amount)
@@ -131,25 +129,19 @@ namespace FrontierDevelopments.Shields.Buildings
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
             if (drawn < charge) return false;
-            RenderImpactEffect(Common.ToVector2(position));
-            PlayBulletImpactSound(Common.ToVector2(position));
+            RenderImpactEffect(position);
+            PlayBulletImpactSound(position);
             return true;    
         }
 
-        public override bool Collision(Vector3 vector)
+        public override bool Collision(Vector2 vector)
         {
             return _shield.Collision(vector);
         }
 
-        public override Vector3? Collision(Ray ray, float limit)
+        public override Vector2? Collision(Ray2D ray, float limit)
         {
             return _shield.Collision(ray, limit);
-        }
-
-        public override void Draw()
-        {
-            base.Draw();
-            if(IsActive()) _shield.Draw();
         }
 
         public override string GetInspectString()
@@ -233,7 +225,7 @@ namespace FrontierDevelopments.Shields.Buildings
             GetComp<CompBreakdownable>().DoBreakdown();
             if (Faction != Faction.OfPlayer) return DoMinorBreakdown();
             // manually remove the default letter...
-            Find.LetterStack.RemoveLetter(Find.LetterStack.LettersListForReading.First(letter => letter.lookTarget.Thing == this));
+            Find.LetterStack.RemoveLetter(Find.LetterStack.LettersListForReading.First(letter => letter.lookTargets.targets.Any(t => t.Thing == this)));
             return DoMinorBreakdown();
         }
 
@@ -246,6 +238,12 @@ namespace FrontierDevelopments.Shields.Buildings
                 DamageDefOf.Flame,
                 this);
             return DoMajorBreakdown();
+        }
+
+        public override void DrawShield(CellRect cameraRect)
+        {
+            if (!IsActive()) return;
+            _shield.Draw(cameraRect);
         }
     }
 }
