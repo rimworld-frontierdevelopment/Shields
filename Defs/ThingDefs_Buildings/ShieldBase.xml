@@ -2,12 +2,12 @@
 <Defs>
 	<ThingDef Name="ShieldBase" Abstract="True">
 		<category>Building</category>
-		<soundImpactDefault>BulletImpactMetal</soundImpactDefault>
+		<soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
 		<selectable>true</selectable>
 		<thingClass>FrontierDevelopments.Shields.Buildings.Building_ElectricShield</thingClass>
 		<altitudeLayer>Building</altitudeLayer>
 		<leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
-		<filthLeaving>BuildingRubble</filthLeaving>
+		<filthLeaving>Filth_RubbleBuilding</filthLeaving>
 		<blockLight>true</blockLight>
 		<drawerType>MapMeshAndRealTime</drawerType>
 		<fillPercent>1</fillPercent>

@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Defs>
 
-  <!-- ======================= Minified things ========================= -->
-
-  <ThingDef ParentName="MinifiedBase" Name="MinifiedShieldBase" Abstract="True">
-    <thingCategories>
-      <li>Items</li>
-    </thingCategories>
-  </ThingDef>
-
-  <ThingDef ParentName="MinifiedShieldBase">
+  <ThingDef>
     <defName>MinifiedShieldGeneratorPortable</defName>
-    <label>Portable shield generator</label>
+    <label>minified thing</label>
+    <thingClass>MinifiedThing</thingClass>
+    <category>Item</category>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+	<thingCategories>
+	<li>Items</li>
+	</thingCategories>
     <statBases>
       <Mass>12</Mass>
     </statBases>
+    <scatterableOnMapGen>false</scatterableOnMapGen>
+    <tickerType>Normal</tickerType>
+    <!-- for CompForbiddable -->
+    <drawerType>RealtimeOnly</drawerType>
+    <comps>
+      <li Class="CompProperties_Forbiddable"/>
+    </comps>
+    <alwaysHaulable>true</alwaysHaulable>
+    <rotatable>false</rotatable>
+    <pathCost>15</pathCost>
   </ThingDef>
 
 </Defs>

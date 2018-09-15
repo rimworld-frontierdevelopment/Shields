@@ -9,7 +9,7 @@ namespace FrontierDevelopments.Shields
 {
     public class ShieldManager
     {
-        [HarmonyPatch(typeof(SavedGameLoader), "LoadGameFromSaveFile")]
+        [HarmonyPatch(typeof(SavedGameLoaderNow), "LoadGameFromSaveFileNow")]
         static class ShieldManager_SavedGameLoader_LoadGameFromSaveFile
         {
             static void Prefix()

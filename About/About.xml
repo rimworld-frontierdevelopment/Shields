@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
 	<name>[B18] Shield Generators by Frontier Developments</name>
-	<targetVersion>0.18.1722</targetVersion>
+	<targetVersion>0.19.2009</targetVersion>
 	<author>JohnnyNova and Jetpack Maniac</author>
 	<url>https://github.com/JonnyNova/Rimworld-Shields</url>
-	<description>Version: 1.0.6
+	<description>Version: 1.0.7
 Allows for the building shield generators. Shields will stop projectiles that try to enter it but allow weapons to be fired out.  This includes bullets, rockets, mortar rounds, pods of **any** variety (enemies via drop pods, cargo pods, escape pods, and yes, **your** pods).  Shields have low idle power use and high power usage when stopping projectiles.  Shield strength is determined from stored battery power.  More batteries equals more protection.
 
 Supports ModSync Ninja!
@@ -41,5 +41,6 @@ JohnnyNova: Code Lead
 Jetpack Maniac: Code, documentation
 Halno: Building and UI Art
 Jaxxa: Inspired this mod from his ED-ShieldsBasic mod
+Jdalt40: Update to b19
 	</description>
 </ModMetaData>

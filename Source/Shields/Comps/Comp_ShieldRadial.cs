@@ -14,6 +14,12 @@ namespace FrontierDevelopments.Shields.Comps
         private int _cellCount;
         private bool _renderField = true;
 
+        public override void Initialize(Verse.CompProperties compProperties)
+        {
+            base.Initialize(compProperties);
+            Radius = Props.maxRadius;
+        }
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);

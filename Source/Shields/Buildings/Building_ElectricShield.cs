@@ -103,7 +103,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private void PlayBulletImpactSound(Vector2 position)
         {
-            SoundDefOf.EnergyShieldAbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
+            SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
         }
 
         private float DrawPowerOneTick(float amount)
@@ -233,7 +233,8 @@ namespace FrontierDevelopments.Shields.Buildings
             GetComp<CompBreakdownable>().DoBreakdown();
             if (Faction != Faction.OfPlayer) return DoMinorBreakdown();
             // manually remove the default letter...
-            Find.LetterStack.RemoveLetter(Find.LetterStack.LettersListForReading.First(letter => letter.lookTarget.Thing == this));
+            Find.LetterStack.RemoveLetter(Find.LetterStack.LettersListForReading.First(letter => 
+                letter.lookTargets.targets.Any(t => t.Thing == this)));
             return DoMinorBreakdown();
         }
 
