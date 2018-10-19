@@ -23,6 +23,8 @@ namespace FrontierDevelopments.Shields.Handlers
                 try
                 {
                     var skyfaller = __instance;
+                    // ignore incoming drop pods to let the ActiveDropPod handler take care of it
+                    if (skyfaller.GetType() == typeof(DropPodIncoming)) return true;
                     return !Mod.ShieldManager.ImpactShield(skyfaller.Map, Common.ToVector3WithY(skyfaller.Position, 0), (shield, point) =>
                     {
                         if (shield.IsActive() && skyfaller.ticksToImpact <= 1)
