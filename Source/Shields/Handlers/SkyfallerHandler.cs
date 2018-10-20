@@ -15,8 +15,8 @@ namespace FrontierDevelopments.Shields.Handlers
             Log.Message("Frontier Developments Shields :: Skyfaller handler enabled");
         }
 
-        [HarmonyPatch(typeof(Skyfaller), "Tick")]
-        static class Patch_ProjectileCE_Tick
+        [HarmonyPatch(typeof(Skyfaller), "Impact")]
+        static class Patch_ProjectileCE_Impact
         {
             static bool Prefix(Skyfaller __instance)
             {
@@ -27,7 +27,7 @@ namespace FrontierDevelopments.Shields.Handlers
                     if (skyfaller.GetType() == typeof(DropPodIncoming)) return true;
                     return !Mod.ShieldManager.ImpactShield(skyfaller.Map, Common.ToVector3WithY(skyfaller.Position, 0), (shield, point) =>
                     {
-                        if (shield.IsActive() && skyfaller.ticksToImpact <= 1)
+                        if (shield.IsActive())
                         {
                             if(shield.Damage(Mod.Settings.SkyfallerDamage, point))
                             {
