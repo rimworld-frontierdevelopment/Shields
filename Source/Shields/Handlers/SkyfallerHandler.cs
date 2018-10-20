@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using FrontierDevelopments.General;
 using Harmony;
 using RimWorld;
@@ -15,38 +16,77 @@ namespace FrontierDevelopments.Shields.Handlers
             Log.Message("Frontier Developments Shields :: Skyfaller handler enabled");
         }
 
+        private static bool HandlePod(DropPodIncoming pod)
+        {
+            try
+            {
+                return !Mod.ShieldManager.ImpactShield(pod.Map, Common.ToVector3WithY(pod.Position, 0), (shield, point) =>
+                {
+                    if (shield.IsActive())
+                    {
+                        if (shield.Damage(Mod.Settings.DropPodDamage, point))
+                        {
+                            foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn))
+                            {
+                                // TODO create story?
+                                pawn.Kill(new DamageInfo(new DamageDef(), 100));
+                            }
+                            pod.Destroy();
+                            Messages.Message("fd.shields.incident.droppod.blocked.body".Translate(), new GlobalTargetInfo(pod.Position, pod.Map), MessageTypeDefOf.NeutralEvent);
+                            return true;
+                        }
+                        Messages.Message("fd.shields.incident.droppod.not_blocked.body".Translate(), new GlobalTargetInfo(pod.Position, pod.Map), MessageTypeDefOf.NegativeEvent);
+                    }
+                        
+                    return false;
+                });
+            }
+            catch (InvalidOperationException) {}
+            return true;
+        }
+
+        private static bool HandleGeneric(Skyfaller skyfaller)
+        {
+            try
+            {
+                return !Mod.ShieldManager.ImpactShield(skyfaller.Map, Common.ToVector3WithY(skyfaller.Position, 0), (shield, point) =>
+                {
+                    if (shield.IsActive())
+                    {
+                        if(shield.Damage(Mod.Settings.SkyfallerDamage, point))
+                        {
+                            skyfaller.def.skyfaller.impactSound?.PlayOneShot(
+                                SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
+                            skyfaller.Destroy();
+                            Messages.Message("fd.shields.incident.skyfaller.blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NeutralEvent);
+                            return true;
+                        }
+                        else
+                        {
+                            Messages.Message("fd.shields.incident.skyfaller.not_blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NegativeEvent);
+                        }
+                    }
+                    return false;
+                });
+            }
+            catch (InvalidOperationException) {}
+            return true;
+        }
+        
         [HarmonyPatch(typeof(Skyfaller), "Impact")]
-        static class Patch_ProjectileCE_Impact
+        static class Patch_Skyfaller_Impact
         {
             static bool Prefix(Skyfaller __instance)
             {
-                try
+                if (__instance.Map == null) return true;
+                if (__instance.GetType() == typeof(DropPodIncoming))
                 {
-                    var skyfaller = __instance;
-                    // ignore incoming drop pods to let the ActiveDropPod handler take care of it
-                    if (skyfaller.GetType() == typeof(DropPodIncoming)) return true;
-                    return !Mod.ShieldManager.ImpactShield(skyfaller.Map, Common.ToVector3WithY(skyfaller.Position, 0), (shield, point) =>
-                    {
-                        if (shield.IsActive())
-                        {
-                            if(shield.Damage(Mod.Settings.SkyfallerDamage, point))
-                            {
-                                skyfaller.def.skyfaller.impactSound?.PlayOneShot(
-                                    SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
-                                skyfaller.Destroy();
-                                Messages.Message("fd.shields.incident.skyfaller.blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NeutralEvent);
-                                return true;
-                            }
-                            else
-                            {
-                                Messages.Message("fd.shields.incident.skyfaller.not_blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NegativeEvent);
-                            }
-                        }
-                        return false;
-                    });
+                    return HandlePod((DropPodIncoming) __instance);
                 }
-                catch (InvalidOperationException) {}
-                return true;
+                else
+                {
+                    return HandleGeneric(__instance);
+                }
             }
         }
     }
