@@ -7,7 +7,7 @@ using RimWorld.Planet;
 using Verse;
 using Verse.Sound;
 
-namespace FrontierDevelopments.Shields.Handlers
+namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
     public class SkyfallerHandler
     {

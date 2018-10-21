@@ -70,13 +70,13 @@
     <Compile Include="Shields\Buildings\Building_ShieldBase.cs" />
     <Compile Include="Shields\CompProperties\CompProperties_ShieldRadial.cs" />
     <Compile Include="Shields\Comps\Comp_ShieldRadial.cs" />
-    <Compile Include="Shields\Handlers\SkyfallerHandler.cs" />
     <Compile Include="Shields\Harmony\Harmony_DropCellFinder.cs" />
     <Compile Include="Shields\Mod.cs" />
-    <Compile Include="Shields\Handlers\ProjectileHandler.cs" />
     <Compile Include="Shields\IShield.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\CrashPodHandler.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\Module.cs" />
+    <Compile Include="Shields\Module\RimworldModule\ProjectileHandler.cs" />
+    <Compile Include="Shields\Module\RimworldModule\SkyfallerHandler.cs" />
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
   </ItemGroup>

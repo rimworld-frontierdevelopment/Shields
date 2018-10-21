@@ -5,7 +5,7 @@ using Harmony;
 using UnityEngine;
 using Verse;
 
-namespace FrontierDevelopments.Shields.Handlers
+namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
     public class ProjectileHandler
     {
