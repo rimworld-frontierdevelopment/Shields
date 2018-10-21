@@ -50,6 +50,10 @@
       <HintPath>..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="CrashLanding">
+      <HintPath>..\..\..\Mods\CrashLanding\Assemblies\CrashLanding.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="General\Common.cs" />
@@ -71,6 +75,8 @@
     <Compile Include="Shields\Mod.cs" />
     <Compile Include="Shields\Handlers\ProjectileHandler.cs" />
     <Compile Include="Shields\IShield.cs" />
+    <Compile Include="Shields\Module\CrashLandingModule\CrashPodHandler.cs" />
+    <Compile Include="Shields\Module\CrashLandingModule\Module.cs" />
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
   </ItemGroup>
