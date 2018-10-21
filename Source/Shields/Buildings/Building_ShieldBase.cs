@@ -14,7 +14,7 @@ namespace FrontierDevelopments.Shields.Buildings
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
             Mod.ShieldManager.Del(Map, this);
-            base.DeSpawn();
+            base.DeSpawn(mode);
         }
 
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
