@@ -2,8 +2,8 @@
 <LanguageData>
     <fd.shields.incident.offline.body>A shield generator has gone offline</fd.shields.incident.offline.body>
     
-    <fd.shields.incident.skyfaller.blocked.body>A skyfaller has impacted on a shield and was blocked</fd.shields.incident.skyfaller.blocked.body>
-    <fd.shields.incident.droppod.blocked.body>A drop pod has impacted on a shield and was blocked</fd.shields.incident.droppod.blocked.body>
+    <fd.shields.incident.skyfaller.blocked.body>Falling debris has impacted on a shield and was destroyed</fd.shields.incident.skyfaller.blocked.body>
+    <fd.shields.incident.droppod.blocked.body>A drop pod has impacted on a shield and was destroyed</fd.shields.incident.droppod.blocked.body>
     <fd.shields.incident.crashpod.blocked.body>A crashed ship part has impacted on a shield and was destroyed</fd.shields.incident.crashpod.blocked.body>
     
     <fd.shields.incident.minor.title>Shield Zzzt!</fd.shields.incident.minor.title>
