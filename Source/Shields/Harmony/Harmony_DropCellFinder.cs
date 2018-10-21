@@ -15,7 +15,7 @@ namespace FrontierDevelopments.Shields
         public static bool IsGoodDropSpot(IntVec3 c, Map map, bool allowFogged, bool canRoofPunch)
         {
             return DropCellFinder.IsGoodDropSpot(c, map, allowFogged, canRoofPunch)
-               && !Mod.ShieldManager.ImpactShield(map, Common.ToVector2(c));
+               && !Mod.ShieldManager.Shielded(map, Common.ToVector2(c));
         }
 
         public static bool AnyAdjacentGoodDropSpot(IntVec3 c, Map map, bool allowFogged, bool canRoofPunch)
@@ -101,7 +101,7 @@ namespace FrontierDevelopments.Shields
                     IntVec3 result;
                     if (CellFinder.TryFindRandomCellNear(remainingBuildings[index].Position, map, squareRadius,
                           validator, out result)
-                        && !Mod.ShieldManager.ImpactShield(map, Common.ToVector2(result)))
+                        && !Mod.ShieldManager.Shielded(map, Common.ToVector2(result)))
                     {
                       __result = result;
                       return false;

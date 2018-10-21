@@ -3,10 +3,7 @@
   <fd.shields.incident.offline.body>シールド発生装置がオフラインになった</fd.shields.incident.offline.body>
 
   <fd.shields.incident.skyfaller.blocked.body>空からの落下物がシールドに衝撃を与えましたが、防御されました</fd.shields.incident.skyfaller.blocked.body>
-  <fd.shields.incident.skyfaller.not_blocked.body>空からの落下物はシールドに衝撃を与えて、貫通されました</fd.shields.incident.skyfaller.not_blocked.body>
-
   <fd.shields.incident.droppod.blocked.body>ドロップポッドがシールドに衝突して防御されました</fd.shields.incident.droppod.blocked.body>
-  <fd.shields.incident.droppod.not_blocked.body>ドロップポッドがシールドに衝突して突破されました</fd.shields.incident.droppod.not_blocked.body>
 
   <fd.shields.incident.minor.title>シールドがバチバチした!</fd.shields.incident.minor.title>
   <fd.shields.incident.minor.body>シールド放熱コイルのオーバーヒートによってショート(短絡)が発生して、接続された電力網から{0} Wdの電力エネルギーが放電されました。</fd.shields.incident.minor.body>

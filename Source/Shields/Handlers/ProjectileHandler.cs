@@ -2,10 +2,8 @@
 using System.Reflection;
 using FrontierDevelopments.General;
 using Harmony;
-using RimWorld;
 using UnityEngine;
 using Verse;
-using Verse.Sound;
 
 namespace FrontierDevelopments.Shields.Handlers
 {
@@ -79,33 +77,27 @@ namespace FrontierDevelopments.Shields.Handlers
                 {
                     if (projectile.def.projectile.flyOverhead)
                     {
-                        // the shield has blocked the projectile - invert to get if harmony should allow the original block
-                        return !Mod.ShieldManager.ImpactShield(projectile.Map, position3, origin, destination, (shield, vector2) =>
-                            {
-                                if (shield.Damage(projectile.def.projectile.GetDamageAmount(1f), position3))
-                                {
-                                    projectile.Destroy();
-                                    return true;
-                                }
-                                return false;
-                            });
-                    }
-
-                    var ray = new Ray(
-                        position3, 
-                        Vector3.Lerp(origin3, destination3, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
-                    Mod.ShieldManager.ImpactShield(projectile.Map, origin3, ray, 1, (shield, point) =>
-                    {
-                        if (shield.Damage(projectile.def.projectile.GetDamageAmount(1f), point))
+                        if (Mod.ShieldManager.Block(projectile.Map, position3, origin, destination, projectile.def.projectile.GetDamageAmount(1f)))
                         {
-                            DestinationField.SetValue(projectile, Common.ToVector3(point, projectile.def.Altitude));
+                            projectile.Destroy();
+                            return false;
+                        }
+                    }
+                    else
+                    {
+                        var ray = new Ray(
+                            position3, 
+                            Vector3.Lerp(origin3, destination3, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
+                    
+                        var impactPoint = Mod.ShieldManager.Block(projectile.Map, origin3, ray, 1, projectile.def.projectile.GetDamageAmount(1f));
+                        if (impactPoint != null)
+                        {
+                            DestinationField.SetValue(projectile, Common.ToVector3(impactPoint.Value, projectile.def.Altitude));
                             TicksToImpactField.SetValue(projectile, 0);
                             UsedTargetField.SetValue(projectile, null);
                             IntendedTargetField.SetValue(projectile, null);
-                            return true;
                         }
-                        return false;
-                    });
+                    }
                 }
                 catch (InvalidOperationException) {}
                 return true;

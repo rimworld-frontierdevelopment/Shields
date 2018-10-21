@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Harmony;
 using UnityEngine;
@@ -56,27 +55,30 @@ namespace FrontierDevelopments.Shields
             catch (KeyNotFoundException) {}
         }
 
-        public bool ImpactShield(Map map, Vector3 origin, Ray ray, float limit, Func<IShield, Vector3, bool> onColission)
+        public Vector3? Block(
+            Map map, 
+            Vector3 origin, 
+            Ray ray, 
+            float limit,
+            int damage)
         {
             try
             {
                 foreach(var shield in _shieldsMap[map.uniqueID])
                 {
-                    if (shield?.IsActive() == true && !shield.Collision(origin))
+                    if(shield == null || !shield.IsActive() || shield.Collision(origin)) continue;
+                    var point = shield.Collision(ray, limit);
+                    if (point != null && shield.Block(damage, point.Value))
                     {
-                        var point = shield.Collision(ray, limit);
-                        if (point != null)
-                        {
-                            if (onColission(shield, point.Value)) return true;
-                        }
+                        return point.Value;
                     }
                 }
             }
             catch (KeyNotFoundException) {}
-            return false;
+            return null;
         }
 
-        public bool ImpactShield(Map map, Vector3 position)
+        public bool Shielded(Map map, Vector3 position)
         {
             try
             {
@@ -89,7 +91,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
         
-        public bool ImpactShield(Map map, Vector3 position, Func<IShield, Vector3, bool> onColission)
+        public bool Block(Map map, Vector3 position, int damage)
         {
             try
             {
@@ -97,14 +99,17 @@ namespace FrontierDevelopments.Shields
                 {
                     if (shield?.IsActive() == true
                         && shield.Collision(position)
-                        && onColission(shield, position)) return true;
+                        && shield.Block(damage, position))
+                    {
+                        return true;
+                    }
                 }
             }
             catch (KeyNotFoundException) {}
             return false;
         }
         
-        public bool ImpactShield(Map map, Vector3 position, Vector3 origin, Vector3 destination, Func<IShield, Vector3, bool> onColission)
+        public bool Block(Map map, Vector3 position, Vector3 origin, Vector3 destination, int damage)
         {
             try
             {
@@ -114,7 +119,10 @@ namespace FrontierDevelopments.Shields
                         && !shield.Collision(origin)
                         && shield.Collision(destination)
                         && shield.Collision(position)
-                        && onColission(shield, position)) return true;
+                        && shield.Block(damage, position))
+                    {
+                        return true;
+                    }
                 }
             }
             catch (KeyNotFoundException) {}
