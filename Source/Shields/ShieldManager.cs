@@ -109,7 +109,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
         
-        public bool Block(Map map, Vector3 position, Vector3 origin, Vector3 destination, int damage)
+        public bool Block(Map map, Vector3 position, Vector3 origin, int damage)
         {
             try
             {
@@ -117,7 +117,6 @@ namespace FrontierDevelopments.Shields
                 {
                     if (shield?.IsActive() == true
                         && !shield.Collision(origin)
-                        && shield.Collision(destination)
                         && shield.Collision(position)
                         && shield.Block(damage, position))
                     {

@@ -77,7 +77,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 {
                     if (projectile.def.projectile.flyOverhead)
                     {
-                        if (Mod.ShieldManager.Block(projectile.Map, position3, origin, destination, projectile.def.projectile.GetDamageAmount(1f)))
+                        if (ticksToImpact <= 1 && Mod.ShieldManager.Block(projectile.Map, position3, origin, projectile.def.projectile.GetDamageAmount(1f)))
                         {
                             projectile.Destroy();
                             return false;
