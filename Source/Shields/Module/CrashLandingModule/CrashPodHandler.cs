@@ -26,14 +26,14 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
         public static bool CrashPod_Impact_Prefix(CrashLanding.CrashPod __instance)
         {
             // harmony can sometimes register a bullet as a crash pod
-            if (typeof(CrashLanding.CrashPod) != __instance.GetType()) return true;
+            if (!typeof(CrashLanding.CrashPod).IsAssignableFrom(__instance.GetType())) return true;
             return !Block(__instance, Mod.Settings.SkyfallerDamage);
         }
         
         public static bool CrashPod_Part_Impact_Prefix(CrashLanding.CrashPod __instance)
         {
             // harmony can sometimes register a bullet as a crash pod
-            if (typeof(CrashLanding.CrashPod) != __instance.GetType()) return true;
+            if (!typeof(CrashLanding.CrashPod).IsAssignableFrom(__instance.GetType())) return true;
             return !Block(__instance, Mod.Settings.SkyfallerDamage / 6);
         }
     }
