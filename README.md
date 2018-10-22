@@ -36,17 +36,18 @@ Build shields. Stop bullets, rockets, drop pods, meteorites, and more!
 
 #### Languages
 - English
+- French
+- Russian
+- Japanese
 
 #### Compatability:
 - Save file compatible
 - No known mod conflicts
 
-## Addons
-
-#### Optionally Supported Mods:
-- Combat Extended (CE): Stops CE projectiles
-- RedistHeat: Cool shields with ducts
+## Mods supported:
+- Crash Landing: Blocks crashing ship parts
 - Centralized Climate Control: Cool shields with pipes
+
 ## Contributions
 
 Contributions will be credited to the authors. Merged contributions will be owned by the mod itself (important for future license changes, but we anticpate that never happening).
