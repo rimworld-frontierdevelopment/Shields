@@ -26,9 +26,19 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                                 foreach (Type current in types)
                                 {
                                     blockingTypes += current.Name + " ";
-                                    harmony.Patch(
-                                        current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
-                                        new HarmonyMethod(typeof(CrashPodHandler.Patch_CrashPod_Impact).GetMethod("Prefix")));
+
+                                    if (current.Name.Contains("_part"))
+                                    {
+                                        harmony.Patch(
+                                            current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
+                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod("CrashPod_Part_Impact_Prefix")));
+                                    }
+                                    else
+                                    {
+                                        harmony.Patch(
+                                            current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
+                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod("CrashPod_Impact_Prefix")));
+                                    }
                                 }
                                 
                                 Log.Message("Frontier Developments Shields :: Crash Landing support enabled. Blocking (" + blockingTypes.Trim() + ")");

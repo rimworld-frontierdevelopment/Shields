@@ -23,14 +23,18 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
             return false;
         }
 
-        public static class Patch_CrashPod_Impact
+        public static bool CrashPod_Impact_Prefix(CrashLanding.CrashPod __instance)
         {
-            public static bool Prefix(CrashLanding.CrashPod __instance)
-            {
-                // harmony sometimes registers a bullet as a crash pod
-                if (typeof(CrashLanding.CrashPod) != __instance.GetType()) return true;
-                return !Block(__instance, Mod.Settings.SkyfallerDamage);
-            }
+            // harmony can sometimes register a bullet as a crash pod
+            if (typeof(CrashLanding.CrashPod) != __instance.GetType()) return true;
+            return !Block(__instance, Mod.Settings.SkyfallerDamage);
+        }
+        
+        public static bool CrashPod_Part_Impact_Prefix(CrashLanding.CrashPod __instance)
+        {
+            // harmony can sometimes register a bullet as a crash pod
+            if (typeof(CrashLanding.CrashPod) != __instance.GetType()) return true;
+            return !Block(__instance, Mod.Settings.SkyfallerDamage / 6);
         }
     }
 }
