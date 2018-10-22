@@ -1,6 +1,9 @@
 using System;
+using System.Linq;
 using System.Reflection;
+using FrontierDevelopments.Shields.Module.RimworldModule;
 using Harmony;
+using RimWorld;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Module.CrashLandingModule
@@ -9,7 +12,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
     {
         public Module(ModContentPack content) : base(content)
         {
-            if (ModIsRunning("Crash Landing"))
+            if (ModsConfig.ActiveModsInLoadOrder.Any(m => m.Name == "Crash Landing"))
             {
                 try
                 {
@@ -17,7 +20,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                             {
                                 var harmony = HarmonyInstance.Create("frontierdevelopment.shields");
                                 var baseType = typeof(CrashLanding.CrashPod);
-                                var types = baseType.AllSubclassesNonAbstract().Add(baseType);
+                                var types = baseType.AllSubclassesNonAbstract();
                                 var blockingTypes = "";
                                 
                                 foreach (Type current in types)
@@ -35,16 +38,32 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                 catch (Exception) {}
             }
         }
-        
-        private bool ModIsRunning(string name)
+
+        [HarmonyPatch(typeof(DefGenerator), "GenerateImpliedDefs_PostResolve")]
+        class Patch_GenerateImpliedDefs_PostResolve
         {
-            try
+            [HarmonyPriority(Priority.Last)]
+            static void Postfix()
             {
-                return LoadedModManager.RunningModsListForReading.Find(content => content.Name == name) != null;
-            }
-            catch (Exception)
-            {
-                return false;
+                var toBlacklist = DefDatabase<ThingDef>.AllDefs.Where(thingDef =>
+                {
+                    var fullName = thingDef.thingClass.FullName;
+                    return fullName != null && fullName.Contains("CrashLanding") &&
+                           thingDef.defName.Contains("Bullet");
+                }).Select(def => def.defName)
+                    .ToList();
+
+                if (toBlacklist.Count > 0)
+                {
+                    var blacklisted = "";
+                    
+                    toBlacklist.ForEach(def =>
+                    {
+                        blacklisted += " " + def;
+                        ProjectileHandler.BlacklistedDefs.Add(def);
+                    });
+                    Log.Message("Frontier Developments Shields :: Crash Landing blacklisting projectiles for (" + blacklisted + ")");
+                }
             }
         }
     }

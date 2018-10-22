@@ -12,11 +12,11 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
         {
             if (Mod.ShieldManager.Block(crashPod.Map, Common.ToVector3WithY(crashPod.Position, 0), damage))
             {
+                Messages.Message("fd.shields.incident.crashpod.blocked.body".Translate(),
+                    new GlobalTargetInfo(crashPod.Position, crashPod.Map), MessageTypeDefOf.NeutralEvent);
                 crashPod.def.projectile.soundExplode.PlayOneShot(
                     SoundInfo.InMap(new TargetInfo(crashPod.Position, crashPod.Map)));
                 crashPod.Destroy();
-                Messages.Message("fd.shields.incident.crashpod.blocked.body".Translate(),
-                    new GlobalTargetInfo(crashPod.Position, crashPod.Map), MessageTypeDefOf.NeutralEvent);
                 return true;
             }
 
@@ -27,6 +27,8 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
         {
             public static bool Prefix(CrashLanding.CrashPod __instance)
             {
+                // harmony sometimes registers a bullet as a crash pod
+                if (typeof(CrashLanding.CrashPod) != __instance.GetType()) return true;
                 return !Block(__instance, Mod.Settings.SkyfallerDamage);
             }
         }

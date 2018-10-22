@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using FrontierDevelopments.General;
 using Harmony;
@@ -17,6 +19,8 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
         private static readonly FieldInfo UsedTargetField = typeof(Projectile).GetField("usedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly FieldInfo IntendedTargetField = typeof(Projectile).GetField("intendedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
         private static readonly PropertyInfo StartingTicksToImpactProperty = typeof(Projectile).GetProperty("StartingTicksToImpact", BindingFlags.Instance | BindingFlags.NonPublic);
+
+        public static readonly List<string> BlacklistedDefs = new List<string>();
 
         static ProjectileHandler()
         {
@@ -59,7 +63,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
         {
             static bool Prefix(Projectile __instance)
             {
-                if (!Enabled) return true;
+                if (!Enabled || BlacklistedDefs.Contains(__instance.def.defName)) return true;
                 
                 var projectile = __instance;
                     
