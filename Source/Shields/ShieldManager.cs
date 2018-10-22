@@ -78,6 +78,48 @@ namespace FrontierDevelopments.Shields
             return null;
         }
 
+        public Vector3? Block(
+            Map map,
+            Vector3 origin,
+            Vector3 position,
+            Vector3 end,
+            int damage)
+        {
+            try
+            {
+                foreach(var shield in _shieldsMap[map.uniqueID])
+                {
+                    if(shield == null || !shield.IsActive() || shield.Collision(origin)) continue;
+                    var point = shield.Collision(position, end);
+                    if (point != null && shield.Block(damage, point.Value))
+                    {
+                        return point.Value;
+                    }
+                }
+            }
+            catch (KeyNotFoundException) {}
+            return null;
+        }
+        
+      
+
+        public bool Shielded(Map map, Vector3 start, Vector3 end)
+        {
+            try
+            {
+                foreach(var shield in _shieldsMap[map.uniqueID])
+                {
+                    if(shield == null || !shield.IsActive() || shield.Collision(start)) continue;
+                    if (shield.Collision(start, end) != null)
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (KeyNotFoundException) {}
+            return false;
+        }
+
         public bool Shielded(Map map, Vector3 position)
         {
             try

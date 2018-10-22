@@ -89,8 +89,11 @@ namespace FrontierDevelopments.Shields.Comps
 
         public Vector3? Collision(Ray ray, float limit)
         {
-            var origin = ray.origin;
-            var destination = ray.GetPoint(limit);
+            return Collision(ray.origin, ray.GetPoint(limit));
+        }
+
+        public Vector3? Collision(Vector3 origin, Vector3 destination)
+        {
             var circleOrigin = Common.ToVector3(parent.Position);
 
             var d = destination - origin;
@@ -140,7 +143,7 @@ namespace FrontierDevelopments.Shields.Comps
             }
 
             // no intersection: FallShort, Past, CompletelyInside
-            return null ;
+            return null;
         }
 
         public void Draw()

@@ -8,6 +8,7 @@ namespace FrontierDevelopments.Shields
         bool IsActive();
         bool Collision(Vector3 point);
         Vector3? Collision(Ray ray, float limit);
+        Vector3? Collision(Vector3 start, Vector3 end);
         bool Block(int damage, Vector3 position);
     }
 }

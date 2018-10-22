@@ -89,11 +89,10 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                     }
                     else
                     {
-                        var ray = new Ray(
-                            position3, 
-                            Vector3.Lerp(origin3, destination3, 1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact));
+                        var end = Vector3.Lerp(origin3, destination3,
+                            1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact); 
                     
-                        var impactPoint = Mod.ShieldManager.Block(projectile.Map, origin3, ray, 1, projectile.def.projectile.GetDamageAmount(1f));
+                        var impactPoint = Mod.ShieldManager.Block(projectile.Map, origin3, position3, end, projectile.def.projectile.GetDamageAmount(1f));
                         if (impactPoint != null)
                         {
                             DestinationField.SetValue(projectile, Common.ToVector3(impactPoint.Value, projectile.def.Altitude));

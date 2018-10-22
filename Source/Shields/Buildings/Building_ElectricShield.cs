@@ -141,6 +141,11 @@ namespace FrontierDevelopments.Shields.Buildings
             return _shield.Collision(vector);
         }
 
+        public override Vector3? Collision(Vector3 start, Vector3 end)
+        {
+            return _shield.Collision(start, end);
+        }
+
         public override Vector3? Collision(Ray ray, float limit)
         {
             return _shield.Collision(ray, limit);
