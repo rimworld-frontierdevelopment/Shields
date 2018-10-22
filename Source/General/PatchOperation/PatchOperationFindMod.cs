@@ -4,6 +4,7 @@ using Verse;
 
 namespace FrontierDevelopments.General.PatchOperation
 {
+    #pragma warning disable CS0649
     public class PatchOperationFindMod : Verse.PatchOperation
     {
         private string modName;
