@@ -81,7 +81,6 @@ namespace FrontierDevelopments.Shields
 
             static bool CheckShielded(Map map, IntVec3 c)
             {
-                Log.Message("check shielded at " + c);
                 return Mod.ShieldManager.Shielded(map, Common.ToVector3(c), false);
             }
         }
