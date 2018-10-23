@@ -12,7 +12,7 @@ namespace FrontierDevelopments.Shields
         {
             static bool Prefix(out bool __result, IntVec3 c, Map map, bool canRoofPunch)
             {
-                if (Mod.ShieldManager.Shielded(map, Common.ToVector3(c)))
+                if (Mod.ShieldManager.Shielded(map, Common.ToVector3(c), false))
                 {
                     __result = false;
                     return false;

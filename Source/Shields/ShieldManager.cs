@@ -100,8 +100,6 @@ namespace FrontierDevelopments.Shields
             catch (KeyNotFoundException) {}
             return null;
         }
-        
-      
 
         public bool Shielded(Map map, Vector3 start, Vector3 end)
         {
@@ -120,13 +118,20 @@ namespace FrontierDevelopments.Shields
             return false;
         }
 
-        public bool Shielded(Map map, Vector3 position)
+        public bool Shielded(Map map, Vector3 position, bool active = true)
         {
             try
             {
                 foreach (var shield in _shieldsMap[map.uniqueID])
                 {
-                    if (shield?.IsActive() == true && shield.Collision(position)) return true;
+                    if (active)
+                    {
+                        if (shield?.IsActive() == true && shield.Collision(position)) return true;
+                    }
+                    else
+                    {
+                        if (shield.Collision(position)) return true;
+                    }
                 }
             }
             catch (KeyNotFoundException) {}
