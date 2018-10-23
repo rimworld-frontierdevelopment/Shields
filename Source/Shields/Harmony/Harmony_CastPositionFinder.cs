@@ -9,16 +9,6 @@ using Verse.AI;
 
 namespace FrontierDevelopments.Shields
 {
-    [HarmonyPatch(typeof(CastPositionFinder), "TryFindCastPosition")]
-    public class Harmony_CastPositionFinder_TryFindCastPosition
-    {
-        static bool Prefix(CastPositionRequest newReq)
-        {
-            Log.Message("TryFindCastPosition from " + newReq.caster.Position, true);
-            return true;
-        }
-    }
-    
     [HarmonyPatch(typeof(CastPositionFinder), "EvaluateCell")]
     public class Harmony_CastPositionFinder_EvaluateCell_Patch
     {
@@ -46,8 +36,8 @@ namespace FrontierDevelopments.Shields
                     yield return new CodeInstruction(OpCodes.Brfalse, keepGoingLabel);
                     yield return new CodeInstruction(OpCodes.Ret);
                     
-                    // bump to allow returning the current instruction
-                    patchPhase++;
+                    // done patching
+                    patchPhase = -1;
                 }
                 
                 // find the next ret

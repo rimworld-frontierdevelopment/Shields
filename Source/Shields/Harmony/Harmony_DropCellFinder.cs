@@ -17,7 +17,6 @@ namespace FrontierDevelopments.Shields
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
             {
-                Log.Message("starting patching!");
                 var patchPhase = 0;
                 Label? successLabel = null;
                 var shieldTestLabel = il.DefineLabel();
