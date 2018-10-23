@@ -1,5 +1,6 @@
 using System;
 using System.Linq;
+using System.Net;
 using System.Reflection;
 using FrontierDevelopments.Shields.Module.RimworldModule;
 using Harmony;
@@ -55,24 +56,38 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
             [HarmonyPriority(Priority.Last)]
             static void Postfix()
             {
-                var toBlacklist = DefDatabase<ThingDef>.AllDefs.Where(thingDef =>
+                try
                 {
-                    var fullName = thingDef.thingClass.FullName;
-                    return fullName != null && fullName.Contains("CrashLanding") &&
-                           thingDef.defName.Contains("Bullet");
-                }).Select(def => def.defName)
-                    .ToList();
+                    var toBlacklist = DefDatabase<ThingDef>.AllDefs
+                        .Where(thingDef => thingDef != null)
+                        .Where(thingDef =>
+                        {
+                            var fullName = thingDef.thingClass?.FullName;
+                            var defName = thingDef.defName;
 
-                if (toBlacklist.Count > 0)
-                {
-                    var blacklisted = "";
-                    
-                    toBlacklist.ForEach(def =>
+                            if (fullName != null && defName != null)
+                            {
+                                return fullName.Contains("CrashLanding") && defName.Contains("Bullet");
+                            }
+                            Log.Message("Frontier Developments Shields :: Invalid def found " + fullName + " " + defName);
+                            return false;
+                        }).Select(def => def.defName)
+                        .ToList();
+                    if (toBlacklist.Count > 0)
                     {
-                        blacklisted += " " + def;
-                        ProjectileHandler.BlacklistedDefs.Add(def);
-                    });
-                    Log.Message("Frontier Developments Shields :: Crash Landing blacklisting projectiles for (" + blacklisted + ")");
+                        var blacklisted = "";
+                        toBlacklist.ForEach(def =>
+                        {
+                            blacklisted += " " + def;
+                            ProjectileHandler.BlacklistedDefs.Add(def);
+                        });
+                        Log.Message("Frontier Developments Shields :: Crash Landing blacklisting projectiles for (" +
+                                    blacklisted + ")");
+                    }
+                }
+                catch (Exception e)
+                {
+                    Log.Error(e.Message);
                 }
             }
         }
