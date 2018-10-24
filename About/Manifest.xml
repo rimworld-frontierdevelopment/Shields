@@ -11,6 +11,8 @@
     <loadAfter>
     </loadAfter>
     <suggests>
+        <li>973091113</li> <!-- Centralized Climate Control -->
+        <li>730384702</li> <!-- Crash landing -->
     </suggests>
     <showCrossPromotions>true</showCrossPromotions>
     <manifestUri>https://raw.githubusercontent.com/JonnyNova/Rimworld-Shields/master/About/Manifest.xml</manifestUri>
