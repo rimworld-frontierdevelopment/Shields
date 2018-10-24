@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Manifest>
+    <identifier>FrontierDevelopments-Shields</identifier>
+    <version>1.0.10.2059</version>
+    <dependencies>
+    </dependencies>
+    <incompatibleWith>
+    </incompatibleWith>
+    <loadBefore>
+    </loadBefore>
+    <loadAfter>
+    </loadAfter>
+    <suggests>
+    </suggests>
+    <showCrossPromotions>true</showCrossPromotions>
+    <manifestUri>https://raw.githubusercontent.com/JonnyNova/Rimworld-Shields/master/About/Manifest.xml</manifestUri>
+    <downloadUri>https://github.com/JonnyNova/Rimworld-Shields/releases/latest</downloadUri>
+</Manifest>
