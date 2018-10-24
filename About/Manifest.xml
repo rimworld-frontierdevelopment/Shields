@@ -11,6 +11,8 @@
     <loadAfter>
     </loadAfter>
     <suggests>
+        <li>728314182</li> <!-- RT fuses -->
+        <li>728314859</li> <!-- RT Power Switch -->
         <li>973091113</li> <!-- Centralized Climate Control -->
         <li>730384702</li> <!-- Crash landing -->
     </suggests>
