@@ -76,6 +76,7 @@
     <Compile Include="Shields\CompProperties\CompProperties_ShieldRadial.cs" />
     <Compile Include="Shields\Comps\Comp_ShieldRadial.cs" />
     <Compile Include="Shields\Harmony\Harmony_DropCellFinder.cs" />
+    <Compile Include="Shields\Harmony\Harmony_Explosion.cs" />
     <Compile Include="Shields\Harmony\Harmony_Verb.cs" />
     <Compile Include="Shields\Mod.cs" />
     <Compile Include="Shields\IShield.cs" />

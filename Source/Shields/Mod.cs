@@ -1,5 +1,4 @@
 ﻿using System.Reflection;
-using FrontierDevelopments.Shields.Module.RimworldModule;
 using Harmony;
 using RimWorld;
 using UnityEngine;
@@ -21,6 +20,7 @@ namespace FrontierDevelopments.Shields
 
             Harmony_Verb_CanHitCellFromCellIgnoringRange.BlacklistType(typeof(Verb_Bombardment));
             
+            
             Log.Message("Frontier Developments Shields :: Loaded");
         }
         
@@ -32,6 +32,16 @@ namespace FrontierDevelopments.Shields
         public override void DoSettingsWindowContents(Rect inRect)
         {
             Settings.DoWindowContents(inRect);
+        }
+
+        [HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PostResolve))]
+        class Patch_GenerateImpliedDefs_PostResolve
+        {
+            [HarmonyPriority(Priority.Last)]
+            static void Postfix()
+            {
+                Harmony_Explosion.BlockType(DamageDefOf.Bomb.defName);
+            }
         }
     }
     
