@@ -1,6 +1,6 @@
 # Frontier Developments Shields
 
-Build shields. Stop bullets, rockets, drop pods, meteorites, and more!
+Build shields. Stop bullets, rockets, drop pods, meteorites, super space lasers, and more!
 
 ## Features
 

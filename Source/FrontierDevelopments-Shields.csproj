@@ -83,6 +83,7 @@
     <Compile Include="Shields\Module\CentralizedClimateControlModule\Module.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\CrashPodHandler.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\Module.cs" />
+    <Compile Include="Shields\Module\RimworldModule\BombardmentHandler.cs" />
     <Compile Include="Shields\Module\RimworldModule\ProjectileHandler.cs" />
     <Compile Include="Shields\Module\RimworldModule\SkyfallerHandler.cs" />
     <Compile Include="Shields\Settings.cs" />
