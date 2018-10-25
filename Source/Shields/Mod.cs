@@ -21,7 +21,7 @@ namespace FrontierDevelopments.Shields
 
             Harmony_Verb_CanHitCellFromCellIgnoringRange.BlacklistType(typeof(Verb_Bombardment));
             
-            Log.Message("Fronter Developments Shields :: Loaded");
+            Log.Message("Frontier Developments Shields :: Loaded");
         }
         
         public override string SettingsCategory()
