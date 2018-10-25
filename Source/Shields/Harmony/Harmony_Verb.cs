@@ -8,9 +8,16 @@ using Verse;
 
 namespace FrontierDevelopments.Shields
 {
-    [HarmonyPatch(typeof(Verb), "CanHitTargetFrom" , new Type[] { typeof(IntVec3), typeof(LocalTargetInfo) })]
+    [HarmonyPatch(typeof(Verb), nameof(Verb.CanHitTargetFrom) , new [] { typeof(IntVec3), typeof(LocalTargetInfo) })]
     public class Harmony_Verb_CanHitCellFromCellIgnoringRange
     {
+        private static List<Type> uncheckedTypes = new List<Type>();
+
+        public static void BlacklistType(Type type)
+        {
+            uncheckedTypes.Add(type);
+        }
+
         [HarmonyTranspiler]
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
@@ -25,9 +32,10 @@ namespace FrontierDevelopments.Shields
                     
                     yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Verb), "caster"));
+                    yield return new CodeInstruction(OpCodes.Ldarg_0);
                     yield return new CodeInstruction(OpCodes.Ldarg_1);
                     yield return new CodeInstruction(OpCodes.Ldarg_2);
-                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Verb_CanHitCellFromCellIgnoringRange), "ShieldBlocks", new Type[]{ typeof(Thing), typeof(IntVec3), typeof(LocalTargetInfo) }));
+                    yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Verb_CanHitCellFromCellIgnoringRange), nameof(ShieldBlocks)));
                     yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
                     yield return new CodeInstruction(OpCodes.Ldc_I4_0);
                     yield return new CodeInstruction(OpCodes.Ret);
@@ -45,9 +53,11 @@ namespace FrontierDevelopments.Shields
             }
         }
 
-        static bool ShieldBlocks(Thing caster, IntVec3 source, LocalTargetInfo target)
+        static bool ShieldBlocks(Thing caster, Verb verb, IntVec3 source, LocalTargetInfo target)
         {
             if (caster.Faction != Faction.OfPlayer) return false;
+            if (!verb.verbProps.requireLineOfSight) return false;
+            if (uncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
             return Mod.ShieldManager.Shielded(caster.Map, Common.ToVector3(source), Common.ToVector3(target.Cell));
         }
     }
