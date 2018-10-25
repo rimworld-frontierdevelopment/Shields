@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
+
+    <!-- General section -->
+    <fd.settings.shield.general.heading>General</fd.settings.shield.general.heading>
+
+    <fd.settings.shield.shootout.label>Enable shooting out</fd.settings.shield.shootout.label>
+    <fd.settings.shield.shootout.description>Enables shoots originating within a shield to travel out of the shield</fd.settings.shield.shootout.description>
     
     <!-- Power section -->
     <fd.settings.shield.power.heading>Power</fd.settings.shield.power.heading>

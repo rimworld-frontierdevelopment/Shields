@@ -5,6 +5,9 @@ namespace FrontierDevelopments.Shields
 {
     public class Settings : ModSettings
     {
+        // General
+        public bool EnableShootingOut = true;
+
         // Power
         // TODO include later maybe. rimworld's support for float settings is non-existant in A17 though
         public float PowerPerTile = 0.1f;
@@ -35,6 +38,13 @@ namespace FrontierDevelopments.Shields
         {
             var list = new Listing_Standard();
             list.Begin(inRect);
+
+            // General
+            Heading(list, "fd.settings.shield.general.heading".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.shootout.label".Translate(), 
+                ref EnableShootingOut, 
+                "fd.settings.shield.shootout.description".Translate());
 
             // Power
             Heading(list, "fd.settings.shield.power.heading".Translate());
@@ -108,6 +118,8 @@ namespace FrontierDevelopments.Shields
 
         public override void ExposeData()
         {
+            Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
+
             // TODO see above
 //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
             Scribe_Values.Look(ref MinimumOnlinePower, "minimumOnlinePower", 50);

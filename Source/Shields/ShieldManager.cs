@@ -66,7 +66,7 @@ namespace FrontierDevelopments.Shields
             {
                 foreach(var shield in _shieldsMap[map.uniqueID])
                 {
-                    if(shield == null || !shield.IsActive() || shield.Collision(origin)) continue;
+                    if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(ray, limit);
                     if (point != null && shield.Block(damage, point.Value))
                     {
@@ -89,7 +89,7 @@ namespace FrontierDevelopments.Shields
             {
                 foreach(var shield in _shieldsMap[map.uniqueID])
                 {
-                    if(shield == null || !shield.IsActive() || shield.Collision(origin)) continue;
+                    if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(position, end);
                     if (point != null && shield.Block(damage, point.Value))
                     {
@@ -107,7 +107,7 @@ namespace FrontierDevelopments.Shields
             {
                 foreach(var shield in _shieldsMap[map.uniqueID])
                 {
-                    if(shield == null || !shield.IsActive() || shield.Collision(start)) continue;
+                    if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(start)) continue;
                     if (shield.Collision(start, end) != null)
                     {
                         return true;
