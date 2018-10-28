@@ -12,12 +12,14 @@ namespace FrontierDevelopments.Shields
     {
         private static float CalculateShieldPreference(float score, Map map, IntVec3 start, IntVec3 end)
         {
-            if (Mod.ShieldManager.Shielded(map, Common.ToVector3(start), Common.ToVector3(end)))
+            var shieldManager = map.GetComponent<ShieldManager>();
+            
+            if (shieldManager.Shielded(Common.ToVector3(start), Common.ToVector3(end)))
             {
                 score = (float)Math.Sqrt(score);
             }
 
-            if (Mod.ShieldManager.Shielded(map, Common.ToVector3(end), Common.ToVector3(start)))
+            if (shieldManager.Shielded(Common.ToVector3(end), Common.ToVector3(start)))
             {
                 score = (float) Math.Pow(score, 2);
             }

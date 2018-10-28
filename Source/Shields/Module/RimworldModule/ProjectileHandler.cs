@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
@@ -103,12 +101,12 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 Vector3 origin,
                 Vector3 destination)
             {
+                var shieldManager = projectile.Map.GetComponent<ShieldManager>();
                 if (BlacklistedDefs.Contains(projectile.def.defName)) return true;
                 
                 if (projectile.def.projectile.flyOverhead)
                 {
-                    if (ticksToImpact <= 1 && Mod.ShieldManager.Block(
-                            projectile.Map, 
+                    if (ticksToImpact <= 1 && shieldManager.Block(
                             Common.ToVector3(nextPosition), 
                             Common.ToVector3(origin),
                             destination, 
@@ -121,8 +119,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 }
                 else
                 {
-                    return Mod.ShieldManager.Block(
-                               projectile.Map,
+                    return shieldManager.Block(
                                Common.ToVector3(origin),
                                Common.ToVector3(currentPosition),
                                Common.ToVector3(nextPosition),

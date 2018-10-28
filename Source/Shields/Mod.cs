@@ -9,7 +9,6 @@ namespace FrontierDevelopments.Shields
     public class Mod : Verse.Mod
     {
         public static Settings Settings;
-        public static readonly ShieldManager ShieldManager = new ShieldManager();
         
         public Mod(ModContentPack content) : base(content)
         {

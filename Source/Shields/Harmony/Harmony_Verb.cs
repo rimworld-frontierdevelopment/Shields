@@ -58,7 +58,7 @@ namespace FrontierDevelopments.Shields
             if (caster.Faction != Faction.OfPlayer) return false;
             if (!verb.verbProps.requireLineOfSight) return false;
             if (uncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
-            return Mod.ShieldManager.Shielded(caster.Map, Common.ToVector3(source), Common.ToVector3(target.Cell));
+            return caster.Map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(source), Common.ToVector3(target.Cell));
         }
     }
 }

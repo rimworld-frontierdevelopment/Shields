@@ -10,7 +10,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
     {
         private static bool Block(CrashLanding.CrashPod crashPod, int damage)
         {
-            if (Mod.ShieldManager.Block(crashPod.Map, Common.ToVector3WithY(crashPod.Position, 0), damage))
+            if (crashPod.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(crashPod.Position, 0), damage))
             {
                 Messages.Message("fd.shields.incident.crashpod.blocked.body".Translate(),
                     new GlobalTargetInfo(crashPod.Position, crashPod.Map), MessageTypeDefOf.NeutralEvent);

@@ -20,7 +20,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
         {
             try
             {
-                if (Mod.ShieldManager.Block(pod.Map, Common.ToVector3WithY(pod.Position, 0), Mod.Settings.DropPodDamage))
+                if (pod.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(pod.Position, 0), Mod.Settings.DropPodDamage))
                 {
                     foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn))
                     {
@@ -40,7 +40,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
         {
             try
             {
-                if (Mod.ShieldManager.Block(skyfaller.Map, Common.ToVector3WithY(skyfaller.Position, 0),
+                if (skyfaller.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(skyfaller.Position, 0),
                     Mod.Settings.SkyfallerDamage))
                 {
                     skyfaller.def.skyfaller.impactSound?.PlayOneShot(

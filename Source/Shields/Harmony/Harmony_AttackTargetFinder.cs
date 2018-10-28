@@ -12,7 +12,7 @@ namespace FrontierDevelopments.Shields
         {
             static float Postfix(float __result, IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
             {
-                if (Mod.ShieldManager.Shielded(searcher.Thing.Map, Common.ToVector3(searcher.Thing.Position),
+                if (searcher.Thing.Map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(searcher.Thing.Position),
                     Common.ToVector3(target.Thing.Position)))
                 {
                     return __result / 2;

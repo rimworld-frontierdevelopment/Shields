@@ -8,18 +8,18 @@ namespace FrontierDevelopments.Shields.Buildings
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            Mod.ShieldManager.Add(Map, this);
+            Map.GetComponent<ShieldManager>().Add(this);
         }
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
-            Mod.ShieldManager.Del(Map, this);
+            Map.GetComponent<ShieldManager>().Del(this);
             base.DeSpawn(mode);
         }
 
         public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
         {
-            Mod.ShieldManager.Del(Map, this);
+            Map.GetComponent<ShieldManager>().Del(this);
             base.Destroy(mode);
         }
 
