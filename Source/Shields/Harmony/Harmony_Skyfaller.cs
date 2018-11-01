@@ -9,13 +9,8 @@ using Verse.Sound;
 
 namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
-    public class SkyfallerHandler
+    public class Harmony_Skyfaller
     {
-        static SkyfallerHandler()
-        {
-            Log.Message("Frontier Developments Shields :: Skyfaller handler enabled");
-        }
-
         private static bool HandlePod(DropPodIncoming pod)
         {
             try

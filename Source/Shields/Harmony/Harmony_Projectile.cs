@@ -8,7 +8,7 @@ using Verse;
 
 namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
-    public class ProjectileHandler
+    public class Harmony_Projectile
     {
         public static readonly List<string> BlacklistedDefs = new List<string>();
 

@@ -1,6 +1,5 @@
 using System;
 using System.Linq;
-using System.Net;
 using System.Reflection;
 using FrontierDevelopments.Shields.Module.RimworldModule;
 using Harmony;
@@ -79,7 +78,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                         toBlacklist.ForEach(def =>
                         {
                             blacklisted += " " + def;
-                            ProjectileHandler.BlacklistedDefs.Add(def);
+                            Harmony_Projectile.BlacklistedDefs.Add(def);
                         });
                         Log.Message("Frontier Developments Shields :: Crash Landing blacklisting projectiles for (" +
                                     blacklisted + ")");
