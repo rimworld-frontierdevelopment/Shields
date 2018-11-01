@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using System.Reflection.Emit;
 using FrontierDevelopments.General;
 using Harmony;
 using UnityEngine;
@@ -11,99 +12,130 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
     public class ProjectileHandler
     {
-        private static readonly bool Enabled = true;
-        
-        private static readonly FieldInfo OriginField = typeof(Projectile).GetField("origin", BindingFlags.NonPublic | BindingFlags.Instance);
-        private static readonly FieldInfo DestinationField = typeof(Projectile).GetField("destination", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly FieldInfo TicksToImpactField = typeof(Projectile).GetField("ticksToImpact", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly FieldInfo UsedTargetField = typeof(Projectile).GetField("usedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly FieldInfo IntendedTargetField = typeof(Projectile).GetField("intendedTarget", BindingFlags.Instance | BindingFlags.NonPublic);
-        private static readonly PropertyInfo StartingTicksToImpactProperty = typeof(Projectile).GetProperty("StartingTicksToImpact", BindingFlags.Instance | BindingFlags.NonPublic);
-
         public static readonly List<string> BlacklistedDefs = new List<string>();
 
-        static ProjectileHandler()
-        {
-            if (OriginField == null)
-            {
-                Enabled = false;
-                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.origin");
-            }
-            if (DestinationField == null)
-            {
-                Enabled = false;
-                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.destination");
-            }
-            if (TicksToImpactField == null)
-            {
-                Enabled = false;
-                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.ticksToImpact");
-            }
-            if (UsedTargetField == null)
-            {
-                Enabled = false;
-                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.assignedTarget");
-            }
-            if (IntendedTargetField == null)
-            {
-                Enabled = false;
-                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on field Projectile.intendedTarget");
-            }
-            if (StartingTicksToImpactProperty == null)
-            {
-                Enabled = false;
-                Log.Error("Frontier Developments Shields :: Projectile handler reflection error on property Projectile.StartingTicksToImpact");
-            }
-            
-            Log.Message("Frontier Developments Shields :: Projectile handler " + (Enabled ? "enabled" : "disabled due to errors"));
-        }
-        
-        [HarmonyPatch(typeof(Projectile), "Tick")]
+        [HarmonyPatch(typeof(Projectile), nameof(Projectile.Tick))]
         static class Patch_Projectile_Tick
         {
-            static bool Prefix(Projectile __instance)
+            [HarmonyTranspiler]
+            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
             {
-                if (!Enabled || BlacklistedDefs.Contains(__instance.def.defName)) return true;
-                
-                var projectile = __instance;
-                    
-                var ticksToImpact = (int)TicksToImpactField.GetValue(projectile);
-                var startingTicksToImpact = (int)StartingTicksToImpactProperty.GetValue(projectile, null);
+                var patchPhase = 0;
+                var shieldTestLabel = il.DefineLabel();
 
-                var origin = Common.ToVector2((Vector3) OriginField.GetValue(projectile));
-                var destination = Common.ToVector2((Vector3) DestinationField.GetValue(projectile));
-
-                var position3 = Common.ToVector3(Vector2.Lerp(origin, destination, 1.0f - ticksToImpact / (float)startingTicksToImpact));
-                var origin3 = Common.ToVector3(origin);
-                var destination3 = Common.ToVector3(destination);
-                
-                try
+                foreach (var instruction in instructions)
                 {
-                    if (projectile.def.projectile.flyOverhead)
+                    switch (patchPhase)
                     {
-                        if (ticksToImpact <= 1 && Mod.ShieldManager.Block(projectile.Map, position3, origin, destination3, projectile.def.projectile.GetDamageAmount(1f)) != null)
+                        case 0:
                         {
-                            projectile.Destroy();
-                            return false;
+                            if (instruction.opcode == OpCodes.Call
+                                && (instruction.operand as MethodInfo).Name == "CheckForFreeInterceptBetween")
+                            {
+                                patchPhase = 1;
+                            }
+                            break;
+                        }
+                        case 1:
+                        {
+                            if (instruction.opcode == OpCodes.Brfalse)
+                            {
+                                instruction.operand = shieldTestLabel;
+                                patchPhase = 2;
+                            }
+                            break;
+                        }
+                        case 2:
+                        {
+                            if (instruction.opcode == OpCodes.Ret)
+                            {
+                                patchPhase = 3;
+                            }
+                            break;
+                        }
+                        case 3:
+                        {
+                            var keepGoing = il.DefineLabel();
+                            var destroy = il.DefineLabel();
+                            
+                            instruction.labels.Add(keepGoing);
+
+                            yield return new CodeInstruction(OpCodes.Ldarg_0){labels = new List<Label>(new[] {shieldTestLabel})}; // projectile
+                            yield return new CodeInstruction(OpCodes.Ldloc_0); // currentPosition
+                            yield return new CodeInstruction(OpCodes.Ldloc_1); // nextPosition
+                            yield return new CodeInstruction(OpCodes.Ldarg_0);
+                            yield return new CodeInstruction(OpCodes.Ldfld,AccessTools.Field(typeof(Projectile), "ticksToImpact"));
+                            yield return new CodeInstruction(OpCodes.Ldarg_0);
+                            yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Projectile), "origin"));
+                            yield return new CodeInstruction(OpCodes.Ldarg_0);
+                            yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Projectile), "destination"));
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_Projectile_Tick), nameof(ShieldBlocks)));
+                            yield return new CodeInstruction(OpCodes.Brfalse, keepGoing);
+                            
+                            yield return new CodeInstruction(OpCodes.Ldarg_0);
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_Projectile_Tick), nameof(ShouldImpact)));
+                            yield return new CodeInstruction(OpCodes.Brfalse, destroy);
+                            
+                            yield return new CodeInstruction(OpCodes.Ldarg_0);
+                            yield return new CodeInstruction(OpCodes.Ldnull);
+                            yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(Projectile), "Impact"));
+                            yield return new CodeInstruction(OpCodes.Ret);
+                            
+                            yield return new CodeInstruction(OpCodes.Ldarg_0) { labels = new List<Label>(new[] { destroy })};
+                            yield return new CodeInstruction(OpCodes.Ldc_I4_0);
+                            yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(Projectile), nameof(Projectile.Destroy)));
+                            yield return new CodeInstruction(OpCodes.Ret);
+
+                            patchPhase = -1;
+                            break;
                         }
                     }
-                    else
+
+                    yield return instruction;
+                }
+            }
+
+            private static bool ShieldBlocks(
+                Projectile projectile,
+                Vector3 currentPosition,
+                Vector3 nextPosition,
+                int ticksToImpact,
+                Vector3 origin,
+                Vector3 destination)
+            {
+                if (BlacklistedDefs.Contains(projectile.def.defName)) return true;
+                
+                if (projectile.def.projectile.flyOverhead)
+                {
+                    if (ticksToImpact <= 1 && Mod.ShieldManager.Block(
+                            projectile.Map, 
+                            Common.ToVector3(nextPosition), 
+                            Common.ToVector3(origin),
+                            destination, 
+                            // TODO calculate mortar damage better
+                            projectile.def.projectile.GetDamageAmount(1f)) != null)
                     {
-                        var end = Vector3.Lerp(origin3, destination3,
-                            1.0f - (ticksToImpact - 1) / (float) startingTicksToImpact); 
-                    
-                        var impactPoint = Mod.ShieldManager.Block(projectile.Map, origin3, position3, end, projectile.def.projectile.GetDamageAmount(1f));
-                        if (impactPoint != null)
-                        {
-                            DestinationField.SetValue(projectile, Common.ToVector3(impactPoint.Value, projectile.def.Altitude));
-                            TicksToImpactField.SetValue(projectile, 0);
-                            UsedTargetField.SetValue(projectile, null);
-                            IntendedTargetField.SetValue(projectile, null);
-                        }
+                        projectile.Destroy();
+                        return true;
                     }
                 }
-                catch (InvalidOperationException) {}
-                return true;
+                else
+                {
+                    return Mod.ShieldManager.Block(
+                               projectile.Map,
+                               Common.ToVector3(origin),
+                               Common.ToVector3(currentPosition),
+                               Common.ToVector3(nextPosition),
+                               projectile.def.projectile.GetDamageAmount(1f)) != null;
+                }
+                return false;
+            }
+
+            private static bool ShouldImpact(Projectile projectile)
+            {
+                if (projectile.def.projectile.flyOverhead) return false;
+                var type = projectile.GetType();
+                return typeof(Projectile_Explosive).IsAssignableFrom(type);
             }
         }
     }

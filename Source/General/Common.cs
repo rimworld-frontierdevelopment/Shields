@@ -34,6 +34,11 @@ namespace FrontierDevelopments.General
         {
             return new Vector3(vector2.x, y, vector2.y);
         }
+        
+        public static Vector3 ToVector3(Vector3 vector3, float y = 0)
+        {
+            return new Vector3(vector3.x, y, vector3.z);
+        }
 
         public static Vector3 ToVector3(IntVec3 intVec3)
         {
