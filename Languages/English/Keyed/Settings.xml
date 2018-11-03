@@ -7,6 +7,9 @@
     <fd.settings.shield.shootout.label>Enable shooting out</fd.settings.shield.shootout.label>
     <fd.settings.shield.shootout.description>Enables shoots originating within a shield to travel out of the shield</fd.settings.shield.shootout.description>
     
+    <fd.settings.shield.overlap-passthrough.label>Enable overlap pass through</fd.settings.shield.overlap-passthrough.label>
+    <fd.settings.shield.overlap-passthrough.description>Allows shots and explosions to pass through shields on areas that are overlapping</fd.settings.shield.overlap-passthrough.description>
+
     <!-- Power section -->
     <fd.settings.shield.power.heading>Power</fd.settings.shield.power.heading>
 

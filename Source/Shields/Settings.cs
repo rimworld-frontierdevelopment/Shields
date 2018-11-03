@@ -7,6 +7,7 @@ namespace FrontierDevelopments.Shields
     {
         // General
         public bool EnableShootingOut = true;
+        public bool OverlapPassThrough = false;
 
         // Power
         // TODO include later maybe. rimworld's support for float settings is non-existant in A17 though
@@ -45,6 +46,10 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.shootout.label".Translate(), 
                 ref EnableShootingOut, 
                 "fd.settings.shield.shootout.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.overlap-passthrough.label".Translate(),
+                ref OverlapPassThrough,
+                "fd.settings.shield.overlap-passthrough.description".Translate());
 
             // Power
             Heading(list, "fd.settings.shield.power.heading".Translate());
@@ -119,6 +124,7 @@ namespace FrontierDevelopments.Shields
         public override void ExposeData()
         {
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
+            Scribe_Values.Look(ref OverlapPassThrough, "overlapPassThrough", false);
 
             // TODO see above
 //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
