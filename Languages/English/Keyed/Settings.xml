@@ -10,6 +10,9 @@
     <fd.settings.shield.overlap-passthrough.label>Enable overlap pass through</fd.settings.shield.overlap-passthrough.label>
     <fd.settings.shield.overlap-passthrough.description>Allows shots and explosions to pass through shields on areas that are overlapping</fd.settings.shield.overlap-passthrough.description>
 
+    <fd.settings.shield.scale-heat.label>Scale damage by shield heat</fd.settings.shield.scale-heat.label>
+    <fd.settings.shield.scale-heat.description>Blocking damage requires less power when cold and a lot more power when hot. Also using Centralized Climate Control mod is recommended when using this</fd.settings.shield.scale-heat.description>
+
     <!-- Power section -->
     <fd.settings.shield.power.heading>Power</fd.settings.shield.power.heading>
 

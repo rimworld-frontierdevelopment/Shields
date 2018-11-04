@@ -8,6 +8,7 @@ namespace FrontierDevelopments.Shields
         // General
         public bool EnableShootingOut = true;
         public bool OverlapPassThrough = false;
+        public bool ScaleOnHeat = true;
 
         // Power
         // TODO include later maybe. rimworld's support for float settings is non-existant in A17 though
@@ -50,6 +51,10 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.overlap-passthrough.label".Translate(),
                 ref OverlapPassThrough,
                 "fd.settings.shield.overlap-passthrough.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.scale-heat.label".Translate(),
+                ref ScaleOnHeat,
+                "fd.settings.shield.scale-heat.description".Translate());
 
             // Power
             Heading(list, "fd.settings.shield.power.heading".Translate());
@@ -125,6 +130,7 @@ namespace FrontierDevelopments.Shields
         {
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref OverlapPassThrough, "overlapPassThrough", false);
+            Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
 
             // TODO see above
 //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);

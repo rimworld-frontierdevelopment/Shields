@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FrontierDevelopments.General;
@@ -126,7 +127,8 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             if (!IsActive()) return false;
             // convert watts per day to watts per tick
-            var charge = damage * 60000 * Mod.Settings.PowerPerDamage;
+            var charge = (damage * 60000 * Mod.Settings.PowerPerDamage);
+            if (Mod.Settings.ScaleOnHeat) charge = charge * Mathf.Pow(1.01f, (float) _heatSink.Temp);
             var drawn = -DrawPowerOneTick(-charge);
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
