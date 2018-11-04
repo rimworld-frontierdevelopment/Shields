@@ -28,7 +28,7 @@ namespace FrontierDevelopments.General.IncidentWorkers
             var map = (Map) parms.target;
             var target = GetTargets(map).RandomElement();
 
-            if (Mod.Settings.EnableCriticalThermalIncidents && target.OverCriticalhreshold)
+            if (Mod.Settings.EnableCriticalThermalIncidents && target.OverCriticalThreshold)
             {
                 target.CricticalBreakdown();
             } 

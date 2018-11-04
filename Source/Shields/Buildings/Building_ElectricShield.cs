@@ -110,7 +110,7 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             if (_powerTrader.PowerNet == null) return 0f;
             
-            // can this be feed by instanteous draw? (who are we kidding, no way)
+            // can this be feed by instantaneous draw? (who are we kidding, no way)
             var gainPowerCovers = _powerTrader.PowerNet.CurrentEnergyGainRate() + BasePowerConsumption + amount;
             if (gainPowerCovers >= 0) return amount;
             var gainAndBatteriesCover = gainPowerCovers + _powerTrader.PowerNet.CurrentStoredEnergy() * 60000;
@@ -125,7 +125,7 @@ namespace FrontierDevelopments.Shields.Buildings
         public override bool Block(int damage, Vector3 position)
         {
             if (!IsActive()) return false;
-            // convert watts per day to watts per tickk
+            // convert watts per day to watts per tick
             var charge = damage * 60000 * Mod.Settings.PowerPerDamage;
             var drawn = -DrawPowerOneTick(-charge);
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);

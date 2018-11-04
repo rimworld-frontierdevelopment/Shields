@@ -35,7 +35,7 @@ namespace FrontierDevelopments.General.Comps
         
         public bool OverMajorThreshold => Temp >= Props.majorThreshold;
         
-        public bool OverCriticalhreshold => Temp >= Props.criticalThreshold;
+        public bool OverCriticalThreshold => Temp >= Props.criticalThreshold;
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -54,7 +54,7 @@ namespace FrontierDevelopments.General.Comps
                .GetValueOrDefault(parent.Map.mapTemperature.OutdoorTemp);
         }
 
-        protected virtual void DisipateHeat(double kilojoules)
+        protected virtual void DissipateHeat(double kilojoules)
         {
             GenTemperature.PushHeat(parent, (float)kilojoules);
         }
@@ -63,9 +63,9 @@ namespace FrontierDevelopments.General.Comps
         {
             var ambient = AmbientTemp();
             var tempDelta = Temp - ambient;
-            var heatDisipated =  tempDelta / DisipationRate;
-            Joules -= heatDisipated * 1000;
-            DisipateHeat(heatDisipated);
+            var heatDissipated =  tempDelta / DisipationRate;
+            Joules -= heatDissipated * 1000;
+            DissipateHeat(heatDissipated);
         }
 
         public override string CompInspectStringExtra()
