@@ -102,7 +102,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 Vector3 destination)
             {
                 var shieldManager = projectile.Map.GetComponent<ShieldManager>();
-                if (BlacklistedDefs.Contains(projectile.def.defName)) return true;
+                if (BlacklistedDefs.Contains(projectile.def.defName)) return false;
                 
                 if (projectile.def.projectile.flyOverhead)
                 {
