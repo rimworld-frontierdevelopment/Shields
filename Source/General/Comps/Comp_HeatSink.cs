@@ -48,10 +48,9 @@ namespace FrontierDevelopments.General.Comps
             Joules += wattDays / 86.4 * 1000;
         }
 
-        protected virtual double AmbientTemp() 
+        protected virtual float AmbientTemp()
         {
-           return (parent.GetRoom()?.Group?.Temperature)
-               .GetValueOrDefault(parent.Map.mapTemperature.OutdoorTemp);
+            return parent.AmbientTemperature;
         }
 
         protected virtual void DissipateHeat(double kilojoules)

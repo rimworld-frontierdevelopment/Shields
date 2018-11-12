@@ -8,7 +8,7 @@ namespace FrontierDevelopments.Shields.Module.CentralizedClimateControlModule
     {
         public static class Patch_Heatsink_AmbientTemp
         {
-            public static bool Prefix(Comp_HeatSink __instance, out double __result)
+            public static bool Prefix(Comp_HeatSink __instance, out float __result)
             {
                 var compAirFlowConsumer = __instance.parent.GetComp<CentralizedClimateControl.CompAirFlowConsumer>();
                 if (compAirFlowConsumer != null && compAirFlowConsumer.IsActive())
