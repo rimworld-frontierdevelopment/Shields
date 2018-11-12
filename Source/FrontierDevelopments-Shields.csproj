@@ -50,10 +50,6 @@
       <HintPath>..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="CrashLanding">
-      <HintPath>..\..\..\Mods\CrashLanding\Assemblies\CrashLanding.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="CentralizedClimateControl">
       <HintPath>..\..\CentralizedClimateControlMod\Assemblies\CentralizedClimateControl.dll</HintPath>
       <Private>False</Private>

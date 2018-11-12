@@ -1,3 +1,4 @@
+using System;
 using FrontierDevelopments.General;
 using RimWorld;
 using RimWorld.Planet;
@@ -8,7 +9,9 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
 {
     public class CrashPodHandler
     {
-        private static bool Block(CrashLanding.CrashPod crashPod, int damage)
+        private static Type crashPodType = Type.GetType("CrashLanding.CrashPod, CrashLanding");
+        
+        private static bool Block(Bullet crashPod, int damage)
         {
             if (crashPod.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(crashPod.Position, 0), damage))
             {
@@ -23,17 +26,17 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
             return false;
         }
 
-        public static bool CrashPod_Impact_Prefix(CrashLanding.CrashPod __instance)
+        public static bool CrashPod_Impact_Prefix(Bullet __instance)
         {
             // harmony can sometimes register a bullet as a crash pod
-            if (!typeof(CrashLanding.CrashPod).IsAssignableFrom(__instance.GetType())) return true;
+            if (!crashPodType.IsAssignableFrom(__instance.GetType())) return true;
             return !Block(__instance, Mod.Settings.SkyfallerDamage);
         }
         
-        public static bool CrashPod_Part_Impact_Prefix(CrashLanding.CrashPod __instance)
+        public static bool CrashPod_Part_Impact_Prefix(Bullet __instance)
         {
             // harmony can sometimes register a bullet as a crash pod
-            if (!typeof(CrashLanding.CrashPod).IsAssignableFrom(__instance.GetType())) return true;
+            if (!crashPodType.IsAssignableFrom(__instance.GetType())) return true;
             return !Block(__instance, Mod.Settings.SkyfallerDamage / 6);
         }
     }

@@ -19,11 +19,11 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                     ((Action) (() =>
                             {
                                 var harmony = HarmonyInstance.Create("frontierdevelopment.shields");
-                                var baseType = typeof(CrashLanding.CrashPod);
+                                var baseType = Type.GetType("CrashLanding.CrashPod, CrashLanding");
                                 var types = baseType.AllSubclassesNonAbstract();
                                 var blockingTypes = "";
                                 
-                                foreach (Type current in types)
+                                foreach (var current in types)
                                 {
                                     blockingTypes += current.Name + " ";
 
@@ -31,13 +31,13 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                                     {
                                         harmony.Patch(
                                             current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
-                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod("CrashPod_Part_Impact_Prefix")));
+                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod(nameof(CrashPodHandler.CrashPod_Part_Impact_Prefix))));
                                     }
                                     else
                                     {
                                         harmony.Patch(
                                             current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
-                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod("CrashPod_Impact_Prefix")));
+                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod(nameof(CrashPodHandler.CrashPod_Impact_Prefix))));
                                     }
                                 }
                                 
