@@ -36,11 +36,12 @@ Build shields. Stop bullets, rockets, drop pods, meteorites, super space lasers,
 
 #### Languages
 - English
-- French
-- Russian
-- Japanese
+- Français (French)
+- 日本語 (Japanese)
+- Pусский (Russian)
+- Español (Spanish)
 
-#### Compatability:
+#### Compatibility:
 - Save file compatible
 - No known mod conflicts
 
