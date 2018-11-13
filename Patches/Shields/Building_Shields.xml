@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <Patch>
-    <Operation Class="PatchOperationSequence">
-        <success>Always</success>
-        <operations>
-            <li Class="FrontierDevelopments.General.PatchOperation.PatchOperationFindMod">
-                <modName>Centralized Climate Control</modName>
-            </li>
-
-            <!-- Standard Shield -->
-            <li Class="PatchOperationAdd">
-                <xpath>*/ThingDef[defName="Building_ShieldGenerator"]/comps</xpath>
-                <value>
-                    <li Class="CentralizedClimateControl.CompProperties_AirFlow">
-                        <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
-                        <flowType>Any</flowType>
-                        <baseAirExhaust>150</baseAirExhaust>
-                    </li>
-                </value>
-            </li>
-
-            <!-- Large Shield -->
-            <li Class="PatchOperationAdd">
-                <xpath>*/ThingDef[defName="Building_ShieldGeneratorLarge"]/comps</xpath>
-                <value>
-                    <li Class="CentralizedClimateControl.CompProperties_AirFlow">
-                        <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
-                        <flowType>Any</flowType>
-                        <baseAirExhaust>300</baseAirExhaust>
-                    </li>
-                </value>
-            </li>
-        </operations>
+    
+    <Operation Class="PatchOperationFindMod">
+        <mods>
+            <li>Centralized Climate Control</li>
+        </mods>
+        <match Class="PatchOperationSequence">
+            <operations>
+                <!-- Standard Shield -->
+                <li Class="PatchOperationAdd">
+                    <xpath>*/ThingDef[defName="Building_ShieldGenerator"]/comps</xpath>
+                    <value>
+                        <li Class="CentralizedClimateControl.CompProperties_AirFlow">
+                            <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
+                            <flowType>Any</flowType>
+                            <baseAirExhaust>150</baseAirExhaust>
+                        </li>
+                    </value>
+                </li>
+    
+                <!-- Large Shield -->
+                <li Class="PatchOperationAdd">
+                    <xpath>*/ThingDef[defName="Building_ShieldGeneratorLarge"]/comps</xpath>
+                    <value>
+                        <li Class="CentralizedClimateControl.CompProperties_AirFlow">
+                            <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
+                            <flowType>Any</flowType>
+                            <baseAirExhaust>300</baseAirExhaust>
+                        </li>
+                    </value>
+                </li>
+            </operations>
+        </match>
     </Operation>
 </Patch>

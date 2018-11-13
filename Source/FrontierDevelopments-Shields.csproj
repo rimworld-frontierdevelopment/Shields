@@ -64,7 +64,6 @@
     <Compile Include="General\Comps\Comp_PowerPlantTrader.cs" />
     <Compile Include="General\Comps\Comp_HeatSink.cs" />
     <Compile Include="General\IncidentWorkers\IncidentWorker_HeatSinkOverTemperature.cs" />
-    <Compile Include="General\PatchOperation\PatchOperationFindMod.cs" />
     <Compile Include="General\Windows\Popup_IntSlider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Shields\Buildings\Building_ElectricShield.cs" />
