@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+    <HugsLib.UpdateFeatureDef Abstract="true" Name="UpdateFeatureBase">
+        <modNameReadable>Shield Generators</modNameReadable>
+        <modIdentifier>FDShieldGenerators</modIdentifier>
+        <linkUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1210535987</linkUrl>
+    </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>FDShieldGenerators_1_1_0</defName>
+        <assemblyVersion>1.1.0</assemblyVersion>
+        <content>
+Add pass through option
+Add damage scaling by heat
+Add Spanish translation
+Fix room ambient temp
+Improve harmony patch
+        </content>
+    </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>FDShieldGenerators_1_0_11</defName>
+        <assemblyVersion>1.0.11</assemblyVersion>
+        <content>
+Add AI support. AI will now prefer to shoot at unshielded targets and will seek shield cover
+Add support for blocking orbital strikes
+Added setting to disallow firing out
+Block explosions from propagating into shields
+Fixed regression where mortars flying over would be blocked
+Fix shields from blocking verbs with no line of sight requirement
+Fix shields from blocking orbital targetters
+        </content>
+    </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>FDShieldGenerators_1_0_10</defName>
+        <assemblyVersion>1.0.10</assemblyVersion>
+        <content>
+Further improve hunting job driver
+Make shielded areas invalid drop pod targets even while shields are inactive
+Fix crash landing module crashing game on invalid defs
+Performance enhancements
+Add Mod Manager support
+        </content>
+    </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>FDShieldGenerators_1_0_9</defName>
+        <assemblyVersion>1.0.9</assemblyVersion>
+        <content>
+Add Centralized Climate Control support
+Add Crash Landing support
+Fix mortar passing through shields regression
+Kill passengers in drop pods that impact on shields
+Improve shield boundary detection
+Improve orbital trader selecting drop pod locations
+Update Japanese translations
+        </content>
+    </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>FDShieldGenerators_1_0_8</defName>
+        <assemblyVersion>1.0.8</assemblyVersion>
+        <content>
+Update to 1.0
+        </content>
+    </HugsLib.UpdateFeatureDef>
+
+    <HugsLib.UpdateFeatureDef ParentName="UpdateFeatureBase">
+        <defName>FDShieldGenerators_1_0_7</defName>
+        <assemblyVersion>1.0.7</assemblyVersion>
+        <content>
+Update to b19
+        </content>
+    </HugsLib.UpdateFeatureDef>
+</Defs>
