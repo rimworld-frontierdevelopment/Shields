@@ -30,7 +30,7 @@ namespace FrontierDevelopments.General.IncidentWorkers
 
             if (Mod.Settings.EnableCriticalThermalIncidents && target.OverCriticalThreshold)
             {
-                target.CricticalBreakdown();
+                target.CriticalBreakdown();
             } 
             else if (Mod.Settings.EnableMajorThermalIncidents && target.OverMajorThreshold)
             {

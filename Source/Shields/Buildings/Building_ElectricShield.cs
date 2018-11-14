@@ -59,7 +59,7 @@ namespace FrontierDevelopments.Shields.Buildings
             _heatSink.CanBreakdown = IsActive;
             _heatSink.MinorBreakdown = () => BreakdownMessage("fd.shields.incident.minor.title".Translate(), "fd.shields.incident.minor.body".Translate(), DoMinorBreakdown());
             _heatSink.MajorBreakdown = () => BreakdownMessage("fd.shields.incident.major.title".Translate(), "fd.shields.incident.major.body".Translate(), DoMajorBreakdown());
-            _heatSink.CricticalBreakdown = () => BreakdownMessage("fd.shields.incident.critical.title".Translate(), "fd.shields.incident.critical.body".Translate(), DoCriticalBreakdown());
+            _heatSink.CriticalBreakdown = () => BreakdownMessage("fd.shields.incident.critical.title".Translate(), "fd.shields.incident.critical.body".Translate(), DoCriticalBreakdown());
             _activeLastTick = IsActive();
             base.SpawnSetup(map, respawningAfterLoad);
         }

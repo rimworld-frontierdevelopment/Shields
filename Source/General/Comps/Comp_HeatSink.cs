@@ -10,14 +10,14 @@ namespace FrontierDevelopments.General.Comps
 
         public static readonly int TICKS_PER_DAY = 60000;
 
-        public static float DisipationRate;
+        public static float DissipationRate;
 
         private float _temperature;
 
         public Func<bool> CanBreakdown = () => false;
         public Action MinorBreakdown = () => { };
         public Action MajorBreakdown = () => { };
-        public Action CricticalBreakdown = () => { };
+        public Action CriticalBreakdown = () => { };
         
         public CompProperties_HeatSink Props => (CompProperties_HeatSink)props;
 
@@ -40,7 +40,7 @@ namespace FrontierDevelopments.General.Comps
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            DisipationRate = TICKS_PER_DAY / Props.conductivity;
+            DissipationRate = TICKS_PER_DAY / Props.conductivity;
         }
 
         public void PushHeat(float wattDays)
@@ -62,7 +62,7 @@ namespace FrontierDevelopments.General.Comps
         {
             var ambient = AmbientTemp();
             var tempDelta = Temp - ambient;
-            var heatDissipated =  tempDelta / DisipationRate;
+            var heatDissipated =  tempDelta / DissipationRate;
             Joules -= heatDissipated * 1000f;
             DissipateHeat(heatDissipated);
         }
