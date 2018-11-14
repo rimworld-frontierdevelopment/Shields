@@ -18,6 +18,11 @@
                         </li>
                     </value>
                 </li>
+                <li Class="PatchOperationAttributeSet">
+                    <xpath>*/ThingDef[defName="Building_ShieldGenerator"]/comps/li[@Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink"]</xpath>
+                    <attribute>Class</attribute>
+                    <value>FrontierDevelopments.General.CompProperties.CompProperties_ClimateControlHeatsink</value>
+                </li>
     
                 <!-- Large Shield -->
                 <li Class="PatchOperationAdd">
@@ -29,6 +34,11 @@
                             <baseAirExhaust>300</baseAirExhaust>
                         </li>
                     </value>
+                </li>
+                <li Class="PatchOperationAttributeSet">
+                    <xpath>*/ThingDef[defName="Building_ShieldGeneratorLarge"]/comps/li[@Class = "FrontierDevelopments.General.CompProperties.CompProperties_HeatSink"]</xpath>
+                    <attribute>Class</attribute>
+                    <value>FrontierDevelopments.General.CompProperties.CompProperties_ClimateControlHeatsink</value>
                 </li>
             </operations>
         </match>

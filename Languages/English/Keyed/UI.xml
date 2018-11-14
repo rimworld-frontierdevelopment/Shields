@@ -11,6 +11,9 @@
 
     <fd.heatsink.temperature>Heatsink temperature</fd.heatsink.temperature>
     
+    <fd.heatsink.net.connect.label>Use air network</fd.heatsink.net.connect.label>
+    <fd.heatsink.net.connect.desc>Connect shield to air network</fd.heatsink.net.connect.desc>
+    
     <shield.status.offline>Shield offline</shield.status.offline>
     <shield.status.no_power>Not connected to power</shield.status.no_power>
     <shield.status.unpowered>Powered off</shield.status.unpowered>
