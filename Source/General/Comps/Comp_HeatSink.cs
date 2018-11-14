@@ -6,13 +6,13 @@ namespace FrontierDevelopments.General.Comps
 {
     public class Comp_HeatSink : ThingComp
     {
-        public static readonly double KELVIN_ZERO_CELCIUS = 273.15;
+        public static readonly float KELVIN_ZERO_CELCIUS = 273.15f;
 
         public static readonly int TICKS_PER_DAY = 60000;
 
-        public static double DisipationRate;
+        public static float DisipationRate;
 
-        private double _temperature;
+        private float _temperature;
 
         public Func<bool> CanBreakdown = () => false;
         public Action MinorBreakdown = () => { };
@@ -21,9 +21,9 @@ namespace FrontierDevelopments.General.Comps
         
         public CompProperties_HeatSink Props => (CompProperties_HeatSink)props;
 
-        public double Temp => _temperature; 
+        public float Temp => _temperature; 
 
-        private double Joules
+        private float Joules
         {
             get => (_temperature + KELVIN_ZERO_CELCIUS) * Props.specificHeat * Props.grams;
             set =>  _temperature = value / Props.specificHeat / Props.grams - KELVIN_ZERO_CELCIUS;
@@ -43,9 +43,9 @@ namespace FrontierDevelopments.General.Comps
             DisipationRate = TICKS_PER_DAY / Props.conductivity;
         }
 
-        public void PushHeat(double wattDays)
+        public void PushHeat(float wattDays)
         {
-            Joules += wattDays / 86.4 * 1000;
+            Joules += wattDays / 86.4f * 1000;
         }
 
         protected virtual float AmbientTemp()
@@ -63,13 +63,13 @@ namespace FrontierDevelopments.General.Comps
             var ambient = AmbientTemp();
             var tempDelta = Temp - ambient;
             var heatDissipated =  tempDelta / DisipationRate;
-            Joules -= heatDissipated * 1000;
+            Joules -= heatDissipated * 1000f;
             DissipateHeat(heatDissipated);
         }
 
         public override string CompInspectStringExtra()
         {
-            return "fd.heatsink.temperature".Translate() + ": " + (int) Temp + "C";
+            return "fd.heatsink.temperature".Translate() + ": " + Temp.ToStringTemperature();
         }
 
         public override void PostExposeData()
