@@ -20,5 +20,13 @@ namespace FrontierDevelopments.Shields.Module.CentralizedClimateControlModule
                 return true;
             }
         }
+
+        public static class Patch_DissipateHeat
+        {
+            public static bool Prefix(Comp_HeatSink __instance)
+            {
+                return false;
+            }
+        }
     }
 }

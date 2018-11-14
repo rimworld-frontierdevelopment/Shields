@@ -28,6 +28,12 @@ namespace FrontierDevelopments.Shields.Module.CentralizedClimateControlModule
                                         BindingFlags.NonPublic | BindingFlags.Instance),
                                     new HarmonyMethod(
                                         typeof(HeatsinkPatch.Patch_Heatsink_AmbientTemp).GetMethod("Prefix")));
+                                
+                                harmony.Patch(
+                                    typeof(Comp_HeatSink).GetMethod("DissipateHeat",
+                                        BindingFlags.NonPublic | BindingFlags.Instance),
+                                    new HarmonyMethod(
+                                        typeof(HeatsinkPatch.Patch_DissipateHeat).GetMethod("Prefix")));
 
                                 Log.Message(
                                     "Frontier Developments Shields :: Centralized Climate Control support enabled");
