@@ -1,5 +1,6 @@
 ﻿using System;
 using FrontierDevelopments.General.CompProperties;
+using RimWorld;
 using Verse;
 
 namespace FrontierDevelopments.General.Comps
@@ -8,10 +9,7 @@ namespace FrontierDevelopments.General.Comps
     {
         public static readonly float KELVIN_ZERO_CELCIUS = 273.15f;
 
-        public static readonly int TICKS_PER_DAY = 60000;
-
-        public static float DissipationRate;
-
+        private float _dissipationRate;
         private float _temperature;
 
         public Func<bool> CanBreakdown = () => false;
@@ -40,7 +38,7 @@ namespace FrontierDevelopments.General.Comps
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            DissipationRate = TICKS_PER_DAY / Props.conductivity;
+            _dissipationRate = GenDate.TicksPerDay / Props.conductivity;
         }
 
         public void PushHeat(float wattDays)
@@ -53,16 +51,14 @@ namespace FrontierDevelopments.General.Comps
             return parent.AmbientTemperature;
         }
 
-        protected virtual void DissipateHeat(double kilojoules)
+        protected virtual void DissipateHeat(float kilojoules)
         {
-            GenTemperature.PushHeat(parent, (float)kilojoules);
+            GenTemperature.PushHeat(parent, kilojoules);
         }
 
         public override void CompTick()
         {
-            var ambient = AmbientTemp();
-            var tempDelta = Temp - ambient;
-            var heatDissipated =  tempDelta / DissipationRate;
+            var heatDissipated =  (Temp - AmbientTemp()) / _dissipationRate;
             Joules -= heatDissipated * 1000f;
             DissipateHeat(heatDissipated);
         }
