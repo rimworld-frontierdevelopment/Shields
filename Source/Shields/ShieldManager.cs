@@ -28,7 +28,7 @@ namespace FrontierDevelopments.Shields
             Vector3 origin, 
             Ray ray, 
             float limit,
-            int damage)
+            long damage)
         {
             try
             {
@@ -64,7 +64,7 @@ namespace FrontierDevelopments.Shields
             Vector3 origin,
             Vector3 position,
             Vector3 end,
-            int damage)
+            long damage)
         {
             try
             {
@@ -120,7 +120,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
         
-        public bool Block(Vector3 position, int damage)
+        public bool Block(Vector3 position, long damage)
         {
             try
             {
@@ -139,7 +139,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
         
-        public bool Block(Vector3 position, Vector3 origin, int damage)
+        public bool Block(Vector3 position, Vector3 origin, long damage)
         {
             try
             {

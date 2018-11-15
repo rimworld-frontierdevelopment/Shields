@@ -123,7 +123,7 @@ namespace FrontierDevelopments.Shields.Buildings
             return amount - gainAndBatteriesCover;
         }
 
-        public override bool Block(int damage, Vector3 position)
+        public override bool Block(long damage, Vector3 position)
         {
             if (!IsActive()) return false;
             // convert watts per day to watts per tick

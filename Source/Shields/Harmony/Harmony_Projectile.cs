@@ -106,14 +106,29 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 
                 if (projectile.def.projectile.flyOverhead)
                 {
-                    if (ticksToImpact <= 1 && shieldManager.Block(
-                            Common.ToVector3(nextPosition), 
-                            Common.ToVector3(origin),
-                            destination, 
-                            // TODO calculate mortar damage better
-                            projectile.def.projectile.GetDamageAmount(1f)) != null)
+                    if (ticksToImpact <= 1)
                     {
-                        return true;
+                        var damage = projectile.def.projectile.GetDamageAmount(1f);
+                    
+                        // fix for fire foam projectiles having 99999 damage
+                        if (projectile.def.defName == "Bullet_Shell_Firefoam")
+                        {
+                            damage = 10;
+                        }
+
+                        // check to ensure the projectile won't roll the power required int heal the shields
+                        if (damage >= 500)
+                        {
+                            Log.Warning("damage for " + projectile.Label + " too high at " + damage + ", reducing to 500. (This is probably a bug from the projectile having no damage set)");
+                            damage = 500;
+                        }
+
+                        return shieldManager.Block(
+                                   Common.ToVector3(nextPosition),
+                                   Common.ToVector3(origin),
+                                   destination,
+                                   // TODO calculate mortar damage better
+                                   damage) != null;
                     }
                 }
                 else
