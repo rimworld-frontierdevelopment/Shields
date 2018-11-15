@@ -63,5 +63,20 @@ namespace FrontierDevelopments.General.Comps
                 ChargeFromOther(battery, battery.StoredEnergy);
             }
         }
+
+        // weird hack to prevent double serialization of <parentThing> since this has two CompPower
+        public override void PostExposeData()
+        {
+            var storedEnergy = StoredEnergy;
+            Scribe_Values.Look<float>(ref storedEnergy, "storedPower", 0.0f, false);
+            
+            if (Scribe.mode == LoadSaveMode.LoadingVars)
+            {
+                var efficiency = Props.efficiency;
+                Props.efficiency = 1.0f;
+                AddEnergy(storedEnergy);
+                Props.efficiency = efficiency;
+            }
+        }
     }
 }
