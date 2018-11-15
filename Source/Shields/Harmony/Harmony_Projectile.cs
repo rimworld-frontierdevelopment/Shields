@@ -113,7 +113,6 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                             // TODO calculate mortar damage better
                             projectile.def.projectile.GetDamageAmount(1f)) != null)
                     {
-                        projectile.Destroy();
                         return true;
                     }
                 }
