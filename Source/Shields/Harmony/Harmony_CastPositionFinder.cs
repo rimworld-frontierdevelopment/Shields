@@ -44,9 +44,9 @@ namespace FrontierDevelopments.Shields
                         yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CastPositionRequest), "caster"));
                         yield return new CodeInstruction(OpCodes.Stloc, caster.LocalIndex);
                         yield return new CodeInstruction(OpCodes.Ldloc, caster.LocalIndex);
-                        yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(Thing), "get_Map"));
+                        yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod());
                         yield return new CodeInstruction(OpCodes.Ldloc, caster.LocalIndex);
-                        yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(Thing), "get_Position"));
+                        yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(Thing), nameof(Thing.Position)).GetGetMethod());
                         yield return new CodeInstruction(OpCodes.Ldarg_0);
                         yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_CastPositionFinder), nameof(CalculateShieldPreference)));
                         skipReturn = true;

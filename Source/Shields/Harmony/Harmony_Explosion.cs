@@ -18,7 +18,7 @@ namespace FrontierDevelopments.Shields
             blockedDamageTypes.Add(defName);
         }
         
-        static bool ShouldBlock(Explosion explosion, IntVec3 position)
+        private static bool ShouldBlock(Explosion explosion, IntVec3 position)
         {
             if (explosion?.damType?.defName == null) return false;
             foreach (var type in blockedDamageTypes)
@@ -50,7 +50,8 @@ namespace FrontierDevelopments.Shields
                         // search for Map::InBounds
                         case 0:
                         {
-                            if (instruction.opcode == OpCodes.Call && (instruction.operand as MethodInfo).Name == nameof(GenGrid.InBounds))
+                            if (instruction.opcode == OpCodes.Call 
+                                && instruction.operand as MethodInfo == AccessTools.Method(typeof(GenGrid), nameof(GenGrid.InBounds), new []{ typeof(IntVec3), typeof(Map) }))
                             {
                                 patchPhase = 1;
                             }

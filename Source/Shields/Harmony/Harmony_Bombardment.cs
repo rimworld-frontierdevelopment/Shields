@@ -35,7 +35,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                         // search for call to get_Map
                         case 0:
                         {
-                            if (instruction.opcode == OpCodes.Call && (instruction.operand as MethodInfo).Name == "get_Map")
+                            if (instruction.opcode == OpCodes.Call && instruction.operand as MethodInfo == AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod())
                             {
                                 patchPhase = 1;
                             }
@@ -87,7 +87,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                         // find get_Map
                         case 0:
                         {
-                            if (instruction.opcode == OpCodes.Call && (instruction.operand as MethodInfo).Name == "get_Map")
+                            if (instruction.opcode == OpCodes.Call && instruction.operand as MethodInfo == AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod())
                             {
                                 patchPhase = 1;
                             }

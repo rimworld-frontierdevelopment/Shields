@@ -28,7 +28,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                         case 0:
                         {
                             if (instruction.opcode == OpCodes.Call
-                                && (instruction.operand as MethodInfo).Name == "CheckForFreeInterceptBetween")
+                                && instruction.operand as MethodInfo == AccessTools.Method(typeof(Projectile), "CheckForFreeInterceptBetween"))
                             {
                                 patchPhase = 1;
                             }
