@@ -81,12 +81,14 @@
     <Compile Include="Shields\Harmony\Harmony_Verb.cs" />
     <Compile Include="Shields\Harmony\Harmony_Projectile.cs" />
     <Compile Include="Shields\Harmony\Harmony_Skyfaller.cs" />
+    <Compile Include="Shields\LocalDefOf.cs" />
     <Compile Include="Shields\Mod.cs" />
     <Compile Include="Shields\IShield.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\CrashPodHandler.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\Module.cs" />
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
+    <Compile Include="Shields\Tale\Tale_KilledByImpactingOnShield.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

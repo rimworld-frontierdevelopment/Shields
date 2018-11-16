@@ -17,10 +17,10 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
             {
                 if (pod.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(pod.Position, 0), Mod.Settings.DropPodDamage))
                 {
-                    foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn))
+                    foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn).Select(p => (Pawn)p))
                     {
-                        // TODO create story?
                         pawn.Kill(new DamageInfo(new DamageDef(), 100));
+                        TaleRecorder.RecordTale(LocalDefOf.KilledByImpactingOnShield, pawn, pod.Position, pod.Map);
                     }
                     pod.Destroy();
                     Messages.Message("fd.shields.incident.droppod.blocked.body".Translate(), new GlobalTargetInfo(pod.Position, pod.Map), MessageTypeDefOf.NeutralEvent);
