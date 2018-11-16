@@ -124,8 +124,8 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                         }
 
                         return shieldManager.Block(
-                                   Common.ToVector3(nextPosition),
                                    Common.ToVector3(origin),
+                                   Common.ToVector3(currentPosition),
                                    destination,
                                    // TODO calculate mortar damage better
                                    damage) != null;
