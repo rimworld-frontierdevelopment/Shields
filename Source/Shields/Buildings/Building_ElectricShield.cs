@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using FrontierDevelopments.General;
@@ -17,12 +16,12 @@ namespace FrontierDevelopments.Shields.Buildings
     {
         public enum ShieldStatus
         {
-            NO_POWER_NET,
-            UNPOWERED,
-            INTERNAL_BATTERY_DISCHARGED,
-            THERMAL_SHUTDOWN,
-            BATTERY_POWER_TOO_LOW,
-            ONLINE
+            NoPowerNet,
+            Unpowered,
+            InternalBatteryDischarged,
+            ThermalShutdown,
+            BatteryPowerTooLow,
+            Online
         }
         
         private CompPowerTrader _powerTrader;
@@ -43,11 +42,11 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             get
             {
-                if (!HasPowerNet()) return ShieldStatus.NO_POWER_NET;
-                if (!_powerTrader.PowerOn) return ShieldStatus.UNPOWERED;
-                if (_thermalShutoff && _heatSink.OverMinorThreshold) return ShieldStatus.THERMAL_SHUTDOWN;
-                if (!IsActive()) return ShieldStatus.BATTERY_POWER_TOO_LOW;
-                return ShieldStatus.ONLINE;
+                if (!HasPowerNet()) return ShieldStatus.NoPowerNet;
+                if (!_powerTrader.PowerOn) return ShieldStatus.Unpowered;
+                if (_thermalShutoff && _heatSink.OverMinorThreshold) return ShieldStatus.ThermalShutdown;
+                if (!IsActive()) return ShieldStatus.BatteryPowerTooLow;
+                return ShieldStatus.Online;
             }
         }
 
@@ -130,7 +129,7 @@ namespace FrontierDevelopments.Shields.Buildings
             if (!IsActive()) return false;
             // convert watts per day to watts per tick
             var charge = (damage * 60000 * Mod.Settings.PowerPerDamage);
-            if (Mod.Settings.ScaleOnHeat) charge = charge * Mathf.Pow(1.01f, (float) _heatSink.Temp);
+            if (Mod.Settings.ScaleOnHeat) charge = charge * Mathf.Pow(1.01f, _heatSink.Temp);
             var drawn = -DrawPowerOneTick(-charge);
             _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             _additionalPowerDraw = charge;
@@ -167,21 +166,21 @@ namespace FrontierDevelopments.Shields.Buildings
             var stringBuilder = new StringBuilder();
             switch (Status)
             {
-                case ShieldStatus.NO_POWER_NET: 
+                case ShieldStatus.NoPowerNet: 
                     return "shield.status.offline".Translate() + " - " + "shield.status.no_power".Translate();
-                case ShieldStatus.UNPOWERED:
+                case ShieldStatus.Unpowered:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.no_power".Translate());
                     break;
-                case ShieldStatus.BATTERY_POWER_TOO_LOW: 
+                case ShieldStatus.BatteryPowerTooLow: 
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.battery_too_low".Translate() + " " + Mod.Settings.MinimumOnlinePower  + " Wd");
                     break;
-                case ShieldStatus.INTERNAL_BATTERY_DISCHARGED:
+                case ShieldStatus.InternalBatteryDischarged:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.internal_battery_discharged".Translate());
                     break;
-                case ShieldStatus.THERMAL_SHUTDOWN:
+                case ShieldStatus.ThermalShutdown:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.thermal_safety".Translate());
                     break;
-                case ShieldStatus.ONLINE:
+                case ShieldStatus.Online:
                     stringBuilder.AppendLine("shield.status.online".Translate());
                     break;
             }
