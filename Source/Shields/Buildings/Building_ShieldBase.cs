@@ -28,5 +28,6 @@ namespace FrontierDevelopments.Shields.Buildings
         public abstract Vector3? Collision(Ray ray, float limit);
         public abstract Vector3? Collision(Vector3 start, Vector3 end);
         public abstract bool Block(long damage, Vector3 position);
+        public abstract void Draw(CellRect cameraRect);
     }
 }

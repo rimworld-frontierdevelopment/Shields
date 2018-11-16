@@ -1,6 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Harmony;
 using UnityEngine;
 using Verse;
 
@@ -157,6 +155,14 @@ namespace FrontierDevelopments.Shields
             }
             catch (KeyNotFoundException) {}
             return false;
+        }
+
+        public void DrawShields(CellRect cameraRect)
+        {
+            foreach (var shield in _shields)
+            {
+                shield.Draw(cameraRect);
+            }
         }
     }
 }

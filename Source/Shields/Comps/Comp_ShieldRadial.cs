@@ -15,6 +15,10 @@ namespace FrontierDevelopments.Shields.Comps
         private int _cellCount;
         private bool _renderField = true;
 
+        private CellRect? _cameraLast;
+        private bool _renderLast = true;
+        private IntVec3 _positionLast;
+
         public override void Initialize(Verse.CompProperties compProperties)
         {
             base.Initialize(compProperties);
@@ -25,6 +29,7 @@ namespace FrontierDevelopments.Shields.Comps
         {
             base.PostSpawnSetup(respawningAfterLoad);
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
+            _positionLast = parent.Position;
         }
 
         public int ProtectedCellCount => _cellCount;
@@ -50,6 +55,11 @@ namespace FrontierDevelopments.Shields.Comps
                 _fieldRadius = value;
                 _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             }
+        }
+
+        public override void CompTick()
+        {
+            _positionLast = parent.Position;
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -146,9 +156,39 @@ namespace FrontierDevelopments.Shields.Comps
             return null;
         }
 
-        public void Draw()
+        private bool Collides(CellRect rect)
         {
-            if (!_renderField) return;
+            var position = parent.Position;
+            if (rect.minX <= position.x
+                && position.x <= rect.maxX
+                && rect.minZ <= position.z
+                && position.z <= rect.maxZ) return true;
+
+            var a = new Vector3(rect.minX + 0.5f, 0, rect.minZ + 0.5f);
+            var b = new Vector3(rect.minX + 0.5f, 0, rect.maxZ + 0.5f);
+            var c = new Vector3(rect.maxX + 0.5f, 0, rect.maxZ + 0.5f);
+            var d = new Vector3(rect.maxX + 0.5f, 0, rect.minZ + 0.5f);
+
+            return Collision(a, b) != null
+                         || Collision(b, c) != null
+                         || Collision(c, d) != null
+                         || Collision(d, a) != null;
+        }
+
+        private bool ShouldDraw(CellRect cameraRect)
+        {
+            if (cameraRect == _cameraLast && parent.Position == _positionLast) return _renderLast;
+
+            _cameraLast = cameraRect;
+
+            var collides = Collides(cameraRect);
+            _renderLast = collides;
+            return collides;
+        }
+
+        public void Draw(CellRect cameraRect)
+        {
+            if (!_renderField || !ShouldDraw(cameraRect)) return;
             var position = Common.ToVector3(parent.Position);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(_fieldRadius * 2.2);

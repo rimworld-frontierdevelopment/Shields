@@ -19,6 +19,5 @@
 		<holdsRoof>false</holdsRoof>
 		<passability>Impassable</passability>
 		<tickerType>Normal</tickerType>
-		<drawOffscreen>true</drawOffscreen>
 	</ThingDef>
 </Defs>

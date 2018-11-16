@@ -10,5 +10,6 @@ namespace FrontierDevelopments.Shields
         Vector3? Collision(Ray ray, float limit);
         Vector3? Collision(Vector3 start, Vector3 end);
         bool Block(long damage, Vector3 position);
+        void Draw(CellRect cameraRect);
     }
 }
