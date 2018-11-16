@@ -1,10 +1,12 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
 using Harmony;
 using RimWorld;
 using Verse;
+using Verse.AI;
 
 namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
@@ -114,6 +116,32 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
 
                     yield return instruction;
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(Bombardment), nameof(Bombardment.Tick))]
+        static class Patch_Tick
+        {
+            [HarmonyPostfix]
+            static void Postfix(Bombardment __instance)
+            {
+                RegionTraverser.BreadthFirstTraverse(__instance.Position, __instance.Map, (from, to) => true, region =>
+                {
+                    region.ListerThings.ThingsInGroup(ThingRequestGroup.Pawn)
+                        .Select(p => (Pawn)p)
+                        .Where(p => !p.Downed && !p.Dead && !p.Drafted)
+                        .Where(p => p.CurJobDef != JobDefOf.Flee && !p.Downed)
+                        .Where(p => p.Position.DistanceTo(__instance.Position) <= 24.0f)
+                        .ToList()
+                        .ForEach(pawn =>
+                        {
+                            Log.Message(pawn.Label + " started fleeing from bombardment " + __instance.Label);
+                            var threats = new List<Thing> { __instance };
+                            var fleeDest1 = CellFinderLoose.GetFleeDest(pawn, threats, pawn.Position.DistanceTo(__instance.Position) + Bombardment.EffectiveRadius);
+                            pawn.jobs.StartJob(new Job(JobDefOf.Flee, fleeDest1, (LocalTargetInfo) __instance), JobCondition.InterruptOptional, null, false, true, null, new JobTag?());
+                        });
+                    return false;
+                }, 25, RegionType.Set_All);
             }
         }
     }
