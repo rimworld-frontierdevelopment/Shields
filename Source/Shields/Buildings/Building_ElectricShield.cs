@@ -37,6 +37,8 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
 
+        public bool FlickedOn => _flickable == null || _flickable != null && _flickable.SwitchIsOn; 
+
         public ShieldStatus Status
         {
             get
@@ -79,7 +81,7 @@ namespace FrontierDevelopments.Shields.Buildings
                 _powerTrader.PowerOutput = powerWanted;
             }
             base.Tick();
-            if(_activeLastTick && !active && _flickable.SwitchIsOn)
+            if(_activeLastTick && !active && FlickedOn)
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             _additionalPowerDraw = 0;
             _activeLastTick = active;
