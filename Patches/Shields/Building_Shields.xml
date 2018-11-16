@@ -9,7 +9,7 @@
             <operations>
                 <!-- Standard Shield -->
                 <li Class="PatchOperationAdd">
-                    <xpath>*/ThingDef[defName="Building_ShieldGenerator"]/comps</xpath>
+                    <xpath>/Defs/ThingDef[defName="Building_ShieldGenerator"]/comps</xpath>
                     <value>
                         <li Class="CentralizedClimateControl.CompProperties_AirFlow">
                             <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
@@ -19,14 +19,14 @@
                     </value>
                 </li>
                 <li Class="PatchOperationAttributeSet">
-                    <xpath>*/ThingDef[defName="Building_ShieldGenerator"]/comps/li[@Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink"]</xpath>
+                    <xpath>/Defs/ThingDef[defName="Building_ShieldGenerator"]/comps/li[@Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink"]</xpath>
                     <attribute>Class</attribute>
                     <value>FrontierDevelopments.General.CompProperties.CompProperties_ClimateControlHeatsink</value>
                 </li>
     
                 <!-- Large Shield -->
                 <li Class="PatchOperationAdd">
-                    <xpath>*/ThingDef[defName="Building_ShieldGeneratorLarge"]/comps</xpath>
+                    <xpath>/Defs/ThingDef[defName="Building_ShieldGeneratorLarge"]/comps</xpath>
                     <value>
                         <li Class="CentralizedClimateControl.CompProperties_AirFlow">
                             <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
