@@ -9,7 +9,7 @@ using Verse;
 
 namespace FrontierDevelopments.Shields.Comps
 {
-    public class Comp_ShieldRadial : ThingComp
+    public class Comp_ShieldRadial : ThingComp, IShield
     {
         private int _fieldRadius;
         private int _cellCount;
@@ -30,6 +30,17 @@ namespace FrontierDevelopments.Shields.Comps
             base.PostSpawnSetup(respawningAfterLoad);
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
+            parent.Map.GetComponent<ShieldManager>().Add(this);
+        }
+
+        public override void PostDeSpawn(Map map)
+        {
+            map.GetComponent<ShieldManager>().Del(this);
+        }
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            previousMap.GetComponent<ShieldManager>().Del(this);
         }
 
         public int ProtectedCellCount => _cellCount;
@@ -207,6 +218,28 @@ namespace FrontierDevelopments.Shields.Comps
         {
             Scribe_Values.Look(ref _fieldRadius, "radius", Props.maxRadius);
             Scribe_Values.Look(ref _renderField, "renderField", true);
+        }
+
+        public bool IsActive()
+        {
+            switch (parent)
+            {
+                case IShield parentShield:
+                    return parentShield.IsActive();
+            }
+
+            return false;
+        }
+
+        public bool Block(long damage, Vector3 position)
+        {
+            switch (parent)
+            {
+                case IShield parentShield:
+                    return parentShield.Block(damage, position);
+            }
+
+            return false;
         }
     }
 }

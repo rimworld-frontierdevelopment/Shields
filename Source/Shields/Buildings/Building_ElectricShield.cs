@@ -12,7 +12,7 @@ using Verse.Sound;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
-    public class Building_ElectricShield : Building_ShieldBase
+    public class Building_ElectricShield : Building, IShield
     {
         public enum ShieldStatus
         {
@@ -91,7 +91,7 @@ namespace FrontierDevelopments.Shields.Buildings
             return _powerTrader?.PowerNet != null;
         }
         
-        public override bool IsActive()
+        public bool IsActive()
         {
             return _powerTrader.PowerOn 
                    && (_powerTrader.PowerNet?.CurrentStoredEnergy()).GetValueOrDefault(0f) > Mod.Settings.MinimumOnlinePower
@@ -124,7 +124,7 @@ namespace FrontierDevelopments.Shields.Buildings
             return amount - gainAndBatteriesCover;
         }
 
-        public override bool Block(long damage, Vector3 position)
+        public bool Block(long damage, Vector3 position)
         {
             if (!IsActive()) return false;
             // convert watts per day to watts per tick
@@ -139,17 +139,17 @@ namespace FrontierDevelopments.Shields.Buildings
             return true;    
         }
 
-        public override bool Collision(Vector3 vector)
+        public bool Collision(Vector3 vector)
         {
             return _shield.Collision(vector);
         }
 
-        public override Vector3? Collision(Vector3 start, Vector3 end)
+        public Vector3? Collision(Vector3 start, Vector3 end)
         {
             return _shield.Collision(start, end);
         }
 
-        public override Vector3? Collision(Ray ray, float limit)
+        public Vector3? Collision(Ray ray, float limit)
         {
             return _shield.Collision(ray, limit);
         }
@@ -251,7 +251,7 @@ namespace FrontierDevelopments.Shields.Buildings
             return DoMajorBreakdown();
         }
 
-        public override void Draw(CellRect cameraRect)
+        public void Draw(CellRect cameraRect)
         {
             if(IsActive()) _shield.Draw(cameraRect);
         }
