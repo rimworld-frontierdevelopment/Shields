@@ -30,15 +30,15 @@ namespace FrontierDevelopments.General.IncidentWorkers
 
             if (Mod.Settings.EnableCriticalThermalIncidents && target.OverCriticalThreshold)
             {
-                target.CriticalBreakdown();
+                target.DoCriticalBreakdown();
             } 
             else if (Mod.Settings.EnableMajorThermalIncidents && target.OverMajorThreshold)
             {
-                target.MajorBreakdown();
+                target.DoMajorBreakdown();
             }
             else if (Mod.Settings.EnableMinorThermalIncidents && target.OverMinorThreshold)
             {
-                target.MinorBreakdown();
+                target.DoMinorBreakdown();
             }
             else
             {

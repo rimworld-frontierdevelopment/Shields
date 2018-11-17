@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using System.Text;
+﻿using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
-using FrontierDevelopments.Shields.Comps;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -20,11 +18,11 @@ namespace FrontierDevelopments.Shields.Buildings
             Online
         }
 
+        private CompFlickable _flickable;
         private IEnergySource _energySource;
         private IShield _shield;
 
-        private CompFlickable _flickable;
-        private Comp_HeatSink _heatSink;
+        private IHeatsink _heatSink;
 
         private bool _activeLastTick;
 
@@ -50,10 +48,7 @@ namespace FrontierDevelopments.Shields.Buildings
             _energySource = EnergySourceUtility.Find(this);
             _flickable = GetComp<CompFlickable>();
             _shield = ShieldUtility.FindComp(this);
-            _heatSink = GetComp<Comp_HeatSink>();
-            _heatSink.MinorBreakdown = () => BreakdownMessage("fd.shields.incident.minor.title".Translate(), "fd.shields.incident.minor.body".Translate(), DoMinorBreakdown());
-            _heatSink.MajorBreakdown = () => BreakdownMessage("fd.shields.incident.major.title".Translate(), "fd.shields.incident.major.body".Translate(), DoMajorBreakdown());
-            _heatSink.CriticalBreakdown = () => BreakdownMessage("fd.shields.incident.critical.title".Translate(), "fd.shields.incident.critical.body".Translate(), DoCriticalBreakdown());
+            _heatSink = HeatsinkUtility.FindComp(this);
             _activeLastTick = IsActive();
             base.SpawnSetup(map, respawningAfterLoad);
         }
@@ -127,44 +122,6 @@ namespace FrontierDevelopments.Shields.Buildings
             }
             stringBuilder.Append(base.GetInspectString());
             return stringBuilder.ToString();
-        }
-
-        private void BreakdownMessage(string title, string body, float drained)
-        {
-            if (Faction != Faction.OfPlayer) return;
-            Find.LetterStack.ReceiveLetter(
-                title,
-                body.Replace("{0}", ((int)drained).ToString()), 
-                LetterDefOf.NegativeEvent, 
-                new TargetInfo(Position, Map));
-        }
-
-        private float DoMinorBreakdown()
-        {
-            var amount = _energySource.EnergyAvailable * (float) new System.Random().NextDouble();
-            _energySource.Drain(amount);
-            return amount;
-        }
-
-        private float DoMajorBreakdown()
-        {
-            GetComp<CompBreakdownable>().DoBreakdown();
-            if (Faction != Faction.OfPlayer) return DoMinorBreakdown();
-            // manually remove the default letter...
-            Find.LetterStack.RemoveLetter(Find.LetterStack.LettersListForReading.First(letter => 
-                letter.lookTargets.targets.Any(t => t.Thing == this)));
-            return DoMinorBreakdown();
-        }
-
-        private float DoCriticalBreakdown()
-        {
-            GenExplosion.DoExplosion(
-                Position,
-                Map,
-                3.5f,
-                DamageDefOf.Flame,
-                this);
-            return DoMajorBreakdown();
         }
 
         public void Draw(CellRect cameraRect)

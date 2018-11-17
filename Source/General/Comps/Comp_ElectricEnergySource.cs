@@ -49,7 +49,7 @@ namespace FrontierDevelopments.General.Comps
         {
             base.PostSpawnSetup(respawningAfterLoad);
             _powerTrader = parent.GetComp<CompPowerTrader>();
-            _heatSink = HeatsinkUtility.FindHeatsink(parent);
+            _heatSink = HeatsinkUtility.Find(parent);
         }
 
         public override void PostExposeData()

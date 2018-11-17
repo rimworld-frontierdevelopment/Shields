@@ -11,24 +11,27 @@ namespace FrontierDevelopments.General
 
     public class HeatsinkUtility
     {
-        public static IHeatsink FindHeatsink(ThingWithComps parent)
+        public static IHeatsink Find(ThingWithComps parent)
         {
             switch (parent)
             {
                 case IHeatsink parentHeatsink:
                     return parentHeatsink;
                 default:
-                    foreach (var comp in parent.AllComps)
-                    {
-                        switch (comp)
-                        {
-                            case IHeatsink compHeatsink:
-                                return compHeatsink;
-                        }
-                    }
-                    break;
+                    return FindComp(parent);
             }
+        }
 
+        public static IHeatsink FindComp(ThingWithComps parent)
+        {
+            foreach (var comp in parent.AllComps)
+            {
+                switch (comp)
+                {
+                    case IHeatsink compHeatSink:
+                        return compHeatSink;
+                }
+            }
             return null;
         }
     }

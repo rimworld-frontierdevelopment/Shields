@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using FrontierDevelopments.General.CompProperties;
 using FrontierDevelopments.Shields;
 using RimWorld;
@@ -16,9 +17,6 @@ namespace FrontierDevelopments.General.Comps
         private bool _thermalShutoff = true;
 
         public bool CanBreakdown => !_thermalShutoff && OverMinorThreshold;
-        public Action MinorBreakdown = () => { };
-        public Action MajorBreakdown = () => { };
-        public Action CriticalBreakdown = () => { };
         
         public CompProperties_HeatSink Props => (CompProperties_HeatSink)props;
 
@@ -90,6 +88,72 @@ namespace FrontierDevelopments.General.Comps
                     toggleAction = () => _thermalShutoff = !_thermalShutoff
                 };
             }
+        }
+
+        public void DoMinorBreakdown()
+        {
+            BreakdownMessage(
+                "fd.shields.incident.minor.title".Translate(), 
+                "fd.shields.incident.minor.body".Translate(), 
+                MinorBreakdown());
+        }
+
+        public void DoMajorBreakdown()
+        {
+            BreakdownMessage(
+                "fd.shields.incident.major.title".Translate(), 
+                "fd.shields.incident.major.body".Translate(), 
+                MajorBreakdown());
+        }
+
+        public void DoCriticalBreakdown()
+        {
+            BreakdownMessage(
+                "fd.shields.incident.critical.title".Translate(), 
+                "fd.shields.incident.critical.body".Translate(), 
+                CriticalBreakdown());
+        }
+        
+        private float MinorBreakdown()
+        {
+            var energySource = EnergySourceUtility.Find(parent);
+            if (energySource == null) return 0;
+            var amount = energySource.EnergyAvailable * (float) new Random().NextDouble();
+            energySource.Drain(amount);
+            return amount;
+        }
+
+        private float MajorBreakdown()
+        {
+            parent.GetComp<CompBreakdownable>().DoBreakdown();
+            if (parent.Faction == Faction.OfPlayer)
+            {
+                // manually remove the default letter...
+                Find.LetterStack.RemoveLetter(Find.LetterStack.LettersListForReading.First(letter => 
+                    letter.lookTargets.targets.Any(t => t.Thing == parent)));
+            }
+            return MinorBreakdown();
+        }
+
+        private float CriticalBreakdown()
+        {
+            GenExplosion.DoExplosion(
+                parent.Position,
+                parent.Map,
+                3.5f,
+                DamageDefOf.Flame,
+                parent);
+            return MajorBreakdown();
+        }
+        
+        private void BreakdownMessage(string title, string body, float drained)
+        {
+            if (parent.Faction != Faction.OfPlayer) return;
+            Find.LetterStack.ReceiveLetter(
+                title,
+                body.Replace("{0}", ((int)drained).ToString()), 
+                LetterDefOf.NegativeEvent, 
+                new TargetInfo(parent.Position, parent.Map));
         }
     }
 }
