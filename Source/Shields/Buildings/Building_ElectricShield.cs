@@ -21,12 +21,14 @@ namespace FrontierDevelopments.Shields.Buildings
         }
 
         private IEnergySource _energySource;
+        private IShield _shield;
 
         private CompFlickable _flickable;
-        private Comp_ShieldRadial _shield;
         private Comp_HeatSink _heatSink;
 
         private bool _activeLastTick;
+
+        public int ProtectedCellCount => _shield.ProtectedCellCount;
 
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
 
@@ -47,7 +49,7 @@ namespace FrontierDevelopments.Shields.Buildings
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
             _energySource = EnergySourceUtility.Find(this);
             _flickable = GetComp<CompFlickable>();
-            _shield = GetComp<Comp_ShieldRadial>();
+            _shield = ShieldUtility.FindComp(this);
             _heatSink = GetComp<Comp_HeatSink>();
             _heatSink.MinorBreakdown = () => BreakdownMessage("fd.shields.incident.minor.title".Translate(), "fd.shields.incident.minor.body".Translate(), DoMinorBreakdown());
             _heatSink.MajorBreakdown = () => BreakdownMessage("fd.shields.incident.major.title".Translate(), "fd.shields.incident.major.body".Translate(), DoMajorBreakdown());
