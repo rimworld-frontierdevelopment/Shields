@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
@@ -16,22 +15,18 @@ namespace FrontierDevelopments.Shields.Buildings
     {
         public enum ShieldStatus
         {
-            NoPowerNet,
             Unpowered,
-            InternalBatteryDischarged,
             ThermalShutdown,
-            BatteryPowerTooLow,
             Online
         }
-        
-        private CompPowerTrader _powerTrader;
+
+        private IEnergySource _energySource;
+
         private CompFlickable _flickable;
         private Comp_ShieldRadial _shield;
         private Comp_HeatSink _heatSink;
 
         private bool _activeLastTick;
-
-        private float _additionalPowerDraw;
 
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
 
@@ -41,10 +36,8 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             get
             {
-                if (!HasPowerNet()) return ShieldStatus.NoPowerNet;
-                if (!_powerTrader.PowerOn) return ShieldStatus.Unpowered;
                 if (_heatSink.OverTemperature) return ShieldStatus.ThermalShutdown;
-                if (!IsActive()) return ShieldStatus.BatteryPowerTooLow;
+                if (!_energySource.IsActive) return ShieldStatus.Unpowered;
                 return ShieldStatus.Online;
             }
         }
@@ -52,11 +45,10 @@ namespace FrontierDevelopments.Shields.Buildings
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
-            _powerTrader = GetComp<CompPowerTrader>();
+            _energySource = EnergySourceUtility.Find(this);
             _flickable = GetComp<CompFlickable>();
             _shield = GetComp<Comp_ShieldRadial>();
             _heatSink = GetComp<Comp_HeatSink>();
-            _heatSink.CanBreakdown = IsActive;
             _heatSink.MinorBreakdown = () => BreakdownMessage("fd.shields.incident.minor.title".Translate(), "fd.shields.incident.minor.body".Translate(), DoMinorBreakdown());
             _heatSink.MajorBreakdown = () => BreakdownMessage("fd.shields.incident.major.title".Translate(), "fd.shields.incident.major.body".Translate(), DoMajorBreakdown());
             _heatSink.CriticalBreakdown = () => BreakdownMessage("fd.shields.incident.critical.title".Translate(), "fd.shields.incident.critical.body".Translate(), DoCriticalBreakdown());
@@ -67,34 +59,16 @@ namespace FrontierDevelopments.Shields.Buildings
         public override void Tick()
         {
             var active = IsActive();
-            if (_powerTrader?.PowerNet != null)
-            {
-                var availThisTick = _powerTrader.PowerNet.CurrentEnergyGainRate() +
-                                    _powerTrader.PowerNet.CurrentStoredEnergy() * 60000;
-                var powerWanted = BasePowerConsumption - _additionalPowerDraw;
-                if (availThisTick + powerWanted < 0)
-                {
-                    powerWanted = -availThisTick;
-                }
-                _powerTrader.PowerOutput = powerWanted;
-            }
+            _energySource.BaseConsumption = BasePowerConsumption;
             base.Tick();
             if(_activeLastTick && !active && FlickedOn)
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
-            _additionalPowerDraw = 0;
             _activeLastTick = active;
         }
 
-        private bool HasPowerNet()
-        {
-            return _powerTrader?.PowerNet != null;
-        }
-        
         public bool IsActive()
         {
-            return _powerTrader.PowerOn
-                   && (_powerTrader.PowerNet?.CurrentStoredEnergy()).GetValueOrDefault(0f) > Mod.Settings.MinimumOnlinePower
-                   && !_heatSink.OverTemperature;
+            return _energySource.IsActive && !_heatSink.OverTemperature;
         }
 
         private void RenderImpactEffect(Vector2 position)
@@ -107,32 +81,12 @@ namespace FrontierDevelopments.Shields.Buildings
             SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
         }
 
-        private float DrawPowerOneTick(float amount)
-        {
-            if (_powerTrader.PowerNet == null) return 0f;
-            
-            // can this be feed by instantaneous draw? (who are we kidding, no way)
-            var gainPowerCovers = _powerTrader.PowerNet.CurrentEnergyGainRate() + BasePowerConsumption + amount;
-            if (gainPowerCovers >= 0) return amount;
-            var gainAndBatteriesCover = gainPowerCovers + _powerTrader.PowerNet.CurrentStoredEnergy() * 60000;
-            
-            // will batteries cover the difference?
-            if (gainAndBatteriesCover >= 0) return amount;
-
-            // uh-oh, energy shortfall
-            return amount - gainAndBatteriesCover;
-        }
-
         public bool Block(long damage, Vector3 position)
         {
             if (!IsActive()) return false;
             // convert watts per day to watts per tick
             var charge = (damage * 60000 * Mod.Settings.PowerPerDamage);
-            if (Mod.Settings.ScaleOnHeat) charge = charge * Mathf.Pow(1.01f, _heatSink.Temp);
-            var drawn = -DrawPowerOneTick(-charge);
-            _heatSink.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
-            _additionalPowerDraw = charge;
-            if (drawn < charge) return false;
+            if (!_energySource.Draw(charge)) return false;
             RenderImpactEffect(Common.ToVector2(position));
             PlayBulletImpactSound(Common.ToVector2(position));
             return true;    
@@ -159,16 +113,8 @@ namespace FrontierDevelopments.Shields.Buildings
             var stringBuilder = new StringBuilder();
             switch (Status)
             {
-                case ShieldStatus.NoPowerNet: 
-                    return "shield.status.offline".Translate() + " - " + "shield.status.no_power".Translate();
                 case ShieldStatus.Unpowered:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.no_power".Translate());
-                    break;
-                case ShieldStatus.BatteryPowerTooLow: 
-                    stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.battery_too_low".Translate() + " " + Mod.Settings.MinimumOnlinePower  + " Wd");
-                    break;
-                case ShieldStatus.InternalBatteryDischarged:
-                    stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.internal_battery_discharged".Translate());
                     break;
                 case ShieldStatus.ThermalShutdown:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.thermal_safety".Translate());
@@ -193,14 +139,9 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private float DoMinorBreakdown()
         {
-            var random = new System.Random();
-            return GetComp<CompPowerTrader>().PowerNet.batteryComps
-                .Aggregate(0f, (total, battery) =>
-                {
-                    var drain = battery.StoredEnergy * (float) random.NextDouble();
-                    battery.DrawPower(drain);
-                    return total + drain;
-                });
+            var amount = _energySource.EnergyAvailable * (float) new System.Random().NextDouble();
+            _energySource.Drain(amount);
+            return amount;
         }
 
         private float DoMajorBreakdown()

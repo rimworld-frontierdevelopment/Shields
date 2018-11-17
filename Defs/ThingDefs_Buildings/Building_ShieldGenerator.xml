@@ -33,6 +33,9 @@
             <li Class="CompProperties_Power">
                 <compClass>CompPowerTrader</compClass>
             </li>
+            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_ElectricEnergySource">
+                <minimumOnlinePower>50</minimumOnlinePower>
+            </li>
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Breakdownable"/>
             <li Class="FrontierDevelopments.Shields.CompProperties.CompProperties_ShieldRadial">

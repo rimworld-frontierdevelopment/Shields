@@ -13,7 +13,6 @@ namespace FrontierDevelopments.Shields
         // Power
         // TODO include later maybe. rimworld's support for float settings is non-existant in A17 though
         public float PowerPerTile = 0.1f;
-        public int MinimumOnlinePower = 50;
         
         // Integrity
         public float PowerPerDamage = 1.0f;
@@ -65,12 +64,6 @@ namespace FrontierDevelopments.Shields
 //                "fd.settings.shield.power.per_tile.label".Translate(), 
 //                ref PowerPerTile, 
 //                ref powerPerTileBuffer);
-            
-            var minimumOnlinePowerBuffer = MinimumOnlinePower.ToString();
-            list.TextFieldNumericLabeled<int>(
-                "fd.settings.shield.power.minimum_online.label".Translate(),
-                ref MinimumOnlinePower,
-                ref minimumOnlinePowerBuffer);
             
             // Integrity
             Heading(list, "fd.settings.shield.integrity.heading".Translate());
@@ -134,7 +127,6 @@ namespace FrontierDevelopments.Shields
 
             // TODO see above
 //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
-            Scribe_Values.Look(ref MinimumOnlinePower, "minimumOnlinePower", 50);
             
             Scribe_Values.Look(ref PowerPerDamage, "powerPerDamage", 1f);
             Scribe_Values.Look(ref DropPodDamage, "dropPodDamage", 100);

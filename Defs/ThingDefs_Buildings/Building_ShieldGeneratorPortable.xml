@@ -35,6 +35,9 @@
             <li Class="FrontierDevelopments.General.CompProperties.CompProperties_PowerPlantTrader">
                 <transmitsPower>true</transmitsPower>
             </li>
+            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_ElectricEnergySource">
+                <minimumOnlinePower>50</minimumOnlinePower>
+            </li>
             <li Class="FrontierDevelopments.General.CompProperties.CompProperties_BatteryInternal">
                 <storedEnergyMax>1000</storedEnergyMax>
                 <efficiency>0.5</efficiency>

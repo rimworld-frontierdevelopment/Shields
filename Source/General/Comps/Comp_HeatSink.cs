@@ -7,7 +7,7 @@ using Verse;
 
 namespace FrontierDevelopments.General.Comps
 {
-    public class Comp_HeatSink : ThingComp
+    public class Comp_HeatSink : ThingComp, IHeatsink
     {
         public static readonly float KELVIN_ZERO_CELCIUS = 273.15f;
 

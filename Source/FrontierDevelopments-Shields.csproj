@@ -59,12 +59,16 @@
     <Compile Include="General\Common.cs" />
     <Compile Include="General\CompProperties\CompProperties_BatteryInternal.cs" />
     <Compile Include="General\CompProperties\CompProperties_ClimateControlHeatsink.cs" />
+    <Compile Include="General\CompProperties\CompProperties_EletricEnergySource.cs" />
     <Compile Include="General\CompProperties\CompProperties_HeatSink.cs" />
     <Compile Include="General\CompProperties\CompProperties_PowerPlantTrader.cs" />
     <Compile Include="General\Comps\Comp_BatteryInternal.cs" />
     <Compile Include="General\Comps\Comp_ClimateControlHeatsink.cs" />
+    <Compile Include="General\Comps\Comp_ElectricEnergySource.cs" />
     <Compile Include="General\Comps\Comp_PowerPlantTrader.cs" />
     <Compile Include="General\Comps\Comp_HeatSink.cs" />
+    <Compile Include="General\IEnergySource.cs" />
+    <Compile Include="General\IHeatsink.cs" />
     <Compile Include="General\IncidentWorkers\IncidentWorker_HeatSinkOverTemperature.cs" />
     <Compile Include="General\Windows\Popup_IntSlider.cs" />
     <Compile Include="Harmony\Harmony_GenGrid.cs" />
