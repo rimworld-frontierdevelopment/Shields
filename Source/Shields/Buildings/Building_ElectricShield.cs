@@ -31,7 +31,6 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool _activeLastTick;
 
-        private bool _thermalShutoff = true;
         private float _additionalPowerDraw;
 
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
@@ -44,7 +43,7 @@ namespace FrontierDevelopments.Shields.Buildings
             {
                 if (!HasPowerNet()) return ShieldStatus.NoPowerNet;
                 if (!_powerTrader.PowerOn) return ShieldStatus.Unpowered;
-                if (_thermalShutoff && _heatSink.OverMinorThreshold) return ShieldStatus.ThermalShutdown;
+                if (_heatSink.OverTemperature) return ShieldStatus.ThermalShutdown;
                 if (!IsActive()) return ShieldStatus.BatteryPowerTooLow;
                 return ShieldStatus.Online;
             }
@@ -93,9 +92,9 @@ namespace FrontierDevelopments.Shields.Buildings
         
         public bool IsActive()
         {
-            return _powerTrader.PowerOn 
+            return _powerTrader.PowerOn
                    && (_powerTrader.PowerNet?.CurrentStoredEnergy()).GetValueOrDefault(0f) > Mod.Settings.MinimumOnlinePower
-                   && (!_thermalShutoff || (_thermalShutoff && !_heatSink.OverMinorThreshold));
+                   && !_heatSink.OverTemperature;
         }
 
         private void RenderImpactEffect(Vector2 position)
@@ -180,32 +179,6 @@ namespace FrontierDevelopments.Shields.Buildings
             }
             stringBuilder.Append(base.GetInspectString());
             return stringBuilder.ToString();
-        }
-
-        public override IEnumerable<Gizmo> GetGizmos()
-        {
-            foreach (var g in base.GetGizmos())
-            {
-                yield return g;
-            }
-
-            if (Faction == Faction.OfPlayer)
-            {
-                yield return new Command_Toggle
-                {
-                    icon = Resources.UiThermalShutoff,
-                    defaultDesc = "thermal_shutoff.description".Translate(),
-                    defaultLabel = "thermal_shutoff.label".Translate(),
-                    isActive = () => _thermalShutoff,
-                    toggleAction = () => _thermalShutoff = !_thermalShutoff
-                };
-            }
-        }
-
-        public override void ExposeData()
-        {
-            Scribe_Values.Look(ref _thermalShutoff, "thermalShutoff", true);
-            base.ExposeData();
         }
 
         private void BreakdownMessage(string title, string body, float drained)

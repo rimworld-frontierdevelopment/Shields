@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using FrontierDevelopments.General.CompProperties;
+using FrontierDevelopments.Shields;
 using RimWorld;
 using Verse;
 
@@ -11,8 +13,9 @@ namespace FrontierDevelopments.General.Comps
 
         private float _dissipationRate;
         private float _temperature;
+        private bool _thermalShutoff = true;
 
-        public Func<bool> CanBreakdown = () => false;
+        public bool CanBreakdown => !_thermalShutoff && OverMinorThreshold;
         public Action MinorBreakdown = () => { };
         public Action MajorBreakdown = () => { };
         public Action CriticalBreakdown = () => { };
@@ -27,7 +30,7 @@ namespace FrontierDevelopments.General.Comps
             set =>  _temperature = value / Props.specificHeat / Props.grams - KELVIN_ZERO_CELCIUS;
         }
 
-        public bool OverTemperature => OverMinorThreshold;
+        public bool OverTemperature => _thermalShutoff && OverMinorThreshold;
 
         public bool OverMinorThreshold => Temp >= Props.minorThreshold;
         
@@ -71,6 +74,22 @@ namespace FrontierDevelopments.General.Comps
         public override void PostExposeData()
         {
             Scribe_Values.Look(ref _temperature, "temperature", 20f);
+            Scribe_Values.Look(ref _thermalShutoff, "thermalShutoff", true);
+        }
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            if (parent.Faction == Faction.OfPlayer)
+            {
+                yield return new Command_Toggle
+                {
+                    icon = Resources.UiThermalShutoff,
+                    defaultDesc = "thermal_shutoff.description".Translate(),
+                    defaultLabel = "thermal_shutoff.label".Translate(),
+                    isActive = () => _thermalShutoff,
+                    toggleAction = () => _thermalShutoff = !_thermalShutoff
+                };
+            }
         }
     }
 }

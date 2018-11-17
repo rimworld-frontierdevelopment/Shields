@@ -14,7 +14,7 @@ namespace FrontierDevelopments.General.IncidentWorkers
             return map.listerBuildings.allBuildingsColonist
                 .Where(b => b.GetComp<Comp_HeatSink>() != null)
                 .Select(b => b.GetComp<Comp_HeatSink>())
-                .Where(c => c.CanBreakdown());
+                .Where(c => c.CanBreakdown);
         }
 
         protected override bool CanFireNowSub(IncidentParms parms)
