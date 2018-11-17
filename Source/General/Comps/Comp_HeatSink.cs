@@ -13,7 +13,7 @@ namespace FrontierDevelopments.General.Comps
         public static readonly float KELVIN_ZERO_CELCIUS = 273.15f;
 
         private float _dissipationRate;
-        private float _temperature;
+        private float _temperature = -500f;
         private bool _thermalShutoff = true;
 
         public bool CanBreakdown => !_thermalShutoff && OverMinorThreshold;
@@ -39,6 +39,7 @@ namespace FrontierDevelopments.General.Comps
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            if (_temperature < -KELVIN_ZERO_CELCIUS) _temperature = parent.AmbientTemperature;
             _dissipationRate = GenDate.TicksPerDay / Props.conductivity;
         }
 
@@ -71,7 +72,7 @@ namespace FrontierDevelopments.General.Comps
 
         public override void PostExposeData()
         {
-            Scribe_Values.Look(ref _temperature, "temperature", 20f);
+            Scribe_Values.Look(ref _temperature, "temperature", -500f);
             Scribe_Values.Look(ref _thermalShutoff, "thermalShutoff", true);
         }
 
