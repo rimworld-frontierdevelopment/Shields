@@ -1,4 +1,3 @@
-using System.Linq;
 using FrontierDevelopments.General.CompProperties;
 using RimWorld;
 using UnityEngine;
@@ -22,6 +21,8 @@ namespace FrontierDevelopments.General.Comps
         private CompPowerTrader _powerTrader;
 
         private CompProperties_ElectricEnergySource Props => (CompProperties_ElectricEnergySource) props;
+
+        public bool WantActive => _powerTrader?.PowerOn == true;
 
         public float BaseConsumption
         {

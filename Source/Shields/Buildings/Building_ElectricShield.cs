@@ -18,7 +18,6 @@ namespace FrontierDevelopments.Shields.Buildings
             Online
         }
 
-        private CompFlickable _flickable;
         private IEnergySource _energySource;
         private IShield _shield;
 
@@ -29,8 +28,6 @@ namespace FrontierDevelopments.Shields.Buildings
         public int ProtectedCellCount => _shield.ProtectedCellCount;
 
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
-
-        public bool FlickedOn => _flickable == null || _flickable != null && _flickable.SwitchIsOn; 
 
         public ShieldStatus Status
         {
@@ -46,7 +43,6 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
             _energySource = EnergySourceUtility.Find(this);
-            _flickable = GetComp<CompFlickable>();
             _shield = ShieldUtility.FindComp(this);
             _heatSink = HeatsinkUtility.FindComp(this);
             _activeLastTick = IsActive();
@@ -58,7 +54,7 @@ namespace FrontierDevelopments.Shields.Buildings
             var active = IsActive();
             _energySource.BaseConsumption = BasePowerConsumption;
             base.Tick();
-            if(_activeLastTick && !active && FlickedOn)
+            if(_activeLastTick && !active && _energySource.WantActive)
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             _activeLastTick = active;
         }

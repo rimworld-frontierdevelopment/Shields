@@ -5,6 +5,7 @@ namespace FrontierDevelopments.General
     public interface IEnergySource
     {
         bool IsActive { get; }
+        bool WantActive { get; }
         float BaseConsumption { get; set; }
         float EnergyAvailable { get; }
         bool Draw(float amount);
