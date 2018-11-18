@@ -3,6 +3,14 @@ using Verse;
 
 namespace FrontierDevelopments.General.EnergySources
 {
+    public class CompProperties_InfiniteEnergySource : Verse.CompProperties
+    {
+        public CompProperties_InfiniteEnergySource()
+        {
+            compClass = typeof(Comp_InfiniteEnergySource);
+        }
+    }
+    
     public class Comp_InfiniteEnergySource : ThingComp, IEnergySource
     {
         public bool IsActive => WantActive && _heatSink != null && !_heatSink.OverTemperature || _heatSink == null;

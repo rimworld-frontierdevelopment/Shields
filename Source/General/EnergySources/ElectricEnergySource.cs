@@ -4,6 +4,16 @@ using Verse;
 
 namespace FrontierDevelopments.General.EnergySources
 {
+    public class CompProperties_ElectricEnergySource : Verse.CompProperties
+    {
+        public float minimumOnlinePower;
+        
+        public CompProperties_ElectricEnergySource()
+        {
+            compClass = typeof(Comp_ElectricEnergySource);
+        }
+    }
+    
     public class Comp_ElectricEnergySource : ThingComp, IEnergySource
     {
         public bool IsActive =>
