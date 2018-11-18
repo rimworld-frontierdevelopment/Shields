@@ -5,7 +5,7 @@ namespace FrontierDevelopments.General.EnergySources
 {
     public class Comp_SingleUseEnergySource : ThingComp, IEnergySource
     {
-        protected float _charge;
+        protected float _charge = -1f;
         private IHeatsink _heatSink;
         private CompFlickable _flickable;
 
