@@ -2,13 +2,11 @@
 using FrontierDevelopments.General;
 using RimWorld;
 using RimWorld.Planet;
-using UnityEngine;
 using Verse;
-using Verse.Sound;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
-    public class Building_ElectricShield : Building, IShield
+    public class Building_ElectricShield : Building
     {
         public enum ShieldStatus
         {
@@ -24,8 +22,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool _activeLastTick;
 
-        public int ProtectedCellCount => _shield.ProtectedCellCount;
-
+        private bool IsActive => _energySource.IsActive;
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
 
         public ShieldStatus Status
@@ -44,58 +41,18 @@ namespace FrontierDevelopments.Shields.Buildings
             _energySource = EnergySourceUtility.Find(this);
             _shield = ShieldUtility.FindComp(this);
             _heatSink = HeatsinkUtility.FindComp(this);
-            _activeLastTick = IsActive();
+            _activeLastTick = IsActive;
             base.SpawnSetup(map, respawningAfterLoad);
         }
 
         public override void Tick()
         {
-            var active = IsActive();
+            var active = IsActive;
             _energySource.BaseConsumption = BasePowerConsumption;
             base.Tick();
             if(_activeLastTick && !active && _energySource.WantActive)
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             _activeLastTick = active;
-        }
-
-        public bool IsActive()
-        {
-            return _energySource.IsActive && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
-        }
-
-        private void RenderImpactEffect(Vector2 position)
-        {
-            MoteMaker.ThrowLightningGlow(Common.ToVector3(position), Map, 0.5f);
-        }
-
-        private void PlayBulletImpactSound(Vector2 position)
-        {
-            SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), Map));
-        }
-
-        public bool Block(long damage, Vector3 position)
-        {
-            if (!IsActive()) return false;
-            var charge = damage * Mod.Settings.PowerPerDamage;
-            if (!_energySource.Draw(charge)) return false;
-            RenderImpactEffect(Common.ToVector2(position));
-            PlayBulletImpactSound(Common.ToVector2(position));
-            return true;    
-        }
-
-        public bool Collision(Vector3 vector)
-        {
-            return _shield.Collision(vector);
-        }
-
-        public Vector3? Collision(Vector3 start, Vector3 end)
-        {
-            return _shield.Collision(start, end);
-        }
-
-        public Vector3? Collision(Ray ray, float limit)
-        {
-            return _shield.Collision(ray, limit);
         }
 
         public override string GetInspectString()
@@ -116,11 +73,6 @@ namespace FrontierDevelopments.Shields.Buildings
             }
             stringBuilder.Append(base.GetInspectString());
             return stringBuilder.ToString();
-        }
-
-        public void Draw(CellRect cameraRect)
-        {
-            if(IsActive()) _shield.Draw(cameraRect);
         }
     }
 }

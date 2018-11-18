@@ -6,6 +6,8 @@ using FrontierDevelopments.Shields.Windows;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Sound;
+
 
 namespace FrontierDevelopments.Shields.Comps
 {
@@ -19,6 +21,8 @@ namespace FrontierDevelopments.Shields.Comps
         private bool _renderLast = true;
         private IntVec3 _positionLast;
 
+        private IEnergySource _energySource;
+        
         public override void Initialize(Verse.CompProperties compProperties)
         {
             base.Initialize(compProperties);
@@ -30,6 +34,7 @@ namespace FrontierDevelopments.Shields.Comps
             base.PostSpawnSetup(respawningAfterLoad);
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
+            _energySource = EnergySourceUtility.Find(parent);
             parent.Map.GetComponent<ShieldManager>().Add(this);
         }
 
@@ -200,7 +205,7 @@ namespace FrontierDevelopments.Shields.Comps
         public void Draw(CellRect cameraRect)
         {
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
-            var position = Common.ToVector3(parent.Position);
+            var position = Common.ToVector3(parent.DrawPos);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(_fieldRadius * 2.2);
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
@@ -222,24 +227,27 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool IsActive()
         {
-            switch (parent)
-            {
-                case IShield parentShield:
-                    return parentShield.IsActive();
-            }
-
-            return false;
+            return _energySource.IsActive;
         }
 
         public bool Block(long damage, Vector3 position)
         {
-            switch (parent)
-            {
-                case IShield parentShield:
-                    return parentShield.Block(damage, position);
-            }
+            if (!IsActive()) return false;
+            var charge = damage * Mod.Settings.PowerPerDamage;
+            if (!_energySource.Draw(charge)) return false;
+            RenderImpactEffect(Common.ToVector2(position));
+            PlayBulletImpactSound(Common.ToVector2(position));
+            return true;
+        }
 
-            return false;
+        private void RenderImpactEffect(Vector2 position)
+        {
+            MoteMaker.ThrowLightningGlow(Common.ToVector3(position), parent.Map, 0.5f);
+        }
+
+        private void PlayBulletImpactSound(Vector2 position)
+        {
+            SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), parent.Map));
         }
     }
 }
