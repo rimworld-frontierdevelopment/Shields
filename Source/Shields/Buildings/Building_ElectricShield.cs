@@ -1,6 +1,5 @@
 ﻿using System.Text;
 using FrontierDevelopments.General;
-using FrontierDevelopments.General.Comps;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -33,7 +32,7 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             get
             {
-                if (_heatSink.OverTemperature) return ShieldStatus.ThermalShutdown;
+                if (_heatSink != null && _heatSink.OverTemperature) return ShieldStatus.ThermalShutdown;
                 if (!_energySource.IsActive) return ShieldStatus.Unpowered;
                 return ShieldStatus.Online;
             }
@@ -61,7 +60,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public bool IsActive()
         {
-            return _energySource.IsActive && !_heatSink.OverTemperature;
+            return _energySource.IsActive && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
         }
 
         private void RenderImpactEffect(Vector2 position)
