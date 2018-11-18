@@ -11,7 +11,13 @@ namespace FrontierDevelopments.General.EnergySources
 
         private CompProperties_SingleUseEnergySource Props => (CompProperties_SingleUseEnergySource) props;
 
-        public bool IsActive => _charge > 0 && WantActive && _heatSink != null && !_heatSink.OverTemperature || _heatSink == null;
+        public virtual float MinimumCharge => 0f;
+
+        public bool IsActive => 
+            _charge >= MinimumCharge 
+            && WantActive 
+            && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
+
         public bool WantActive => _flickable != null && _flickable.SwitchIsOn || _flickable == null;
         public float BaseConsumption { get => 0f; set {} }
         public float EnergyAvailable => _charge;

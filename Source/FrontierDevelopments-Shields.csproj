@@ -66,11 +66,13 @@
     <Compile Include="General\EnergySources\CompProperties_EletricEnergySource.cs" />
     <Compile Include="General\EnergySources\CompProperties_FixedEnergySource.cs" />
     <Compile Include="General\EnergySources\CompProperties_InfiniteEnergySource.cs" />
+    <Compile Include="General\EnergySources\CompProperties_MechanoidEnergySource.cs" />
     <Compile Include="General\EnergySources\CompProperties_RechargingEnergySource.cs" />
     <Compile Include="General\EnergySources\CompProperties_SingleUseEnergySource.cs" />
     <Compile Include="General\EnergySources\Comp_ElectricEnergySource.cs" />
     <Compile Include="General\EnergySources\Comp_FixedEnergySource.cs" />
     <Compile Include="General\EnergySources\Comp_InfiniteEnergySource.cs" />
+    <Compile Include="General\EnergySources\Comp_MechanoidEnergySource.cs" />
     <Compile Include="General\EnergySources\Comp_RechargingEnergySource.cs" />
     <Compile Include="General\EnergySources\Comp_SingleUseEnergySource.cs" />
     <Compile Include="General\IEnergySource.cs" />
