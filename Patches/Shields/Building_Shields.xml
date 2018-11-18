@@ -14,7 +14,7 @@
                         <li Class="CentralizedClimateControl.CompProperties_AirFlow">
                             <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
                             <flowType>Any</flowType>
-                            <baseAirExhaust>150</baseAirExhaust>
+                            <baseAirExhaust>1000</baseAirExhaust>
                         </li>
                     </value>
                 </li>
@@ -31,7 +31,7 @@
                         <li Class="CentralizedClimateControl.CompProperties_AirFlow">
                             <compClass>CentralizedClimateControl.CompAirFlowConsumer</compClass>
                             <flowType>Any</flowType>
-                            <baseAirExhaust>300</baseAirExhaust>
+                            <baseAirExhaust>2500</baseAirExhaust>
                         </li>
                     </value>
                 </li>
