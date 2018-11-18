@@ -1,4 +1,3 @@
-using FrontierDevelopments.General.CompProperties;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -80,7 +79,7 @@ namespace FrontierDevelopments.General.Comps
 
         public void Drain(float amount)
         {
-            var perBattery = amount / _powerTrader.PowerNet.batteryComps.Count;
+            var perBattery = amount * GenDate.TicksPerDay / _powerTrader.PowerNet.batteryComps.Count;
             _powerTrader.PowerNet.batteryComps.ForEach(battery => battery.DrawPower(perBattery));
         }
 
@@ -88,6 +87,7 @@ namespace FrontierDevelopments.General.Comps
         {
             Log.Message("electric energy source drawing " + amount);
             if (!IsActive) return false;
+            amount *= GenDate.TicksPerDay;
             if (Shields.Mod.Settings.ScaleOnHeat && _heatSink != null) amount = amount * Mathf.Pow(1.01f, _heatSink.Temp);
             var drawn = DrawPowerOneTick(amount);
             _additionalPowerDraw += drawn;

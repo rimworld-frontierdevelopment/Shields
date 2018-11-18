@@ -76,8 +76,7 @@ namespace FrontierDevelopments.Shields.Buildings
         public bool Block(long damage, Vector3 position)
         {
             if (!IsActive()) return false;
-            // convert watts per day to watts per tick
-            var charge = (damage * 60000 * Mod.Settings.PowerPerDamage);
+            var charge = damage * Mod.Settings.PowerPerDamage;
             if (!_energySource.Draw(charge)) return false;
             RenderImpactEffect(Common.ToVector2(position));
             PlayBulletImpactSound(Common.ToVector2(position));
