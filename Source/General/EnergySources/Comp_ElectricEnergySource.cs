@@ -2,7 +2,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace FrontierDevelopments.General.Comps
+namespace FrontierDevelopments.General.EnergySources
 {
     public class Comp_ElectricEnergySource : ThingComp, IEnergySource
     {
