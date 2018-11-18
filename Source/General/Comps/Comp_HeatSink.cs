@@ -67,6 +67,7 @@ namespace FrontierDevelopments.General.Comps
 
         public override string CompInspectStringExtra()
         {
+            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_CoilTemperature"), OpportunityType.Important);
             return "fd.heatsink.temperature".Translate() + ": " + Temp.ToStringTemperature();
         }
 

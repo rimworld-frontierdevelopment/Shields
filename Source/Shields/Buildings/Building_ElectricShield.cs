@@ -37,7 +37,6 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
-            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
             _energySource = EnergySourceUtility.Find(this);
             _shield = ShieldUtility.FindComp(this);
             _heatSink = HeatsinkUtility.FindComp(this);
@@ -57,7 +56,6 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public override string GetInspectString()
         {
-            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_CoilTemperature"), OpportunityType.Important);
             var stringBuilder = new StringBuilder();
             switch (Status)
             {

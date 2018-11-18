@@ -40,6 +40,7 @@ namespace FrontierDevelopments.Shields.Comps
             _positionLast = parent.Position;
             _energySource = EnergySourceUtility.Find(parent);
             parent.Map.GetComponent<ShieldManager>().Add(this);
+            LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
         }
 
         public override void PostDeSpawn(Map map)
