@@ -32,7 +32,8 @@
         </costList>
         <staticSunShadowHeight>0</staticSunShadowHeight>
         <comps>
-            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_PowerPlantTrader">
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
                 <transmitsPower>true</transmitsPower>
             </li>
             <li Class="FrontierDevelopments.General.CompProperties.CompProperties_ElectricEnergySource">
