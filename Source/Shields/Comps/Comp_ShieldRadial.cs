@@ -22,7 +22,9 @@ namespace FrontierDevelopments.Shields.Comps
         private IntVec3 _positionLast;
 
         private IEnergySource _energySource;
-        
+
+        private Vector3 ExactPosition => parent.TrueCenter();
+
         public override void Initialize(Verse.CompProperties compProperties)
         {
             base.Initialize(compProperties);
@@ -110,7 +112,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool Collision(Vector3 vector)
         {
-            return Vector3.Distance(Common.ToVector3(parent.Position), vector) < _fieldRadius + 0.5f;
+            return Vector3.Distance(Common.ToVector3(ExactPosition), vector) < _fieldRadius + 0.5f;
         }
 
         public Vector3? Collision(Ray ray, float limit)
@@ -120,7 +122,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public Vector3? Collision(Vector3 origin, Vector3 destination)
         {
-            var circleOrigin = Common.ToVector3(parent.Position);
+            var circleOrigin = Common.ToVector3(ExactPosition);
 
             var d = destination - origin;
             var f = origin - circleOrigin;
@@ -205,7 +207,7 @@ namespace FrontierDevelopments.Shields.Comps
         public void Draw(CellRect cameraRect)
         {
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
-            var position = Common.ToVector3(parent.DrawPos);
+            var position = Common.ToVector3(ExactPosition);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(_fieldRadius * 2.2);
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
