@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -80,13 +81,14 @@ namespace FrontierDevelopments.Shields
             return null;
         }
 
-        public bool Shielded(Vector3 start, Vector3 end)
+        public bool Shielded(Vector3 start, Vector3 end, Faction friendly = null)
         {
             try
             {
                 foreach(var shield in _shields)
                 {
                     if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(start)) continue;
+                    if (shield.Faction != friendly) continue;
                     var position = shield.Collision(start, end);
                     if (position != null && !ShouldPassThrough(shield, position.Value))
                     {

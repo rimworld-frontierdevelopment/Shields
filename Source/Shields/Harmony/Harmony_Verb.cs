@@ -57,10 +57,9 @@ namespace FrontierDevelopments.Shields
 
         static bool ShieldBlocks(Thing caster, Verb verb, IntVec3 source, LocalTargetInfo target)
         {
-            if (caster.Faction != Faction.OfPlayer) return false;
             if (!verb.verbProps.requireLineOfSight) return false;
             if (uncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
-            return caster.Map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(source), Common.ToVector3(target.Cell));
+            return caster.Map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(source), Common.ToVector3(target.Cell), caster.Faction);
         }
     }
 }

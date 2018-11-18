@@ -23,6 +23,8 @@ namespace FrontierDevelopments.Shields.Comps
 
         private IEnergySource _energySource;
 
+        public Faction Faction => parent.Faction;
+
         private Vector3 ExactPosition => parent.TrueCenter();
 
         public override void Initialize(Verse.CompProperties compProperties)

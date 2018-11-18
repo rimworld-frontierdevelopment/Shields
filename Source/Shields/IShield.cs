@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -12,6 +13,7 @@ namespace FrontierDevelopments.Shields
         Vector3? Collision(Vector3 start, Vector3 end);
         bool Block(long damage, Vector3 position);
         void Draw(CellRect cameraRect);
+        Faction Faction { get; }
     }
 
     public class ShieldUtility
