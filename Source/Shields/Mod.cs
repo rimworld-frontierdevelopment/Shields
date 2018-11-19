@@ -11,6 +11,9 @@ namespace FrontierDevelopments.Shields
     {
         public static string ModName;
         public static Settings Settings;
+
+        private const string CentralizedClimateControlName = "Centralized Climate Control";
+        private const string RedistHeatName = "RedistHeat";
         
         public Mod(ModContentPack content) : base(content)
         {
@@ -23,7 +26,27 @@ namespace FrontierDevelopments.Shields
             Harmony_Verb_CanHitCellFromCellIgnoringRange.BlacklistType(typeof(Verb_Bombardment));
             
             Log.Message("Frontier Developments Shields :: Loaded");
-            ClimateControlSupport.Load(harmony);
+            LoadOneTemperatureMod(harmony);
+        }
+
+        private void LoadOneTemperatureMod(HarmonyInstance harmony)
+        {
+            foreach (var mod in ModsConfig.ActiveModsInLoadOrder)
+            {
+                switch (mod.Name)
+                {
+                    case CentralizedClimateControlName:
+                        if(ModLister.HasActiveModWithName(RedistHeatName))
+                            Log.Warning("Frontier Developments Shields :: detected both " + CentralizedClimateControlName + " and " + RedistHeatName +" active. Using " + CentralizedClimateControlName + " since it is loaded first");
+                        ClimateControlSupport.Load(harmony);
+                        return;
+                    case "RedistHeat":
+                        if(ModLister.HasActiveModWithName(CentralizedClimateControlName))
+                            Log.Warning("Frontier Developments Shields :: detected both " + CentralizedClimateControlName + " and " + RedistHeatName +" active. Using " + RedistHeatName + " since it is loaded first");
+                        RedistHeatSupport.Load(harmony);
+                        return;
+                }
+            }
         }
 
         public override string SettingsCategory()
