@@ -135,7 +135,6 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                         .ToList()
                         .ForEach(pawn =>
                         {
-                            Log.Message(pawn.Label + " started fleeing from bombardment " + __instance.Label);
                             var threats = new List<Thing> { __instance };
                             var fleeDest1 = CellFinderLoose.GetFleeDest(pawn, threats, pawn.Position.DistanceTo(__instance.Position) + Bombardment.EffectiveRadius);
                             pawn.jobs.StartJob(new Job(JobDefOf.Flee, fleeDest1, (LocalTargetInfo) __instance), JobCondition.InterruptOptional, null, false, true, null, new JobTag?());

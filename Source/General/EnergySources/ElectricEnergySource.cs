@@ -95,7 +95,6 @@ namespace FrontierDevelopments.General.EnergySources
 
         public bool Draw(float amount)
         {
-            Log.Message("electric energy source drawing " + amount);
             if (!IsActive) return false;
             amount *= GenDate.TicksPerDay;
             if (Shields.Mod.Settings.ScaleOnHeat && _heatSink != null) amount = amount * Mathf.Pow(1.01f, _heatSink.Temp);

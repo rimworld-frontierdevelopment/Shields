@@ -17,7 +17,6 @@ namespace FrontierDevelopments.Shields
             // TODO Morgloz released 50 tagged as version 47. This check probably doesn't help...
 //            var redistHeatVersion = new Version(47, 0, 0, 0);
         
-            Log.Message("Frontier Developments Shields :: Loading");
             try
             {
                 var redistHeatAssembly = Assembly.Load(redistHeatName);

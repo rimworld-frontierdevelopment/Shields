@@ -16,7 +16,6 @@ namespace FrontierDevelopments.Shields
             const string centralizedClimateControlName = "CentralizedClimateControl";
             var centralizedClimateControlVersion = new Version(1, 5, 0, 0);
         
-            Log.Message("Frontier Developments Shields :: Loading");
             try
             {
                 var climateControlAssembly = Assembly.Load(centralizedClimateControlName);
