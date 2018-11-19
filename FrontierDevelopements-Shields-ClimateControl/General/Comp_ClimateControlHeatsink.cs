@@ -11,15 +11,14 @@ namespace FrontierDevelopments.General.Comps
         private bool _connected = true;
         private float _initialFlow;
 
-        private bool HasAirflow => _connected && AirFlowConsumer.IsActive();
+        private bool HasAirflow => AirFlowConsumer.IsOperating();
 
-        private CentralizedClimateControl.CompAirFlowConsumer AirFlowConsumer =>
-            (CentralizedClimateControl.CompAirFlowConsumer) _airFlowConsumer; 
-
+        private Comp_AirFlowConsumer AirFlowConsumer => (Comp_AirFlowConsumer) _airFlowConsumer; 
+        
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            _airFlowConsumer = parent.TryGetComp<CentralizedClimateControl.CompAirFlowConsumer>();
+            _airFlowConsumer = parent.TryGetComp<Comp_AirFlowConsumer>();
             _initialFlow = AirFlowConsumer.Props.baseAirExhaust;
         }
 
@@ -42,32 +41,6 @@ namespace FrontierDevelopments.General.Comps
             else
             {
                 base.DissipateHeat(kilojoules);
-            }
-        }
-
-        public override void PostExposeData()
-        {
-            base.PostExposeData();
-            Scribe_Values.Look(ref _connected, "connected", true);
-        }
-
-        public override IEnumerable<Gizmo> CompGetGizmosExtra()
-        {
-            foreach (var gizmo in base.CompGetGizmosExtra())
-            {
-                yield return gizmo;
-            }
-
-            if (parent.Faction == Faction.OfPlayer)
-            {
-                yield return new Command_Toggle
-                {
-                    icon = Resources.BuildingClimateControlAirThermal,
-                    defaultDesc = "fd.heatsink.net.connect.description".Translate(),
-                    defaultLabel = "fd.heatsink.net.connect.label".Translate(),
-                    isActive = () => _connected,
-                    toggleAction = () => _connected = !_connected
-                };
             }
         }
     }

@@ -6,23 +6,26 @@ using Verse;
 
 namespace FrontierDevelopments.Shields
 {
+    [StaticConstructorOnStartup]
     public class Mod : Verse.Mod
     {
+        public static string ModName;
         public static Settings Settings;
         
         public Mod(ModContentPack content) : base(content)
         {
             Settings = GetSettings<Settings>();
+            ModName = content.Name;
             
             var harmony = HarmonyInstance.Create("frontierdevelopment.shields");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             Harmony_Verb_CanHitCellFromCellIgnoringRange.BlacklistType(typeof(Verb_Bombardment));
             
-            
             Log.Message("Frontier Developments Shields :: Loaded");
+            ClimateControlSupport.Load(harmony);
         }
-        
+
         public override string SettingsCategory()
         {
             return "Frontier Developments Shields";
@@ -36,14 +39,14 @@ namespace FrontierDevelopments.Shields
         [HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PostResolve))]
         class Patch_GenerateImpliedDefs_PostResolve
         {
-            [HarmonyPriority(Priority.Last)]
+            [HarmonyPostfix]
             static void Postfix()
             {
                 Harmony_Explosion.BlockType(DamageDefOf.Bomb.defName);
             }
         }
     }
-    
+
     [StaticConstructorOnStartup]
     public static class Resources
     {
@@ -52,18 +55,5 @@ namespace FrontierDevelopments.Shields
         public static readonly Texture2D UiSetRadius = ContentFinder<Texture2D>.Get("UI/Buttons/Radius");
         public static readonly Texture2D UiChargeBattery = ContentFinder<Texture2D>.Get("UI/Buttons/PortableShieldDraw");
         public static readonly Texture2D UiToggleVisibility = ContentFinder<Texture2D>.Get("Other/ShieldBubble", ShaderDatabase.Transparent);
-        public static readonly Texture2D BuildingClimateControlAirThermal;
-
-        static Resources()
-        {
-            BuildingClimateControlAirThermal = GetModTexture("Centralized Climate Control", "Things/Building/AirThermal_north");
-        }
-
-        static Texture2D GetModTexture(string modName, string resourcePath)
-        {
-            return ModLister.HasActiveModWithName(modName)
-                ? ContentFinder<Texture2D>.Get(resourcePath, ShaderDatabase.Transparent)
-                : null;
-        }
     }  
 }
