@@ -33,8 +33,8 @@ namespace FrontierDevelopments.ClimateControl
                 yield return new Command_Toggle
                 {
                     icon = Resources.BuildingClimateControlAirThermal,
-                    defaultDesc = "fd.heatsink.net.connect.description".Translate(),
-                    defaultLabel = "fd.heatsink.net.connect.label".Translate(),
+                    defaultDesc = "fd.heatsink.climate.net.connect.description".Translate(),
+                    defaultLabel = "fd.heatsink.climate.net.connect.label".Translate(),
                     isActive = () => _connected,
                     toggleAction = () => _connected = !_connected
                 };
