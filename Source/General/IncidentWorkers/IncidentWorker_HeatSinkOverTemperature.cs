@@ -11,10 +11,14 @@ namespace FrontierDevelopments.General.IncidentWorkers
     {
         private static IEnumerable<Comp_HeatSink> GetTargets(Map map)
         {
-            return map.listerBuildings.allBuildingsColonist
-                .Where(b => b.GetComp<Comp_HeatSink>() != null)
-                .Select(b => b.GetComp<Comp_HeatSink>())
-                .Where(c => c.CanBreakdown);
+            foreach (var thing in map.listerThings.AllThings)
+            {
+                var heatSink = thing.TryGetComp<Comp_HeatSink>();
+                if (heatSink != null && heatSink.CanBreakdown)
+                {
+                    yield return heatSink;
+                }
+            }
         }
 
         protected override bool CanFireNowSub(IncidentParms parms)
