@@ -5,6 +5,10 @@ namespace FrontierDevelopments.Shields
 {
     public class Settings : ModSettings
     {
+        // Integrations
+        public bool EnableCentralizedClimateControlSupport = true;
+        public bool EnableRedistHeatSupport = true;
+        
         // General
         public bool EnableShootingOut = true;
         public bool OverlapPassThrough = false;
@@ -40,6 +44,17 @@ namespace FrontierDevelopments.Shields
             var list = new Listing_Standard();
             list.Begin(inRect);
 
+            // Integrations
+            Heading(list, "fd.settings.shield.integrations.heading".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.climatecontrol.label".Translate(), 
+                ref EnableCentralizedClimateControlSupport, 
+                "fd.settings.shield.climatecontrol.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.redistheat.label".Translate(), 
+                ref EnableRedistHeatSupport, 
+                "fd.settings.shield.redistheat.description".Translate());
+            
             // General
             Heading(list, "fd.settings.shield.general.heading".Translate());
             list.CheckboxLabeled(
@@ -121,6 +136,9 @@ namespace FrontierDevelopments.Shields
 
         public override void ExposeData()
         {
+            Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
+            Scribe_Values.Look(ref EnableRedistHeatSupport, "enableRedistHeatSupport", true);
+            
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref OverlapPassThrough, "overlapPassThrough", false);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);

@@ -36,12 +36,22 @@ namespace FrontierDevelopments.Shields
                 switch (mod.Name)
                 {
                     case CentralizedClimateControlName:
-                        if(ModLister.HasActiveModWithName(RedistHeatName))
+                        if (!Settings.EnableCentralizedClimateControlSupport)
+                        {
+                            Log.Message("Frontier Developments Shields :: disabling Centralized Climate Control support");
+                            continue;
+                        }
+                        if(Settings.EnableRedistHeatSupport && ModLister.HasActiveModWithName(RedistHeatName))
                             Log.Warning("Frontier Developments Shields :: detected both " + CentralizedClimateControlName + " and " + RedistHeatName +" active. Using " + CentralizedClimateControlName + " since it is loaded first");
                         ClimateControlSupport.Load(harmony);
                         return;
                     case "RedistHeat":
-                        if(ModLister.HasActiveModWithName(CentralizedClimateControlName))
+                        if (!Settings.EnableRedistHeatSupport)
+                        {
+                            Log.Message("Frontier Developments Shields :: disabling RedistHeat support");
+                            continue;
+                        }
+                        if(Settings.EnableCentralizedClimateControlSupport && ModLister.HasActiveModWithName(CentralizedClimateControlName))
                             Log.Warning("Frontier Developments Shields :: detected both " + CentralizedClimateControlName + " and " + RedistHeatName +" active. Using " + RedistHeatName + " since it is loaded first");
                         RedistHeatSupport.Load(harmony);
                         return;
