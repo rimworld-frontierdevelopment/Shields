@@ -22,6 +22,7 @@ namespace FrontierDevelopments.Shields.Comps
         private IntVec3 _positionLast;
 
         private IEnergySource _energySource;
+        private IHeatsink _heatSink;
 
         public Faction Faction => parent.Faction;
 
@@ -39,6 +40,7 @@ namespace FrontierDevelopments.Shields.Comps
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
             _energySource = EnergySourceUtility.Find(parent);
+            _heatSink = HeatsinkUtility.Find(parent);
             parent.Map.GetComponent<ShieldManager>().Add(this);
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
         }
@@ -232,17 +234,19 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool IsActive()
         {
-            return _energySource.IsActive();
+            return _energySource.IsActive() && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
         }
 
         public bool Block(long damage, Vector3 position)
         {
             if (!IsActive()) return false;
             var charge = damage * Mod.Settings.PowerPerDamage;
-            if (!_energySource.Draw(charge)) return false;
+            if (Mod.Settings.ScaleOnHeat && _heatSink != null) charge = charge * Mathf.Pow(1.01f, _heatSink.Temp);
+            var drawn = _energySource.Draw(charge);
+            _heatSink?.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             RenderImpactEffect(Common.ToVector2(position));
             PlayBulletImpactSound(Common.ToVector2(position));
-            return true;
+            return drawn >= charge;
         }
 
         private void RenderImpactEffect(Vector2 position)

@@ -8,7 +8,7 @@ namespace FrontierDevelopments.General
         bool WantActive { get; }
         float BaseConsumption { get; set; }
         float EnergyAvailable { get; }
-        bool Draw(float amount);
+        float Draw(float amount);
         void Drain(float amount);
     }
 

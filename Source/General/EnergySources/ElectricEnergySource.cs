@@ -1,5 +1,4 @@
 using RimWorld;
-using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.General.EnergySources
@@ -16,8 +15,6 @@ namespace FrontierDevelopments.General.EnergySources
     
     public class Comp_ElectricEnergySource : ThingComp, IEnergySource
     {
-        private IHeatsink _heatSink;
-
         private float _basePowerConsumption;
         private float _additionalPowerDraw;
 
@@ -31,8 +28,7 @@ namespace FrontierDevelopments.General.EnergySources
         {
             return _powerTrader?.PowerOn == true
                    && _powerTrader.PowerNet != null
-                   && _powerTrader.PowerNet.CurrentStoredEnergy() >= Props.minimumOnlinePower
-                   && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
+                   && _powerTrader.PowerNet.CurrentStoredEnergy() >= Props.minimumOnlinePower;
         }
         
         public float BaseConsumption
@@ -61,7 +57,6 @@ namespace FrontierDevelopments.General.EnergySources
         {
             base.PostSpawnSetup(respawningAfterLoad);
             _powerTrader = parent.GetComp<CompPowerTrader>();
-            _heatSink = HeatsinkUtility.Find(parent);
         }
 
         public override void PostExposeData()
@@ -95,15 +90,13 @@ namespace FrontierDevelopments.General.EnergySources
             _powerTrader.PowerNet.batteryComps.ForEach(battery => battery.DrawPower(perBattery));
         }
 
-        public bool Draw(float amount)
+        public float Draw(float amount)
         {
-            if (!IsActive()) return false;
+            if (!IsActive()) return 0f;
             amount *= GenDate.TicksPerDay;
-            if (Shields.Mod.Settings.ScaleOnHeat && _heatSink != null) amount = amount * Mathf.Pow(1.01f, _heatSink.Temp);
             var drawn = DrawPowerOneTick(amount);
             _additionalPowerDraw += drawn;
-            _heatSink?.PushHeat(drawn / 60000 * Shields.Mod.Settings.HeatPerPower);
-            return drawn >= amount;
+            return drawn;
         }
 
         /// <summary>

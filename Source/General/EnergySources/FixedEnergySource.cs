@@ -23,28 +23,24 @@ namespace FrontierDevelopments.General.EnergySources
         public bool WantActive => _flickable != null && _flickable.SwitchIsOn || _flickable == null;
         public float EnergyAvailable => float.PositiveInfinity;
 
-        private IHeatsink _heatSink;
-
         public bool IsActive()
         {
-            return _heatSink != null && !_heatSink.OverTemperature || _heatSink == null;
+            return (_flickable != null && _flickable.SwitchIsOn || _flickable == null);
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            _heatSink = HeatsinkUtility.Find(parent);
             _flickable = parent.GetComp<CompFlickable>();
         }
 
-        public bool Draw(float amount)
+        public float Draw(float amount)
         {
-            if (IsActive() && Props.amount <= amount)
+            if (IsActive() && amount <= Props.amount)
             {
-                _heatSink?.PushHeat(amount * Shields.Mod.Settings.HeatPerPower);
-                return true;
+                return amount;
             }
 
-            return false;
+            return Props.amount;
         }
 
         public void Drain(float amount)

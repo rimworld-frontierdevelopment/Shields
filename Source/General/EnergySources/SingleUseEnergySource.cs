@@ -16,7 +16,6 @@ namespace FrontierDevelopments.General.EnergySources
     public class Comp_SingleUseEnergySource : ThingComp, IEnergySource
     {
         protected float _charge = -1f;
-        private IHeatsink _heatSink;
         private CompFlickable _flickable;
 
         private CompProperties_SingleUseEnergySource Props => (CompProperties_SingleUseEnergySource) props;
@@ -29,14 +28,12 @@ namespace FrontierDevelopments.General.EnergySources
 
         public virtual bool IsActive()
         {
-            return _charge >= MinimumCharge 
-                   && WantActive 
-                   && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
+            return _charge >= MinimumCharge
+                   && WantActive;
         }
         
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            _heatSink = HeatsinkUtility.Find(parent);
             _flickable = parent.GetComp<CompFlickable>();
             if (_charge < 0) _charge = Props.charge;
         }
@@ -51,14 +48,13 @@ namespace FrontierDevelopments.General.EnergySources
             Scribe_Values.Look(ref _charge, "charge", -1);
         }
 
-        public bool Draw(float amount)
+        public float Draw(float amount)
         {
-            if (!IsActive()) return false;
+            if (!IsActive()) return 0f;
             var drawn = amount <= _charge ? amount : _charge;
             _charge -= drawn;
             if(_charge < 1) OnEmpty();
-            _heatSink?.PushHeat(drawn * Shields.Mod.Settings.HeatPerPower);
-            return !(drawn < amount);
+            return drawn;
         }
 
         public void Drain(float amount)
@@ -69,7 +65,6 @@ namespace FrontierDevelopments.General.EnergySources
 
         protected virtual void OnEmpty()
         {
-            
         }
     }
 }
