@@ -13,14 +13,17 @@ namespace FrontierDevelopments.General.EnergySources
     
     public class Comp_InfiniteEnergySource : ThingComp, IEnergySource
     {
-        public bool IsActive => WantActive && _heatSink != null && !_heatSink.OverTemperature || _heatSink == null;
-
         private IHeatsink _heatSink;
         private CompFlickable _flickable;
 
         public float BaseConsumption { get => 0f; set {} }
         public bool WantActive => _flickable != null && _flickable.SwitchIsOn || _flickable == null;
         public float EnergyAvailable => float.PositiveInfinity;
+
+        public bool IsActive()
+        {
+            return _flickable != null && _flickable.SwitchIsOn || _flickable == null;
+        }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -30,7 +33,7 @@ namespace FrontierDevelopments.General.EnergySources
 
         public bool Draw(float amount)
         {
-            if (!IsActive) return false;
+            if (!IsActive()) return false;
             _heatSink?.PushHeat(amount * Shields.Mod.Settings.HeatPerPower);
             return true;
         }

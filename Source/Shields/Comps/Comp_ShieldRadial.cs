@@ -232,7 +232,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool IsActive()
         {
-            return _energySource.IsActive;
+            return _energySource.IsActive();
         }
 
         public bool Block(long damage, Vector3 position)

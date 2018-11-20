@@ -22,7 +22,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool _activeLastTick;
 
-        private bool IsActive => _energySource.IsActive;
+        private bool IsActive => _energySource.IsActive();
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
 
         public ShieldStatus Status
@@ -30,7 +30,7 @@ namespace FrontierDevelopments.Shields.Buildings
             get
             {
                 if (_heatSink != null && _heatSink.OverTemperature) return ShieldStatus.ThermalShutdown;
-                if (!_energySource.IsActive) return ShieldStatus.Unpowered;
+                if (!_energySource.IsActive()) return ShieldStatus.Unpowered;
                 return ShieldStatus.Online;
             }
         }

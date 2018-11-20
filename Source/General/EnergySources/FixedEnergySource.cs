@@ -21,10 +21,14 @@ namespace FrontierDevelopments.General.EnergySources
         public float BaseConsumption { get => 0f; set {} }
 
         public bool WantActive => _flickable != null && _flickable.SwitchIsOn || _flickable == null;
-        public bool IsActive => _heatSink != null && !_heatSink.OverTemperature || _heatSink == null;
         public float EnergyAvailable => float.PositiveInfinity;
 
         private IHeatsink _heatSink;
+
+        public bool IsActive()
+        {
+            return _heatSink != null && !_heatSink.OverTemperature || _heatSink == null;
+        }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -34,7 +38,7 @@ namespace FrontierDevelopments.General.EnergySources
 
         public bool Draw(float amount)
         {
-            if (IsActive && Props.amount <= amount)
+            if (IsActive() && Props.amount <= amount)
             {
                 _heatSink?.PushHeat(amount * Shields.Mod.Settings.HeatPerPower);
                 return true;

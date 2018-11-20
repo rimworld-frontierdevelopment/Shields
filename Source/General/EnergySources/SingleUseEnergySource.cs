@@ -23,15 +23,17 @@ namespace FrontierDevelopments.General.EnergySources
 
         public virtual float MinimumCharge => 0f;
 
-        public bool IsActive => 
-            _charge >= MinimumCharge 
-            && WantActive 
-            && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
-
         public bool WantActive => _flickable != null && _flickable.SwitchIsOn || _flickable == null;
         public float BaseConsumption { get => 0f; set {} }
         public float EnergyAvailable => _charge;
 
+        public virtual bool IsActive()
+        {
+            return _charge >= MinimumCharge 
+                   && WantActive 
+                   && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
+        }
+        
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             _heatSink = HeatsinkUtility.Find(parent);
@@ -51,9 +53,10 @@ namespace FrontierDevelopments.General.EnergySources
 
         public bool Draw(float amount)
         {
-            if (!IsActive) return false;
+            if (!IsActive()) return false;
             var drawn = amount <= _charge ? amount : _charge;
             _charge -= drawn;
+            if(_charge < 1) OnEmpty();
             _heatSink?.PushHeat(drawn * Shields.Mod.Settings.HeatPerPower);
             return !(drawn < amount);
         }
@@ -62,6 +65,11 @@ namespace FrontierDevelopments.General.EnergySources
         {
             if (amount > _charge) _charge = 0f;
             else _charge -= amount;
+        }
+
+        protected virtual void OnEmpty()
+        {
+            
         }
     }
 }

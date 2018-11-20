@@ -16,12 +16,6 @@ namespace FrontierDevelopments.General.EnergySources
     
     public class Comp_ElectricEnergySource : ThingComp, IEnergySource
     {
-        public bool IsActive =>
-            _powerTrader?.PowerOn == true
-            && _powerTrader.PowerNet != null
-            && _powerTrader.PowerNet.CurrentStoredEnergy() >= Props.minimumOnlinePower
-            && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
-
         private IHeatsink _heatSink;
 
         private float _basePowerConsumption;
@@ -33,6 +27,14 @@ namespace FrontierDevelopments.General.EnergySources
 
         public bool WantActive => _powerTrader?.PowerOn == true;
 
+        public bool IsActive()
+        {
+            return _powerTrader?.PowerOn == true
+                   && _powerTrader.PowerNet != null
+                   && _powerTrader.PowerNet.CurrentStoredEnergy() >= Props.minimumOnlinePower
+                   && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
+        }
+        
         public float BaseConsumption
         {
             get => _basePowerConsumption;
@@ -95,7 +97,7 @@ namespace FrontierDevelopments.General.EnergySources
 
         public bool Draw(float amount)
         {
-            if (!IsActive) return false;
+            if (!IsActive()) return false;
             amount *= GenDate.TicksPerDay;
             if (Shields.Mod.Settings.ScaleOnHeat && _heatSink != null) amount = amount * Mathf.Pow(1.01f, _heatSink.Temp);
             var drawn = DrawPowerOneTick(amount);
