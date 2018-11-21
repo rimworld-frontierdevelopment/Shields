@@ -8,7 +8,6 @@ using UnityEngine;
 using Verse;
 using Verse.Sound;
 
-
 namespace FrontierDevelopments.Shields.Comps
 {
     public class Comp_ShieldRadial : ThingComp, IShield
@@ -17,6 +16,10 @@ namespace FrontierDevelopments.Shields.Comps
         private int _cellCount;
         private bool _renderField = true;
 
+        private int _warmingUpTicks;
+        private bool _activeLastTick;
+
+        private int _radiusLast;
         private CellRect? _cameraLast;
         private bool _renderLast = true;
         private IntVec3 _positionLast;
@@ -31,7 +34,7 @@ namespace FrontierDevelopments.Shields.Comps
         public override void Initialize(Verse.CompProperties compProperties)
         {
             base.Initialize(compProperties);
-            Radius = Props.maxRadius;
+            SetRadius = Props.maxRadius;
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -39,6 +42,7 @@ namespace FrontierDevelopments.Shields.Comps
             base.PostSpawnSetup(respawningAfterLoad);
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
+            _radiusLast = (int)Radius;
             _energySource = EnergySourceUtility.Find(parent);
             _heatSink = HeatsinkUtility.Find(parent);
             parent.Map.GetComponent<ShieldManager>().Add(this);
@@ -60,7 +64,7 @@ namespace FrontierDevelopments.Shields.Comps
         public CompProperties_ShieldRadial Props => 
             (CompProperties_ShieldRadial)props;
 
-        public int Radius
+        public float SetRadius
         {
             get => _fieldRadius;
             set
@@ -75,14 +79,48 @@ namespace FrontierDevelopments.Shields.Comps
                     _fieldRadius = Props.maxRadius;
                     return;
                 }
-                _fieldRadius = value;
+                _fieldRadius = (int)value;
                 _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             }
+        }
+        
+        public float Radius
+        {
+            get
+            {
+                if (_warmingUpTicks > 0)
+                {
+                    var result = Mathf.Lerp(Props.maxRadius, 0f, 1.0f * _warmingUpTicks / Props.warmupTicks);
+                    if(result < _fieldRadius) return result;
+                    return _fieldRadius;
+                }
+                else
+                {
+                    return _fieldRadius;
+                }
+            }
+            
         }
 
         public override void CompTick()
         {
             _positionLast = parent.Position;
+            _radiusLast = (int) Radius;
+            
+            var active = IsActive();
+            if (active != _activeLastTick)
+            {
+                if (active && _warmingUpTicks < Props.warmupTicks)
+                {
+                    _warmingUpTicks = Props.warmupTicks;
+                }
+            }
+            _activeLastTick = active;
+
+            if (active && _warmingUpTicks > 0)
+            {
+                _warmingUpTicks--;
+            }
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -109,7 +147,7 @@ namespace FrontierDevelopments.Shields.Comps
                         defaultDesc = "radius.description".Translate(),
                         defaultLabel = "radius.label".Translate(),
                         activateSound = SoundDef.Named("Click"),
-                        action = () => Find.WindowStack.Add(new Popup_IntSlider("radius.label".Translate(), Props.minRadius, Props.maxRadius, () => Radius, size =>  Radius = size))
+                        action = () => Find.WindowStack.Add(new Popup_IntSlider("radius.label".Translate(), Props.minRadius, Props.maxRadius, () => (int)SetRadius, size =>  SetRadius = size))
                     };
                 }
             }
@@ -117,7 +155,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool Collision(Vector3 vector)
         {
-            return Vector3.Distance(Common.ToVector3(ExactPosition), vector) < _fieldRadius + 0.5f;
+            return Vector3.Distance(Common.ToVector3(ExactPosition), vector) < Radius + 0.5f;
         }
 
         public Vector3? Collision(Ray ray, float limit)
@@ -129,12 +167,14 @@ namespace FrontierDevelopments.Shields.Comps
         {
             var circleOrigin = Common.ToVector3(ExactPosition);
 
+            var radius = Radius;
+            
             var d = destination - origin;
             var f = origin - circleOrigin;
             
             var a = Vector3.Dot(d, d);
             var b = Vector3.Dot(2*f, d) ;
-            var c = Vector3.Dot(f, f) - _fieldRadius * _fieldRadius;
+            var c = Vector3.Dot(f, f) - radius * radius;
             
             var discriminant = b*b-4*a*c;
 
@@ -200,7 +240,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         private bool ShouldDraw(CellRect cameraRect)
         {
-            if (cameraRect == _cameraLast && parent.Position == _positionLast) return _renderLast;
+            if (cameraRect == _cameraLast && parent.Position == _positionLast && (int) Radius == _radiusLast) return _renderLast;
 
             _cameraLast = cameraRect;
 
@@ -214,7 +254,7 @@ namespace FrontierDevelopments.Shields.Comps
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
             var position = Common.ToVector3(ExactPosition);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
-            var scalingFactor = (float)(_fieldRadius * 2.2);
+            var scalingFactor = (float)(Radius * 2.2);
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
             var matrix = new Matrix4x4();
             matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
@@ -230,6 +270,8 @@ namespace FrontierDevelopments.Shields.Comps
         {
             Scribe_Values.Look(ref _fieldRadius, "radius", Props.maxRadius);
             Scribe_Values.Look(ref _renderField, "renderField", true);
+            Scribe_Values.Look(ref _warmingUpTicks, "warmingUpTicks");
+            Scribe_Values.Look(ref _activeLastTick, "activeLastTick");
         }
 
         public bool IsActive()

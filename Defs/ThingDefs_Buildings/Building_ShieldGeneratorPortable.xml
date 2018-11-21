@@ -50,6 +50,7 @@
             <li Class="FrontierDevelopments.Shields.CompProperties.CompProperties_ShieldRadial">
                 <minRadius>3</minRadius>
                 <maxRadius>3</maxRadius>
+                <warmupTicks>20</warmupTicks>
             </li>
             <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
                 <grams>400</grams>

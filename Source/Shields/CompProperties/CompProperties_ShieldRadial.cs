@@ -6,6 +6,8 @@ namespace FrontierDevelopments.Shields.CompProperties
     {
         public int minRadius;
         public int maxRadius;
+
+        public int warmupTicks;
         
         public CompProperties_ShieldRadial()
         {
