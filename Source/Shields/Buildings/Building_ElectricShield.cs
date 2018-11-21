@@ -22,7 +22,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool _activeLastTick;
 
-        private bool IsActive => _energySource.IsActive();
+        private bool IsActive => _shield.IsActive();
         private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
 
         public ShieldStatus Status
