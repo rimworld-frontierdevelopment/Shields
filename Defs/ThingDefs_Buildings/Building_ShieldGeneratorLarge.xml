@@ -32,8 +32,8 @@
                 <specificHeat>.385</specificHeat>
                 <conductivity>100</conductivity>
                 <minorThreshold>100</minorThreshold>
-                <majorThreshold>150</majorThreshold>
-                <criticalThreshold>200</criticalThreshold>
+                <majorThreshold>200</majorThreshold>
+                <criticalThreshold>400</criticalThreshold>
             </li>
             <li Class="CompProperties_Glower">
                 <glowRadius>7</glowRadius>
