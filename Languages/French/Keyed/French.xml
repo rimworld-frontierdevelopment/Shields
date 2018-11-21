@@ -3,6 +3,27 @@
 
     <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
     
+     <!-- Integrations Section -->
+    <fd.settings.shield.integrations.heading>Integrations</fd.settings.shield.integrations.heading>
+
+    <fd.settings.shield.climatecontrol.label>Activer l'utilisation du mod Contrôle Centralisé du Climat (Nécessite de relancer le jeu)</fd.settings.shield.climatecontrol.label>
+    <fd.settings.shield.climatecontrol.description>Activer le refroidissement des boucliers avec les tuyaux de Contrôle Centralisé du Climat</fd.settings.shield.climatecontrol.description>
+
+    <fd.settings.shield.redistheat.label>Activer l'utilisation de RedistHeat (Nécessite de relancer le jeu)</fd.settings.shield.redistheat.label>
+    <fd.settings.shield.redistheat.description>Activer le refroidissement des boucliers avec les conduites de RedistHeat </fd.settings.shield.redistheat.description>
+
+    <!-- General section -->
+    <fd.settings.shield.general.heading>Général</fd.settings.shield.general.heading>
+
+    <fd.settings.shield.shootout.label>Autoriser tirs intérieurs</fd.settings.shield.shootout.label>
+    <fd.settings.shield.shootout.description>Autorise les tirs provenant de l'intérieur de traverser le bouclier</fd.settings.shield.shootout.description>
+
+    <fd.settings.shield.overlap-passthrough.label>Autoriser le passage sur des zones qui se chevauchent</fd.settings.shield.overlap-passthrough.label>
+    <fd.settings.shield.overlap-passthrough.description>Autoriser les tirs et explosions à traverser le bouclier sur les zones qui se chevauchent</fd.settings.shield.overlap-passthrough.description>
+
+    <fd.settings.shield.scale-heat.label>Proportion des dégats selon la température</fd.settings.shield.scale-heat.label>
+    <fd.settings.shield.scale-heat.description>Bloquer les dégats demande moins d'énergie quand le bouclier est froid et plus quand il est chaud. L'utilisation du mod de Contrôle de Climat Centralisé est recommandée pour l'utiliser</fd.settings.shield.scale-heat.description>
+
     <!-- Power section -->
     <fd.settings.shield.power.heading>Puissance</fd.settings.shield.power.heading>
 
@@ -39,10 +60,10 @@
     <fd.shields.incident.minor.title>Zzzt! (Bouclier)</fd.shields.incident.minor.title>
     <fd.shields.incident.minor.body>Un circuit d'absorption de bouclier en surchauffe a court-ciruité {0}Wj stockés sur le réseau.</fd.shields.incident.minor.body>
 
-    <fd.shields.incident.major.title>Shield breakdown</fd.shields.incident.major.title>
+    <fd.shields.incident.major.title>Extinction du bouclier</fd.shields.incident.major.title>
     <fd.shields.incident.major.body>Un circuit d'absorption de bouclier en surchauffe est tombé en panne et a court-ciruité {0}Wj stockés sur le réseau.</fd.shields.incident.major.body>
 
-    <fd.shields.incident.critical.title>Shield explosion</fd.shields.incident.critical.title>
+    <fd.shields.incident.critical.title>Explosion du bouclier</fd.shields.incident.critical.title>
     <fd.shields.incident.critical.body>Un circuit d'absorption de bouclier en surchauffe a explosé et court-ciruité {0}Wj stockés sur le réseau.</fd.shields.incident.critical.body>
 
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
@@ -67,8 +88,13 @@
     <thermal_shutoff.description>Autoriser la mise en sécurité en cas de surchauffe</thermal_shutoff.description>
 
     <fd.shield.render_field.label>Visible</fd.shield.render_field.label>
-    
+    <fd.shield.render_field.description>Active/Désactive la visibilité du bouclier (Cosmétique)</fd.shield.render_field.description>
+
     <charge_internal_battery.label>Charger la batterie interne</charge_internal_battery.label>
     <charge_internal_battery.description>Transfère l'énergie des batteries connectées dans la batterie interne</charge_internal_battery.description>
     
+       <fd.heatsink.climate.net.connect.label>Utiliser le système d'aération</fd.heatsink.climate.net.connect.label>
+    <fd.heatsink.climate.net.connect.description>Connecte le bouclier au système d'aération</fd.heatsink.climate.net.connect.description>
+    
+
 </LanguageData>
