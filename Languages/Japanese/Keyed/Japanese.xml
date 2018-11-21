@@ -3,6 +3,16 @@
 
   <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+  <!-- Integrations Section -->
+
+  <fd.settings.shield.integrations.heading>統合</fd.settings.shield.integrations.heading>
+
+  <fd.settings.shield.climatecontrol.label>「Centralized Climate Control」Modサポート有効（再稼働が必要!)</fd.settings.shield.climatecontrol.label>
+  <fd.settings.shield.climatecontrol.description>「Centralized Climate Control」の換気通風パイプによるシールド冷却を有効化します。</fd.settings.shield.climatecontrol.description>
+
+  <fd.settings.shield.redistheat.label>「RedistHeat」サポート有効（再稼働が必要!)</fd.settings.shield.redistheat.label>
+  <fd.settings.shield.redistheat.description>「RedistHeat」の作業ダクトでシールド冷却を可能にします。</fd.settings.shield.redistheat.description>
+
   <!-- General section -->
   <fd.settings.shield.general.heading>一般設定</fd.settings.shield.general.heading>
 
@@ -45,9 +55,9 @@
 
   <fd.settings.shield.critical_thermal_incidents.label>重大な放熱事故を有効化</fd.settings.shield.critical_thermal_incidents.label>
   <fd.settings.shield.critical_thermal_incidents.description>シールドと電力網、およびマップ全体に影響する、重大な事故が発生する可能性を有効化します。</fd.settings.shield.critical_thermal_incidents.description>
-    
+
   <!-- Incidents //////////////////////////////////////////////////////////////////////////////////////////////////-->
-    
+
   <fd.shields.incident.offline.body>シールド発生装置がオフラインになった</fd.shields.incident.offline.body>
 
   <fd.shields.incident.skyfaller.blocked.body>空からの落下物がシールドに衝撃を与えましたが、破壊されました。</fd.shields.incident.skyfaller.blocked.body>
@@ -83,14 +93,17 @@
   <!-- Gizmos -->
   <radius.label>防御範囲</radius.label>
   <radius.description>シールドの半径(マス数)を設定します。</radius.description>
-    
+
   <thermal_shutoff.label>熱遮断</thermal_shutoff.label>
   <thermal_shutoff.description>過熱によるシールド放熱コイルの損傷を防ぎます。</thermal_shutoff.description>
-    
+
   <charge_internal_battery.label>内蔵バッテリーを充電する</charge_internal_battery.label>
   <charge_internal_battery.description>接続されているすべてのバッテリーの電力を消費して内蔵バッテリーを充電します。</charge_internal_battery.description>
-    
+
   <fd.shield.render_field.label>防御範囲表示</fd.shield.render_field.label>
   <fd.shield.render_field.description>シールドが防御できる範囲を視覚的に表示します。 (シールド半径のみ)</fd.shield.render_field.description>
-    
+
+  <fd.heatsink.climate.net.connect.label>換気システムを利用する</fd.heatsink.climate.net.connect.label>
+  <fd.heatsink.climate.net.connect.description>シールドを換気システムに接続します</fd.heatsink.climate.net.connect.description>
+
 </LanguageData>
