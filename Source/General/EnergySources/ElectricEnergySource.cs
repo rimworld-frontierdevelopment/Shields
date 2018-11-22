@@ -86,7 +86,7 @@ namespace FrontierDevelopments.General.EnergySources
 
         public void Drain(float amount)
         {
-            var perBattery = amount * GenDate.TicksPerDay / _powerTrader.PowerNet.batteryComps.Count;
+            var perBattery = amount / _powerTrader.PowerNet.batteryComps.Count;
             _powerTrader.PowerNet.batteryComps.ForEach(battery => battery.DrawPower(perBattery));
         }
 
