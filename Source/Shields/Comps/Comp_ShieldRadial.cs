@@ -276,7 +276,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool IsActive()
         {
-            return _energySource.IsActive() && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
+            return _energySource?.IsActive() == true && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
         }
 
         public bool Block(long damage, Vector3 position)
