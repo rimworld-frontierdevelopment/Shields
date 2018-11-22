@@ -78,7 +78,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                         toBlacklist.ForEach(def =>
                         {
                             blacklisted += " " + def;
-                            Harmony_Projectile.BlacklistedDefs.Add(def);
+                            Harmony_Projectile.BlacklistDef(def);
                         });
                         Log.Message("Frontier Developments Shields :: Crash Landing blacklisting projectiles for (" +
                                     blacklisted + ")");

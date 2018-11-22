@@ -10,10 +10,71 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
     public class Harmony_Projectile
     {
-        public static readonly List<string> BlacklistedDefs = new List<string>();
+        protected static readonly List<string> BlacklistedDefs = new List<string>();
 
+        public static void BlacklistDef(string def)
+        {
+            BlacklistedDefs.Add(def);
+        }
+
+        private static bool ShieldBlocks(
+            Projectile projectile,
+            Vector3 currentPosition,
+            Vector3 nextPosition,
+            int ticksToImpact,
+            Vector3 origin)
+        {
+            var shieldManager = projectile.Map.GetComponent<ShieldManager>();
+            if (BlacklistedDefs.Contains(projectile.def.defName)) return false;
+
+            if (projectile.def.projectile.flyOverhead)
+            {
+                if (ticksToImpact <= 1)
+                {
+                    var damage = projectile.def.projectile.GetDamageAmount(1f);
+
+                    // fix for fire foam projectiles having 99999 damage
+                    if (projectile.def.defName == "Bullet_Shell_Firefoam")
+                    {
+                        damage = 10;
+                    }
+
+                    // check to ensure the projectile won't roll the power required int heal the shields
+                    if (damage >= 500)
+                    {
+                        Log.Warning("damage for " + projectile.Label + " too high at " + damage +
+                                    ", reducing to 500. (This is probably a bug from the projectile having no damage set)");
+                        damage = 500;
+                    }
+
+                    return shieldManager.Block(
+                        Common.ToVector3(origin),
+                        Common.ToVector3(currentPosition),
+                        // TODO calculate mortar damage better
+                        damage);
+                }
+            }
+            else
+            {
+                return shieldManager.Block(
+                           Common.ToVector3(origin),
+                           Common.ToVector3(currentPosition),
+                           Common.ToVector3(nextPosition),
+                           projectile.def.projectile.GetDamageAmount(1f)) != null;
+            }
+
+            return false;
+        }
+
+        private static bool ShouldImpact(Projectile projectile)
+        {
+            if (projectile.def.projectile.flyOverhead) return false;
+            var type = projectile.GetType();
+            return typeof(Projectile_Explosive).IsAssignableFrom(type);
+        }
+        
         [HarmonyPatch(typeof(Projectile), nameof(Projectile.Tick))]
-        static class Patch_Projectile_Tick
+        static class Patch_Tick
         {
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
@@ -65,11 +126,11 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                             yield return new CodeInstruction(OpCodes.Ldfld,AccessTools.Field(typeof(Projectile), "ticksToImpact"));
                             yield return new CodeInstruction(OpCodes.Ldarg_0);
                             yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Projectile), "origin"));
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_Projectile_Tick), nameof(ShieldBlocks)));
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Projectile), nameof(ShieldBlocks)));
                             yield return new CodeInstruction(OpCodes.Brfalse, keepGoing);
                             
                             yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_Projectile_Tick), nameof(ShouldImpact)));
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Projectile), nameof(ShouldImpact)));
                             yield return new CodeInstruction(OpCodes.Brfalse, destroy);
                             
                             yield return new CodeInstruction(OpCodes.Ldarg_0);
@@ -89,60 +150,6 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
 
                     yield return instruction;
                 }
-            }
-
-            private static bool ShieldBlocks(
-                Projectile projectile,
-                Vector3 currentPosition,
-                Vector3 nextPosition,
-                int ticksToImpact,
-                Vector3 origin)
-            {
-                var shieldManager = projectile.Map.GetComponent<ShieldManager>();
-                if (BlacklistedDefs.Contains(projectile.def.defName)) return false;
-                
-                if (projectile.def.projectile.flyOverhead)
-                {
-                    if (ticksToImpact <= 1)
-                    {
-                        var damage = projectile.def.projectile.GetDamageAmount(1f);
-                    
-                        // fix for fire foam projectiles having 99999 damage
-                        if (projectile.def.defName == "Bullet_Shell_Firefoam")
-                        {
-                            damage = 10;
-                        }
-
-                        // check to ensure the projectile won't roll the power required int heal the shields
-                        if (damage >= 500)
-                        {
-                            Log.Warning("damage for " + projectile.Label + " too high at " + damage + ", reducing to 500. (This is probably a bug from the projectile having no damage set)");
-                            damage = 500;
-                        }
-
-                        return shieldManager.Block(
-                                   Common.ToVector3(origin),
-                                   Common.ToVector3(currentPosition),
-                                   // TODO calculate mortar damage better
-                                   damage);
-                    }
-                }
-                else
-                {
-                    return shieldManager.Block(
-                               Common.ToVector3(origin),
-                               Common.ToVector3(currentPosition),
-                               Common.ToVector3(nextPosition),
-                               projectile.def.projectile.GetDamageAmount(1f)) != null;
-                }
-                return false;
-            }
-
-            private static bool ShouldImpact(Projectile projectile)
-            {
-                if (projectile.def.projectile.flyOverhead) return false;
-                var type = projectile.GetType();
-                return typeof(Projectile_Explosive).IsAssignableFrom(type);
             }
         }
     }

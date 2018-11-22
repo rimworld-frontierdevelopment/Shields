@@ -23,7 +23,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
         }
         
         [HarmonyPatch(typeof(Bombardment), "CreateRandomExplosion")]
-        static class Patch_Bombardment_CreateRandomExplosion
+        static class Patch_CreateRandomExplosion
         {
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
@@ -75,7 +75,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
         }
 
         [HarmonyPatch(typeof(Bombardment), "StartRandomFire")]
-        static class Patch_Bombardment_StartRandomFire
+        static class Patch_StartRandomFire
         {
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)

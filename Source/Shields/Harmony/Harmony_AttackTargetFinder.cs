@@ -3,12 +3,12 @@ using Harmony;
 using Verse;
 using Verse.AI;
 
-namespace FrontierDevelopments.Shields
+namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_AttackTargetFinder
     {
         [HarmonyPatch(typeof(AttackTargetFinder), "GetShootingTargetScore")]
-        public static class Patch_Attack_TargetFinder_GetShootingTargetScore
+        public static class Patch_GetShootingTargetScore
         {
             static float Postfix(float __result, IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
             {

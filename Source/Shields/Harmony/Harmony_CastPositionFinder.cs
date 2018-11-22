@@ -27,7 +27,7 @@ namespace FrontierDevelopments.Shields
         }
         
         [HarmonyPatch(typeof(CastPositionFinder), "CastPositionPreference")]
-        static class Patch_CastPositionFinder_CastPositionPreference
+        static class Patch_CastPositionPreference
         {
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
             {

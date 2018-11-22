@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
@@ -11,8 +10,13 @@ namespace FrontierDevelopments.Shields
 {
     public class Harmony_DropCellFinder
     {
+        private static bool CheckShielded(Map map, IntVec3 c)
+        {
+            return map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(c), false);
+        }
+        
         [HarmonyPatch(typeof(DropCellFinder), "CanPhysicallyDropInto")]
-        static class Patch_DropCellFinder_CanPhysicallyDropInto
+        static class Patch_CanPhysicallyDropInto
         {
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
@@ -68,7 +72,7 @@ namespace FrontierDevelopments.Shields
                                     labels = new List<Label>(new Label[] { shieldTestLabel })
                                 };
                                 yield return new CodeInstruction(OpCodes.Ldarg_0);
-                                yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_DropCellFinder_CanPhysicallyDropInto), nameof(CheckShielded)));
+                                yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_DropCellFinder), nameof(CheckShielded)));
                                 yield return new CodeInstruction(OpCodes.Brfalse, successLabel);
                                 yield return new CodeInstruction(OpCodes.Ldc_I4_0);
                                 yield return new CodeInstruction(OpCodes.Ret);
@@ -80,11 +84,6 @@ namespace FrontierDevelopments.Shields
                     }
                     yield return instruction;
                 }
-            }
-
-            private static bool CheckShielded(Map map, IntVec3 c)
-            {
-                return map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(c), false);
             }
         }
     }

@@ -11,17 +11,17 @@ namespace FrontierDevelopments.Shields
 {
     public class Harmony_Explosion
     {
-        private static List<string> blockedDamageTypes = new List<string>();
+        private static readonly List<string> BlockedDamageTypes = new List<string>();
 
         public static void BlockType(string defName)
         {
-            blockedDamageTypes.Add(defName);
+            BlockedDamageTypes.Add(defName);
         }
         
         private static bool ShouldBlock(Explosion explosion, IntVec3 position)
         {
             if (explosion?.damType?.defName == null) return false;
-            foreach (var type in blockedDamageTypes)
+            foreach (var type in BlockedDamageTypes)
             {
                 if (type == explosion.damType.defName)
                 {
@@ -35,7 +35,7 @@ namespace FrontierDevelopments.Shields
         }
         
         [HarmonyPatch(typeof(Explosion), "AffectCell")]
-        static class Patch_DamageWorker_ExplosionAffectCell
+        static class Patch_AffectCell
         {
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)

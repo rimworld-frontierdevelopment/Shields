@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using FrontierDevelopments.Shields.Harmony;
 using Harmony;
 using RimWorld;
 using UnityEngine;
@@ -23,7 +24,7 @@ namespace FrontierDevelopments.Shields
             var harmony = HarmonyInstance.Create("frontierdevelopment.shields");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            Harmony_Verb_CanHitCellFromCellIgnoringRange.BlacklistType(typeof(Verb_Bombardment));
+            Harmony_Verb.BlacklistType(typeof(Verb_Bombardment));
             
             Log.Message("Frontier Developments Shields :: Loaded");
             LoadOneTemperatureMod(harmony);
