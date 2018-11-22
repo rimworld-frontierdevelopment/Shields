@@ -139,7 +139,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
         
-        public bool Block(Vector3 position, Vector3 origin, long damage)
+        public bool Block(Vector3 origin, Vector3 position, long damage)
         {
             try
             {

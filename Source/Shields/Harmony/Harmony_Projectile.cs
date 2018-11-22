@@ -65,8 +65,6 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                             yield return new CodeInstruction(OpCodes.Ldfld,AccessTools.Field(typeof(Projectile), "ticksToImpact"));
                             yield return new CodeInstruction(OpCodes.Ldarg_0);
                             yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Projectile), "origin"));
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Projectile), "destination"));
                             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_Projectile_Tick), nameof(ShieldBlocks)));
                             yield return new CodeInstruction(OpCodes.Brfalse, keepGoing);
                             
@@ -98,8 +96,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 Vector3 currentPosition,
                 Vector3 nextPosition,
                 int ticksToImpact,
-                Vector3 origin,
-                Vector3 destination)
+                Vector3 origin)
             {
                 var shieldManager = projectile.Map.GetComponent<ShieldManager>();
                 if (BlacklistedDefs.Contains(projectile.def.defName)) return false;
@@ -126,9 +123,8 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                         return shieldManager.Block(
                                    Common.ToVector3(origin),
                                    Common.ToVector3(currentPosition),
-                                   destination,
                                    // TODO calculate mortar damage better
-                                   damage) != null;
+                                   damage);
                     }
                 }
                 else

@@ -32,9 +32,9 @@ namespace FrontierDevelopments.RedistHeat
                 var def = DefDatabase<ThingDef>.GetNamed(defName);
                 foreach (var comp in def.comps)
                 {
-                    if (comp.compClass == typeof(FrontierDevelopments.General.CompProperties.CompProperties_HeatSink))
+                    if (comp.compClass == typeof(General.Comps.Comp_HeatSink))
                     {
-                        comp.compClass = typeof(CompProperties_RedistHeatSink);
+                        comp.compClass = typeof(Comp_RedistHeatSink);
                     }
                 }
                 def.comps.Add(new CompAirTraderProperties());

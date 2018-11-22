@@ -41,15 +41,16 @@
             <li Class="FrontierDevelopments.Shields.CompProperties.CompProperties_ShieldRadial">
                 <minRadius>3</minRadius>
                 <maxRadius>10</maxRadius>
-                <warmupTicks>1000</warmupTicks>
+                <warmupTicks>20</warmupTicks>
             </li>
             <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
                 <grams>800</grams>
                 <specificHeat>.385</specificHeat>
                 <conductivity>100</conductivity>
                 <minorThreshold>100</minorThreshold>
-                <majorThreshold>150</majorThreshold>
-                <criticalThreshold>200</criticalThreshold>
+                <majorThreshold>200</majorThreshold>
+                <criticalThreshold>400</criticalThreshold>
+                <maximumTemperature>800</maximumTemperature>
             </li>
             <li Class="CompProperties_Glower">
                 <glowRadius>5</glowRadius>

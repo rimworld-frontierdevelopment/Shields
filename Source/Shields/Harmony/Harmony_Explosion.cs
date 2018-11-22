@@ -26,8 +26,8 @@ namespace FrontierDevelopments.Shields
                 if (type == explosion.damType.defName)
                 {
                     return explosion.Map.GetComponent<ShieldManager>().Block(
-                        Common.ToVector3(position), 
                         explosion.TrueCenter(),
+                        Common.ToVector3(position),
                         explosion.damAmount);
                 }
             }

@@ -11,6 +11,7 @@ namespace FrontierDevelopments.General.CompProperties
         public float minorThreshold;
         public float majorThreshold;
         public float criticalThreshold;
+        public float maximumTemperature;
 
         public CompProperties_HeatSink()
         {
