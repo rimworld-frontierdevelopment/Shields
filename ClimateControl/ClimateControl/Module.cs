@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.Reflection;
 using CentralizedClimateControl;
-using FrontierDevelopments.Shields;
 using Harmony;
 using RimWorld;
 using Verse;
@@ -44,11 +42,12 @@ namespace FrontierDevelopments.ClimateControl
             foreach (var ventPair in toPatch)
             {
                 var def = DefDatabase<ThingDef>.GetNamed(ventPair.defName);
+                Log.Message("patching " + def.defName);
                 foreach (var comp in def.comps)
                 {
-                    if (comp.compClass == typeof(FrontierDevelopments.General.CompProperties.CompProperties_HeatSink))
+                    if (comp.compClass == typeof(General.Comps.Comp_HeatSink))
                     {
-                        comp.compClass = typeof(CompProperties_ClimateControlHeatsink);
+                        comp.compClass = typeof(Comp_ClimateControlHeatsink);
                     }
                 }
                 def.comps.Add(new CompProperties_AirFlow()

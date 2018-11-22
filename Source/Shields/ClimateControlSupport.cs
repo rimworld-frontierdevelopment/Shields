@@ -9,7 +9,7 @@ namespace FrontierDevelopments.Shields
     public class ClimateControlSupport
     {
         public const string ClimateControlSupportAssembly =
-            "Integrations/FrontierDevelopements-Shields-ClimateControl.dll";
+            "Integrations/FrontierDevelopments-Shields-ClimateControl.dll";
         
         public static void Load(HarmonyInstance harmony)
         {
