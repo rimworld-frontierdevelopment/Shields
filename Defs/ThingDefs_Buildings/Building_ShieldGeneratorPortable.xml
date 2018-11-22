@@ -28,7 +28,9 @@
         <costList>
             <Steel>80</Steel>
             <Plasteel>40</Plasteel>
-            <ComponentIndustrial>10</ComponentIndustrial>
+            <Gold>10</Gold>
+            <ComponentIndustrial>5</ComponentIndustrial>
+            <ComponentSpacer>5</ComponentSpacer>
         </costList>
         <staticSunShadowHeight>0</staticSunShadowHeight>
         <comps>
