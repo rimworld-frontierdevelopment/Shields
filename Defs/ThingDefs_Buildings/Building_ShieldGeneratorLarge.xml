@@ -34,6 +34,7 @@
                 <minorThreshold>100</minorThreshold>
                 <majorThreshold>200</majorThreshold>
                 <criticalThreshold>400</criticalThreshold>
+                <maximumTemperature>800</maximumTemperature>
             </li>
             <li Class="CompProperties_Glower">
                 <glowRadius>7</glowRadius>

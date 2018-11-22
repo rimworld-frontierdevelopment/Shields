@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General.CompProperties;
 using FrontierDevelopments.Shields;
+using Harmony;
 using RimWorld;
 using Verse;
 
@@ -36,6 +37,8 @@ namespace FrontierDevelopments.General.Comps
         
         public bool OverCriticalThreshold => Temp >= Props.criticalThreshold;
 
+        public virtual float MaximumTemperature => Props.maximumTemperature;
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
@@ -60,9 +63,16 @@ namespace FrontierDevelopments.General.Comps
 
         public override void CompTick()
         {
-            var heatDissipated =  (Temp - AmbientTemp()) / _dissipationRate;
-            Joules -= heatDissipated * 1000f;
-            DissipateHeat(heatDissipated);
+            if (Temp >= MaximumTemperature)
+            {
+                DoCriticalBreakdown();
+            }
+            else
+            {
+                var heatDissipated =  (Temp - AmbientTemp()) / _dissipationRate;
+                Joules -= heatDissipated * 1000f;
+                DissipateHeat(heatDissipated);
+            }
         }
 
         public override string CompInspectStringExtra()
@@ -114,6 +124,7 @@ namespace FrontierDevelopments.General.Comps
                 "fd.shields.incident.critical.title".Translate(), 
                 "fd.shields.incident.critical.body".Translate(), 
                 CriticalBreakdown());
+            parent.Destroy(DestroyMode.KillFinalize);
         }
         
         private float MinorBreakdown()
@@ -131,8 +142,16 @@ namespace FrontierDevelopments.General.Comps
             if (parent.Faction == Faction.OfPlayer)
             {
                 // manually remove the default letter...
-                Find.LetterStack.RemoveLetter(Find.LetterStack.LettersListForReading.First(letter => 
-                    letter.lookTargets.targets.Any(t => t.Thing == parent)));
+                try
+                {
+                    Find.LetterStack.RemoveLetter(
+                        Find.LetterStack.LettersListForReading
+                            .First(letter => letter.lookTargets.targets.Any(t => t.Thing == parent)));
+                    
+                }
+                catch (Exception)
+                {
+                }
             }
             return MinorBreakdown();
         }
