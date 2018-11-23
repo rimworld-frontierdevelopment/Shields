@@ -44,7 +44,7 @@ namespace FrontierDevelopments.Shields
                         }
                         if(Settings.EnableRedistHeatSupport && ModLister.HasActiveModWithName(RedistHeatName))
                             Log.Warning("Frontier Developments Shields :: detected both " + CentralizedClimateControlName + " and " + RedistHeatName +" active. Using " + CentralizedClimateControlName + " since it is loaded first");
-                        ClimateControlSupport.Load(harmony);
+                        new ClimateControlIntegration().TryEnable(harmony);
                         return;
                     case "RedistHeat":
                         if (!Settings.EnableRedistHeatSupport)
@@ -54,7 +54,7 @@ namespace FrontierDevelopments.Shields
                         }
                         if(Settings.EnableCentralizedClimateControlSupport && ModLister.HasActiveModWithName(CentralizedClimateControlName))
                             Log.Warning("Frontier Developments Shields :: detected both " + CentralizedClimateControlName + " and " + RedistHeatName +" active. Using " + RedistHeatName + " since it is loaded first");
-                        RedistHeatSupport.Load(harmony);
+                        new RedistHeatIntegration().TryEnable(harmony);
                         return;
                 }
             }
