@@ -3,7 +3,7 @@ using Verse;
 
 namespace FrontierDevelopments.General.EnergySources
 {
-    public class CompProperties_SingleUseEnergySource : Verse.CompProperties
+    public class CompProperties_SingleUseEnergySource : CompProperties
     {
         public float charge;
         

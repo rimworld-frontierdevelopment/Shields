@@ -3,7 +3,7 @@ using Verse;
 
 namespace FrontierDevelopments.General.EnergySources
 {
-    public class CompProperties_ElectricEnergySource : Verse.CompProperties
+    public class CompProperties_ElectricEnergySource : CompProperties
     {
         public float minimumOnlinePower;
         

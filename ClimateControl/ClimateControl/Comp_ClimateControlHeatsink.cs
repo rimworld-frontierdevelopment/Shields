@@ -1,4 +1,3 @@
-using FrontierDevelopments.General.CompProperties;
 using FrontierDevelopments.General.Comps;
 using Verse;
 

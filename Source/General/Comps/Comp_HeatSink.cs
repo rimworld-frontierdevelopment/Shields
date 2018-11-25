@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using FrontierDevelopments.General.CompProperties;
 using FrontierDevelopments.Shields;
 using RimWorld;
 using Verse;
@@ -9,6 +8,23 @@ using Mod = FrontierDevelopments.Shields.Mod;
 
 namespace FrontierDevelopments.General.Comps
 {
+    public class CompProperties_HeatSink : CompProperties
+    {
+        public float grams;
+        public float specificHeat;
+        public float conductivity;
+
+        public float minorThreshold;
+        public float majorThreshold;
+        public float criticalThreshold;
+        public float maximumTemperature;
+
+        public CompProperties_HeatSink()
+        {
+            compClass = typeof(Comp_HeatSink);
+        }
+    }
+    
     public class Comp_HeatSink : ThingComp, IHeatsink
     {
         public static readonly float KELVIN_ZERO_CELCIUS = 273.15f;

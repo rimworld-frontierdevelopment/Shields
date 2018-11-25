@@ -1,12 +1,21 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using FrontierDevelopments.General.CompProperties;
 using RimWorld;
 using Verse;
 using Resources = FrontierDevelopments.Shields.Resources;
 
 namespace FrontierDevelopments.General.Comps
 {
+    public class CompProperties_BatteryInternal : CompProperties_Battery
+    {
+        public float chargeRate;
+        
+        public CompProperties_BatteryInternal()
+        {
+            compClass = typeof(Comp_BatteryInternal);
+        }
+    }
+    
     public class Comp_BatteryInternal : CompPowerBattery
     {
         private CompPowerTrader _powerTrader;

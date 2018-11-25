@@ -1,8 +1,9 @@
 using RimWorld;
+using Verse;
 
 namespace FrontierDevelopments.General.EnergySources
 {
-    public class CompProperties_FixedEnergySource : Verse.CompProperties
+    public class CompProperties_FixedEnergySource : CompProperties
     {
         public int amount;
 

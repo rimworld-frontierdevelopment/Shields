@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using FrontierDevelopments.General.CompProperties;
 using FrontierDevelopments.General.Comps;
 using RedistHeat;
 using RimWorld;

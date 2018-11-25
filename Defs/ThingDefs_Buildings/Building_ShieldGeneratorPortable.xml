@@ -41,7 +41,7 @@
             <li Class="FrontierDevelopments.General.EnergySources.CompProperties_ElectricEnergySource">
                 <minimumOnlinePower>50</minimumOnlinePower>
             </li>
-            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_BatteryInternal">
+            <li Class="FrontierDevelopments.General.Comps.CompProperties_BatteryInternal">
                 <storedEnergyMax>1000</storedEnergyMax>
                 <efficiency>0.5</efficiency>
                 <shortCircuitInRain>false</shortCircuitInRain>
@@ -54,7 +54,7 @@
                 <maxRadius>3</maxRadius>
                 <warmupTicks>20</warmupTicks>
             </li>
-            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
+            <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">
                 <grams>400</grams>
                 <specificHeat>.385</specificHeat>
                 <conductivity>100</conductivity>

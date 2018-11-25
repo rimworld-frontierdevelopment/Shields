@@ -45,7 +45,7 @@
                 <maxRadius>10</maxRadius>
                 <warmupTicks>20</warmupTicks>
             </li>
-            <li Class="FrontierDevelopments.General.CompProperties.CompProperties_HeatSink">
+            <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">
                 <grams>800</grams>
                 <specificHeat>.385</specificHeat>
                 <conductivity>100</conductivity>

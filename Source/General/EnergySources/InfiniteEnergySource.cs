@@ -3,7 +3,7 @@ using Verse;
 
 namespace FrontierDevelopments.General.EnergySources
 {
-    public class CompProperties_InfiniteEnergySource : Verse.CompProperties
+    public class CompProperties_InfiniteEnergySource : CompProperties
     {
         public CompProperties_InfiniteEnergySource()
         {
