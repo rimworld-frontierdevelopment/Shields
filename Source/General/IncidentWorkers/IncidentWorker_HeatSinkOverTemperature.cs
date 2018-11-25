@@ -35,21 +35,19 @@ namespace FrontierDevelopments.General.IncidentWorkers
             if (Mod.Settings.EnableCriticalThermalIncidents && target.OverCriticalThreshold)
             {
                 target.DoCriticalBreakdown();
+                return true;
             } 
-            else if (Mod.Settings.EnableMajorThermalIncidents && target.OverMajorThreshold)
+            if (Mod.Settings.EnableMajorThermalIncidents && target.OverMajorThreshold)
             {
                 target.DoMajorBreakdown();
+                return true;
             }
-            else if (Mod.Settings.EnableMinorThermalIncidents && target.OverMinorThreshold)
+            if (Mod.Settings.EnableMinorThermalIncidents && target.OverMinorThreshold)
             {
                 target.DoMinorBreakdown();
+                return true;
             }
-            else
-            {
-                return false;
-            }
-
-            return true;
+            return false;
         }
     }
 }
