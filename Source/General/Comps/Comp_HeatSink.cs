@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General.CompProperties;
 using FrontierDevelopments.Shields;
-using Harmony;
 using RimWorld;
 using Verse;
+using Mod = FrontierDevelopments.Shields.Mod;
 
 namespace FrontierDevelopments.General.Comps
 {
@@ -29,13 +29,16 @@ namespace FrontierDevelopments.General.Comps
             set =>  _temperature = value / Props.specificHeat / Props.grams - KELVIN_ZERO_CELCIUS;
         }
 
-        public bool OverTemperature => _thermalShutoff && OverMinorThreshold;
+        public bool OverTemperature => _thermalShutoff && OverMinorThreshold 
+                                       || !Mod.Settings.EnableCriticalThermalIncidents && OverMaximumTemperature;
 
         public bool OverMinorThreshold => Temp >= Props.minorThreshold;
         
         public bool OverMajorThreshold => Temp >= Props.majorThreshold;
         
         public bool OverCriticalThreshold => Temp >= Props.criticalThreshold;
+
+        public bool OverMaximumTemperature => Temp >= MaximumTemperature;
 
         public virtual float MaximumTemperature => Props.maximumTemperature;
 
@@ -63,7 +66,7 @@ namespace FrontierDevelopments.General.Comps
 
         public override void CompTick()
         {
-            if (Temp >= MaximumTemperature)
+            if (OverMaximumTemperature && Mod.Settings.EnableCriticalThermalIncidents)
             {
                 DoCriticalBreakdown();
             }
