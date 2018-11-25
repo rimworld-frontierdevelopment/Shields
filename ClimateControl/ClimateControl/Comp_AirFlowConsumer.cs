@@ -11,7 +11,7 @@ namespace FrontierDevelopments.ClimateControl
     
         public override bool IsOperating()
         {
-            return AirFlowNet != null && _connected;
+            return _connected && AirFlowNet != null && AirFlowNet.CurrentIntakeAir > 0f && !float.IsNaN(AirFlowNet.AverageConvertedTemperature);
         }
 
         public override string CompInspectStringExtra()
