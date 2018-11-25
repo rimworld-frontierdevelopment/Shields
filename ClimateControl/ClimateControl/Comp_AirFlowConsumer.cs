@@ -7,7 +7,7 @@ namespace FrontierDevelopments.ClimateControl
 {
     public class Comp_AirFlowConsumer : CompAirFlowConsumer
     {
-        private bool _connected;
+        private bool _connected = true;
     
         public override bool IsOperating()
         {
