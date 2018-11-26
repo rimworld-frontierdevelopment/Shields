@@ -58,6 +58,7 @@ enter via drop pods in shielded areas.
 - 日本語 (Japanese)
 - Pусский (Russian)
 - Español (Spanish)
+- Deutsch (German)
 
 #### Compatibility:
 - Can be added to existing games
