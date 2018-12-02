@@ -11,6 +11,8 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
 {
     public class Harmony_Skyfaller
     {
+        private const int ShieldHitPreDelay = 20;
+
         private static bool HandlePod(DropPodIncoming pod)
         {
             try
@@ -48,21 +50,24 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
             catch (InvalidOperationException) {}
             return true;
         }
-        
-        [HarmonyPatch(typeof(Skyfaller), "Impact")]
-        static class Patch_Skyfaller_Impact
+
+        [HarmonyPatch(typeof(Skyfaller), nameof(Skyfaller.Tick))]
+        static class Patch_Tick
         {
             static bool Prefix(Skyfaller __instance)
             {
-                if (__instance.Map == null) return true;
-                if (__instance.GetType() == typeof(DropPodIncoming))
+                if (__instance.Map != null && __instance.ticksToImpact == ShieldHitPreDelay)
                 {
-                    return HandlePod((DropPodIncoming) __instance);
+                    if (__instance.GetType() == typeof(DropPodIncoming))
+                    {
+                        return HandlePod((DropPodIncoming) __instance);
+                    }
+                    else
+                    {
+                        return HandleGeneric(__instance);
+                    }
                 }
-                else
-                {
-                    return HandleGeneric(__instance);
-                }
+                return true;
             }
         }
     }
