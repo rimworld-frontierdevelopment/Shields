@@ -4,7 +4,6 @@
   <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
 
   <!-- Integrations Section -->
-
   <fd.settings.shield.integrations.heading>統合</fd.settings.shield.integrations.heading>
 
   <fd.settings.shield.climatecontrol.label>「Centralized Climate Control」Modサポート有効（再稼働が必要!)</fd.settings.shield.climatecontrol.label>
@@ -36,7 +35,6 @@
 
   <fd.settings.shield.integrity.power_per_damage.label>ダメージ毎の電力</fd.settings.shield.integrity.power_per_damage.label>
   <fd.settings.shield.integrity.drop_pod_damage.label>落下ポッドのダメージ</fd.settings.shield.integrity.drop_pod_damage.label>
-
   <fd.settings.shield.integrity.skyfaller_damage.label>隕石のダメージ</fd.settings.shield.integrity.skyfaller_damage.label>
 
   <!-- Thermal section-->
@@ -77,9 +75,6 @@
 
   <!-- Text inspection -->
   <fd.heatsink.temperature>ヒートシンク温度</fd.heatsink.temperature>
-
-  <fd.heatsink.net.connect.label>換気システムを利用する</fd.heatsink.net.connect.label>
-  <fd.heatsink.net.connect.desc>シールドを換気システムに接続します</fd.heatsink.net.connect.desc>
 
   <shield.status.offline>シールドは停止中</shield.status.offline>
   <shield.status.no_power>電源に接続されていません</shield.status.no_power>
