@@ -4,22 +4,22 @@
     <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <!-- Power section -->
-    <fd.settings.shield.power.heading>Energia</fd.settings.shield.power.heading>
+    <fd.settings.shield.power.heading>Energía</fd.settings.shield.power.heading>
 
-    <fd.settings.shield.power.per_tile.label>Energia por baldosa</fd.settings.shield.power.per_tile.label>
+    <fd.settings.shield.power.per_tile.label>Energía por baldosa</fd.settings.shield.power.per_tile.label>
     <fd.settings.shield.power.minimum_online.label>Energía mínima para su encendido</fd.settings.shield.power.minimum_online.label>
 
     <!-- Integrity section -->
     <fd.settings.shield.integrity.heading>Integridad</fd.settings.shield.integrity.heading>
 
-    <fd.settings.shield.integrity.power_per_damage.label>Energia drenada por cada punto de daño</fd.settings.shield.integrity.power_per_damage.label>
+    <fd.settings.shield.integrity.power_per_damage.label>Energía drenada por cada punto de daño</fd.settings.shield.integrity.power_per_damage.label>
     <fd.settings.shield.integrity.drop_pod_damage.label>Daño por cada cápsula de transporte</fd.settings.shield.integrity.drop_pod_damage.label>
     <fd.settings.shield.integrity.skyfaller_damage.label>Daño por cada meteorito</fd.settings.shield.integrity.skyfaller_damage.label>
 
     <!-- Thermal section-->
     <fd.settings.shield.thermal.heading>Térmicas</fd.settings.shield.thermal.heading>
 
-    <fd.settings.shield.thermal.per_power.label>Calor generado por cada punto de energia drenada</fd.settings.shield.thermal.per_power.label>
+    <fd.settings.shield.thermal.per_power.label>Calor generado por cada punto de energía drenada</fd.settings.shield.thermal.per_power.label>
 
     <fd.settings.shield.thermal.label>Habilitar el calentamiento de los escudos</fd.settings.shield.thermal.label>
     <fd.settings.shield.thermal.description>Habilita el calentamiento de los escudos. Puede causar que los escudos funcionen mal y generar incidentes</fd.settings.shield.thermal.description>
@@ -28,7 +28,7 @@
     <fd.settings.shield.minor_thermal_incidents.description>Los incidentes están limitados, afectando sólo a los escudos</fd.settings.shield.minor_thermal_incidents.description>
 
     <fd.settings.shield.major_thermal_incidents.label>Habilitar incidentes térmicos mayores</fd.settings.shield.major_thermal_incidents.label>
-    <fd.settings.shield.major_thermal_incidents.description>Los incidentes pueden afectar a los escudos y red eléctrica</fd.settings.shield.major_thermal_incidents.description>
+    <fd.settings.shield.major_thermal_incidents.description>Los incidentes pueden afectar a los escudos y la red eléctrica</fd.settings.shield.major_thermal_incidents.description>
 
     <fd.settings.shield.critical_thermal_incidents.label>Habilitar incidentes térmicos críticos</fd.settings.shield.critical_thermal_incidents.label>
     <fd.settings.shield.critical_thermal_incidents.description>Los incidentes pueden afectar a los escudos, red eléctrica y mapa</fd.settings.shield.critical_thermal_incidents.description>
@@ -77,4 +77,7 @@
     <fd.shield.render_field.label>Alternar visibilidad</fd.shield.render_field.label>
     <fd.shield.render_field.description>Alternar la visibilidad del escudo (puramente cosmético)</fd.shield.render_field.description>
 
+    <fd.heatsink.climate.net.connect.label>Usar red de aire</fd.heatsink.climate.net.connect.label>
+    <fd.heatsink.climate.net.connect.description>Conectar escudo a red de aire</fd.heatsink.climate.net.connect.description>
+    
 </LanguageData>
