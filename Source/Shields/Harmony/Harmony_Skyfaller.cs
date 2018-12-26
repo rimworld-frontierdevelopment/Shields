@@ -61,8 +61,8 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                     switch (__instance)
                     {
                         case DropPodIncoming incoming:
-                            return HandlePod((DropPodIncoming) __instance);
-                        case DropPodLeaving leaving:
+                            return HandlePod(incoming);
+                        case DropPodLeaving _:
                             return true;
                         default:
                             return HandleGeneric(__instance);
