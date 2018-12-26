@@ -58,13 +58,15 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
             {
                 if (__instance.Map != null && __instance.ticksToImpact == ShieldHitPreDelay)
                 {
-                    if (__instance.GetType() == typeof(DropPodIncoming))
+                    switch (__instance)
                     {
-                        return HandlePod((DropPodIncoming) __instance);
-                    }
-                    else
-                    {
-                        return HandleGeneric(__instance);
+                        case DropPodIncoming incoming:
+                            return HandlePod((DropPodIncoming) __instance);
+                        case DropPodLeaving leaving:
+                            return true;
+                        default:
+                            return HandleGeneric(__instance);
+                            
                     }
                 }
                 return true;
