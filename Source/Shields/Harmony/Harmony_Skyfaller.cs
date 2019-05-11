@@ -42,8 +42,8 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 {
                     skyfaller.def.skyfaller.impactSound?.PlayOneShot(
                         SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
-                    skyfaller.Destroy();
                     Messages.Message("fd.shields.incident.skyfaller.blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NeutralEvent);
+                    skyfaller.Destroy();
                     return false;
                 }
             }
