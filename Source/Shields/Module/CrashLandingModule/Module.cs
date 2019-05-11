@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using System.Reflection;
-using FrontierDevelopments.Shields.Module.RimworldModule;
+using FrontierDevelopments.Shields.Harmony;
 using Harmony;
 using RimWorld;
 using Verse;

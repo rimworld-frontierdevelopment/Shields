@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
 using Harmony;
-using RimWorld;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Harmony
 {
-    
     public class Harmony_Verb
     {
         private static List<Type> uncheckedTypes = new List<Type>();
@@ -18,7 +16,7 @@ namespace FrontierDevelopments.Shields.Harmony
             uncheckedTypes.Add(type);
         }
         
-        static bool ShieldBlocks(Thing caster, Verb verb, IntVec3 source, LocalTargetInfo target)
+        protected static bool ShieldBlocks(Thing caster, Verb verb, IntVec3 source, LocalTargetInfo target)
         {
             if (!verb.verbProps.requireLineOfSight) return false;
             if (uncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClimateControl", "ClimateCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RedistHeat", "RedistHeat\FrontierDevelopments-Shields-RedistHeat.csproj", "{4C79080A-997E-4866-8934-318B6A641DB2}"
 EndProject
+Project("{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}") = "CombatExtended", "CombatExtended\FrontierDevelopments-Shields-CombatExtended.csproj", "{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{4C79080A-997E-4866-8934-318B6A641DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4C79080A-997E-4866-8934-318B6A641DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4C79080A-997E-4866-8934-318B6A641DB2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

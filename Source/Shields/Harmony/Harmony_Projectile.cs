@@ -6,33 +6,50 @@ using Harmony;
 using UnityEngine;
 using Verse;
 
-namespace FrontierDevelopments.Shields.Module.RimworldModule
+namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Projectile
     {
-        protected static readonly List<string> BlacklistedDefs = new List<string>();
+        private static readonly List<string> BlacklistedDefs = new List<string>();
 
         public static void BlacklistDef(string def)
         {
             BlacklistedDefs.Add(def);
         }
 
-        private static bool ShieldBlocks(
+        private static bool TryBlockProjectile(
             Projectile projectile,
             Vector3 currentPosition,
             Vector3 nextPosition,
             int ticksToImpact,
             Vector3 origin)
         {
-            var shieldManager = projectile.Map.GetComponent<ShieldManager>();
-            if (BlacklistedDefs.Contains(projectile.def.defName)) return false;
+            return TryBlock(
+                projectile,
+                currentPosition,
+                nextPosition,
+                ticksToImpact,
+                origin,
+                projectile.def.projectile.flyOverhead,
+                projectile.def.projectile.GetDamageAmount(1f)) != null;
+        }
 
-            if (projectile.def.projectile.flyOverhead)
+        protected static Vector3? TryBlock(
+            Thing projectile,
+            Vector3 currentPosition,
+            Vector3 nextPosition,
+            int ticksToImpact,
+            Vector3 origin,
+            bool flyOverhead,
+            int damage)
+        {
+            var shieldManager = projectile.Map.GetComponent<ShieldManager>();
+            if (BlacklistedDefs.Contains(projectile.def.defName)) return null;
+
+            if (flyOverhead)
             {
                 if (ticksToImpact <= 1)
                 {
-                    var damage = projectile.def.projectile.GetDamageAmount(1f);
-
                     // fix for fire foam projectiles having 99999 damage
                     if (projectile.def.defName == "Bullet_Shell_Firefoam")
                     {
@@ -47,11 +64,13 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                         damage = 500;
                     }
 
-                    return shieldManager.Block(
+
+                    if (shieldManager.Block(
                         Common.ToVector3(origin),
                         Common.ToVector3(currentPosition),
                         // TODO calculate mortar damage better
-                        damage);
+                        damage)) return currentPosition;
+                    return null;
                 }
             }
             else
@@ -60,10 +79,10 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                            Common.ToVector3(origin),
                            Common.ToVector3(currentPosition),
                            Common.ToVector3(nextPosition),
-                           projectile.def.projectile.GetDamageAmount(1f)) != null;
+                           damage);
             }
 
-            return false;
+            return null;
         }
 
         private static bool ShouldImpact(Projectile projectile)
@@ -126,7 +145,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                             yield return new CodeInstruction(OpCodes.Ldfld,AccessTools.Field(typeof(Projectile), "ticksToImpact"));
                             yield return new CodeInstruction(OpCodes.Ldarg_0);
                             yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Projectile), "origin"));
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Projectile), nameof(ShieldBlocks)));
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Projectile), nameof(TryBlockProjectile)));
                             yield return new CodeInstruction(OpCodes.Brfalse, keepGoing);
                             
                             yield return new CodeInstruction(OpCodes.Ldarg_0);

@@ -28,6 +28,7 @@ namespace FrontierDevelopments.Shields
             
             Log.Message("Frontier Developments Shields :: Loaded");
             LoadOneTemperatureMod(harmony);
+            new CombatExtendedIntegration().TryEnable(harmony);
         }
 
         private void LoadOneTemperatureMod(HarmonyInstance harmony)

@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
@@ -7,7 +6,7 @@ using Harmony;
 using RimWorld;
 using Verse;
 
-namespace FrontierDevelopments.Shields
+namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Explosion
     {
@@ -17,18 +16,23 @@ namespace FrontierDevelopments.Shields
         {
             BlockedDamageTypes.Add(defName);
         }
-        
-        private static bool ShouldBlock(Explosion explosion, IntVec3 position)
+
+        private static bool TryBlockExplosion(Explosion explosion, IntVec3 position)
         {
-            if (explosion?.damType?.defName == null) return false;
+            return explosion != null && TryBlock(explosion, explosion.damType, explosion.damAmount, position);
+        }
+
+        protected static bool TryBlock(Thing explosion, DamageDef damType, int damAmount, IntVec3 position)
+        {
+            if (damType?.defName == null) return false;
             foreach (var type in BlockedDamageTypes)
             {
-                if (type == explosion.damType.defName)
+                if (type == damType.defName)
                 {
                     return explosion.Map.GetComponent<ShieldManager>().Block(
                         explosion.TrueCenter(),
                         Common.ToVector3(position),
-                        explosion.damAmount);
+                        damAmount);
                 }
             }
             return false;
@@ -87,7 +91,7 @@ namespace FrontierDevelopments.Shields
 
                             yield return new CodeInstruction(OpCodes.Ldarg_0) { labels = new List<Label>(new[] { shieldTestLabel })};
                             yield return new CodeInstruction(OpCodes.Ldarg_1);
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Explosion), nameof(ShouldBlock)));
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Explosion), nameof(TryBlockExplosion)));
                             yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
                             yield return new CodeInstruction(OpCodes.Ret);
 
