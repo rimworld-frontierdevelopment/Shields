@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using FrontierDevelopments.General;
-using FrontierDevelopments.Shields.CompProperties;
 using FrontierDevelopments.Shields.Windows;
 using RimWorld;
 using UnityEngine;
@@ -10,6 +9,19 @@ using Verse.Sound;
 
 namespace FrontierDevelopments.Shields.Comps
 {
+    public class CompProperties_ShieldRadial : CompProperties
+    {
+        public int minRadius;
+        public int maxRadius;
+
+        public int warmupTicks;
+
+        public CompProperties_ShieldRadial()
+        {
+            compClass = typeof(Comp_ShieldRadial);
+        }
+    }
+
     public class Comp_ShieldRadial : ThingComp, IShield
     {
         private int _fieldRadius;
@@ -31,7 +43,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         private Vector3 ExactPosition => parent.TrueCenter();
 
-        public override void Initialize(Verse.CompProperties compProperties)
+        public override void Initialize(CompProperties compProperties)
         {
             base.Initialize(compProperties);
             SetRadius = Props.maxRadius;

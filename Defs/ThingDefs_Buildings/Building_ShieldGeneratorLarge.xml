@@ -22,7 +22,7 @@
             </li>
             <li Class="CompProperties_Flickable"/>
             <li Class="CompProperties_Breakdownable"/>
-            <li Class="FrontierDevelopments.Shields.CompProperties.CompProperties_ShieldRadial">
+            <li Class="FrontierDevelopments.Shields.Comps.CompProperties_ShieldRadial">
                 <minRadius>5</minRadius>
                 <maxRadius>25</maxRadius>
                 <warmupTicks>20</warmupTicks>
