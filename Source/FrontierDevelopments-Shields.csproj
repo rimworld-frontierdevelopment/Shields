@@ -72,6 +72,7 @@
     <Compile Include="Shields\Buildings\Building_ElectricShield.cs" />
     <Compile Include="Shields\ClimateControlIntegration.cs" />
     <Compile Include="Shields\CombatExtendedIntegration.cs" />
+    <Compile Include="Shields\Comps\Comp_ShieldResistance.cs" />
     <Compile Include="Shields\Comps\Comp_ShieldRadial.cs" />
     <Compile Include="Shields\Harmony\Harmony_Bombardment.cs" />
     <Compile Include="Shields\Harmony\Harmony_AttackTargetFinder.cs" />

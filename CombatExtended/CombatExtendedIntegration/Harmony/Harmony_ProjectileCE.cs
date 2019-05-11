@@ -3,6 +3,7 @@ using System.Reflection;
 using System.Reflection.Emit;
 using CombatExtended;
 using FrontierDevelopments.General;
+using FrontierDevelopments.Shields;
 using FrontierDevelopments.Shields.Harmony;
 using Harmony;
 using UnityEngine;
@@ -25,6 +26,18 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             int ticksToImpact,
             Vector2 origin)
         {
+            var ap = projectile.def.projectile.GetArmorPenetration(1f);
+            var damages = new ShieldDamages(
+                new ShieldDamage(
+                    projectile.def.projectile.damageDef, 
+                    projectile.def.projectile.GetDamageAmount(ap)));
+            (projectile.def.projectile as ProjectilePropertiesCE)?.secondaryDamage.ForEach(second =>
+            {
+                damages.Add(new ShieldDamage(
+                    second.def,
+                    second.amount * ap));
+            });
+            
             var result = TryBlock(
                 projectile,
                 currentPosition,
@@ -33,8 +46,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 Common.ToVector3(origin),
                 // TODO might be able to calculate the exact path with 3d CE projectiles
                 projectile.def.projectile.flyOverhead,
-                // TODO calculate secondary damage to shield
-                projectile.def.projectile.GetDamageAmount(1f)) != null;
+                damages) != null;
             return result;
         }
 

@@ -24,6 +24,10 @@ namespace FrontierDevelopments.Shields.Harmony
             int ticksToImpact,
             Vector3 origin)
         {
+            var damages = new ShieldDamages(
+                new ShieldDamage(
+                    projectile.def.projectile.damageDef,
+                    projectile.def.projectile.GetDamageAmount(1f)));
             return TryBlock(
                 projectile,
                 currentPosition,
@@ -31,7 +35,7 @@ namespace FrontierDevelopments.Shields.Harmony
                 ticksToImpact,
                 origin,
                 projectile.def.projectile.flyOverhead,
-                projectile.def.projectile.GetDamageAmount(1f)) != null;
+                damages) != null;
         }
 
         protected static Vector3? TryBlock(
@@ -41,7 +45,7 @@ namespace FrontierDevelopments.Shields.Harmony
             int ticksToImpact,
             Vector3 origin,
             bool flyOverhead,
-            int damage)
+            ShieldDamages damages)
         {
             var shieldManager = projectile.Map.GetComponent<ShieldManager>();
             if (BlacklistedDefs.Contains(projectile.def.defName)) return null;
@@ -53,23 +57,14 @@ namespace FrontierDevelopments.Shields.Harmony
                     // fix for fire foam projectiles having 99999 damage
                     if (projectile.def.defName == "Bullet_Shell_Firefoam")
                     {
-                        damage = 10;
+                        damages.OverrideDamage = 10;
                     }
-
-                    // check to ensure the projectile won't roll the power required int heal the shields
-                    if (damage >= 500)
-                    {
-                        Log.Warning("damage for " + projectile.Label + " too high at " + damage +
-                                    ", reducing to 500. (This is probably a bug from the projectile having no damage set)");
-                        damage = 500;
-                    }
-
 
                     if (shieldManager.Block(
                         Common.ToVector3(origin),
                         Common.ToVector3(currentPosition),
                         // TODO calculate mortar damage better
-                        damage)) return currentPosition;
+                        damages)) return currentPosition;
                     return null;
                 }
             }
@@ -79,7 +74,7 @@ namespace FrontierDevelopments.Shields.Harmony
                            Common.ToVector3(origin),
                            Common.ToVector3(currentPosition),
                            Common.ToVector3(nextPosition),
-                           damage);
+                           damages);
             }
 
             return null;

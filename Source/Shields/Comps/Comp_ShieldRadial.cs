@@ -38,6 +38,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         private IEnergySource _energySource;
         private IHeatsink _heatSink;
+        private Comp_ShieldResistance _resistance;
 
         public Faction Faction => parent.Faction;
 
@@ -57,6 +58,7 @@ namespace FrontierDevelopments.Shields.Comps
             _radiusLast = (int)Radius;
             _energySource = EnergySourceUtility.Find(parent);
             _heatSink = HeatsinkUtility.Find(parent);
+            _resistance = parent.TryGetComp<Comp_ShieldResistance>();
             parent.Map.GetComponent<ShieldManager>().Add(this);
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
         }
@@ -303,6 +305,22 @@ namespace FrontierDevelopments.Shields.Comps
             return drawn >= charge;
         }
 
+        public bool Block(ShieldDamages damages, Vector3 position)
+        {
+            var total = 0f;
+            if (_resistance != null)
+            {
+                var oTotal = _resistance.Apply(damages);
+                if (oTotal == null) return false;
+                total = oTotal.Value;
+            }
+            else
+            {
+                total = damages.Damage;
+            }
+            return Block((long) Math.Ceiling(total), position);
+        }
+
         private void RenderImpactEffect(Vector2 position)
         {
             MoteMaker.ThrowLightningGlow(Common.ToVector3(position), parent.Map, 0.5f);
@@ -313,4 +331,6 @@ namespace FrontierDevelopments.Shields.Comps
             SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), parent.Map));
         }
     }
+    
+    
 }

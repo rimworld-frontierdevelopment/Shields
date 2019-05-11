@@ -80,6 +80,28 @@ namespace FrontierDevelopments.Shields
             catch (KeyNotFoundException) {}
             return null;
         }
+        
+        public Vector3? Block(
+            Vector3 origin,
+            Vector3 position,
+            Vector3 end,
+            ShieldDamages damages)
+        {
+            try
+            {
+                foreach(var shield in _shields)
+                {
+                    if(shield == null || !shield.IsActive() || ShouldPassThrough(shield, position) || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
+                    var point = shield.Collision(position, end);
+                    if (point != null && shield.Block(damages, point.Value))
+                    {
+                        return point.Value;
+                    }
+                }
+            }
+            catch (KeyNotFoundException) {}
+            return null;
+        }
 
         public bool Shielded(Vector3 start, Vector3 end, Faction friendly = null)
         {
@@ -150,6 +172,26 @@ namespace FrontierDevelopments.Shields
                         && !shield.Collision(origin)
                         && shield.Collision(position)
                         && shield.Block(damage, position))
+                    {
+                        return true;
+                    }
+                }
+            }
+            catch (KeyNotFoundException) {}
+            return false;
+        }
+        
+        public bool Block(Vector3 origin, Vector3 position, ShieldDamages damages)
+        {
+            try
+            {
+                foreach (var shield in _shields)
+                {
+                    if (shield?.IsActive() == true
+                        && !ShouldPassThrough(shield, position)
+                        && !shield.Collision(origin)
+                        && shield.Collision(position)
+                        && shield.Block(damages, position))
                     {
                         return true;
                     }

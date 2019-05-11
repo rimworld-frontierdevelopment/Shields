@@ -70,16 +70,6 @@ namespace FrontierDevelopments.Shields
         {
             Settings.DoWindowContents(inRect);
         }
-
-        [HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PostResolve))]
-        class Patch_GenerateImpliedDefs_PostResolve
-        {
-            [HarmonyPostfix]
-            static void Postfix()
-            {
-                Harmony_Explosion.BlockType(DamageDefOf.Bomb.defName);
-            }
-        }
     }
 
     [StaticConstructorOnStartup]

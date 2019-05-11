@@ -54,6 +54,20 @@
                 <maxRadius>3</maxRadius>
                 <warmupTicks>20</warmupTicks>
             </li>
+            <li Class="FrontierDevelopments.Shields.Comps.CompProperties_ShieldResistance">
+                <resists>
+                    <li class="FrontierDevelopments.Shields.Comps.ShieldResistance">
+                        <damageDefName>EMP</damageDefName>
+                        <resist>true</resist>
+                        <multiplier>4</multiplier>
+                    </li>
+                    <li class="FrontierDevelopments.Shields.Comps.ShieldResistance">
+                        <damageDefName>Extinguish</damageDefName>
+                        <resist>false</resist>
+                        <multiplier>0</multiplier>
+                    </li>
+                </resists>
+            </li>
             <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">
                 <grams>400</grams>
                 <specificHeat>.385</specificHeat>
