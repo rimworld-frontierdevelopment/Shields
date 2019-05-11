@@ -3,7 +3,7 @@
     <identifier>FrontierDevelopments-Shields</identifier>
     <version>1.2.0.2231</version>
     <dependencies>
-        <li>818773962</li> <!-- HugsLib -->
+        <li>HugsLib</li>
     </dependencies>
     <incompatibleWith>
     </incompatibleWith>
