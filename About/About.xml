@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
 	<name>Shield Generators by Frontier Developments</name>
-	<targetVersion>1.0.2059</targetVersion>
+	<targetVersion>1.0</targetVersion>
 	<author>JohnnyNova and Jetpack Maniac</author>
 	<url>https://github.com/JonnyNova/Rimworld-Shields</url>
 	<description>
@@ -41,5 +41,5 @@ Halno: Building and UI Art
 Jaxxa: Inspired this mod from his ED-ShieldsBasic mod
 Jdalt40: Update to b19
 
-Version: 1.1.3.2096</description>
+Version: 1.2.0.2231</description>
 </ModMetaData>
