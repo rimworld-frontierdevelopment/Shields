@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
 	<name>Shield Generators by Frontier Developments</name>
-	<targetVersion>1.0</targetVersion>
+	<supportedVersions>
+		<li>1.0</li>
+	</supportedVersions>
 	<author>JohnnyNova and Jetpack Maniac</author>
 	<url>https://github.com/JonnyNova/Rimworld-Shields</url>
 	<description>
