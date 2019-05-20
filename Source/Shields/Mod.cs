@@ -26,7 +26,6 @@ namespace FrontierDevelopments.Shields
 
             Harmony_Verb.BlacklistType(typeof(Verb_Bombardment));
             
-            Log.Message("Frontier Developments Shields :: Loaded");
             LoadOneTemperatureMod(harmony);
             new CombatExtendedIntegration().TryEnable(harmony);
         }

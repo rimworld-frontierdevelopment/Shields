@@ -68,7 +68,6 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                             {
                                 return fullName.Contains("CrashLanding") && defName.Contains("Bullet");
                             }
-                            Log.Warning("Frontier Developments Shields :: Invalid def found " + fullName + " " + defName + " (Not a shield bug! Def fullName or defName is null. Report this to the mod the def is from)");
                             return false;
                         }).Select(def => def.defName)
                         .ToList();

@@ -42,7 +42,6 @@ namespace FrontierDevelopments.ClimateControl
             foreach (var ventPair in toPatch)
             {
                 var def = DefDatabase<ThingDef>.GetNamed(ventPair.defName);
-                Log.Message("patching " + def.defName);
                 foreach (var comp in def.comps)
                 {
                     if (comp.compClass == typeof(General.Comps.Comp_HeatSink))
