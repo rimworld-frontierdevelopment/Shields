@@ -60,7 +60,7 @@ namespace FrontierDevelopments.Shields.Buildings
             switch (Status)
             {
                 case ShieldStatus.Unpowered:
-                    stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.no_power".Translate());
+                    stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.battery_too_low".Translate());
                     break;
                 case ShieldStatus.ThermalShutdown:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.thermal_safety".Translate());
