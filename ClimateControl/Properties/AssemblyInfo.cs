@@ -27,9 +27,10 @@ using System.Runtime.InteropServices;
 //      Minor Version 
 //      Build Number
 //      Revision
+//      Revision
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("1.2.0.2231")]
-[assembly: AssemblyFileVersion("1.2.0.2231")]
+[assembly: AssemblyVersion("1.2.1.2231")]
+[assembly: AssemblyFileVersion("1.2.1.2231")]

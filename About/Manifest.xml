@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <Manifest>
     <identifier>FrontierDevelopments-Shields</identifier>
-    <version>1.2.0.2231</version>
+    <version>1.2.1.2231</version>
     <dependencies>
         <li>HugsLib</li>
     </dependencies>
