@@ -93,6 +93,20 @@
     <Compile Include="Shields\ShieldManager.cs" />
     <Compile Include="Shields\Tale\Tale_KilledByImpactingOnShield.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\About\*.*">
+      <Link>About\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Defs\**\*.*">
+      <Link>Defs\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="..\Languages\**\*.*">
+      <Link>Languages\%(RecursiveDir)%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
