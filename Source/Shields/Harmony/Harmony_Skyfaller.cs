@@ -13,6 +13,16 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
     {
         private const int ShieldHitPreDelay = 20;
 
+        private static void KillPawn(Pawn pawn, IntVec3 position, Map map)
+        {
+            // spawn on map for just an instant
+            GenPlace.TryPlaceThing(pawn, position, map, ThingPlaceMode.Near);
+            pawn.inventory.DestroyAll();
+            pawn.Kill(new DamageInfo(DamageDefOf.Crush, 100));
+            pawn.Corpse.Destroy();
+            TaleRecorder.RecordTale(LocalDefOf.KilledByImpactingOnShield, pawn, position, map);
+        }
+
         private static bool HandlePod(DropPodIncoming pod)
         {
             try
@@ -21,8 +31,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
                 {
                     foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn).Select(p => (Pawn)p))
                     {
-                        pawn.Kill(new DamageInfo(new DamageDef(), 100));
-                        TaleRecorder.RecordTale(LocalDefOf.KilledByImpactingOnShield, pawn, pod.Position, pod.Map);
+                        KillPawn(pawn, pod.Position, pod.Map);
                     }
                     pod.Destroy();
                     Messages.Message("fd.shields.incident.droppod.blocked.body".Translate(), new GlobalTargetInfo(pod.Position, pod.Map), MessageTypeDefOf.NeutralEvent);
