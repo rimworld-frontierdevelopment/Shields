@@ -6,7 +6,7 @@ using Harmony;
 using Verse;
 using Verse.AI;
 
-namespace FrontierDevelopments.Shields
+namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_CastPositionFinder
     {

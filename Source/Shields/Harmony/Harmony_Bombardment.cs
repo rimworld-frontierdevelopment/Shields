@@ -8,7 +8,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace FrontierDevelopments.Shields.Module.RimworldModule
+namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Bombardment
     {

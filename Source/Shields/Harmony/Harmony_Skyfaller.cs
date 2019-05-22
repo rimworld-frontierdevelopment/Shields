@@ -7,7 +7,7 @@ using RimWorld.Planet;
 using Verse;
 using Verse.Sound;
 
-namespace FrontierDevelopments.Shields.Module.RimworldModule
+namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Skyfaller
     {
@@ -29,6 +29,7 @@ namespace FrontierDevelopments.Shields.Module.RimworldModule
             {
                 if (pod.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(pod.Position, 0), Mod.Settings.DropPodDamage))
                 {
+                    // OfType<Pawn>() causes weirdness here
                     foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn).Select(p => (Pawn)p))
                     {
                         KillPawn(pawn, pod.Position, pod.Map);

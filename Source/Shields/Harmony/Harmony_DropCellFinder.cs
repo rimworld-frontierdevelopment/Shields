@@ -6,7 +6,7 @@ using Harmony;
 using RimWorld;
 using Verse;
 
-namespace FrontierDevelopments.Shields
+namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_DropCellFinder
     {

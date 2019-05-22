@@ -9,17 +9,17 @@ namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Verb
     {
-        private static List<Type> uncheckedTypes = new List<Type>();
+        private static readonly List<Type> UncheckedTypes = new List<Type>();
 
         public static void BlacklistType(Type type)
         {
-            uncheckedTypes.Add(type);
+            UncheckedTypes.Add(type);
         }
-        
+
         protected static bool ShieldBlocks(Thing caster, Verb verb, IntVec3 source, LocalTargetInfo target)
         {
             if (!verb.verbProps.requireLineOfSight) return false;
-            if (uncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
+            if (UncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
             return caster.Map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(source), Common.ToVector3(target.Cell), caster.Faction);
         }
 
