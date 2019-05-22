@@ -42,9 +42,8 @@ namespace FrontierDevelopments.Core
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                Log.Warning("Frontier Developments Shields :: exception while loading " + OtherModName + " support: " + e.Message);
             }
 
             return false;
