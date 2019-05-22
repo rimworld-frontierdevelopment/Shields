@@ -27,10 +27,9 @@ namespace FrontierDevelopments.General.EnergySources
         public bool IsActive()
         {
             return _powerTrader?.PowerOn == true
-                   && _powerTrader.PowerNet != null
-                   && _powerTrader.PowerNet.CurrentStoredEnergy() >= Props.minimumOnlinePower;
+                   && EnergyAvailable >= Props.minimumOnlinePower;
         }
-        
+
         public float BaseConsumption
         {
             get => _basePowerConsumption;
@@ -41,7 +40,19 @@ namespace FrontierDevelopments.General.EnergySources
             }
         }
 
-        public float EnergyAvailable
+        public float GainEnergyAvailable
+        {
+            get
+            {
+                if (_powerTrader?.PowerNet != null)
+                {
+                    return _powerTrader.PowerNet.CurrentEnergyGainRate() / GenDate.TicksPerDay;
+                }
+                return 0f;
+            }
+        }
+
+        public float StoredEnergyAvailable
         {
             get
             {
@@ -52,6 +63,8 @@ namespace FrontierDevelopments.General.EnergySources
                 return 0f;
             }
         }
+
+        public float EnergyAvailable => GainEnergyAvailable + StoredEnergyAvailable;
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -69,10 +82,10 @@ namespace FrontierDevelopments.General.EnergySources
         // Do the actual draw
         public override void CompTick()
         {
+            Log.Message("power: " + GainEnergyAvailable);
             if (_powerTrader.PowerNet != null && _additionalPowerDraw > 0f)
             {
-                var availThisTick = _powerTrader.PowerNet.CurrentEnergyGainRate() +
-                                    _powerTrader.PowerNet.CurrentStoredEnergy() * 60000;
+                var availThisTick = _powerTrader.PowerNet.CurrentEnergyGainRate() + StoredEnergyAvailable * 60000;
                 var powerWanted = BaseConsumption - _additionalPowerDraw;
                 if (availThisTick + powerWanted < 0)
                 {
@@ -111,7 +124,7 @@ namespace FrontierDevelopments.General.EnergySources
             // can this be feed by instantaneous draw? (who are we kidding, no way)
             var gainPowerCovers = _powerTrader.PowerNet.CurrentEnergyGainRate() + BaseConsumption + amount;
             if (gainPowerCovers >= 0) return amount;
-            var gainAndBatteriesCover = gainPowerCovers + _powerTrader.PowerNet.CurrentStoredEnergy() * 60000;
+            var gainAndBatteriesCover = gainPowerCovers + StoredEnergyAvailable * 60000;
 
             // will batteries cover the difference?
             if (gainAndBatteriesCover >= 0) return amount;
