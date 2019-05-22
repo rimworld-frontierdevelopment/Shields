@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General;
 using Harmony;
@@ -12,6 +13,13 @@ namespace FrontierDevelopments.Shields.Harmony
     public class Harmony_Skyfaller
     {
         private const int ShieldHitPreDelay = 20;
+
+        private static readonly List<string> whitelistedDefs = new List<string>();
+
+        public static void WhitelistDef(string defName)
+        {
+            whitelistedDefs.Add(defName);
+        }
 
         private static void KillPawn(Pawn pawn, IntVec3 position, Map map)
         {
@@ -66,7 +74,9 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             static bool Prefix(Skyfaller __instance)
             {
-                if (__instance.Map != null && __instance.ticksToImpact == ShieldHitPreDelay)
+                if (__instance.Map != null 
+                    && __instance.ticksToImpact == ShieldHitPreDelay
+                    && !whitelistedDefs.Contains(__instance.def.defName))
                 {
                     switch (__instance)
                     {
