@@ -1,8 +1,5 @@
 using System;
-using System.Reflection;
-using FrontierDevelopments.Core;
-using Harmony;
-using Verse;
+using FrontierDevelopments.General;
 
 namespace FrontierDevelopments.Shields
 {
