@@ -22,26 +22,37 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool _activeLastTick;
 
-        private bool IsActive => _shield.IsActive();
-        private float BasePowerConsumption => -_shield.ProtectedCellCount * Mod.Settings.PowerPerTile;
+        private bool IsActive => _shield?.IsActive() ?? false;
+        private float BasePowerConsumption => -_shield?.ProtectedCellCount * Mod.Settings.PowerPerTile ?? 0f;
 
         public ShieldStatus Status
         {
             get
             {
                 if (_heatSink != null && _heatSink.OverTemperature) return ShieldStatus.ThermalShutdown;
-                if (!_energySource.IsActive()) return ShieldStatus.Unpowered;
+                if (_energySource != null && _energySource.IsActive()) return ShieldStatus.Unpowered;
                 return ShieldStatus.Online;
             }
         }
 
-        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        private void Init()
         {
             _energySource = EnergySourceUtility.Find(this);
             _shield = ShieldUtility.FindComp(this);
             _heatSink = HeatsinkUtility.FindComp(this);
-            _activeLastTick = IsActive;
+        }
+
+        public override void PostMake()
+        {
+            base.PostMake();
+            Init();
+        }
+
+        public override void SpawnSetup(Map map, bool respawningAfterLoad)
+        {
             base.SpawnSetup(map, respawningAfterLoad);
+            _activeLastTick = IsActive;
+            Init();
         }
 
         public override void Tick()
