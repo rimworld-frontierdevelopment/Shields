@@ -51,8 +51,14 @@ namespace FrontierDevelopments.Shields.Buildings
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
-            _activeLastTick = IsActive;
+            _activeLastTick = false;
             Init();
+        }
+
+        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
+        {
+            base.DeSpawn(mode);
+            _activeLastTick = false;
         }
 
         public override void Tick()
