@@ -26,8 +26,9 @@ namespace FrontierDevelopments.Shields.Comps
     {
         private Dictionary<string, ShieldResistance> resists = new Dictionary<string, ShieldResistance>();
 
-        public override void PostSpawnSetup(bool respawningAfterLoad)
+        public override void Initialize(CompProperties props)
         {
+            base.Initialize(props);
             ((CompProperties_ShieldResistance) props)?.resists?.ForEach(resist =>
             {
                 resists.Add(resist.damageDefName, resist);
