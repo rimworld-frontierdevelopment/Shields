@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using CentralizedClimateControl;
-using RimWorld;
+using FrontierDevelopments.General;
 using Verse;
 
 namespace FrontierDevelopments.ClimateControl
@@ -28,7 +28,7 @@ namespace FrontierDevelopments.ClimateControl
                 yield return gizmo;
             }
 
-            if (parent.Faction == Faction.OfPlayer)
+            if (OwnershipUtility.PlayerOwns(parent))
             {
                 yield return new Command_Toggle
                 {

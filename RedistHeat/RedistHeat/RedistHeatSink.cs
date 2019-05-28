@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
 using RedistHeat;
 using RimWorld;
@@ -70,7 +71,7 @@ namespace FrontierDevelopments.RedistHeat
             foreach (var current in base.CompGetGizmosExtra())
                 yield return current;
 
-            if (parent.Faction == Faction.OfPlayer)
+            if (OwnershipUtility.PlayerOwns(parent))
             {
                 yield return new Command_Action
                 {
