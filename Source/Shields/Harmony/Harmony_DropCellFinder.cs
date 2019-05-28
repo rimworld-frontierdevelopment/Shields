@@ -12,7 +12,7 @@ namespace FrontierDevelopments.Shields.Harmony
     {
         private static bool CheckShielded(Map map, IntVec3 c)
         {
-            return map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(c), false);
+            return map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(c), false);
         }
         
         [HarmonyPatch(typeof(DropCellFinder), "CanPhysicallyDropInto")]

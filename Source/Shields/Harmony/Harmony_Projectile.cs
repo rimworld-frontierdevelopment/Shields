@@ -61,8 +61,8 @@ namespace FrontierDevelopments.Shields.Harmony
                     }
 
                     if (shieldManager.Block(
-                        Common.ToVector3(origin),
-                        Common.ToVector3(currentPosition),
+                        PositionUtility.ToVector3(origin),
+                        PositionUtility.ToVector3(currentPosition),
                         // TODO calculate mortar damage better
                         damages)) return currentPosition;
                     return null;
@@ -71,9 +71,9 @@ namespace FrontierDevelopments.Shields.Harmony
             else
             {
                 return shieldManager.Block(
-                           Common.ToVector3(origin),
-                           Common.ToVector3(currentPosition),
-                           Common.ToVector3(nextPosition),
+                           PositionUtility.ToVector3(origin),
+                           PositionUtility.ToVector3(currentPosition),
+                           PositionUtility.ToVector3(nextPosition),
                            damages);
             }
 

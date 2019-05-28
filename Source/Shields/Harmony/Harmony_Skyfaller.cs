@@ -35,7 +35,7 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             try
             {
-                if (pod.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(pod.Position, 0), Mod.Settings.DropPodDamage))
+                if (pod.Map.GetComponent<ShieldManager>().Block(PositionUtility.ToVector3WithY(pod.Position, 0), Mod.Settings.DropPodDamage))
                 {
                     // OfType<Pawn>() causes weirdness here
                     foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn).Select(p => (Pawn)p))
@@ -55,7 +55,7 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             try
             {
-                if (skyfaller.Map.GetComponent<ShieldManager>().Block(Common.ToVector3WithY(skyfaller.Position, 0),
+                if (skyfaller.Map.GetComponent<ShieldManager>().Block(PositionUtility.ToVector3WithY(skyfaller.Position, 0),
                     Mod.Settings.SkyfallerDamage))
                 {
                     skyfaller.def.skyfaller.impactSound?.PlayOneShot(

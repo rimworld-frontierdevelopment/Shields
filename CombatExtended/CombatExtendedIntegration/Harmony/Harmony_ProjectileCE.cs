@@ -43,7 +43,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 currentPosition,
                 nextPosition,
                 ticksToImpact,
-                Common.ToVector3(origin),
+                PositionUtility.ToVector3(origin),
                 // TODO might be able to calculate the exact path with 3d CE projectiles
                 projectile.def.projectile.flyOverhead,
                 damages) != null;

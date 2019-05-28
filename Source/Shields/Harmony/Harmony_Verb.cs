@@ -20,7 +20,7 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             if (!verb.verbProps.requireLineOfSight) return false;
             if (UncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
-            return caster.Map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(source), Common.ToVector3(target.Cell), caster.Faction);
+            return caster.Map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(source), PositionUtility.ToVector3(target.Cell), caster.Faction);
         }
 
         [HarmonyPatch(typeof(Verb), nameof(Verb.CanHitTargetFrom) , new [] { typeof(IntVec3), typeof(LocalTargetInfo) })]

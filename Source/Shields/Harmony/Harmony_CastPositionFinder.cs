@@ -14,12 +14,12 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             var shieldManager = map.GetComponent<ShieldManager>();
             
-            if (shieldManager.Shielded(Common.ToVector3(start), Common.ToVector3(end)))
+            if (shieldManager.Shielded(PositionUtility.ToVector3(start), PositionUtility.ToVector3(end)))
             {
                 score = (float)Math.Sqrt(score);
             }
 
-            if (shieldManager.Shielded(Common.ToVector3(end), Common.ToVector3(start)))
+            if (shieldManager.Shielded(PositionUtility.ToVector3(end), PositionUtility.ToVector3(start)))
             {
                 score = (float) Math.Pow(score, 2);
             }

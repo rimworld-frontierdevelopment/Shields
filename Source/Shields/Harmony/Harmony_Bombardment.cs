@@ -14,12 +14,12 @@ namespace FrontierDevelopments.Shields.Harmony
     {
         private static bool ShouldStop(Map map, IntVec3 center)
         {
-            return map.GetComponent<ShieldManager>().Block(Common.ToVector3(center), Mod.Settings.SkyfallerDamage);
+            return map.GetComponent<ShieldManager>().Block(PositionUtility.ToVector3(center), Mod.Settings.SkyfallerDamage);
         }
 
         private static bool IsShielded(Map map, IntVec3 position)
         {
-            return map.GetComponent<ShieldManager>().Shielded(Common.ToVector3(position));
+            return map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(position));
         }
         
         [HarmonyPatch(typeof(Bombardment), "CreateRandomExplosion")]

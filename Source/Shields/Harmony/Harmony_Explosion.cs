@@ -21,7 +21,7 @@ namespace FrontierDevelopments.Shields.Harmony
             var damages = new ShieldDamages(new ShieldDamage(damType, damAmount));
             return explosion.Map.GetComponent<ShieldManager>().Block(
                 explosion.TrueCenter(),
-                Common.ToVector3(position),
+                PositionUtility.ToVector3(position),
                 damages);
         }
 

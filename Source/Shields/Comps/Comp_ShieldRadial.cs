@@ -168,7 +168,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool Collision(Vector3 vector)
         {
-            return Vector3.Distance(Common.ToVector3(ExactPosition), vector) < Radius + 0.5f;
+            return Vector3.Distance(PositionUtility.ToVector3(ExactPosition), vector) < Radius + 0.5f;
         }
 
         public Vector3? Collision(Ray ray, float limit)
@@ -178,7 +178,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public Vector3? Collision(Vector3 origin, Vector3 destination)
         {
-            var circleOrigin = Common.ToVector3(ExactPosition);
+            var circleOrigin = PositionUtility.ToVector3(ExactPosition);
 
             var radius = Radius;
             
@@ -265,7 +265,7 @@ namespace FrontierDevelopments.Shields.Comps
         public void Draw(CellRect cameraRect)
         {
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
-            var position = Common.ToVector3(ExactPosition);
+            var position = PositionUtility.ToVector3(ExactPosition);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(Radius * 2.2);
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
@@ -299,8 +299,8 @@ namespace FrontierDevelopments.Shields.Comps
             if (Mod.Settings.ScaleOnHeat && Heatsink != null) charge = charge * Mathf.Pow(1.01f, Heatsink.Temp);
             var drawn = EnergySource.Draw(charge);
             Heatsink?.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
-            RenderImpactEffect(Common.ToVector2(position));
-            PlayBulletImpactSound(Common.ToVector2(position));
+            RenderImpactEffect(PositionUtility.ToVector2(position));
+            PlayBulletImpactSound(PositionUtility.ToVector2(position));
             return drawn >= charge;
         }
 
@@ -322,12 +322,12 @@ namespace FrontierDevelopments.Shields.Comps
 
         private void RenderImpactEffect(Vector2 position)
         {
-            MoteMaker.ThrowLightningGlow(Common.ToVector3(position), parent.Map, 0.5f);
+            MoteMaker.ThrowLightningGlow(PositionUtility.ToVector3(position), parent.Map, 0.5f);
         }
 
         private void PlayBulletImpactSound(Vector2 position)
         {
-            SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(Common.ToIntVec3(position), parent.Map));
+            SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(PositionUtility.ToIntVec3(position), parent.Map));
         }
     }
     
