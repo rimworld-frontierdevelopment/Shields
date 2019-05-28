@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -12,6 +14,7 @@ namespace FrontierDevelopments.Shields
         }
 
         private readonly List<IShield> _shields = new List<IShield>();
+        private readonly List<Pawn> _pawns = new List<Pawn>();
 
         public void Add(IShield shield)
         {
@@ -23,6 +26,22 @@ namespace FrontierDevelopments.Shields
             _shields.Remove(shield);
         }
 
+        public void Add(Pawn pawn)
+        { 
+            _pawns.Add(pawn);
+        }
+
+        public void Del(Pawn pawn)
+        {
+            _pawns.Remove(pawn);
+        }
+
+        private IEnumerable<IShield> Shields => _shields.Concat(InventoryShields).Concat(EquipmentShields);
+
+        private IEnumerable<IShield> InventoryShields => _pawns.SelectMany(ShieldUtils.InventoryShields); 
+
+        private IEnumerable<IShield> EquipmentShields => _pawns.SelectMany(ShieldUtils.EquipmentShields);
+        
         public Vector3? Block(
             Vector3 origin, 
             Ray ray, 
@@ -31,7 +50,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach(var shield in _shields)
+                foreach(var shield in Shields)
                 {
                     if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(ray, limit);
@@ -49,7 +68,7 @@ namespace FrontierDevelopments.Shields
         {
             if (Mod.Settings.OverlapPassThrough)
             {
-                foreach (var otherShield in _shields)
+                foreach (var otherShield in Shields)
                 {
                     if (shield == otherShield) continue;
                     if (otherShield.Collision(position))
@@ -67,7 +86,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach(var shield in _shields)
+                foreach(var shield in Shields)
                 {
                     if(shield == null || !shield.IsActive() || ShouldPassThrough(shield, position) || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(position, end);
@@ -89,7 +108,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach(var shield in _shields)
+                foreach(var shield in Shields)
                 {
                     if(shield == null || !shield.IsActive() || ShouldPassThrough(shield, position) || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(position, end);
@@ -107,7 +126,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach(var shield in _shields)
+                foreach(var shield in Shields)
                 {
                     if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(start)) continue;
                     if (shield.Faction != friendly) continue;
@@ -126,7 +145,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach (var shield in _shields)
+                foreach (var shield in Shields)
                 {
                     if (active)
                     {
@@ -146,7 +165,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach (var shield in _shields)
+                foreach (var shield in Shields)
                 {
                     if (shield?.IsActive() == true
                         && !ShouldPassThrough(shield, position)
@@ -165,7 +184,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach (var shield in _shields)
+                foreach (var shield in Shields)
                 {
                     if (shield?.IsActive() == true
                         && !ShouldPassThrough(shield, position)
@@ -185,7 +204,7 @@ namespace FrontierDevelopments.Shields
         {
             try
             {
-                foreach (var shield in _shields)
+                foreach (var shield in Shields)
                 {
                     if (shield?.IsActive() == true
                         && !ShouldPassThrough(shield, position)
@@ -203,9 +222,116 @@ namespace FrontierDevelopments.Shields
 
         public void DrawShields(CellRect cameraRect)
         {
-            foreach (var shield in _shields)
+            foreach (var shield in Shields)
             {
                 shield.Draw(cameraRect);
+            }
+        }
+        
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.SpawnSetup))]
+        static class SpawnSetup
+        {
+            [HarmonyPostfix]
+            static void AddToShieldManager(Pawn __instance)
+            {
+                if(ShieldUtils.InventoryShields(__instance)
+                       .Any(shield => ShieldDeploymentUtility.CanDeploy(__instance, shield)) 
+                   || ShieldUtils.EquipmentShields(__instance).Any()
+                   || ShieldUtils.HediffShields(__instance).Any())
+                    __instance.Map.GetComponent<ShieldManager>().Add(__instance);
+            }
+        }
+
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.DeSpawn))]
+        static class DeSpawn
+        {
+            [HarmonyPrefix]
+            static void RemoveFromShieldManager(Pawn __instance)
+            {
+                __instance.Map.GetComponent<ShieldManager>().Del(__instance);
+            }
+        }
+
+        [HarmonyPatch(typeof(ThingOwner), "NotifyAdded")]
+        static class ThingOwnerAdded
+        {
+            [HarmonyPostfix]
+            static void NotifyShieldAdded(ThingOwner __instance, Thing item)
+            {
+                switch (item)
+                {
+                    case MinifiedShield shield:
+                        switch (__instance?.Owner)
+                        {
+                            case Pawn_InventoryTracker inventory:
+                                var pawn = inventory.pawn;
+                                if (shield.Deploy(pawn))
+                                {
+                                    pawn.Map.GetComponent<ShieldManager>().Add(pawn);
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(ThingOwner), "NotifyRemoved")]
+        static class ThingOwnerRemoved
+        {
+            [HarmonyPostfix]
+            static void NotifyShieldRemoved(ThingOwner __instance, Thing item)
+            {
+                switch (item)
+                {
+                    case MinifiedShield shield:
+                        switch (__instance?.Owner)
+                        {
+                            case Pawn_InventoryTracker inventory:
+                                var pawn = inventory.pawn;
+                                if (shield.Deployed)
+                                {
+                                    shield.Undeploy();
+                                    pawn.Map.GetComponent<ShieldManager>().Del(pawn);
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }
+        }
+
+        [HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
+        static class PortableShield
+        {
+            [HarmonyPostfix]
+            static IEnumerable<Gizmo> AddDesignator(
+                IEnumerable<Gizmo> __result, 
+                Pawn __instance,
+                List<ThingComp> ___comps)
+            {
+                foreach (var gizmo in __result)
+                {
+                    yield return gizmo;
+                }
+
+                if (Prefs.DevMode 
+                    &&__instance.Faction == Faction.OfPlayer
+                    && __instance.RaceProps.baseBodySize >= 2.0f)
+                {
+                    yield return new Command_Action
+                    {
+                        defaultLabel = "Deploy shield",
+                        defaultDesc = "Deploy a portable shield",
+                        action = () =>
+                        {
+                            var shield = __instance.Map.listerThings
+                                .ThingsOfDef(LocalDefOf.MinifiedShieldGeneratorPortable).First();
+                            shield.DeSpawn();
+                            __instance.inventory.innerContainer.TryAdd(shield, 1, false);
+                        }
+                    };
+                }
             }
         }
     }

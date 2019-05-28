@@ -74,13 +74,16 @@
     <Compile Include="Shields\Harmony\Harmony_Projectile.cs" />
     <Compile Include="Shields\Harmony\Harmony_Skyfaller.cs" />
     <Compile Include="Shields\LocalDefOf.cs" />
+    <Compile Include="Shields\MinifiedShield.cs" />
     <Compile Include="Shields\Mod.cs" />
     <Compile Include="Shields\IShield.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\CrashPodHandler.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\Module.cs" />
     <Compile Include="Shields\RedistHeatIntegration.cs" />
     <Compile Include="Shields\Settings.cs" />
+    <Compile Include="Shields\ShieldDeploymentUtility.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
+    <Compile Include="Shields\ShieldUtils.cs" />
     <Compile Include="Shields\Tale\Tale_KilledByImpactingOnShield.cs" />
   </ItemGroup>
   <ItemGroup>

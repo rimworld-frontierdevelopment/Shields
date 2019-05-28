@@ -1,4 +1,5 @@
 using RimWorld;
+using Verse;
 
 namespace FrontierDevelopments.Shields
 {
@@ -6,6 +7,7 @@ namespace FrontierDevelopments.Shields
     public class LocalDefOf
     {
         public static TaleDef KilledByImpactingOnShield;
+        public static ThingDef MinifiedShieldGeneratorPortable;
         
         static LocalDefOf()
         {

@@ -22,6 +22,34 @@ namespace FrontierDevelopments.Shields.Buildings
         private IHeatsink _heatSink;
 
         private bool _activeLastTick;
+        
+        private IEnergySource EnergySource {
+            get
+            {
+                if (_energySource == null) 
+                    _energySource = EnergySourceUtility.FindComp(AllComps);
+                return _energySource;
+            }
+        }
+
+        public IShield Shield {
+            get
+            {
+                if (_shield == null) 
+                    _shield = ShieldUtility.FindComp(AllComps);
+                return _shield;
+            }
+        }
+
+        private IHeatsink Heatsink
+        {
+            get
+            {
+                if (_heatSink == null) 
+                    _heatSink = HeatsinkUtility.FindComp(AllComps);
+                return _heatSink;
+            }
+        }
 
         private bool IsActive => _shield?.IsActive() ?? false;
         private float BasePowerConsumption => -_shield?.ProtectedCellCount * Mod.Settings.PowerPerTile ?? 0f;
@@ -30,13 +58,13 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             get
             {
-                if (_heatSink != null && _heatSink.OverTemperature) return ShieldStatus.ThermalShutdown;
-                if (_energySource != null && _energySource.IsActive()) return ShieldStatus.Unpowered;
+                if (Heatsink != null && Heatsink.OverTemperature) return ShieldStatus.ThermalShutdown;
+                if (EnergySource != null && !EnergySource.IsActive()) return ShieldStatus.Unpowered;
                 return ShieldStatus.Online;
             }
         }
 
-        private void Init()
+        public void Init()
         {
             _energySource = EnergySourceUtility.FindComp(AllComps);
             _shield = ShieldUtility.FindComp(AllComps);
@@ -67,9 +95,9 @@ namespace FrontierDevelopments.Shields.Buildings
             var active = IsActive;
             if (active)
             {
-                _energySource.BaseConsumption = BasePowerConsumption;
+                EnergySource.BaseConsumption = BasePowerConsumption;
             }
-            else if(_activeLastTick && (_energySource?.WantActive ?? false))
+            else if(_activeLastTick && (EnergySource?.WantActive ?? false))
             {
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             }
@@ -104,12 +132,12 @@ namespace FrontierDevelopments.Shields.Buildings
         
         public void PushHeat(float wattDays)
         {
-            _heatSink.PushHeat(wattDays);
+            Heatsink.PushHeat(wattDays);
         }
 
-        public bool OverTemperature => _heatSink.OverTemperature;
+        public bool OverTemperature => Heatsink.OverTemperature;
 
-        public float Temp => _heatSink.Temp;
+        public float Temp => Heatsink.Temp;
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
@@ -119,70 +147,70 @@ namespace FrontierDevelopments.Shields.Buildings
         
         bool IEnergySource.IsActive()
         {
-            return _energySource.IsActive();
+            return EnergySource.IsActive();
         }
 
         public float Draw(float amount)
         {
-            return _energySource.Draw(amount);
+            return EnergySource.Draw(amount);
         }
 
         public void Drain(float amount)
         {
-            _energySource.Drain(amount);
+            EnergySource.Drain(amount);
         }
 
-        public bool WantActive => _energySource.WantActive;
+        public bool WantActive => EnergySource.WantActive;
 
         public float BaseConsumption
         {
-            get => _energySource.BaseConsumption;
-            set => _energySource.BaseConsumption = value;
+            get => EnergySource.BaseConsumption;
+            set => EnergySource.BaseConsumption = value;
         }
-
+        
+        public float EnergyAvailable => EnergySource.EnergyAvailable;
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
         // Shield
         //
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public float EnergyAvailable => _energySource.EnergyAvailable;
-
-        public int ProtectedCellCount => _shield.ProtectedCellCount;
+        public int ProtectedCellCount => Shield.ProtectedCellCount;
         
         bool IShield.IsActive()
         {
-            return _shield.IsActive();
+            return Shield.IsActive();
         }
 
         public bool Collision(Vector3 point)
         {
-            return _shield.Collision(point);
+            return Shield.Collision(point);
         }
 
         public Vector3? Collision(Ray ray, float limit)
         {
-            return _shield.Collision(ray, limit);
+            return Shield.Collision(ray, limit);
         }
 
         public Vector3? Collision(Vector3 start, Vector3 end)
         {
-            return _shield.Collision(start, end);
+            return Shield.Collision(start, end);
         }
 
         public bool Block(long damage, Vector3 position)
         {
-            return _shield.Block(damage, position);
+            return Shield.Block(damage, position);
         }
 
         public bool Block(ShieldDamages damages, Vector3 position)
         {
-            return _shield.Block(damages, position);
+            return Shield.Block(damages, position);
         }
 
         public void Draw(CellRect cameraRect)
         {
-            _shield.Draw(cameraRect);
+            Shield.Draw(cameraRect);
         }
     }
 }

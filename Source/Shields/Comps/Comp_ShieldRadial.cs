@@ -38,7 +38,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public Faction Faction => parent.Faction;
 
-        private Vector3 ExactPosition => parent.TrueCenter();
+        private Vector3 ExactPosition => PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter();
 
         private IHeatsink Heatsink => HeatsinkUtility.Find(parent);
 
@@ -51,7 +51,6 @@ namespace FrontierDevelopments.Shields.Comps
             base.Initialize(compProperties);
             SetRadius = Props.maxRadius;
         }
-
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
