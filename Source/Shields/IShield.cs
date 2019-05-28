@@ -79,21 +79,20 @@ namespace FrontierDevelopments.Shields
                 case IShield parentSource:
                     return parentSource;
                 default:
-                    return FindComp(parent);
+                    return FindComp(parent.AllComps);
             }
         }
 
-        public static IShield FindComp(ThingWithComps parent)
+        public static IShield FindComp(IEnumerable<ThingComp> comps)
         {
-            foreach (var comp in parent.AllComps)
+            try
             {
-                switch (comp)
-                {
-                    case IShield compSource:
-                        return compSource;
-                }
+                return comps.OfType<IShield>().First();
             }
-            return null;
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
         }
     }
 }

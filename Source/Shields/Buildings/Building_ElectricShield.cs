@@ -1,12 +1,13 @@
 ﻿using System.Text;
 using FrontierDevelopments.General;
+using FrontierDevelopments.Shields.Comps;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
-    public class Building_ElectricShield : Building
+    public class Building_ElectricShield : Building, IHeatsink, IEnergySource
     {
         public enum ShieldStatus
         {
@@ -37,9 +38,9 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private void Init()
         {
-            _energySource = EnergySourceUtility.Find(this);
-            _shield = ShieldUtility.FindComp(this);
-            _heatSink = HeatsinkUtility.FindComp(this);
+            _energySource = EnergySourceUtility.FindComp(AllComps);
+            _shield = ShieldUtility.FindComp(AllComps);
+            _heatSink = HeatsinkUtility.FindComp(AllComps);
         }
 
         public override void PostMake()
@@ -89,5 +90,51 @@ namespace FrontierDevelopments.Shields.Buildings
             stringBuilder.Append(base.GetInspectString());
             return stringBuilder.ToString();
         }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //
+        // Heatsink
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        public void PushHeat(float wattDays)
+        {
+            _heatSink.PushHeat(wattDays);
+        }
+
+        public bool OverTemperature => _heatSink.OverTemperature;
+
+        public float Temp => _heatSink.Temp;
+        
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //
+        // Energy Source
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        bool IEnergySource.IsActive()
+        {
+            return _energySource.IsActive();
+        }
+
+        public float Draw(float amount)
+        {
+            return _energySource.Draw(amount);
+        }
+
+        public void Drain(float amount)
+        {
+            _energySource.Drain(amount);
+        }
+
+        public bool WantActive => _energySource.WantActive;
+
+        public float BaseConsumption
+        {
+            get => _energySource.BaseConsumption;
+            set => _energySource.BaseConsumption = value;
+        }
+
+        public float EnergyAvailable => _energySource.EnergyAvailable;
     }
 }

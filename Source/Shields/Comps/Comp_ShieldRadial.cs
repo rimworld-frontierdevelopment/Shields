@@ -36,13 +36,15 @@ namespace FrontierDevelopments.Shields.Comps
         private bool _renderLast = true;
         private IntVec3 _positionLast;
 
-        private IEnergySource _energySource;
-        private IHeatsink _heatSink;
-        private Comp_ShieldResistance _resistance;
-
         public Faction Faction => parent.Faction;
 
         private Vector3 ExactPosition => parent.TrueCenter();
+
+        private IHeatsink Heatsink => HeatsinkUtility.Find(parent);
+
+        private IEnergySource EnergySource => EnergySourceUtility.Find(parent);
+
+        private Comp_ShieldResistance Resistance => parent.TryGetComp<Comp_ShieldResistance>();
 
         public override void Initialize(CompProperties compProperties)
         {
@@ -56,9 +58,6 @@ namespace FrontierDevelopments.Shields.Comps
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
             _radiusLast = (int)Radius;
-            _energySource = EnergySourceUtility.Find(parent);
-            _heatSink = HeatsinkUtility.Find(parent);
-            _resistance = parent.TryGetComp<Comp_ShieldResistance>();
             parent.Map.GetComponent<ShieldManager>().Add(this);
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
         }
@@ -290,16 +289,16 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool IsActive()
         {
-            return _energySource?.IsActive() == true && (_heatSink != null && !_heatSink.OverTemperature || _heatSink == null);
+            return (EnergySource?.IsActive() ?? false) && !(Heatsink?.OverTemperature ?? false);
         }
 
         public bool Block(long damage, Vector3 position)
         {
             if (!IsActive()) return false;
             var charge = damage * Mod.Settings.PowerPerDamage;
-            if (Mod.Settings.ScaleOnHeat && _heatSink != null) charge = charge * Mathf.Pow(1.01f, _heatSink.Temp);
-            var drawn = _energySource.Draw(charge);
-            _heatSink?.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
+            if (Mod.Settings.ScaleOnHeat && Heatsink != null) charge = charge * Mathf.Pow(1.01f, Heatsink.Temp);
+            var drawn = EnergySource.Draw(charge);
+            Heatsink?.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
             RenderImpactEffect(Common.ToVector2(position));
             PlayBulletImpactSound(Common.ToVector2(position));
             return drawn >= charge;
@@ -308,9 +307,9 @@ namespace FrontierDevelopments.Shields.Comps
         public bool Block(ShieldDamages damages, Vector3 position)
         {
             var total = 0f;
-            if (_resistance != null)
+            if (Resistance != null)
             {
-                var oTotal = _resistance.Apply(damages);
+                var oTotal = Resistance.Apply(damages);
                 if (oTotal == null) return false;
                 total = oTotal.Value;
             }
