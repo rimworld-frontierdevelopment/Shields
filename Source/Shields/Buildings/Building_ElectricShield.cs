@@ -1,13 +1,13 @@
 ﻿using System.Text;
 using FrontierDevelopments.General;
-using FrontierDevelopments.Shields.Comps;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
-    public class Building_ElectricShield : Building, IHeatsink, IEnergySource
+    public class Building_ElectricShield : Building, IHeatsink, IEnergySource, IShield
     {
         public enum ShieldStatus
         {
@@ -65,11 +65,16 @@ namespace FrontierDevelopments.Shields.Buildings
         public override void Tick()
         {
             var active = IsActive;
-            _energySource.BaseConsumption = BasePowerConsumption;
-            base.Tick();
-            if(_activeLastTick && !active && _energySource.WantActive)
+            if (active)
+            {
+                _energySource.BaseConsumption = BasePowerConsumption;
+            }
+            else if(_activeLastTick && (_energySource?.WantActive ?? false))
+            {
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
+            }
             _activeLastTick = active;
+            base.Tick();
         }
 
         public override string GetInspectString()
@@ -135,6 +140,49 @@ namespace FrontierDevelopments.Shields.Buildings
             set => _energySource.BaseConsumption = value;
         }
 
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //
+        // Shield
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
         public float EnergyAvailable => _energySource.EnergyAvailable;
+
+        public int ProtectedCellCount => _shield.ProtectedCellCount;
+        
+        bool IShield.IsActive()
+        {
+            return _shield.IsActive();
+        }
+
+        public bool Collision(Vector3 point)
+        {
+            return _shield.Collision(point);
+        }
+
+        public Vector3? Collision(Ray ray, float limit)
+        {
+            return _shield.Collision(ray, limit);
+        }
+
+        public Vector3? Collision(Vector3 start, Vector3 end)
+        {
+            return _shield.Collision(start, end);
+        }
+
+        public bool Block(long damage, Vector3 position)
+        {
+            return _shield.Block(damage, position);
+        }
+
+        public bool Block(ShieldDamages damages, Vector3 position)
+        {
+            return _shield.Block(damages, position);
+        }
+
+        public void Draw(CellRect cameraRect)
+        {
+            _shield.Draw(cameraRect);
+        }
     }
 }
