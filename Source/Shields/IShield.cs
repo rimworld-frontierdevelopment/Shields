@@ -69,30 +69,4 @@ namespace FrontierDevelopments.Shields
         void Draw(CellRect cameraRect);
         Faction Faction { get; }
     }
-
-    public class ShieldUtility
-    {
-        public static IShield Find(ThingWithComps parent)
-        {
-            switch (parent)
-            {
-                case IShield parentSource:
-                    return parentSource;
-                default:
-                    return FindComp(parent.AllComps);
-            }
-        }
-
-        public static IShield FindComp(IEnumerable<ThingComp> comps)
-        {
-            try
-            {
-                return comps.OfType<IShield>().First();
-            }
-            catch (InvalidOperationException)
-            {
-                return null;
-            }
-        }
-    }
 }

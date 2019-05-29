@@ -1,11 +1,36 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 
 namespace FrontierDevelopments.Shields
 {
-    public static class ShieldUtils
+    public static class ShieldUtility
     {
+        public static IShield Find(ThingWithComps parent)
+        {
+            switch (parent)
+            {
+                case IShield parentSource:
+                    return parentSource;
+                default:
+                    return FindComp(parent.AllComps);
+            }
+        }
+
+        public static IShield FindComp(IEnumerable<ThingComp> comps)
+        {
+            try
+            {
+                return comps.OfType<IShield>().First();
+            }
+            catch (InvalidOperationException)
+            {
+                return null;
+            }
+        }
+        
         public static IEnumerable<IShield> AllShields(Pawn pawn)
         {
             foreach (var shield in InventoryShields(pawn))

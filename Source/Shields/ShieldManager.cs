@@ -38,9 +38,9 @@ namespace FrontierDevelopments.Shields
 
         private IEnumerable<IShield> Shields => _shields.Concat(InventoryShields).Concat(EquipmentShields);
 
-        private IEnumerable<IShield> InventoryShields => _pawns.SelectMany(ShieldUtils.InventoryShields); 
+        private IEnumerable<IShield> InventoryShields => _pawns.SelectMany(ShieldUtility.InventoryShields); 
 
-        private IEnumerable<IShield> EquipmentShields => _pawns.SelectMany(ShieldUtils.EquipmentShields);
+        private IEnumerable<IShield> EquipmentShields => _pawns.SelectMany(ShieldUtility.EquipmentShields);
         
         public Vector3? Block(
             Vector3 origin, 
@@ -234,10 +234,10 @@ namespace FrontierDevelopments.Shields
             [HarmonyPostfix]
             static void AddToShieldManager(Pawn __instance)
             {
-                if(ShieldUtils.InventoryShields(__instance)
+                if(ShieldUtility.InventoryShields(__instance)
                        .Any(shield => ShieldDeploymentUtility.CanDeploy(__instance, shield)) 
-                   || ShieldUtils.EquipmentShields(__instance).Any()
-                   || ShieldUtils.HediffShields(__instance).Any())
+                   || ShieldUtility.EquipmentShields(__instance).Any()
+                   || ShieldUtility.HediffShields(__instance).Any())
                     __instance.Map.GetComponent<ShieldManager>().Add(__instance);
             }
         }

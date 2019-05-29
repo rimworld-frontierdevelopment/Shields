@@ -83,7 +83,7 @@
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldDeploymentUtility.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
-    <Compile Include="Shields\ShieldUtils.cs" />
+    <Compile Include="Shields\ShieldUtility.cs" />
     <Compile Include="Shields\Tale\Tale_KilledByImpactingOnShield.cs" />
   </ItemGroup>
   <ItemGroup>
