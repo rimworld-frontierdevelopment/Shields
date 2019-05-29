@@ -13,6 +13,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             [HarmonyPostfix]
             static void Postfix()
             {
+                Harmony_Verb.BlacklistType(typeof(Verb_ShootMortarCE));
                 Harmony_Verb.BlacklistType(typeof(Verb_MarkForArtillery));
             }
         }
