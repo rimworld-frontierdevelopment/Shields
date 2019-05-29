@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ShieldBase">
+    <ThingDef ParentName="StationaryElectricShieldBase">
         <defName>Building_ShieldGeneratorLarge</defName>
         <label>Large shield generator</label>
         <description>Creates a larger shield capable of sustaining more heat before collapsing.</description>
@@ -13,33 +13,27 @@
             <drawSize>(2,2)</drawSize>
         </graphicData>
         <uiIconPath>Things/Buildings/ShieldGeneratorLarge</uiIconPath>
+        <size>(2,2)</size>
+        <fillPercent>0.5</fillPercent>
+        <specialDisplayRadius>25</specialDisplayRadius>
+        <passability>Impassable</passability>
+        <statBases>
+            <MaxHitPoints>1000</MaxHitPoints>
+            <WorkToBuild>3000</WorkToBuild>
+            <Mass>50</Mass>
+        </statBases>
+        <costList>
+            <Steel>200</Steel>
+            <Plasteel>100</Plasteel>
+            <Gold>20</Gold>
+            <ComponentIndustrial>10</ComponentIndustrial>
+            <ComponentSpacer>10</ComponentSpacer>
+        </costList>
         <comps>
-            <li Class="CompProperties_Power">
-                <compClass>CompPowerTrader</compClass>
-            </li>
-            <li Class="FrontierDevelopments.General.EnergySources.CompProperties_ElectricEnergySource">
-                <minimumOnlinePower>50</minimumOnlinePower>
-            </li>
-            <li Class="CompProperties_Flickable"/>
-            <li Class="CompProperties_Breakdownable"/>
             <li Class="FrontierDevelopments.Shields.Comps.CompProperties_ShieldRadial">
                 <minRadius>5</minRadius>
                 <maxRadius>25</maxRadius>
                 <warmupTicks>20</warmupTicks>
-            </li>
-            <li Class="FrontierDevelopments.Shields.Comps.CompProperties_ShieldResistance">
-                <resists>
-                    <li class="FrontierDevelopments.Shields.Comps.ShieldResistance">
-                        <damageDefName>EMP</damageDefName>
-                        <resist>true</resist>
-                        <multiplier>4</multiplier>
-                    </li>
-                    <li class="FrontierDevelopments.Shields.Comps.ShieldResistance">
-                        <damageDefName>Extinguish</damageDefName>
-                        <resist>false</resist>
-                        <multiplier>0</multiplier>
-                    </li>
-                </resists>
             </li>
             <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">
                 <grams>2000</grams>
@@ -55,25 +49,6 @@
                 <glowColor>(100,200,255,0)</glowColor>
             </li>
         </comps>
-        <staticSunShadowHeight>1.0</staticSunShadowHeight>
-        <statBases>
-            <MaxHitPoints>1000</MaxHitPoints>
-            <WorkToBuild>3000</WorkToBuild>
-            <Flammability>1.0</Flammability>
-            <Beauty>-8</Beauty>
-        </statBases>
-        <costList>
-            <Steel>200</Steel>
-            <Plasteel>100</Plasteel>
-            <Gold>20</Gold>
-            <ComponentIndustrial>10</ComponentIndustrial>
-            <ComponentSpacer>10</ComponentSpacer>
-        </costList>
-        <size>(2,2)</size>
-        <placeWorkers>
-            <li>PlaceWorker_Heater</li>
-        </placeWorkers>
-        <specialDisplayRadius>25</specialDisplayRadius>
     </ThingDef>
 </Defs>
 

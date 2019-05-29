@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <ThingDef ParentName="ShieldBase">
+    <ThingDef ParentName="StationaryElectricShieldBase">
         <defName>Building_ShieldGenerator</defName>
         <label>Shield generator</label>
         <description>Creates a stationary defensive shield to block incoming fire.</description>
@@ -11,17 +11,16 @@
             <texPath>Things/Buildings/ShieldGenerator</texPath>
             <graphicClass>Graphic_Single</graphicClass>
             <drawSize>(1,1)</drawSize>
-            <shadowData>
-                <volume>(0.3, 0.4, 0.4)</volume>
-                <offset>(0,0,-0.3)</offset>
-            </shadowData>
         </graphicData>
         <uiIconPath>Things/Buildings/ShieldGenerator</uiIconPath>
+        <size>(1,1)</size>
+        <fillPercent>0.3</fillPercent>
+        <specialDisplayRadius>10</specialDisplayRadius>
+        <passability>PassThroughOnly</passability>
         <statBases>
             <MaxHitPoints>500</MaxHitPoints>
             <WorkToBuild>2000</WorkToBuild>
-            <Flammability>1.0</Flammability>
-            <Beauty>-2</Beauty>
+            <Mass>30</Mass>
         </statBases>
         <costList>
             <Steel>100</Steel>
@@ -30,34 +29,11 @@
             <ComponentIndustrial>5</ComponentIndustrial>
             <ComponentSpacer>5</ComponentSpacer>
         </costList>
-        <specialDisplayRadius>10</specialDisplayRadius>
         <comps>
-            <li Class="CompProperties_Power">
-                <compClass>CompPowerTrader</compClass>
-            </li>
-            <li Class="FrontierDevelopments.General.EnergySources.CompProperties_ElectricEnergySource">
-                <minimumOnlinePower>50</minimumOnlinePower>
-            </li>
-            <li Class="CompProperties_Flickable"/>
-            <li Class="CompProperties_Breakdownable"/>
             <li Class="FrontierDevelopments.Shields.Comps.CompProperties_ShieldRadial">
                 <minRadius>3</minRadius>
                 <maxRadius>10</maxRadius>
                 <warmupTicks>20</warmupTicks>
-            </li>
-            <li Class="FrontierDevelopments.Shields.Comps.CompProperties_ShieldResistance">
-                <resists>
-                    <li class="FrontierDevelopments.Shields.Comps.ShieldResistance">
-                        <damageDefName>EMP</damageDefName>
-                        <resist>true</resist>
-                        <multiplier>4</multiplier>
-                    </li>
-                    <li class="FrontierDevelopments.Shields.Comps.ShieldResistance">
-                        <damageDefName>Extinguish</damageDefName>
-                        <resist>false</resist>
-                        <multiplier>0</multiplier>
-                    </li>
-                </resists>
             </li>
             <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">
                 <grams>800</grams>
@@ -73,8 +49,5 @@
                 <glowColor>(100,200,255,0)</glowColor>
             </li>
         </comps>
-        <placeWorkers>
-            <li>PlaceWorker_Heater</li>
-        </placeWorkers>
     </ThingDef>
 </Defs>
