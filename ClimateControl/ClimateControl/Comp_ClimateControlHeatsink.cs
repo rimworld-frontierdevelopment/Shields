@@ -16,7 +16,7 @@ namespace FrontierDevelopments.ClimateControl
         private ThingComp _airFlowConsumer;
         private float _initialFlow;
 
-        private bool HasAirflow => AirFlowConsumer.IsOperating();
+        private bool HasAirflow => AirFlowConsumer?.IsOperating() ?? false;
 
         private Comp_AirFlowConsumer AirFlowConsumer => (Comp_AirFlowConsumer) _airFlowConsumer; 
         
@@ -24,7 +24,7 @@ namespace FrontierDevelopments.ClimateControl
         {
             base.PostSpawnSetup(respawningAfterLoad);
             _airFlowConsumer = parent.TryGetComp<Comp_AirFlowConsumer>();
-            _initialFlow = AirFlowConsumer.Props.baseAirExhaust;
+            _initialFlow = AirFlowConsumer?.Props.baseAirExhaust ?? 0f;
         }
 
         protected override float AmbientTemp()
