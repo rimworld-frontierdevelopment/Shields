@@ -18,6 +18,7 @@ namespace FrontierDevelopments.Shields.Harmony
 
         protected static bool ShieldBlocks(Thing caster, Verb verb, IntVec3 source, LocalTargetInfo target)
         {
+            if (Mod.Settings.EnableShootingIn) return false;
             if (!verb.verbProps.requireLineOfSight) return false;
             if (UncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
             return caster.Map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(source), PositionUtility.ToVector3(target.Cell), caster.Faction);

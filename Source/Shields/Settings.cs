@@ -11,6 +11,7 @@ namespace FrontierDevelopments.Shields
         
         // General
         public bool EnableShootingOut = true;
+        public bool EnableShootingIn = false;
         public bool OverlapPassThrough = false;
         public bool ScaleOnHeat = true;
 
@@ -61,6 +62,10 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.shootout.label".Translate(), 
                 ref EnableShootingOut, 
                 "fd.settings.shield.shootout.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.shootin.label".Translate(),
+                ref EnableShootingIn,
+                "fd.settings.shield.shootin.description".Translate());
             list.CheckboxLabeled(
                 "fd.settings.shield.overlap-passthrough.label".Translate(),
                 ref OverlapPassThrough,
@@ -140,6 +145,7 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref EnableRedistHeatSupport, "enableRedistHeatSupport", true);
             
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
+            Scribe_Values.Look(ref EnableShootingIn, "enableShootingIn", false);
             Scribe_Values.Look(ref OverlapPassThrough, "overlapPassThrough", false);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
 
