@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using FrontierDevelopments.General;
-using FrontierDevelopments.Shields.Windows;
+using FrontierDevelopments.General.Energy;
+using FrontierDevelopments.General.Windows;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -41,8 +42,7 @@ namespace FrontierDevelopments.Shields.Comps
         private Vector3 ExactPosition => PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter();
 
         private IHeatsink Heatsink => HeatsinkUtility.Find(parent);
-
-        private IEnergySource EnergySource => EnergySourceUtility.Find(parent);
+        private IEnergyNet _energyNet;
 
         private Comp_ShieldResistance Resistance => parent.TryGetComp<Comp_ShieldResistance>();
 
@@ -54,6 +54,7 @@ namespace FrontierDevelopments.Shields.Comps
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            _energyNet = EnergyNet.Find(parent);
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
             _radiusLast = (int)Radius;
@@ -288,16 +289,16 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool IsActive()
         {
-            return (EnergySource?.IsActive() ?? false) && !(Heatsink?.OverTemperature ?? false);
+            return _energyNet != null && _energyNet.RateAvailable > 0 && !(Heatsink?.OverTemperature ?? false);
         }
 
         public bool Block(long damage, Vector3 position)
         {
             if (!IsActive()) return false;
             var charge = damage * Mod.Settings.PowerPerDamage;
-            if (Mod.Settings.ScaleOnHeat && Heatsink != null) charge = charge * Mathf.Pow(1.01f, Heatsink.Temp);
-            var drawn = EnergySource.Draw(charge);
-            Heatsink?.PushHeat(drawn / 60000 * Mod.Settings.HeatPerPower);
+            if (Mod.Settings.ScaleOnHeat && Heatsink != null) charge *= Mathf.Pow(1.01f, Heatsink.Temp);
+            var drawn = _energyNet.Consume(charge);
+            Heatsink?.PushHeat(drawn * Mod.Settings.HeatPerPower);
             RenderImpactEffect(PositionUtility.ToVector2(position));
             PlayBulletImpactSound(PositionUtility.ToVector2(position));
             return drawn >= charge;

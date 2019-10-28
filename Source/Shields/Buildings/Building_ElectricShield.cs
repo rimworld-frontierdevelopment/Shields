@@ -1,5 +1,8 @@
-﻿using System.Text;
+﻿using System.Linq;
+using System.Text;
 using FrontierDevelopments.General;
+using FrontierDevelopments.General.Energy;
+using Harmony;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;
@@ -7,7 +10,7 @@ using Verse;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
-    public class Building_ElectricShield : Building, IHeatsink, IEnergySource, IShield
+    public class Building_ElectricShield : Building, IHeatsink, IEnergyNet, IShield
     {
         public enum ShieldStatus
         {
@@ -16,21 +19,13 @@ namespace FrontierDevelopments.Shields.Buildings
             Online
         }
 
-        private IEnergySource _energySource;
+        private EnergyNet _energyNet = new EnergyNet();
         private IShield _shield;
 
         private IHeatsink _heatSink;
+        private CompFlickable _flickable;
 
         private bool _activeLastTick;
-        
-        private IEnergySource EnergySource {
-            get
-            {
-                if (_energySource == null) 
-                    _energySource = EnergySourceUtility.FindComp(AllComps);
-                return _energySource;
-            }
-        }
 
         public IShield Shield {
             get
@@ -51,22 +46,25 @@ namespace FrontierDevelopments.Shields.Buildings
             }
         }
 
+        private bool WantActive => _flickable?.SwitchIsOn ?? true;
+
         private bool IsActive => _shield?.IsActive() ?? false;
-        private float BasePowerConsumption => -_shield?.ProtectedCellCount * Mod.Settings.PowerPerTile ?? 0f;
+        private float BasePowerConsumption => _shield?.ProtectedCellCount * Mod.Settings.PowerPerTile ?? 0f;
 
         public ShieldStatus Status
         {
             get
             {
                 if (Heatsink != null && Heatsink.OverTemperature) return ShieldStatus.ThermalShutdown;
-                if (EnergySource != null && !EnergySource.IsActive()) return ShieldStatus.Unpowered;
+                if (_energyNet.RateAvailable <= 0) return ShieldStatus.Unpowered;
                 return ShieldStatus.Online;
             }
         }
 
         public void Init()
         {
-            _energySource = EnergySourceUtility.FindComp(AllComps);
+            AllComps.OfType<IEnergyNode>().Do(Connect);
+            _flickable = GetComp<CompFlickable>();
             _shield = ShieldUtility.FindComp(AllComps);
             _heatSink = HeatsinkUtility.FindComp(AllComps);
         }
@@ -95,9 +93,9 @@ namespace FrontierDevelopments.Shields.Buildings
             var active = IsActive;
             if (active)
             {
-                EnergySource.BaseConsumption = BasePowerConsumption;
+                _energyNet.Consume(BasePowerConsumption / GenDate.TicksPerDay);
             }
-            else if(_activeLastTick && (EnergySource?.WantActive ?? false))
+            else if(_activeLastTick && WantActive)
             {
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             }
@@ -141,35 +139,33 @@ namespace FrontierDevelopments.Shields.Buildings
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
-        // Energy Source
+        // Energy Net
         //
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
-        bool IEnergySource.IsActive()
+
+        public void Connect(IEnergyNode node)
         {
-            return EnergySource.IsActive();
+            _energyNet.Connect(node);
         }
 
-        public float Draw(float amount)
+        public void Disconnect(IEnergyNode node)
         {
-            return EnergySource.Draw(amount);
+            _energyNet.Disconnect(node);
         }
 
-        public void Drain(float amount)
+        public float Provide(float amount)
         {
-            EnergySource.Drain(amount);
+            return _energyNet.Provide(amount);
         }
 
-        public bool WantActive => EnergySource.WantActive;
-
-        public float BaseConsumption
+        public float Consume(float amount)
         {
-            get => EnergySource.BaseConsumption;
-            set => EnergySource.BaseConsumption = value;
+            return _energyNet.Consume(amount);
         }
-        
-        public float EnergyAvailable => EnergySource.EnergyAvailable;
-        
+
+        public float AmountAvailable => _energyNet.AmountAvailable;
+        public float RateAvailable => _energyNet.RateAvailable;
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
         // Shield
