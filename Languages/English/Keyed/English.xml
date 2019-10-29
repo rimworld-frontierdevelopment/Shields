@@ -18,8 +18,8 @@
     <fd.settings.shield.shootout.label>Enable shooting out</fd.settings.shield.shootout.label>
     <fd.settings.shield.shootout.description>Enables shoots originating within a shield to travel out of the shield</fd.settings.shield.shootout.description>
 
-    <fd.settings.shield.shootout.label>Enable shooting out</fd.settings.shield.shootout.label>
-    <fd.settings.shield.shootout.description>Allow colonists to attempt to shoot into friendly shields (for testing, not recommended to use!)</fd.settings.shield.shootout.description>
+    <fd.settings.shield.shootin.label>Enable shooting at friendly shields</fd.settings.shield.shootin.label>
+    <fd.settings.shield.shootin.description>Allow colonists to attempt to shoot into friendly shields (for testing, not recommended for normal gameplay!)</fd.settings.shield.shootin.description>
 
     <fd.settings.shield.overlap-passthrough.label>Enable overlap pass through</fd.settings.shield.overlap-passthrough.label>
     <fd.settings.shield.overlap-passthrough.description>Allows shots and explosions to pass through shields on areas that are overlapping</fd.settings.shield.overlap-passthrough.description>
