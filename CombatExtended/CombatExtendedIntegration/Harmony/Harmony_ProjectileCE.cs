@@ -19,12 +19,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             return typeof(ProjectileCE_Explosive).IsAssignableFrom(type);
         }
 
-        private static bool TryBlockProjectileCE(
-            ProjectileCE projectile,
-            Vector3 currentPosition,
-            Vector3 nextPosition,
-            int ticksToImpact,
-            Vector2 origin)
+        private static ShieldDamages CalculateDamages(ProjectileCE projectile)
         {
             var ap = projectile.def.projectile.GetArmorPenetration(1f);
             var damages = new ShieldDamages(
@@ -37,8 +32,33 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                     second.def,
                     second.amount * ap));
             });
-            
-            var result = TryBlock(
+            return damages;
+        }
+
+        private static bool TryBlockOverheadProjectileCE(
+            ProjectileCE projectile,
+            Vector3 currentPosition,
+            int ticksToImpact,
+            Vector2 origin)
+        {
+            return TryBlock(
+                projectile,
+                currentPosition,
+                ticksToImpact,
+                PositionUtility.ToVector3(origin),
+                // TODO might be able to calculate the exact path with 3d CE projectiles
+                projectile.def.projectile.flyOverhead,
+                CalculateDamages(projectile)) != null;
+        }
+
+        private static bool TryBlockProjectileCE(
+            ProjectileCE projectile,
+            Vector3 currentPosition,
+            Vector3 nextPosition,
+            int ticksToImpact,
+            Vector2 origin)
+        {
+            return TryBlock(
                 projectile,
                 currentPosition,
                 nextPosition,
@@ -46,8 +66,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 PositionUtility.ToVector3(origin),
                 // TODO might be able to calculate the exact path with 3d CE projectiles
                 projectile.def.projectile.flyOverhead,
-                damages) != null;
-            return result;
+                CalculateDamages(projectile)) != null;
         }
 
         [HarmonyPatch(typeof(ProjectileCE), nameof(ProjectileCE.Tick))]
@@ -144,6 +163,21 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
 
                     yield return instruction;
                 }
+            }
+        }
+
+        [HarmonyPatch(typeof(ProjectileCE), "ImpactSomething")]
+        static class Patch_CheckCellForCollision
+        {
+            [HarmonyPrefix]
+            static bool BlockMortarImpacts(ProjectileCE __instance, int ___ticksToImpact, Vector2 ___origin)
+            {
+                if (!__instance.def.projectile.flyOverhead) return true;
+
+                var shouldBlock = TryBlockOverheadProjectileCE(__instance, __instance.ExactPosition, ___ticksToImpact, ___origin);
+                if(shouldBlock)
+                    __instance.Destroy();
+                return !shouldBlock;
             }
         }
     }

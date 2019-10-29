@@ -41,6 +41,41 @@ namespace FrontierDevelopments.Shields.Harmony
         protected static Vector3? TryBlock(
             Thing projectile,
             Vector3 currentPosition,
+            int ticksToImpact,
+            Vector3 origin,
+            bool flyOverhead,
+            ShieldDamages damages)
+        {
+            var shieldManager = projectile.Map.GetComponent<ShieldManager>();
+            if (BlacklistedDefs.Contains(projectile.def.defName)) return null;
+
+            Log.Message("here");
+
+            if (flyOverhead)
+            {
+                if (ticksToImpact <= 1)
+                {
+                    // fix for fire foam projectiles having 99999 damage
+                    if (projectile.def.defName == "Bullet_Shell_Firefoam")
+                    {
+                        damages.OverrideDamage = 10;
+                    }
+
+                    Log.Message("about to check");
+
+                    if (shieldManager.Block(
+                        PositionUtility.ToVector3(origin),
+                        PositionUtility.ToVector3(currentPosition),
+                        // TODO calculate mortar damage better
+                        damages)) return currentPosition;
+                }
+            }
+            return null;
+        }
+
+        protected static Vector3? TryBlock(
+            Thing projectile,
+            Vector3 currentPosition,
             Vector3 nextPosition,
             int ticksToImpact,
             Vector3 origin,
