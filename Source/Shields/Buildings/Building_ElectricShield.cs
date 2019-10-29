@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Energy;
@@ -90,6 +91,8 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public override void Tick()
         {
+            base.Tick();
+            _energyNet.Update();
             var active = IsActive;
             if (active)
             {
@@ -100,7 +103,7 @@ namespace FrontierDevelopments.Shields.Buildings
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             }
             _activeLastTick = active;
-            base.Tick();
+            
         }
 
         public override string GetInspectString()
@@ -120,6 +123,12 @@ namespace FrontierDevelopments.Shields.Buildings
             }
             stringBuilder.Append(base.GetInspectString());
             return stringBuilder.ToString();
+        }
+
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Deep.Look(ref _energyNet, "energyNet");
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -153,6 +162,16 @@ namespace FrontierDevelopments.Shields.Buildings
             _energyNet.Disconnect(node);
         }
 
+        public void ConnectTo(IEnergyNet net)
+        {
+            _energyNet.ConnectTo(net);
+        }
+
+        public void Disconnect()
+        {
+            _energyNet.Disconnect();
+        }
+
         public float Provide(float amount)
         {
             return _energyNet.Provide(amount);
@@ -163,8 +182,28 @@ namespace FrontierDevelopments.Shields.Buildings
             return _energyNet.Consume(amount);
         }
 
+        public void Update()
+        {
+            _energyNet.Update();
+        }
+
+        public void HasPower(bool isPowered)
+        {
+            _energyNet.HasPower(isPowered);
+        }
+
+        public void Changed()
+        {
+            _energyNet.Changed();
+        }
+
         public float AmountAvailable => _energyNet.AmountAvailable;
         public float RateAvailable => _energyNet.RateAvailable;
+        public float TotalAvailable => _energyNet.TotalAvailable;
+        public float MaxRate => _energyNet.MaxRate;
+        public IEnergyNet Parent => _energyNet.Parent;
+        public float Rate => _energyNet.Rate;
+        public IEnumerable<IEnergyNode> Nodes => _energyNet.Nodes;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
