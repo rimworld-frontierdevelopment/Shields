@@ -1,6 +1,4 @@
-using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
 using CombatExtended;
 using FrontierDevelopments.General;
 using FrontierDevelopments.Shields;
@@ -12,6 +10,8 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
 {
     public class Harmony_ProjectileCE : Harmony_Projectile
     {
+        private static readonly MethodInfo impactMethod = AccessTools.Method(typeof(ProjectileCE), "Impact");
+
         private static bool ShouldImpact(ProjectileCE projectile)
         {
             if (projectile.def.projectile.flyOverhead) return false;
@@ -69,100 +69,35 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 CalculateDamages(projectile)) != null;
         }
 
-        [HarmonyPatch(typeof(ProjectileCE), nameof(ProjectileCE.Tick))]
-        static class Patch_Tick
+        [HarmonyPatch(typeof(ProjectileCE), "CheckForCollisionBetween")]
+        static class Patch_CheckForCollisionBetween
         {
-            [HarmonyTranspiler]
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+            [HarmonyPrefix]
+            static bool CheckShieldCollision(ProjectileCE __instance, bool __result, Vector2 ___origin, int ___ticksToImpact)
             {
-                var patchPhase = 0;
-                var shieldTestLabel = il.DefineLabel();
+                var current = __instance.ExactPosition;
+                var last = current - __instance.ExactMinusLastPos;
 
-                foreach (var instruction in instructions)
+                var shouldBlock = TryBlockProjectileCE(
+                    __instance,
+                    last,
+                    current,
+                    ___ticksToImpact,
+                    ___origin);
+
+                if (shouldBlock)
                 {
-                    switch (patchPhase)
+                    if (ShouldImpact(__instance))
                     {
-                        case 0:
-                        {
-                            if (instruction.opcode == OpCodes.Call
-                                && instruction.operand as MethodInfo == AccessTools.Method(typeof(ProjectileCE), "CheckForCollisionBetween"))
-                            {
-                                patchPhase = 1;
-                            }
-                            break;
-                        }
-                        case 1:
-                        {
-                            if (instruction.opcode == OpCodes.Brfalse)
-                            {
-                                instruction.operand = shieldTestLabel;
-                                patchPhase = 2;
-                            }
-                            break;
-                        }
-                        case 2:
-                        {
-                            if (instruction.opcode == OpCodes.Ret)
-                            {
-                                patchPhase = 3;
-                            }
-                            break;
-                        }
-                        case 3:
-                        {
-                            var ticksToImpact = AccessTools.Field(typeof(ProjectileCE), "ticksToImpact");
-                            
-                            var keepGoing = il.DefineLabel();
-                            var destroy = il.DefineLabel();
-                            
-                            instruction.labels.Add(keepGoing);
-
-                            yield return new CodeInstruction(OpCodes.Ldarg_0){labels = new List<Label>(new[] {shieldTestLabel})}; // projectile
-                            // currentPosition
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ProjectileCE), "get_LastPos"));
-                            // nextPosition
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(ProjectileCE), nameof(ProjectileCE.ExactPosition)).GetGetMethod());
-                            
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Ldfld, ticksToImpact);
-                            
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ProjectileCE), "origin"));
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_ProjectileCE), nameof(TryBlockProjectileCE)));
-                            yield return new CodeInstruction(OpCodes.Brfalse, keepGoing);
-                            
-                            // move it back one
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Ldfld, ticksToImpact);
-                            yield return new CodeInstruction(OpCodes.Ldc_I4_1);
-                            yield return new CodeInstruction(OpCodes.Add);
-                            yield return new CodeInstruction(OpCodes.Stfld, ticksToImpact);
-                            
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            // TODO check for overhead, simulate mortar explosion
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_ProjectileCE), nameof(ShouldImpact)));
-                            yield return new CodeInstruction(OpCodes.Brfalse, destroy);
-                            
-                            yield return new CodeInstruction(OpCodes.Ldarg_0);
-                            yield return new CodeInstruction(OpCodes.Ldnull);
-                            yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(ProjectileCE), "Impact"));
-                            yield return new CodeInstruction(OpCodes.Ret);
-                            
-                            yield return new CodeInstruction(OpCodes.Ldarg_0) { labels = new List<Label>(new[] { destroy })};
-                            yield return new CodeInstruction(OpCodes.Ldc_I4_0);
-                            yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Method(typeof(ProjectileCE), nameof(ProjectileCE.Destroy)));
-                            yield return new CodeInstruction(OpCodes.Ret);
-
-                            patchPhase = -1;
-                            break;
-                        }
+                        __instance.ExactPosition = last;
+                        impactMethod.Invoke(__instance, new object[] { null });
                     }
-
-                    yield return instruction;
+                    else
+                    {
+                        __instance.Destroy();
+                    }
                 }
+                return !shouldBlock;
             }
         }
 
