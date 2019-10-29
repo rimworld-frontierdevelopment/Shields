@@ -49,8 +49,6 @@ namespace FrontierDevelopments.Shields.Harmony
             var shieldManager = projectile.Map.GetComponent<ShieldManager>();
             if (BlacklistedDefs.Contains(projectile.def.defName)) return null;
 
-            Log.Message("here");
-
             if (flyOverhead)
             {
                 if (ticksToImpact <= 1)
@@ -60,8 +58,6 @@ namespace FrontierDevelopments.Shields.Harmony
                     {
                         damages.OverrideDamage = 10;
                     }
-
-                    Log.Message("about to check");
 
                     if (shieldManager.Block(
                         PositionUtility.ToVector3(origin),
