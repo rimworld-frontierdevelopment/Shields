@@ -233,12 +233,12 @@ namespace FrontierDevelopments.Shields.Buildings
             return Shield.Collision(start, end);
         }
 
-        public bool Block(long damage, Vector3 position)
+        public float Block(long damage, Vector3 position)
         {
             return Shield.Block(damage, position);
         }
 
-        public bool Block(ShieldDamages damages, Vector3 position)
+        public float Block(ShieldDamages damages, Vector3 position)
         {
             return Shield.Block(damages, position);
         }

@@ -93,14 +93,16 @@ namespace FrontierDevelopments.Shields
                 : null;
         }
 
-        public bool Block(long damage, Vector3 position)
+        public float Block(long damage, Vector3 position)
         {
-            return ShieldOnline && Shield.Block(damage, position);
+            if (!ShieldOnline) return 0f;
+            return Shield.Block(damage, position);
         }
 
-        public bool Block(ShieldDamages damages, Vector3 position)
+        public float Block(ShieldDamages damages, Vector3 position)
         {
-            return ShieldOnline && Shield.Block(damages, position);
+            if (!ShieldOnline) return 0f;
+            return Shield.Block(damages, position);
         }
 
         public void Draw(CellRect cameraRect)

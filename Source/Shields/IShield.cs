@@ -64,8 +64,8 @@ namespace FrontierDevelopments.Shields
         bool Collision(Vector3 point);
         Vector3? Collision(Ray ray, float limit);
         Vector3? Collision(Vector3 start, Vector3 end);
-        bool Block(long damage, Vector3 position);
-        bool Block(ShieldDamages damages, Vector3 position);
+        float Block(long damage, Vector3 position);
+        float Block(ShieldDamages damages, Vector3 position);
         void Draw(CellRect cameraRect);
         Faction Faction { get; }
     }

@@ -292,25 +292,32 @@ namespace FrontierDevelopments.Shields.Comps
             return _energyNet != null && _energyNet.RateAvailable > 0 && !(Heatsink?.OverTemperature ?? false);
         }
 
-        public bool Block(long damage, Vector3 position)
+        public float Block(long damage, Vector3 position)
         {
-            if (!IsActive()) return false;
+            if (!IsActive()) return 0f;
+
             var charge = damage * Mod.Settings.PowerPerDamage;
             if (Mod.Settings.ScaleOnHeat && Heatsink != null) charge *= Mathf.Pow(1.01f, Heatsink.Temp);
+
             var drawn = _energyNet.Consume(charge);
             Heatsink?.PushHeat(drawn * Mod.Settings.HeatPerPower);
+
             RenderImpactEffect(PositionUtility.ToVector2(position));
             PlayBulletImpactSound(PositionUtility.ToVector2(position));
-            return drawn >= charge;
+
+            // reverse calculation to normalize damage handled
+            if (Mod.Settings.ScaleOnHeat && Heatsink != null) drawn /= Mathf.Pow(1.01f, Heatsink.Temp);
+            drawn /= Mod.Settings.PowerPerDamage;
+            return drawn;
         }
 
-        public bool Block(ShieldDamages damages, Vector3 position)
+        public float Block(ShieldDamages damages, Vector3 position)
         {
             var total = 0f;
             if (Resistance != null)
             {
                 var oTotal = Resistance.Apply(damages);
-                if (oTotal == null) return false;
+                if (oTotal == null) return 0f;
                 total = oTotal.Value;
             }
             else
