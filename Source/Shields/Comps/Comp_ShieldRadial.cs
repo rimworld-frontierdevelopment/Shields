@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using FrontierDevelopments.General;
-using FrontierDevelopments.General.Energy;
 using FrontierDevelopments.General.Windows;
 using RimWorld;
 using UnityEngine;
@@ -40,7 +39,7 @@ namespace FrontierDevelopments.Shields.Comps
         private bool _renderLast = true;
         private IntVec3 _positionLast;
 
-        private readonly Func<bool> _isActive;
+        private IShield _parent;
 
         public Faction Faction => parent.Faction;
 
@@ -49,26 +48,17 @@ namespace FrontierDevelopments.Shields.Comps
         public string Label => parent.Label;
         public IEnumerable<Gizmo> ShieldGizmos => CompGetGizmosExtra();
 
+        public IShieldResists Resists => parent.TryGetComp<Comp_ShieldResistance>();
+
         private Vector3 ExactPosition => PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter();
 
-        private IHeatsink Heatsink => HeatsinkUtility.Find(parent);
-        private IEnergyNet _energyNet;
+        private static int NextId => Find.UniqueIDsManager.GetNextThingID();
 
-        private Comp_ShieldResistance Resistance => parent.TryGetComp<Comp_ShieldResistance>();
+        public void SetParent(IShield shieldParent)
+        {
+            _parent = shieldParent;
+        }
         
-        private int NextId => Find.UniqueIDsManager.GetNextThingID();
-
-        public Comp_ShieldRadial()
-        {
-            _isActive = () => _energyNet != null && _energyNet.RateAvailable > 0 && !(Heatsink?.OverTemperature ?? false);
-        }
-
-        public Comp_ShieldRadial(Func<bool> isActive)
-        {
-            _id = NextId;
-            _isActive = isActive;
-        }
-
         public override void Initialize(CompProperties compProperties)
         {
             base.Initialize(compProperties);
@@ -77,7 +67,6 @@ namespace FrontierDevelopments.Shields.Comps
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            _energyNet = EnergyNet.Find(parent);
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
             _radiusLast = (int)Radius;
@@ -303,6 +292,17 @@ namespace FrontierDevelopments.Shields.Comps
             GenDraw.DrawRadiusRing(parent.Position, _fieldRadius);
         }
 
+        private IShield TryGetParent()
+        {
+            switch (parent)
+            {
+                case IShield shield:
+                    return shield;
+            }
+
+            return null;
+        }
+
         public override void PostExposeData()
         {
             Scribe_Values.Look(ref _id, "shieldRadialId");
@@ -310,38 +310,20 @@ namespace FrontierDevelopments.Shields.Comps
             Scribe_Values.Look(ref _renderField, "renderField", true);
             Scribe_Values.Look(ref _warmingUpTicks, "warmingUpTicks");
             Scribe_Values.Look(ref _activeLastTick, "activeLastTick");
+            Scribe_References.Look(ref _parent, "shieldRadialParent");
         }
 
         public bool IsActive()
         {
-            return _isActive();
+            return _parent?.IsActive() ?? true;
         }
 
-        public float Block(long damage, Vector3 position)
+        public float CalculateDamage(ShieldDamages damages)
         {
-            if (!IsActive()) return 0f;
-
-            var charge = damage * Mod.Settings.PowerPerDamage;
-            if (Mod.Settings.ScaleOnHeat && Heatsink != null) charge *= Mathf.Pow(1.01f, Heatsink.Temp);
-
-            var drawn = _energyNet.Consume(charge);
-            Heatsink?.PushHeat(drawn * Mod.Settings.HeatPerPower);
-
-            RenderImpactEffect(PositionUtility.ToVector2(position));
-            PlayBulletImpactSound(PositionUtility.ToVector2(position));
-
-            // reverse calculation to normalize damage handled
-            if (Mod.Settings.ScaleOnHeat && Heatsink != null) drawn /= Mathf.Pow(1.01f, Heatsink.Temp);
-            drawn /= Mod.Settings.PowerPerDamage;
-            return drawn;
-        }
-
-        public float Block(ShieldDamages damages, Vector3 position)
-        {
-            var total = 0f;
-            if (Resistance != null)
+            float total;
+            if (Resists != null)
             {
-                var oTotal = Resistance.Apply(damages);
+                var oTotal = Resists.Apply(damages);
                 if (oTotal == null) return 0f;
                 total = oTotal.Value;
             }
@@ -349,7 +331,32 @@ namespace FrontierDevelopments.Shields.Comps
             {
                 total = damages.Damage;
             }
-            return Block((long) Math.Ceiling(total), position);
+            return total;
+        }
+
+        public float SinkDamage(float damage)
+        {
+            return _parent?.SinkDamage(damage) ?? damage;
+        }
+
+        public float Block(float damage, Vector3 position)
+        {
+            if (!IsActive()) return 0f;
+
+            var handled = SinkDamage(damage);
+
+            if (handled >= damage)
+            {
+                RenderImpactEffect(PositionUtility.ToVector2(position));
+                PlayBulletImpactSound(PositionUtility.ToVector2(position));
+            }
+
+            return handled;
+        }
+
+        public float Block(ShieldDamages damages, Vector3 position)
+        {
+            return Block(CalculateDamage(damages), position);
         }
 
         private void RenderImpactEffect(Vector2 position)

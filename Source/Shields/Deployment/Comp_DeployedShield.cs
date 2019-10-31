@@ -35,6 +35,12 @@ namespace FrontierDevelopments.Shields.Comps
         public Faction Faction => parent.Faction;
         public float DeploymentSize => _deployed.DeploymentSize;
         public IEnumerable<Gizmo> ShieldGizmos => _deployed.ShieldGizmos;
+        public IShieldResists Resists => _deployed.Resists;
+
+        public void SetParent(IShield shieldParent)
+        {
+            _deployed = shieldParent;
+        }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -66,7 +72,17 @@ namespace FrontierDevelopments.Shields.Comps
             return _deployed.Collision(start, end);
         }
 
-        public float Block(long damage, Vector3 position)
+        public float CalculateDamage(ShieldDamages damages)
+        {
+            return _deployed.CalculateDamage(damages);
+        }
+
+        public float SinkDamage(float damage)
+        {
+            return _deployed.SinkDamage(damage);
+        }
+
+        public float Block(float damage, Vector3 position)
         {
             return _deployed.Block(damage, position);
         }

@@ -86,6 +86,7 @@
     <Compile Include="Shields\RedistHeatIntegration.cs" />
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
+    <Compile Include="Shields\IShieldResists.cs" />
     <Compile Include="Shields\ShieldUtility.cs" />
     <Compile Include="Shields\Tale\Tale_KilledByImpactingOnShield.cs" />
   </ItemGroup>

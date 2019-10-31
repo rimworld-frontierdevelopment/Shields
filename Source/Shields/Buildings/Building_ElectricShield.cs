@@ -49,8 +49,10 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool WantActive => _flickable?.SwitchIsOn ?? true;
 
-        private bool IsActive => _shield?.IsActive() ?? false;
+        private bool IsActive => WantActive && RateAvailable > 0;
         private float BasePowerConsumption => _shield?.ProtectedCellCount * Mod.Settings.PowerPerTile ?? 0f;
+
+        public IShieldResists Resists => _shield.Resists;
 
         public ShieldStatus Status
         {
@@ -67,6 +69,7 @@ namespace FrontierDevelopments.Shields.Buildings
             AllComps.OfType<IEnergyNode>().Do(Connect);
             _flickable = GetComp<CompFlickable>();
             _shield = ShieldUtility.FindComp(AllComps);
+            _shield.SetParent(this);
             _heatSink = HeatsinkUtility.FindComp(AllComps);
         }
 
@@ -217,9 +220,13 @@ namespace FrontierDevelopments.Shields.Buildings
         
         public IEnumerable<Gizmo> ShieldGizmos => _shield.ShieldGizmos;
 
+        public void SetParent(IShield shieldParent)
+        {
+        }
+
         bool IShield.IsActive()
         {
-            return Shield.IsActive();
+            return IsActive;
         }
 
         public bool Collision(Vector3 point)
@@ -237,14 +244,47 @@ namespace FrontierDevelopments.Shields.Buildings
             return Shield.Collision(start, end);
         }
 
-        public float Block(long damage, Vector3 position)
+        private float ApplyEfficiency(float damage, float temp)
         {
-            return Shield.Block(damage, position);
+            return damage * Mathf.Pow(1.01f, temp);
+        }
+
+        private float UnapplyEfficiency(float damage, float temp)
+        {
+            return damage / Mathf.Pow(1.01f, temp);
+        }
+
+        private void HandleBlockingHeat(float handled)
+        {
+            if (Mod.Settings.ScaleOnHeat && Heatsink != null)
+            {
+                Heatsink?.PushHeat(handled * Mod.Settings.HeatPerPower);
+            }
+        }
+
+        public float CalculateDamage(ShieldDamages damages)
+        {
+            return _shield.CalculateDamage(damages);
+        }
+
+        public float SinkDamage(float damage)
+        {
+            var temp = Heatsink.Temp;
+            var drawn = _energyNet.Consume(
+                            ApplyEfficiency(damage, temp) * Mod.Settings.PowerPerDamage
+                        ) / Mod.Settings.PowerPerDamage;
+            HandleBlockingHeat(drawn);
+            return UnapplyEfficiency(drawn, temp);
+        }
+
+        public float Block(float damage, Vector3 position)
+        {
+            return _shield.Block(damage, position);
         }
 
         public float Block(ShieldDamages damages, Vector3 position)
         {
-            return Shield.Block(damages, position);
+            return _shield.Block(damages, position);
         }
 
         public void Draw(CellRect cameraRect)

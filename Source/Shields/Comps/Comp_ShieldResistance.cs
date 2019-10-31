@@ -22,7 +22,7 @@ namespace FrontierDevelopments.Shields.Comps
         }
     }
 
-    public class Comp_ShieldResistance : ThingComp
+    public class Comp_ShieldResistance : ThingComp, IShieldResists
     {
         private Dictionary<string, ShieldResistance> resists = new Dictionary<string, ShieldResistance>();
 
