@@ -17,6 +17,8 @@ namespace FrontierDevelopments.Shields.Comps
 
         public int warmupTicks;
 
+        public int deploymentSize;
+
         public CompProperties_ShieldRadial()
         {
             compClass = typeof(Comp_ShieldRadial);
@@ -25,6 +27,7 @@ namespace FrontierDevelopments.Shields.Comps
 
     public class Comp_ShieldRadial : ThingComp, IShield
     {
+        private int? _id;
         private int _fieldRadius;
         private int _cellCount;
         private bool _renderField = true;
@@ -37,7 +40,14 @@ namespace FrontierDevelopments.Shields.Comps
         private bool _renderLast = true;
         private IntVec3 _positionLast;
 
+        private readonly Func<bool> _isActive;
+
         public Faction Faction => parent.Faction;
+
+        public float DeploymentSize => Props.deploymentSize;
+
+        public string Label => parent.Label;
+        public IEnumerable<Gizmo> ShieldGizmos => CompGetGizmosExtra();
 
         private Vector3 ExactPosition => PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter();
 
@@ -45,6 +55,19 @@ namespace FrontierDevelopments.Shields.Comps
         private IEnergyNet _energyNet;
 
         private Comp_ShieldResistance Resistance => parent.TryGetComp<Comp_ShieldResistance>();
+        
+        private int NextId => Find.UniqueIDsManager.GetNextThingID();
+
+        public Comp_ShieldRadial()
+        {
+            _isActive = () => _energyNet != null && _energyNet.RateAvailable > 0 && !(Heatsink?.OverTemperature ?? false);
+        }
+
+        public Comp_ShieldRadial(Func<bool> isActive)
+        {
+            _id = NextId;
+            _isActive = isActive;
+        }
 
         public override void Initialize(CompProperties compProperties)
         {
@@ -60,6 +83,7 @@ namespace FrontierDevelopments.Shields.Comps
             _radiusLast = (int)Radius;
             parent.Map.GetComponent<ShieldManager>().Add(this);
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
+            if (_id == null) _id = NextId;
         }
 
         public override void PostDeSpawn(Map map)
@@ -278,9 +302,10 @@ namespace FrontierDevelopments.Shields.Comps
         {
             GenDraw.DrawRadiusRing(parent.Position, _fieldRadius);
         }
-        
+
         public override void PostExposeData()
         {
+            Scribe_Values.Look(ref _id, "shieldRadialId");
             Scribe_Values.Look(ref _fieldRadius, "radius", Props.maxRadius);
             Scribe_Values.Look(ref _renderField, "renderField", true);
             Scribe_Values.Look(ref _warmingUpTicks, "warmingUpTicks");
@@ -289,7 +314,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool IsActive()
         {
-            return _energyNet != null && _energyNet.RateAvailable > 0 && !(Heatsink?.OverTemperature ?? false);
+            return _isActive();
         }
 
         public float Block(long damage, Vector3 position)
@@ -335,6 +360,11 @@ namespace FrontierDevelopments.Shields.Comps
         private void PlayBulletImpactSound(Vector2 position)
         {
             SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(PositionUtility.ToIntVec3(position), parent.Map));
+        }
+
+        public string GetUniqueLoadID()
+        {
+            return "ShieldRadial" + _id;
         }
     }
     

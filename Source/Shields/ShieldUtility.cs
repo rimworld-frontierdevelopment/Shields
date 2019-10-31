@@ -56,9 +56,6 @@ namespace FrontierDevelopments.Shields
             {
                 switch (thing)
                 {
-                    case MinifiedShield shield:
-                        yield return shield;
-                        break;
                     case MinifiedThing minified:
                         switch (minified.InnerThing)
                         {

@@ -4,7 +4,7 @@
   <ThingDef>
     <defName>MinifiedShieldGeneratorPortable</defName>
     <label>minified thing</label>
-    <thingClass>FrontierDevelopments.Shields.MinifiedShield</thingClass>
+    <thingClass>MinifiedThing</thingClass>
     <category>Item</category>
     <useHitPoints>true</useHitPoints>
     <selectable>true</selectable>

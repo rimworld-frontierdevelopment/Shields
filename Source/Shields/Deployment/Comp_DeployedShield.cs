@@ -1,0 +1,108 @@
+using System.Collections.Generic;
+using RimWorld;
+using UnityEngine;
+using Verse;
+
+namespace FrontierDevelopments.Shields.Comps
+{
+    public class CompProperties_DeployedShield : CompProperties
+    {
+        public CompProperties_DeployedShield()
+        {
+            compClass = typeof(Comp_DeployedShield);
+        }
+    }
+    public class Comp_DeployedShield : ThingComp, IShield
+    {
+        private IShield _deployed;
+        private int _id;
+        
+        private Pawn pawn => parent as Pawn;
+
+        public Comp_DeployedShield()
+        {
+        }
+
+        public Comp_DeployedShield(IShield deployed)
+        {
+            _deployed = deployed;
+            _id = Find.UniqueIDsManager.GetNextThingID();
+            parent.Map.GetComponent<ShieldManager>().Add(this);
+        }
+
+        public string Label => _deployed.Label;
+        public int ProtectedCellCount => _deployed.ProtectedCellCount;
+        public Faction Faction => parent.Faction;
+        public float DeploymentSize => _deployed.DeploymentSize;
+        public IEnumerable<Gizmo> ShieldGizmos => _deployed.ShieldGizmos;
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            parent.Map.GetComponent<ShieldManager>().Add(this);
+        }
+
+        public override void PostDeSpawn(Map map)
+        {
+            map.GetComponent<ShieldManager>().Del(this);
+        }
+
+        public bool IsActive()
+        {
+            return _deployed.IsActive();
+        }
+
+        public bool Collision(Vector3 point)
+        {
+            return _deployed.Collision(point);
+        }
+
+        public Vector3? Collision(Ray ray, float limit)
+        {
+            return _deployed.Collision(ray, limit);
+        }
+
+        public Vector3? Collision(Vector3 start, Vector3 end)
+        {
+            return _deployed.Collision(start, end);
+        }
+
+        public float Block(long damage, Vector3 position)
+        {
+            return _deployed.Block(damage, position);
+        }
+
+        public float Block(ShieldDamages damages, Vector3 position)
+        {
+            return _deployed.Block(damages, position);
+        }
+
+        public void Draw(CellRect cameraRect)
+        {
+            _deployed.Draw(cameraRect);
+        }
+
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        {
+            foreach (var gizmo in base.CompGetGizmosExtra())
+            {
+                yield return gizmo;
+            }
+
+            foreach (var gizmo in _deployed.ShieldGizmos)
+            {
+                yield return gizmo;
+            }
+        }
+
+        public override void PostExposeData()
+        {
+            Scribe_Values.Look(ref _id, "shieldDeployedId");
+            Scribe_References.Look(ref _deployed, "shieldDeployedReference");
+        }
+
+        public string GetUniqueLoadID()
+        {
+            return "DeployedShield" + _id;
+        }
+    }
+}

@@ -212,7 +212,11 @@ namespace FrontierDevelopments.Shields.Buildings
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         public int ProtectedCellCount => Shield.ProtectedCellCount;
+
+        public float DeploymentSize => _shield.DeploymentSize;
         
+        public IEnumerable<Gizmo> ShieldGizmos => _shield.ShieldGizmos;
+
         bool IShield.IsActive()
         {
             return Shield.IsActive();

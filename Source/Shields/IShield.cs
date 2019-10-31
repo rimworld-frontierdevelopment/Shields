@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FrontierDevelopments.General;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -57,7 +58,7 @@ namespace FrontierDevelopments.Shields
         public float Damage => Secondaries.Aggregate(Primary.Damage, (sum, damage) => sum + damage.Damage);
     }
 
-    public interface IShield
+    public interface IShield : ILabeled, ILoadReferenceable
     {
         int ProtectedCellCount { get; }
         bool IsActive();
@@ -68,5 +69,7 @@ namespace FrontierDevelopments.Shields
         float Block(ShieldDamages damages, Vector3 position);
         void Draw(CellRect cameraRect);
         Faction Faction { get; }
+        float DeploymentSize { get; }
+        IEnumerable<Gizmo> ShieldGizmos { get; }
     }
 }

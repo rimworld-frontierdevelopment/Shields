@@ -48,6 +48,7 @@
                 <minRadius>3</minRadius>
                 <maxRadius>3</maxRadius>
                 <warmupTicks>20</warmupTicks>
+                <deploymentSize>2.0</deploymentSize>
             </li>
             <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">
                 <grams>400</grams>

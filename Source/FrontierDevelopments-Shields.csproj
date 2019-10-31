@@ -64,6 +64,11 @@
     <Compile Include="Shields\CombatExtendedIntegration.cs" />
     <Compile Include="Shields\Comps\Comp_ShieldResistance.cs" />
     <Compile Include="Shields\Comps\Comp_ShieldRadial.cs" />
+    <Compile Include="Shields\Deployment\Comp_DeployedShield.cs" />
+    <Compile Include="Shields\Deployment\DeployShieldGizmo.cs" />
+    <Compile Include="Shields\Deployment\Harmony_Pawn.cs" />
+    <Compile Include="Shields\Deployment\Harmony_ThingOwner.cs" />
+    <Compile Include="Shields\Deployment\ShieldDeploymentUtility.cs" />
     <Compile Include="Shields\Harmony\Harmony_Bombardment.cs" />
     <Compile Include="Shields\Harmony\Harmony_AttackTargetFinder.cs" />
     <Compile Include="Shields\Harmony\Harmony_CastPositionFinder.cs" />
@@ -74,14 +79,12 @@
     <Compile Include="Shields\Harmony\Harmony_Projectile.cs" />
     <Compile Include="Shields\Harmony\Harmony_Skyfaller.cs" />
     <Compile Include="Shields\LocalDefOf.cs" />
-    <Compile Include="Shields\MinifiedShield.cs" />
     <Compile Include="Shields\Mod.cs" />
     <Compile Include="Shields\IShield.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\CrashPodHandler.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\Module.cs" />
     <Compile Include="Shields\RedistHeatIntegration.cs" />
     <Compile Include="Shields\Settings.cs" />
-    <Compile Include="Shields\ShieldDeploymentUtility.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
     <Compile Include="Shields\ShieldUtility.cs" />
     <Compile Include="Shields\Tale\Tale_KilledByImpactingOnShield.cs" />
