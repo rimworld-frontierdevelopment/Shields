@@ -11,7 +11,7 @@ namespace FrontierDevelopments.Shields
         {
         }
 
-        private readonly List<IShield> _shields = new List<IShield>();
+        private readonly HashSet<IShield> _shields = new HashSet<IShield>();
 
         public void Add(IShield shield)
         {
