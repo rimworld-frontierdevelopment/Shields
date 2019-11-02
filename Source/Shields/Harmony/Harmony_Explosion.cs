@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General;
@@ -21,16 +22,17 @@ namespace FrontierDevelopments.Shields.Harmony
 
         // Runs ahead of the standard check of cells to affect
         // Finds cells that are protected from the outermost edge first
-        protected static void HandleProtected(
+        protected static void HandleProtected<T>(
             ICollection<IntVec3> cellsToAffect,
-            Explosion explosion,
-            int startTick)
+            T explosion,
+            int startTick,
+            Func<T, IntVec3, int> getDamage) where T : Explosion
         {
             var ticksGame = Find.TickManager.TicksGame;
             cellsToAffect
                 .Where(cell => ticksGame >= GetCellAffectTickReversed(explosion, startTick, cell))
                 .OrderByDescending(cell => cell.DistanceTo(explosion.Position))
-                .Where(cell => TryBlock(explosion, explosion.damType, explosion.damAmount, cell))
+                .Where(cell => TryBlock(explosion, explosion.damType, getDamage(explosion, cell), cell))
                 .Do(blocked => cellsToAffect.Remove(blocked));
         }
 
@@ -39,13 +41,18 @@ namespace FrontierDevelopments.Shields.Harmony
             return startTick + (int)((explosion.radius - cell.DistanceTo(explosion.Position)) * 1.5);
         }
 
+        private static int GetDamage(Explosion explosion, IntVec3 cell)
+        {
+            return explosion.GetDamageAmountAt(cell);
+        }
+
         [HarmonyPatch(typeof(Explosion), nameof(Explosion.Tick))]
         static class Patch_Tick
         {
             [HarmonyPrefix]
             static void HandleOuterEdgesFirst(Explosion __instance, List<IntVec3> ___cellsToAffect, int ___startTick)
             {
-                HandleProtected(___cellsToAffect, __instance, ___startTick);
+                HandleProtected(___cellsToAffect, __instance, ___startTick, GetDamage);
             } 
         }
     }
