@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using CombatExtended;
 using FrontierDevelopments.Shields.Harmony;
 using Harmony;
@@ -7,13 +8,13 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
 {
     public class Harmony_ExplosionCE : Harmony_Explosion
     {
-        [HarmonyPatch(typeof(ExplosionCE), "AffectCell")]
-        static class Patch_AffectCell
+        [HarmonyPatch(typeof(ExplosionCE), nameof(ExplosionCE.Tick))]
+        static class Patch_Tick
         {
             [HarmonyPrefix]
-            static bool Prefix(ExplosionCE __instance, IntVec3 c)
+            static void HandleOuterEdgesFirst(ExplosionCE __instance, int ___startTick, List<IntVec3> ___cellsToAffect)
             {
-                return c.InBounds(__instance.Map) && !TryBlock(__instance, __instance.damType, __instance.damAmount, c);
+                HandleProtected(___cellsToAffect, __instance, ___startTick);
             }
         }
     }
