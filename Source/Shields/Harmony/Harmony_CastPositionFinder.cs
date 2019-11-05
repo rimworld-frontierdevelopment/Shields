@@ -1,6 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Reflection.Emit;
+using System.Linq;
 using FrontierDevelopments.General;
 using Harmony;
 using Verse;
@@ -13,15 +11,27 @@ namespace FrontierDevelopments.Shields.Harmony
         private static float CalculateShieldPreference(float score, Map map, IntVec3 start, IntVec3 end)
         {
             var shieldManager = map.GetComponent<ShieldManager>();
-            
-            if (shieldManager.Shielded(PositionUtility.ToVector3(start), PositionUtility.ToVector3(end)))
+
+            var startAdjusted = PositionUtility.ToVector3(start);
+            var endAdjusted = PositionUtility.ToVector3(end);
+
+            var targetProtected = shieldManager.WhichShielded(startAdjusted, endAdjusted).ToList();
+            var shooterProtected = shieldManager.WhichShielded(endAdjusted, startAdjusted).ToList();
+            var shooterUnderShield = shieldManager.WhichShielded(startAdjusted).ToList();
+
+            if (shooterProtected.Any())
             {
-                score = (float)Math.Sqrt(score);
+                score *= 1 + shooterProtected.Count;
+            }
+            
+            if (shooterUnderShield.Any())
+            {
+                score *= 1 + shooterUnderShield.Count;
             }
 
-            if (shieldManager.Shielded(PositionUtility.ToVector3(end), PositionUtility.ToVector3(start)))
+            if (targetProtected.Any())
             {
-                score = (float) Math.Pow(score, 2);
+                score /= 1 + targetProtected.Count;
             }
             return score;
         }
@@ -29,50 +39,14 @@ namespace FrontierDevelopments.Shields.Harmony
         [HarmonyPatch(typeof(CastPositionFinder), "CastPositionPreference")]
         static class Patch_CastPositionPreference
         {
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+            [HarmonyPostfix]
+            static float AdjustScoreFromShielding(float __result, IntVec3 c, CastPositionRequest ___req)
             {
-                var skipReturn = true;
-                
-                foreach (var instruction in instructions)
-                {
-                    if (instruction.opcode == OpCodes.Ret && !skipReturn)
-                    {
-                        var caster = il.DeclareLocal(typeof(Pawn));
-                        
-                        // score exists on the stack already, don't need to add it
-                        yield return new CodeInstruction(OpCodes.Ldsflda, AccessTools.Field(typeof(CastPositionFinder), "req"));
-                        yield return new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(CastPositionRequest), "caster"));
-                        yield return new CodeInstruction(OpCodes.Stloc, caster.LocalIndex);
-                        yield return new CodeInstruction(OpCodes.Ldloc, caster.LocalIndex);
-                        yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod());
-                        yield return new CodeInstruction(OpCodes.Ldloc, caster.LocalIndex);
-                        yield return new CodeInstruction(OpCodes.Callvirt, AccessTools.Property(typeof(Thing), nameof(Thing.Position)).GetGetMethod());
-                        yield return new CodeInstruction(OpCodes.Ldarg_0);
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_CastPositionFinder), nameof(CalculateShieldPreference)));
-                        skipReturn = true;
-                    }
-                    else
-                    {
-                        if (instruction.opcode == OpCodes.Ldc_R4)
-                        {
-                            var result = instruction.operand as float?;
-                            if (result != null)
-                            {
-                                skipReturn = result < 0;
-                            }
-                            else
-                            {
-                                skipReturn = false;
-                            }
-                        }
-                        else
-                        {
-                            skipReturn = false;
-                        }
-                    }
-                    
-                    yield return instruction;
-                }
+                return CalculateShieldPreference(
+                    __result,
+                    ___req.caster.Map,
+                    c,
+                    ___req.target.Position);
             }
         }
     }
