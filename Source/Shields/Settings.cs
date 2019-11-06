@@ -156,7 +156,7 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref DropPodDamage, "dropPodDamage", 100);
             
             Scribe_Values.Look(ref EnableThermal, "EnableThermal", true);
-            Scribe_Values.Look(ref HeatPerPower, "HeatPerPower", 100);
+            Scribe_Values.Look(ref HeatPerPower, "HeatPerPower", 1f);
             Scribe_Values.Look(ref EnableMinorThermalIncidents, "EnableMinorThermalIncidents", true);
             Scribe_Values.Look(ref EnableMajorThermalIncidents, "EnableMajorThermalIncidents", true);
             Scribe_Values.Look(ref EnableCriticalThermalIncidents, "EnableCriticalThermalIncidents", true); 

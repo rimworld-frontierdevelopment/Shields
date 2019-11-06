@@ -49,7 +49,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool WantActive => _flickable?.SwitchIsOn ?? true;
 
-        private bool IsActive => WantActive && RateAvailable > 0;
+        private bool IsActive => WantActive && RateAvailable > 0 && !Heatsink.OverTemperature;
         private float BasePowerConsumption => _shield?.ProtectedCellCount * Mod.Settings.PowerPerTile ?? 0f;
 
         public IShieldResists Resists => _shield.Resists;
@@ -246,20 +246,25 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private float ApplyEfficiency(float damage, float temp)
         {
-            return damage * Mathf.Pow(1.01f, temp);
+            if (Mod.Settings.ScaleOnHeat && Heatsink != null)
+            {
+                return damage * Mathf.Pow(1.01f, temp);
+            }
+            return damage;
         }
 
         private float UnapplyEfficiency(float damage, float temp)
         {
-            return damage / Mathf.Pow(1.01f, temp);
+            if (Mod.Settings.ScaleOnHeat && Heatsink != null)
+            {
+                return damage / Mathf.Pow(1.01f, temp);
+            }
+            return damage;
         }
 
         private void HandleBlockingHeat(float handled)
         {
-            if (Mod.Settings.ScaleOnHeat && Heatsink != null)
-            {
-                Heatsink?.PushHeat(handled * Mod.Settings.HeatPerPower);
-            }
+            Heatsink?.PushHeat(handled * Mod.Settings.HeatPerPower);
         }
 
         public float CalculateDamage(ShieldDamages damages)
