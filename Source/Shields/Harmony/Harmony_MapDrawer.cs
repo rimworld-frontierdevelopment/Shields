@@ -1,4 +1,4 @@
-using Harmony;
+using HarmonyLib;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Harmony

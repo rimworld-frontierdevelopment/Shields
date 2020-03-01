@@ -1,8 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.Reflection.Emit;
 using FrontierDevelopments.General;
-using Harmony;
+using HarmonyLib;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Harmony

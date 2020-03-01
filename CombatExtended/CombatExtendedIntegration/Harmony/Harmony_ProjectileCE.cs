@@ -3,7 +3,7 @@ using CombatExtended;
 using FrontierDevelopments.General;
 using FrontierDevelopments.Shields;
 using FrontierDevelopments.Shields.Harmony;
-using Harmony;
+using HarmonyLib;
 using UnityEngine;
 
 namespace FrontierDevelopments.CombatExtendedIntegration.Harmony

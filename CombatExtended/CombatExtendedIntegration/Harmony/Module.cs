@@ -1,5 +1,5 @@
 using FrontierDevelopments.Shields.Harmony;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using CombatExtended;
 

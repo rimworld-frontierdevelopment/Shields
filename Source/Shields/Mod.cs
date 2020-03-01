@@ -1,6 +1,5 @@
 ﻿using System.Reflection;
 using FrontierDevelopments.Shields.Harmony;
-using Harmony;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -20,7 +19,7 @@ namespace FrontierDevelopments.Shields
             Settings = GetSettings<Settings>();
             ModName = content.Name;
             
-            var harmony = HarmonyInstance.Create("frontierdevelopment.shields");
+            var harmony = new HarmonyLib.Harmony("frontierdevelopment.shields");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
             Harmony_Verb.BlacklistType(typeof(Verb_Bombardment));
@@ -33,7 +32,7 @@ namespace FrontierDevelopments.Shields
             new CombatExtendedIntegration().TryEnable(harmony);
         }
 
-        private void LoadOneTemperatureMod(HarmonyInstance harmony)
+        private void LoadOneTemperatureMod(HarmonyLib.Harmony harmony)
         {
             foreach (var mod in ModsConfig.ActiveModsInLoadOrder)
             {
