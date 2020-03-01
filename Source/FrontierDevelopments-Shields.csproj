@@ -83,7 +83,6 @@
     <Compile Include="Shields\IShield.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\CrashPodHandler.cs" />
     <Compile Include="Shields\Module\CrashLandingModule\Module.cs" />
-    <Compile Include="Shields\RedistHeatIntegration.cs" />
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
     <Compile Include="Shields\IShieldResists.cs" />
