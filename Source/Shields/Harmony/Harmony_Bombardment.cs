@@ -17,7 +17,7 @@ namespace FrontierDevelopments.Shields.Harmony
             return map.GetComponent<ShieldManager>().Block(PositionUtility.ToVector3(center), Mod.Settings.SkyfallerDamage);
         }
 
-        private static bool IsShielded(Map map, IntVec3 position)
+        public static bool IsShielded(Map map, IntVec3 position)
         {
             return map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(position));
         }
@@ -74,50 +74,15 @@ namespace FrontierDevelopments.Shields.Harmony
             }
         }
 
-        // [HarmonyPatch(typeof(Bombardment), "StartRandomFire")]
-        // static class Patch_StartRandomFire
-        // {
-        //     [HarmonyTranspiler]
-        //     static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
-        //     {
-        //         var patchPhase = 0;
-        //
-        //         foreach (var instruction in instructions)
-        //         {
-        //             switch (patchPhase)
-        //             {
-        //                 // find get_Map
-        //                 case 0:
-        //                 {
-        //                     if (instruction.opcode == OpCodes.Call && instruction.operand as MethodInfo == AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod())
-        //                     {
-        //                         patchPhase = 1;
-        //                     }
-        //                     break;
-        //                 }
-        //                 // add check
-        //                 case 1:
-        //                 {
-        //                     var continueLabel = il.DefineLabel();
-        //                     var localMap = il.DeclareLocal(typeof(Map));
-        //
-        //                     yield return new CodeInstruction(OpCodes.Stloc, localMap.LocalIndex);
-        //                     yield return new CodeInstruction(OpCodes.Ldloc, localMap.LocalIndex);
-        //                     yield return new CodeInstruction(OpCodes.Ldloc_0);
-        //                     yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Bombardment), nameof(IsShielded)));
-        //                     yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
-        //                     yield return new CodeInstruction(OpCodes.Pop);
-        //                     yield return new CodeInstruction(OpCodes.Ret);
-        //                     yield return new CodeInstruction(OpCodes.Ldloc, localMap.LocalIndex) { labels =  new List<Label>(new [] { continueLabel })};
-        //                     patchPhase = -1;
-        //                     break;
-        //                 }
-        //             }
-        //
-        //             yield return instruction;
-        //         }
-        //     }
-        // }
+        public static bool Prefix(Bombardment __instance, IntVec3 x, ref bool __result)
+        {
+            if (IsShielded(__instance.Map, x))
+            {
+                __result = false;
+                return false;
+            }
+            return true;
+        }
 
         [HarmonyPatch(typeof(Bombardment), nameof(Bombardment.Tick))]
         static class Patch_Tick

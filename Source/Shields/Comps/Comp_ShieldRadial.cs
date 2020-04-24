@@ -39,6 +39,12 @@ namespace FrontierDevelopments.Shields.Comps
         private bool _renderLast = true;
         private IntVec3 _positionLast;
 
+        private int beenHitTicks = 0;
+
+
+        public static Material forceFieldMat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow);
+        private static MaterialPropertyBlock MatPropertyBlock = new MaterialPropertyBlock();
+
         private IShield _parent;
 
         public Faction Faction => parent.Faction;
@@ -54,6 +60,10 @@ namespace FrontierDevelopments.Shields.Comps
 
         private static int NextId => Find.UniqueIDsManager.GetNextThingID();
 
+
+        public static Color ColourA = new Color(1, 0, 0);
+        public static Color ColourB = new Color(0, 0, 1);
+        
         public void SetParent(IShield shieldParent)
         {
             _parent = shieldParent;
@@ -125,7 +135,6 @@ namespace FrontierDevelopments.Shields.Comps
                     return _fieldRadius;
                 }
             }
-            
         }
 
         public override void CompTick()
@@ -284,13 +293,33 @@ namespace FrontierDevelopments.Shields.Comps
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
             var matrix = new Matrix4x4();
             matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
-            Graphics.DrawMesh(MeshPool.plane10, matrix, Resources.ShieldMat, 0);
+
+            MatPropertyBlock.SetColor(ShaderPropertyIDs.Color, currentColour());
+            Graphics.DrawMesh(MeshPool.plane10, matrix, forceFieldMat, 0, null, 0, MatPropertyBlock);
+        }
+
+        public void OnImpact()
+        {
+            beenHitTicks = 5;
+        }
+
+        public Color currentColour()
+        {
+            if (Mod.Settings.ShieldColour == Mod.Settings.ShieldSecondaryColour) return Mod.Settings.ShieldColour;
+
+            Color c = Color.Lerp(Mod.Settings.ShieldColour, Mod.Settings.ShieldSecondaryColour, (Mathf.Sin((float)(Gen.HashCombineInt(parent.thingIDNumber, 96804938) % 100) + Time.realtimeSinceStartup) + 1f) / 2f);
+
+            if(beenHitTicks > 0) c.a = c.a + .2f * beenHitTicks--;
+
+            return c;
         }
 
         public override void PostDrawExtraSelectionOverlays()
         {
             GenDraw.DrawRadiusRing(parent.Position, _fieldRadius);
         }
+
+
 
         private IShield TryGetParent()
         {
@@ -349,6 +378,7 @@ namespace FrontierDevelopments.Shields.Comps
             {
                 RenderImpactEffect(PositionUtility.ToVector2(position));
                 PlayBulletImpactSound(PositionUtility.ToVector2(position));
+                OnImpact();
             }
 
             return handled;

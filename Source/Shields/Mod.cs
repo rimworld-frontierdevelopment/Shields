@@ -1,5 +1,7 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using FrontierDevelopments.Shields.Harmony;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -21,6 +23,13 @@ namespace FrontierDevelopments.Shields
             
             var harmony = new HarmonyLib.Harmony("frontierdevelopment.shields");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
+
+            var method = AccessTools.FirstMethod(typeof(Bombardment),
+                inner => inner.Name.StartsWith("<StartRandomFire>") 
+                && inner.ReturnType == typeof(bool));
+
+            harmony.Patch(method, new HarmonyMethod(typeof(Harmony_Bombardment), nameof(Harmony_Bombardment.Prefix)));
+
 
             Harmony_Verb.BlacklistType(typeof(Verb_Bombardment));
             

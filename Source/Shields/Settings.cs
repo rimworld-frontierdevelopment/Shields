@@ -30,6 +30,9 @@ namespace FrontierDevelopments.Shields
         public bool EnableMajorThermalIncidents = true;
         public bool EnableCriticalThermalIncidents = true;
 
+        public Color ShieldColour = new Color(1, 0, 0, .8f);
+        public Color ShieldSecondaryColour = new Color(0, 0, 1, .8f);
+
         private static void Heading(Listing_Standard list, string text)
         {
             list.GapLine();
@@ -103,7 +106,19 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.integrity.skyfaller_damage.label".Translate(), 
                 ref SkyfallerDamage, 
                 ref skyfallerDamageBuffer);
-            
+            Heading(list, "Colour");
+            Rect first = list.GetRect(Text.LineHeight);
+            ShieldColour.a = Widgets.HorizontalSlider(new Rect(first.position.x, first.position.y, first.width / 4, first.height), ShieldColour.a, 0f, 1f);
+            ShieldColour.r = Widgets.HorizontalSlider(new Rect(first.position.x + first.width/4, first.position.y, first.width/4, first.height), ShieldColour.r, 0f, 1f);
+            ShieldColour.g = Widgets.HorizontalSlider(new Rect(first.position.x + 2*(first.width/4), first.position.y, first.width / 4, first.height), ShieldColour.g, 0f, 1f);
+            ShieldColour.b = Widgets.HorizontalSlider(new Rect(first.position.x + 3*(first.width/4), first.position.y, first.width /4, first.height), ShieldColour.b, 0f, 1f);
+
+            Rect second = list.GetRect(Text.LineHeight);
+            ShieldSecondaryColour.a = Widgets.HorizontalSlider(new Rect(second.position.x, second.position.y, second.width / 4, second.height), ShieldSecondaryColour.a, 0f, 1f);
+            ShieldSecondaryColour.r = Widgets.HorizontalSlider(new Rect(second.position.x + second.width / 4, second.position.y, second.width / 4, second.height), ShieldSecondaryColour.r, 0f, 1f);
+            ShieldSecondaryColour.g = Widgets.HorizontalSlider(new Rect(second.position.x + 2 * (second.width / 4), second.position.y, second.width / 4, second.height), ShieldSecondaryColour.g, 0f, 1f);
+            ShieldSecondaryColour.b = Widgets.HorizontalSlider(new Rect(second.position.x + 3 * (second.width / 4), second.position.y, second.width / 4, second.height), ShieldSecondaryColour.b, 0f, 1f);
+
             // Thermal
             Heading(list, "fd.settings.shield.thermal.heading".Translate());
             list.CheckboxLabeled(
@@ -144,8 +159,11 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
 
             // TODO see above
-//            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
-            
+            //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
+            Scribe_Values.Look<Color>(ref ShieldColour, "shieldColour", new Color(0.1f, 0.1f, 0.1f, 0.8f));
+            Scribe_Values.Look<Color>(ref ShieldSecondaryColour, "shieldSecondaryColour", new Color(0.9f, 0.9f, 0.9f, 0.8f));
+
+
             Scribe_Values.Look(ref PowerPerDamage, "powerPerDamage", 1f);
             Scribe_Values.Look(ref DropPodDamage, "dropPodDamage", 100);
             
