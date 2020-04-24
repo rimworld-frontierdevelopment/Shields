@@ -129,3 +129,8 @@ C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\1.1\
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\Source\obj\Debug\FrontierDevelopments-Shields.csprojAssemblyReference.cache
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\Source\obj\Debug\FrontierDevelopments-Shields.csproj.CoreCompileInputs.cache
 C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\Source\obj\Debug\FrontierDevelopments-Shields.dll
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\1.1\Assemblies\About\About.xml
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\1.1\Assemblies\About\Manifest.xml
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\1.1\Assemblies\About\ModSync.xml
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\1.1\Assemblies\About\Preview.png
+C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\1.1\Assemblies\About\PublishedFileId.txt
