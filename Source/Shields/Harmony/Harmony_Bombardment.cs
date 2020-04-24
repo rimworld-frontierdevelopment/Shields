@@ -90,7 +90,7 @@ namespace FrontierDevelopments.Shields.Harmony
             [HarmonyPostfix]
             static void Postfix(Bombardment __instance)
             {
-                if (__instance.Map == null) return;
+                if (__instance.Destroyed) return;
 
                 RegionTraverser.BreadthFirstTraverse(__instance.Position, __instance.Map, (from, to) => true, region =>
                 {
