@@ -24,6 +24,7 @@ namespace FrontierDevelopments.Shields.Comps
         }
     }
 
+    [StaticConstructorOnStartup]
     public class Comp_ShieldRadial : ThingComp, IShield
     {
         private int? _id;
@@ -41,10 +42,6 @@ namespace FrontierDevelopments.Shields.Comps
 
         private int beenHitTicks = 0;
 
-
-        public static Material forceFieldMat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow);
-        private static MaterialPropertyBlock MatPropertyBlock = new MaterialPropertyBlock();
-
         private IShield _parent;
 
         public Faction Faction => parent.Faction;
@@ -60,10 +57,15 @@ namespace FrontierDevelopments.Shields.Comps
 
         private static int NextId => Find.UniqueIDsManager.GetNextThingID();
 
+        // drawing
+        private static readonly Material forceFieldMat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow); 
+        private static readonly Material forceFieldImpact = MaterialPool.MatFrom("Other/ForceFieldCone", ShaderDatabase.MoteGlow);
+        private static MaterialPropertyBlock MatPropertyBlock = new MaterialPropertyBlock();
+        private float lastImpactAngle;
+        // vanilla
+        private const float textureMult = 1.16015625f;
 
-        public static Color ColourA = new Color(1, 0, 0);
-        public static Color ColourB = new Color(0, 0, 1);
-        
+
         public void SetParent(IShield shieldParent)
         {
             _parent = shieldParent;
@@ -287,6 +289,7 @@ namespace FrontierDevelopments.Shields.Comps
         public void Draw(CellRect cameraRect)
         {
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
+
             var position = PositionUtility.ToVector3(ExactPosition);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(Radius * 2.2);
@@ -294,32 +297,53 @@ namespace FrontierDevelopments.Shields.Comps
             var matrix = new Matrix4x4();
             matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
 
-            MatPropertyBlock.SetColor(ShaderPropertyIDs.Color, currentColour());
+            MatPropertyBlock.SetColor(ShaderPropertyIDs.Color, CurrentColour());
             Graphics.DrawMesh(MeshPool.plane10, matrix, forceFieldMat, 0, null, 0, MatPropertyBlock);
         }
 
-        public void OnImpact()
+        public void OnImpact(Vector3 pos)
         {
+            lastImpactAngle = pos.AngleToFlat(parent.TrueCenter()) - 90; // rotate for rw
             beenHitTicks = 5;
         }
 
-        public Color currentColour()
+        public Color CurrentColour()
         {
-            if (Mod.Settings.ShieldColour == Mod.Settings.ShieldSecondaryColour) return Mod.Settings.ShieldColour;
+            if (!Mod.Settings.SecondaryColour) return Mod.Settings.ShieldColour; // no secondary colour, no need for lerping
 
-            Color c = Color.Lerp(Mod.Settings.ShieldColour, Mod.Settings.ShieldSecondaryColour, (Mathf.Sin((float)(Gen.HashCombineInt(parent.thingIDNumber, 96804938) % 100) + Time.realtimeSinceStartup) + 1f) / 2f);
+            if (Mod.Settings.colours == null) GenerateColours(); // settings reloaded / not existent yet
 
-            if(beenHitTicks > 0) c.a = c.a + .2f * beenHitTicks--;
+            Color color = Mod.Settings.colours[Find.TickManager.TicksAbs % 1024]; 
 
-            return c;
+            if (beenHitTicks > 0) // We have been impacted, so we are going to show a graphic, and 'pulse' alpha
+            {
+                color.a = color.a + .1f * beenHitTicks;
+                ImpactGraphic(color, beenHitTicks--);
+            }
+            return color;
+        }
+
+        public void ImpactGraphic(Color color, float transparency)
+        {
+            color.a += (.2f * transparency);
+            MatPropertyBlock.SetColor(ShaderPropertyIDs.Color, color);
+
+            Matrix4x4 matrix2 = default(Matrix4x4);
+            matrix2.SetTRS(parent.TrueCenter(), Quaternion.Euler(0f, lastImpactAngle, 0f), new Vector3(Radius * 2f * textureMult, 1f, Radius * 2f * textureMult));
+            Graphics.DrawMesh(MeshPool.plane10, matrix2, forceFieldImpact, 0, null, 0, MatPropertyBlock);
+        }
+
+        public static void GenerateColours()
+        {
+            Mod.Settings.colours = new Color[1024];
+            for (int i = 0; i < 1024; i++)
+                Mod.Settings.colours[i] = Color.Lerp(Mod.Settings.ShieldColour, Mod.Settings.ShieldSecondaryColour, Mathf.Sin(i / 256f));
         }
 
         public override void PostDrawExtraSelectionOverlays()
         {
             GenDraw.DrawRadiusRing(parent.Position, _fieldRadius);
         }
-
-
 
         private IShield TryGetParent()
         {
@@ -378,7 +402,7 @@ namespace FrontierDevelopments.Shields.Comps
             {
                 RenderImpactEffect(PositionUtility.ToVector2(position));
                 PlayBulletImpactSound(PositionUtility.ToVector2(position));
-                OnImpact();
+                OnImpact(position);
             }
 
             return handled;
@@ -392,6 +416,7 @@ namespace FrontierDevelopments.Shields.Comps
         private void RenderImpactEffect(Vector2 position)
         {
             MoteMaker.ThrowLightningGlow(PositionUtility.ToVector3(position), parent.Map, 0.5f);
+            MoteMaker.ThrowMicroSparks(PositionUtility.ToVector3(position), parent.Map);
         }
 
         private void PlayBulletImpactSound(Vector2 position)
