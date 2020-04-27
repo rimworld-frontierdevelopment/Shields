@@ -1,7 +1,7 @@
-using System;
-using System.Collections.Generic;
 using FrontierDevelopments.General;
 using HarmonyLib;
+using System;
+using System.Collections.Generic;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Harmony
@@ -24,10 +24,10 @@ namespace FrontierDevelopments.Shields.Harmony
         }
 
         [HarmonyPatch(typeof(Verb), nameof(Verb.TryFindShootLineFromTo))]
-        static class Patch_Verb_TryFindShootLineFromTo
+        private static class Patch_Verb_TryFindShootLineFromTo
         {
             [HarmonyPrefix]
-            static bool AddShieldCheck(ref bool __result, Verb __instance, IntVec3 root, LocalTargetInfo targ, ref ShootLine resultingLine)
+            private static bool AddShieldCheck(ref bool __result, Verb __instance, IntVec3 root, LocalTargetInfo targ, ref ShootLine resultingLine)
             {
                 if (ShieldBlocks(__instance.caster, __instance, root, targ))
                 {

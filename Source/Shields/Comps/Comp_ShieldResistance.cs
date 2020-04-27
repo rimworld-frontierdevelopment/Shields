@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Comps
@@ -29,10 +28,10 @@ namespace FrontierDevelopments.Shields.Comps
         public override void Initialize(CompProperties props)
         {
             base.Initialize(props);
-            ((CompProperties_ShieldResistance) props)?.resists?.ForEach(resist =>
-            {
-                resists.Add(resist.damageDefName, resist);
-            });
+            ((CompProperties_ShieldResistance)props)?.resists?.ForEach(resist =>
+           {
+               resists.Add(resist.damageDefName, resist);
+           });
         }
 
         public virtual float? Apply(ShieldDamages damages)
@@ -49,7 +48,7 @@ namespace FrontierDevelopments.Shields.Comps
                 var resist = resists[damage.def.defName];
                 if (resist.resist)
                 {
-                    return damage.Damage * resist.multiplier;                    
+                    return damage.Damage * resist.multiplier;
                 }
                 return null;
             }

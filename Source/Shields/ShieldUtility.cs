@@ -1,7 +1,7 @@
+using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using RimWorld;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -14,6 +14,7 @@ namespace FrontierDevelopments.Shields
             {
                 case IShield parentSource:
                     return parentSource;
+
                 default:
                     return FindComp(parent.AllComps);
             }
@@ -30,7 +31,7 @@ namespace FrontierDevelopments.Shields
                 return null;
             }
         }
-        
+
         public static IEnumerable<IShield> AllShields(Pawn pawn)
         {
             foreach (var shield in InventoryShields(pawn))
@@ -75,7 +76,7 @@ namespace FrontierDevelopments.Shields
                 }
             }
         }
-        
+
         public static IEnumerable<IShield> EquipmentShields(Pawn pawn)
         {
             if (pawn.equipment == null) yield break;
@@ -85,7 +86,7 @@ namespace FrontierDevelopments.Shields
                 {
                     switch (comp)
                     {
-                        case IShield shield: 
+                        case IShield shield:
                             yield return shield;
                             break;
                     }

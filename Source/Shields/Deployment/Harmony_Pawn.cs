@@ -1,7 +1,7 @@
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using RimWorld;
+using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -9,7 +9,7 @@ namespace FrontierDevelopments.Shields
     public class Harmony_Pawn
     {
         [HarmonyPatch(typeof(Pawn), nameof(Pawn.GetGizmos))]
-        static class Patch_Pawn_GetGizmos
+        private static class Patch_Pawn_GetGizmos
         {
             [HarmonyPostfix]
             private static IEnumerable<Gizmo> AddShieldDeployGizmo(IEnumerable<Gizmo> __result, Pawn __instance)
@@ -27,8 +27,8 @@ namespace FrontierDevelopments.Shields
             }
 
             [HarmonyPostfix]
-            static IEnumerable<Gizmo> AddDevAddToInventory(
-                IEnumerable<Gizmo> __result, 
+            private static IEnumerable<Gizmo> AddDevAddToInventory(
+                IEnumerable<Gizmo> __result,
                 Pawn __instance,
                 List<ThingComp> ___comps)
             {
@@ -37,8 +37,8 @@ namespace FrontierDevelopments.Shields
                     yield return gizmo;
                 }
 
-                if (Prefs.DevMode 
-                    &&__instance.Faction == Faction.OfPlayer
+                if (Prefs.DevMode
+                    && __instance.Faction == Faction.OfPlayer
                     && __instance.RaceProps.baseBodySize >= 2.0f)
                 {
                     yield return new Command_Action

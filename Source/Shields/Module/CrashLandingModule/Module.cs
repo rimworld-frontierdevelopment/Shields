@@ -1,9 +1,9 @@
-using System;
-using System.Linq;
-using System.Reflection;
 using FrontierDevelopments.Shields.Harmony;
 using HarmonyLib;
 using RimWorld;
+using System;
+using System.Linq;
+using System.Reflection;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Module.CrashLandingModule
@@ -16,44 +16,44 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
             {
                 try
                 {
-                    ((Action) (() =>
-                            {
-                                var harmony = new HarmonyLib.Harmony("frontierdevelopment.shields");
-                                var baseType = Type.GetType("CrashLanding.CrashPod, CrashLanding");
-                                var types = baseType.AllSubclassesNonAbstract();
-                                var blockingTypes = "";
-                                
-                                foreach (var current in types)
-                                {
-                                    blockingTypes += current.Name + " ";
+                    ((Action)(() =>
+                           {
+                               var harmony = new HarmonyLib.Harmony("frontierdevelopment.shields");
+                               var baseType = Type.GetType("CrashLanding.CrashPod, CrashLanding");
+                               var types = baseType.AllSubclassesNonAbstract();
+                               var blockingTypes = "";
 
-                                    if (current.Name.Contains("_part"))
-                                    {
-                                        harmony.Patch(
-                                            current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
-                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod(nameof(CrashPodHandler.CrashPod_Part_Impact_Prefix))));
-                                    }
-                                    else
-                                    {
-                                        harmony.Patch(
-                                            current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
-                                            new HarmonyMethod(typeof(CrashPodHandler).GetMethod(nameof(CrashPodHandler.CrashPod_Impact_Prefix))));
-                                    }
-                                }
-                                
-                                Log.Message("Frontier Developments Shields :: Crash Landing support enabled. Blocking (" + blockingTypes.Trim() + ")");
-                            }
+                               foreach (var current in types)
+                               {
+                                   blockingTypes += current.Name + " ";
+
+                                   if (current.Name.Contains("_part"))
+                                   {
+                                       harmony.Patch(
+                                           current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
+                                           new HarmonyMethod(typeof(CrashPodHandler).GetMethod(nameof(CrashPodHandler.CrashPod_Part_Impact_Prefix))));
+                                   }
+                                   else
+                                   {
+                                       harmony.Patch(
+                                           current.GetMethod("Impact", BindingFlags.NonPublic | BindingFlags.Instance),
+                                           new HarmonyMethod(typeof(CrashPodHandler).GetMethod(nameof(CrashPodHandler.CrashPod_Impact_Prefix))));
+                                   }
+                               }
+
+                               Log.Message("Frontier Developments Shields :: Crash Landing support enabled. Blocking (" + blockingTypes.Trim() + ")");
+                           }
                         ))();
                 }
-                catch (Exception) {}
+                catch (Exception) { }
             }
         }
 
         [HarmonyPatch(typeof(DefGenerator), "GenerateImpliedDefs_PostResolve")]
-        class Patch_GenerateImpliedDefs_PostResolve
+        private class Patch_GenerateImpliedDefs_PostResolve
         {
             [HarmonyPriority(Priority.Last)]
-            static void Postfix()
+            private static void Postfix()
             {
                 try
                 {

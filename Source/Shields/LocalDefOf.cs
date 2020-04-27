@@ -8,10 +8,10 @@ namespace FrontierDevelopments.Shields
     {
         public static TaleDef KilledByImpactingOnShield;
         public static ThingDef MinifiedShieldGeneratorPortable;
-        
+
         static LocalDefOf()
         {
-            DefOfHelper.EnsureInitializedInCtor(typeof (LocalDefOf));
+            DefOfHelper.EnsureInitializedInCtor(typeof(LocalDefOf));
         }
     }
 }

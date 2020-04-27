@@ -1,8 +1,7 @@
-﻿using System;
+﻿using FrontierDevelopments.General;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
-using FrontierDevelopments.General;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -37,7 +36,7 @@ namespace FrontierDevelopments.Shields
         {
             _primary = primary;
         }
-        
+
         public int OverrideDamage
         {
             get => _overrideDamage;
@@ -54,23 +53,34 @@ namespace FrontierDevelopments.Shields
         {
             secondaries.Add(damage);
         }
-        
+
         public float Damage => Secondaries.Aggregate(Primary.Damage, (sum, damage) => sum + damage.Damage);
     }
 
     public interface IShield : ILabeled, ILoadReferenceable
     {
         int ProtectedCellCount { get; }
+
         void SetParent(IShield shieldParent);
+
         bool IsActive();
+
         bool Collision(Vector3 point);
+
         Vector3? Collision(Ray ray, float limit);
+
         Vector3? Collision(Vector3 start, Vector3 end);
+
         float CalculateDamage(ShieldDamages damages);
+
         float SinkDamage(float damage);
+
         float Block(float damage, Vector3 position);
+
         float Block(ShieldDamages damages, Vector3 position);
+
         void Draw(CellRect cameraRect);
+
         Faction Faction { get; }
         IShieldResists Resists { get; }
         float DeploymentSize { get; }

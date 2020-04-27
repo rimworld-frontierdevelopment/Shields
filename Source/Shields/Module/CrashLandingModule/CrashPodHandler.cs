@@ -1,7 +1,7 @@
-using System;
 using FrontierDevelopments.General;
 using RimWorld;
 using RimWorld.Planet;
+using System;
 using Verse;
 using Verse.Sound;
 
@@ -10,7 +10,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
     public class CrashPodHandler
     {
         private static Type crashPodType = Type.GetType("CrashLanding.CrashPod, CrashLanding");
-        
+
         private static bool Block(Bullet crashPod, int damage)
         {
             if (crashPod.Map.GetComponent<ShieldManager>().Block(PositionUtility.ToVector3WithY(crashPod.Position, 0), damage))
@@ -32,7 +32,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
             if (!crashPodType.IsAssignableFrom(__instance.GetType())) return true;
             return !Block(__instance, Mod.Settings.SkyfallerDamage);
         }
-        
+
         public static bool CrashPod_Part_Impact_Prefix(Bullet __instance)
         {
             // harmony can sometimes register a bullet as a crash pod

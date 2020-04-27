@@ -1,9 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using FrontierDevelopments.General;
 using HarmonyLib;
 using RimWorld;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Harmony
@@ -47,13 +47,13 @@ namespace FrontierDevelopments.Shields.Harmony
         }
 
         [HarmonyPatch(typeof(Explosion), nameof(Explosion.Tick))]
-        static class Patch_Tick
+        private static class Patch_Tick
         {
             [HarmonyPrefix]
-            static void HandleOuterEdgesFirst(Explosion __instance, List<IntVec3> ___cellsToAffect, int ___startTick)
+            private static void HandleOuterEdgesFirst(Explosion __instance, List<IntVec3> ___cellsToAffect, int ___startTick)
             {
                 HandleProtected(___cellsToAffect, __instance, ___startTick, GetDamage);
-            } 
+            }
         }
     }
 }

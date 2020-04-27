@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using FrontierDevelopments.General;
+﻿using FrontierDevelopments.General;
 using FrontierDevelopments.General.Windows;
 using RimWorld;
+using System;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 using Verse.Sound;
@@ -58,24 +58,26 @@ namespace FrontierDevelopments.Shields.Comps
         private static int NextId => Find.UniqueIDsManager.GetNextThingID();
 
         // drawing
-        private static readonly Material forceFieldMat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow); 
+        private static readonly Material forceFieldMat = MaterialPool.MatFrom("Other/ForceField", ShaderDatabase.MoteGlow);
+
         private static readonly Material forceFieldImpact = MaterialPool.MatFrom("Other/ForceFieldCone", ShaderDatabase.MoteGlow);
         private static MaterialPropertyBlock MatPropertyBlock = new MaterialPropertyBlock();
         private float lastImpactAngle;
+
         // vanilla
         private const float textureMult = 1.16015625f;
-
 
         public void SetParent(IShield shieldParent)
         {
             _parent = shieldParent;
         }
-        
+
         public override void Initialize(CompProperties compProperties)
         {
             base.Initialize(compProperties);
             SetRadius = Props.maxRadius;
         }
+
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
@@ -99,7 +101,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public int ProtectedCellCount => _cellCount;
 
-        public CompProperties_ShieldRadial Props => 
+        public CompProperties_ShieldRadial Props =>
             (CompProperties_ShieldRadial)props;
 
         public float SetRadius
@@ -121,7 +123,7 @@ namespace FrontierDevelopments.Shields.Comps
                 _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             }
         }
-        
+
         public float Radius
         {
             get
@@ -129,7 +131,7 @@ namespace FrontierDevelopments.Shields.Comps
                 if (_warmingUpTicks > 0)
                 {
                     var result = Mathf.Lerp(Props.maxRadius, 0f, 1.0f * _warmingUpTicks / Props.warmupTicks);
-                    if(result < _fieldRadius) return result;
+                    if (result < _fieldRadius) return result;
                     return _fieldRadius;
                 }
                 else
@@ -142,8 +144,8 @@ namespace FrontierDevelopments.Shields.Comps
         public override void CompTick()
         {
             _positionLast = parent.Position;
-            _radiusLast = (int) Radius;
-            
+            _radiusLast = (int)Radius;
+
             var active = IsActive();
             if (active != _activeLastTick)
             {
@@ -164,7 +166,7 @@ namespace FrontierDevelopments.Shields.Comps
         {
             foreach (var current in base.CompGetGizmosExtra())
                 yield return current;
-            
+
             yield return new Command_Toggle
             {
                 icon = Resources.UiToggleVisibility,
@@ -176,7 +178,7 @@ namespace FrontierDevelopments.Shields.Comps
 
             if (parent.Faction == Faction.OfPlayer)
             {
-                if (Props.minRadius != Props.maxRadius)        
+                if (Props.minRadius != Props.maxRadius)
                 {
                     yield return new Command_Action
                     {
@@ -184,7 +186,7 @@ namespace FrontierDevelopments.Shields.Comps
                         defaultDesc = "radius.description".Translate(),
                         defaultLabel = "radius.label".Translate(),
                         activateSound = SoundDef.Named("Click"),
-                        action = () => Find.WindowStack.Add(new Popup_IntSlider("radius.label".Translate(), Props.minRadius, Props.maxRadius, () => (int)SetRadius, size =>  SetRadius = size))
+                        action = () => Find.WindowStack.Add(new Popup_IntSlider("radius.label".Translate(), Props.minRadius, Props.maxRadius, () => (int)SetRadius, size => SetRadius = size))
                     };
                 }
             }
@@ -205,15 +207,15 @@ namespace FrontierDevelopments.Shields.Comps
             var circleOrigin = PositionUtility.ToVector3(ExactPosition);
 
             var radius = Radius;
-            
+
             var d = destination - origin;
             var f = origin - circleOrigin;
-            
+
             var a = Vector3.Dot(d, d);
-            var b = Vector3.Dot(2*f, d) ;
+            var b = Vector3.Dot(2 * f, d);
             var c = Vector3.Dot(f, f) - radius * radius;
-            
-            var discriminant = b*b-4*a*c;
+
+            var discriminant = b * b - 4 * a * c;
 
             if (discriminant < 0) return null;
 
@@ -225,18 +227,18 @@ namespace FrontierDevelopments.Shields.Comps
             // either solution may be on or off the ray so need to test both
             // t1 is always the smaller value, because BOTH discriminant and
             // a are nonnegative.
-            var t1 = (-b - discriminant)/(2*a);
-            var t2 = (-b + discriminant)/(2*a);
+            var t1 = (-b - discriminant) / (2 * a);
+            var t2 = (-b + discriminant) / (2 * a);
 
             // 3x HIT cases:
             //          -o->             --|-->  |            |  --|->
-            // Impale(t1 hit,t2 hit), Poke(t1 hit,t2>1), ExitWound(t1<0, t2 hit), 
+            // Impale(t1 hit,t2 hit), Poke(t1 hit,t2>1), ExitWound(t1<0, t2 hit),
 
             // 3x MISS cases:
             //       ->  o                     o ->              | -> |
             // FallShort (t1>1,t2>1), Past (t1<0,t2<0), CompletelyInside(t1<0, t2>1)
 
-            if( t1 >= 0 && t1 <= 1 )
+            if (t1 >= 0 && t1 <= 1)
             {
                 // t1 is the intersection, and it's closer than t2
                 // (since t1 uses -b - discriminant)
@@ -246,7 +248,7 @@ namespace FrontierDevelopments.Shields.Comps
 
             // here t1 didn't intersect so we are either started
             // inside the sphere or completely past it
-            if( t2 >= 0 && t2 <= 1 )
+            if (t2 >= 0 && t2 <= 1)
             {
                 // ExitWound
                 return new Vector3(origin.x + t1 * d.x, origin.y + t1 * d.y, origin.z + t1 * d.z);
@@ -277,7 +279,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         private bool ShouldDraw(CellRect cameraRect)
         {
-            if (cameraRect == _cameraLast && parent.Position == _positionLast && (int) Radius == _radiusLast) return _renderLast;
+            if (cameraRect == _cameraLast && parent.Position == _positionLast && (int)Radius == _radiusLast) return _renderLast;
 
             _cameraLast = cameraRect;
 
@@ -290,9 +292,9 @@ namespace FrontierDevelopments.Shields.Comps
         {
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
 
-            var position = PositionUtility.ToVector3(ExactPosition);
+            Vector3 position = PositionUtility.ToVector3(ExactPosition);
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
-            var scalingFactor = (float)(Radius * 2.2);
+            var scalingFactor = (float)(Radius * 2 * textureMult);
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
             var matrix = new Matrix4x4();
             matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
@@ -313,7 +315,7 @@ namespace FrontierDevelopments.Shields.Comps
 
             if (Mod.Settings.colours == null) GenerateColours(); // settings reloaded / not existent yet
 
-            Color color = Mod.Settings.colours[Find.TickManager.TicksAbs % 1024]; 
+            Color color = Mod.Settings.colours[Find.TickManager.TicksAbs % 1024];
 
             if (beenHitTicks > 0) // We have been impacted, so we are going to show a graphic, and 'pulse' alpha
             {
@@ -325,11 +327,17 @@ namespace FrontierDevelopments.Shields.Comps
 
         public void ImpactGraphic(Color color, float transparency)
         {
+            Vector3 position = PositionUtility.ToVector3(ExactPosition);
+            position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
+            var scalingFactor = (float)(Radius * 2 * textureMult);
+            var scaling = new Vector3(scalingFactor, 1f, scalingFactor);
+
             color.a += (.2f * transparency);
             MatPropertyBlock.SetColor(ShaderPropertyIDs.Color, color);
 
             Matrix4x4 matrix2 = default(Matrix4x4);
-            matrix2.SetTRS(parent.TrueCenter(), Quaternion.Euler(0f, lastImpactAngle, 0f), new Vector3(Radius * 2f * textureMult, 1f, Radius * 2f * textureMult));
+            matrix2.SetTRS(position, Quaternion.Euler(0f, lastImpactAngle, 0f), scaling);
+
             Graphics.DrawMesh(MeshPool.plane10, matrix2, forceFieldImpact, 0, null, 0, MatPropertyBlock);
         }
 
@@ -429,6 +437,4 @@ namespace FrontierDevelopments.Shields.Comps
             return "ShieldRadial" + _id;
         }
     }
-    
-    
 }

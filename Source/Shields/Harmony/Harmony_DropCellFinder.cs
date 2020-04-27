@@ -11,9 +11,9 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             return !map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(c), false);
         }
-        
+
         [HarmonyPatch(typeof(DropCellFinder), "CanPhysicallyDropInto")]
-        static class Patch_CanPhysicallyDropInto
+        private static class Patch_CanPhysicallyDropInto
         {
             [HarmonyPostfix]
             private static bool AddShieldCheck(bool __result, IntVec3 c, Map map, bool canRoofPunch)

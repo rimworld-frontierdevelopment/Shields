@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
-using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -16,13 +15,13 @@ namespace FrontierDevelopments.Shields
                 {
                     Find.WindowStack.Add(ShowSelectShield(pawn, shields));
                 }
-                else if(shields.Any())
+                else if (shields.Any())
                 {
                     ShieldDeploymentUtility.DeployShield(pawn, shields.First());
                 }
             };
         }
-        
+
         private FloatMenu ShowSelectShield(Pawn pawn, IList<IShield> shields)
         {
             return new FloatMenu(

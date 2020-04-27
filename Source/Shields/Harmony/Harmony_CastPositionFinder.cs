@@ -1,6 +1,6 @@
-using System.Linq;
 using FrontierDevelopments.General;
 using HarmonyLib;
+using System.Linq;
 using Verse;
 using Verse.AI;
 
@@ -23,7 +23,7 @@ namespace FrontierDevelopments.Shields.Harmony
             {
                 score *= 1 + shooterProtected.Count;
             }
-            
+
             if (shooterUnderShield.Any())
             {
                 score *= 1 + shooterUnderShield.Count;
@@ -35,12 +35,12 @@ namespace FrontierDevelopments.Shields.Harmony
             }
             return score;
         }
-        
+
         [HarmonyPatch(typeof(CastPositionFinder), "CastPositionPreference")]
-        static class Patch_CastPositionPreference
+        private static class Patch_CastPositionPreference
         {
             [HarmonyPostfix]
-            static float AdjustScoreFromShielding(float __result, IntVec3 c, CastPositionRequest ___req)
+            private static float AdjustScoreFromShielding(float __result, IntVec3 c, CastPositionRequest ___req)
             {
                 return CalculateShieldPreference(
                     __result,
@@ -51,4 +51,3 @@ namespace FrontierDevelopments.Shields.Harmony
         }
     }
 }
-

@@ -1,11 +1,11 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using FrontierDevelopments.General;
+﻿using FrontierDevelopments.General;
 using FrontierDevelopments.General.Energy;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using UnityEngine;
 using Verse;
 
@@ -28,10 +28,11 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool _activeLastTick;
 
-        public IShield Shield {
+        public IShield Shield
+        {
             get
             {
-                if (_shield == null) 
+                if (_shield == null)
                     _shield = ShieldUtility.FindComp(AllComps);
                 return _shield;
             }
@@ -41,7 +42,7 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             get
             {
-                if (_heatSink == null) 
+                if (_heatSink == null)
                     _heatSink = HeatsinkUtility.FindComp(AllComps);
                 return _heatSink;
             }
@@ -101,12 +102,11 @@ namespace FrontierDevelopments.Shields.Buildings
             {
                 _energyNet.Consume(BasePowerConsumption / GenDate.TicksPerDay);
             }
-            else if(_activeLastTick && WantActive)
+            else if (_activeLastTick && WantActive)
             {
                 Messages.Message("fd.shields.incident.offline.body".Translate(), new GlobalTargetInfo(Position, Map), MessageTypeDefOf.NegativeEvent);
             }
             _activeLastTick = active;
-            
         }
 
         public override string GetInspectString()
@@ -117,9 +117,11 @@ namespace FrontierDevelopments.Shields.Buildings
                 case ShieldStatus.Unpowered:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.battery_too_low".Translate());
                     break;
+
                 case ShieldStatus.ThermalShutdown:
                     stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.thermal_safety".Translate());
                     break;
+
                 case ShieldStatus.Online:
                     stringBuilder.AppendLine("shield.status.online".Translate());
                     break;
@@ -139,7 +141,7 @@ namespace FrontierDevelopments.Shields.Buildings
         // Heatsink
         //
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        
+
         public void PushHeat(float wattDays)
         {
             Heatsink.PushHeat(wattDays);
@@ -148,7 +150,7 @@ namespace FrontierDevelopments.Shields.Buildings
         public bool OverTemperature => Heatsink.OverTemperature;
 
         public float Temp => Heatsink.Temp;
-        
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
         // Energy Net
@@ -222,7 +224,7 @@ namespace FrontierDevelopments.Shields.Buildings
         public int ProtectedCellCount => Shield.ProtectedCellCount;
 
         public float DeploymentSize => _shield.DeploymentSize;
-        
+
         public IEnumerable<Gizmo> ShieldGizmos => _shield.ShieldGizmos;
 
         public void SetParent(IShield shieldParent)

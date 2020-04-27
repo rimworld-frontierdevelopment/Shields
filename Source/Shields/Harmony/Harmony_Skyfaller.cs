@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using FrontierDevelopments.General;
+﻿using FrontierDevelopments.General;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Verse;
 using Verse.Sound;
 
@@ -47,7 +47,7 @@ namespace FrontierDevelopments.Shields.Harmony
                     return false;
                 }
             }
-            catch (InvalidOperationException) {}
+            catch (InvalidOperationException) { }
             return true;
         }
 
@@ -65,16 +65,16 @@ namespace FrontierDevelopments.Shields.Harmony
                     return false;
                 }
             }
-            catch (InvalidOperationException) {}
+            catch (InvalidOperationException) { }
             return true;
         }
 
         [HarmonyPatch(typeof(Skyfaller), nameof(Skyfaller.Tick))]
-        static class Patch_Tick
+        private static class Patch_Tick
         {
-            static bool Prefix(Skyfaller __instance)
+            private static bool Prefix(Skyfaller __instance)
             {
-                if (__instance.Map != null 
+                if (__instance.Map != null
                     && __instance.ticksToImpact == ShieldHitPreDelay
                     && !whitelistedDefs.Contains(__instance.def.defName))
                 {
@@ -82,11 +82,12 @@ namespace FrontierDevelopments.Shields.Harmony
                     {
                         case DropPodIncoming incoming:
                             return HandlePod(incoming);
+
                         case DropPodLeaving _:
                             return true;
+
                         default:
                             return HandleGeneric(__instance);
-                            
                     }
                 }
                 return true;

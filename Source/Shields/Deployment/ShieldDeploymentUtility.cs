@@ -1,9 +1,9 @@
-using System.Collections.Generic;
-using System.Linq;
 using FrontierDevelopments.General.Energy;
 using FrontierDevelopments.Shields.Comps;
 using HarmonyLib;
 using RimWorld;
+using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -26,7 +26,7 @@ namespace FrontierDevelopments.Shields
                     node.ConnectTo(null); // TODO get pawn net
                     break;
             }
-            
+
             pawn.Map.GetComponent<ShieldManager>().Add(shield);
             pawn.AllComps.Add(deployed);
         }
@@ -46,10 +46,10 @@ namespace FrontierDevelopments.Shields
                     node.Disconnect();
                     break;
             }
-            
+
             pawn.Map.GetComponent<ShieldManager>().Del(shield);
         }
-        
+
         public static IEnumerable<IShield> DeployedShields(Pawn pawn)
         {
             var results = new List<IShield>();
@@ -66,6 +66,7 @@ namespace FrontierDevelopments.Shields
             {
                 case IShield itemShield:
                     return shield == itemShield;
+
                 case MinifiedThing minified:
                     return shield == minified.InnerThing;
             }

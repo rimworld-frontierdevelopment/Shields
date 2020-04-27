@@ -10,7 +10,7 @@ namespace FrontierDevelopments.Shields.Harmony
         [HarmonyPatch(typeof(AttackTargetFinder), "GetShootingTargetScore")]
         public static class Patch_GetShootingTargetScore
         {
-            static float Postfix(float __result, IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
+            private static float Postfix(float __result, IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
             {
                 if (searcher.Thing.Map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(searcher.Thing.Position),
                     PositionUtility.ToVector3(target.Thing.Position)))

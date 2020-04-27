@@ -8,11 +8,11 @@ namespace FrontierDevelopments.Shields.Tale
         public Tale_KilledByImpactingOnShield()
         {
         }
-        
+
         public Tale_KilledByImpactingOnShield(Pawn victim) : base(victim)
         {
         }
-        
+
         public Tale_KilledByImpactingOnShield(Pawn victim, IntVec3 position, Map map) : base(victim)
         {
             surroundings = TaleData_Surroundings.GenerateFrom(position, map);

@@ -1,10 +1,10 @@
+using FrontierDevelopments.General;
+using HarmonyLib;
+using RimWorld;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using FrontierDevelopments.General;
-using HarmonyLib;
-using RimWorld;
 using Verse;
 using Verse.AI;
 
@@ -21,54 +21,54 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             return map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(position));
         }
-        
+
         [HarmonyPatch(typeof(Bombardment), "CreateRandomExplosion")]
-        static class Patch_CreateRandomExplosion
+        private static class Patch_CreateRandomExplosion
         {
             [HarmonyTranspiler]
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+            private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
             {
                 var patchPhase = 0;
-                
+
                 foreach (var instruction in instructions)
                 {
                     switch (patchPhase)
                     {
                         // search for call to get_Map
                         case 0:
-                        {
-                            if (instruction.opcode == OpCodes.Call && instruction.operand as MethodInfo == AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod())
                             {
-                                patchPhase = 1;
+                                if (instruction.opcode == OpCodes.Call && instruction.operand as MethodInfo == AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod())
+                                {
+                                    patchPhase = 1;
+                                }
+                                break;
                             }
-                            break;
-                        }
                         // find loading map into locals next
                         case 1:
-                        {
-                            if (instruction.opcode == OpCodes.Stloc_3)
                             {
-                                patchPhase = 2;
+                                if (instruction.opcode == OpCodes.Stloc_3)
+                                {
+                                    patchPhase = 2;
+                                }
+                                break;
                             }
-                            break;
-                        }
                         // insert check call
                         case 2:
-                        {
-                            var continueLabel = il.DefineLabel();
-                            instruction.labels.Add(continueLabel);
-                            
-                            yield return new CodeInstruction(OpCodes.Ldloc_3);
-                            yield return new CodeInstruction(OpCodes.Ldloc_0);
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Bombardment), nameof(ShouldStop)));
-                            yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
-                            yield return new CodeInstruction(OpCodes.Ret);
-                            
-                            patchPhase = -1;
-                            break;
-                        }
+                            {
+                                var continueLabel = il.DefineLabel();
+                                instruction.labels.Add(continueLabel);
+
+                                yield return new CodeInstruction(OpCodes.Ldloc_3);
+                                yield return new CodeInstruction(OpCodes.Ldloc_0);
+                                yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Bombardment), nameof(ShouldStop)));
+                                yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
+                                yield return new CodeInstruction(OpCodes.Ret);
+
+                                patchPhase = -1;
+                                break;
+                            }
                     }
-                    
+
                     yield return instruction;
                 }
             }
@@ -85,10 +85,10 @@ namespace FrontierDevelopments.Shields.Harmony
         }
 
         [HarmonyPatch(typeof(Bombardment), nameof(Bombardment.Tick))]
-        static class Patch_Tick
+        private static class Patch_Tick
         {
             [HarmonyPostfix]
-            static void Postfix(Bombardment __instance)
+            private static void Postfix(Bombardment __instance)
             {
                 if (__instance.Destroyed) return;
 
@@ -104,7 +104,7 @@ namespace FrontierDevelopments.Shields.Harmony
                         {
                             var threats = new List<Thing> { __instance };
                             var fleeDest1 = CellFinderLoose.GetFleeDest(pawn, threats, pawn.Position.DistanceTo(__instance.Position) + Bombardment.EffectiveRadius);
-                            pawn.jobs.StartJob(new Job(JobDefOf.Flee, fleeDest1, (LocalTargetInfo) __instance), JobCondition.InterruptOptional, null, false, true, null, new JobTag?());
+                            pawn.jobs.StartJob(new Job(JobDefOf.Flee, fleeDest1, (LocalTargetInfo)__instance), JobCondition.InterruptOptional, null, false, true, null, new JobTag?());
                         });
                     return false;
                 }, 25, RegionType.Set_All);

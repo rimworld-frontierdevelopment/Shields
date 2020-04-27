@@ -1,5 +1,5 @@
-using System.Linq;
 using HarmonyLib;
+using System.Linq;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -7,10 +7,10 @@ namespace FrontierDevelopments.Shields
     public class Harmony_ThingOwner
     {
         [HarmonyPatch(typeof(ThingOwner), "NotifyRemoved")]
-        static class ThingOwnerRemoved
+        private static class ThingOwnerRemoved
         {
             [HarmonyPostfix]
-            static void NotifyShieldRemoved(ThingOwner __instance, Thing item)
+            private static void NotifyShieldRemoved(ThingOwner __instance, Thing item)
             {
                 switch (__instance?.Owner)
                 {

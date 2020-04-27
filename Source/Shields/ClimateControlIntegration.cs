@@ -1,5 +1,5 @@
-using System;
 using FrontierDevelopments.General;
+using System;
 
 namespace FrontierDevelopments.Shields
 {

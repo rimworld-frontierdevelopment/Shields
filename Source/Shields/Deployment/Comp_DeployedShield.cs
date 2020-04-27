@@ -1,5 +1,5 @@
-using System.Collections.Generic;
 using RimWorld;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -12,11 +12,12 @@ namespace FrontierDevelopments.Shields.Comps
             compClass = typeof(Comp_DeployedShield);
         }
     }
+
     public class Comp_DeployedShield : ThingComp, IShield
     {
         private IShield _deployed;
         private int _id;
-        
+
         private Pawn pawn => parent as Pawn;
 
         public Comp_DeployedShield()

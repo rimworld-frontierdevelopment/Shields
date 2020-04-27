@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using System.Reflection.Emit;
-using FrontierDevelopments.General;
+﻿using FrontierDevelopments.General;
 using HarmonyLib;
+using System.Collections.Generic;
 using UnityEngine;
 using Verse;
 
@@ -25,7 +22,6 @@ namespace FrontierDevelopments.Shields.Harmony
             int ticksToImpact,
             Vector3 origin)
         {
-
             var damages = new ShieldDamages(
                 new ShieldDamage(
                     projectile.def.projectile.damageDef,
@@ -120,11 +116,11 @@ namespace FrontierDevelopments.Shields.Harmony
             var type = projectile.GetType();
             return typeof(Projectile_Explosive).IsAssignableFrom(type);
         }
-        
+
         [HarmonyPatch(typeof(Projectile), "CheckForFreeInterceptBetween")]
-        static class CheckForFreeInterceptBetween
+        private static class CheckForFreeInterceptBetween
         {
-            static bool Prefix(Projectile __instance, ref bool __result, Vector3 lastExactPos, Vector3 newExactPos, int ___ticksToImpact, Vector3 ___origin)
+            private static bool Prefix(Projectile __instance, ref bool __result, Vector3 lastExactPos, Vector3 newExactPos, int ___ticksToImpact, Vector3 ___origin)
             {
                 if (lastExactPos == newExactPos) { __result = false; return false; }
 
@@ -135,6 +131,5 @@ namespace FrontierDevelopments.Shields.Harmony
                 return true;
             }
         }
-
     }
 }
