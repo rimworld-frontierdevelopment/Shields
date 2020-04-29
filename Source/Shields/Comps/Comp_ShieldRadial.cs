@@ -363,7 +363,6 @@ namespace FrontierDevelopments.Shields.Comps
         private void RenderImpactEffect(Vector2 position)
         {
             MoteMaker.ThrowLightningGlow(PositionUtility.ToVector3(position), parent.Map, 0.5f);
-            MoteMaker.ThrowMicroSparks(PositionUtility.ToVector3(position), parent.Map);
         }
 
         private void PlayBulletImpactSound(Vector2 position)

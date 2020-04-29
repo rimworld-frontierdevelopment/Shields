@@ -38,7 +38,7 @@ namespace FrontierDevelopments.Shields
 
             LoadOneTemperatureMod(harmony);
 
-            //new CombatExtendedIntegration().TryEnable(harmony);
+            new CombatExtendedIntegration().TryEnable(harmony);
         }
 
         private void LoadOneTemperatureMod(HarmonyLib.Harmony harmony)

@@ -8,7 +8,7 @@ namespace FrontierDevelopments.Shields
         public override string ThisModName => Mod.ModName;
         public override string OtherModName => "Combat Extended";
         public override string OtherModAssemblyName => "CombatExtended";
-        public override Version OtherModVersion => new Version(1, 0, 1, 6);
+        public override Version OtherModVersion => new Version(1, 1, 2, 0);
         public override string IntegrationAssemblyPath => "Integrations/FrontierDevelopments-Shields-CombatExtended.dll";
     }
 }
