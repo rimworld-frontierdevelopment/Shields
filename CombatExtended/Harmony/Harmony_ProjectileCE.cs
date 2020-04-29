@@ -1,9 +1,9 @@
-﻿using System.Reflection;
-using CombatExtended;
+﻿using CombatExtended;
 using FrontierDevelopments.General;
 using FrontierDevelopments.Shields;
 using FrontierDevelopments.Shields.Harmony;
 using HarmonyLib;
+using System.Reflection;
 using UnityEngine;
 
 namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
@@ -70,11 +70,13 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
         }
 
         [HarmonyPatch(typeof(ProjectileCE), "CheckForCollisionBetween")]
-        static class Patch_CheckForCollisionBetween
+        private static class Patch_CheckForCollisionBetween
         {
             [HarmonyPrefix]
-            static bool CheckShieldCollision(ProjectileCE __instance, bool __result, Vector2 ___origin, int ___ticksToImpact)
+            private static bool CheckShieldCollision(ProjectileCE __instance, bool __result, Vector2 ___origin, int ___ticksToImpact)
             {
+                if (__instance == null) return true;
+
                 var current = __instance.ExactPosition;
                 var last = current - __instance.ExactMinusLastPos;
 
@@ -102,16 +104,17 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
         }
 
         [HarmonyPatch(typeof(ProjectileCE), "ImpactSomething")]
-        static class Patch_CheckCellForCollision
+        private static class Patch_CheckCellForCollision
         {
             [HarmonyPrefix]
-            static bool BlockMortarImpacts(ProjectileCE __instance, int ___ticksToImpact, Vector2 ___origin)
+            private static bool BlockMortarImpacts(ProjectileCE __instance, int ___ticksToImpact, Vector2 ___origin)
             {
                 if (!__instance.def.projectile.flyOverhead) return true;
 
                 bool shouldBlock = TryBlockOverheadProjectileCE(__instance, __instance.ExactPosition, ___ticksToImpact, ___origin);
                 if (shouldBlock)
                     __instance.Destroy();
+
                 return !shouldBlock;
             }
         }

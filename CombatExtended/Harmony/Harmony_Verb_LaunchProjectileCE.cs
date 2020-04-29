@@ -8,10 +8,10 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
     public class Harmony_Verb_LaunchProjectileCE : Harmony_Verb
     {
         [HarmonyPatch(typeof(Verb_LaunchProjectileCE), nameof(Verb_LaunchProjectileCE.CanHitTargetFrom), new[] { typeof(IntVec3), typeof(LocalTargetInfo), typeof(string) }, new[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Ref })]
-        static class Patch_CanHitTargetFrom
+        private static class Patch_CanHitTargetFrom
         {
             [HarmonyPostfix]
-            static bool Postfix(
+            private static bool Postfix(
                 bool __result,
                 Verb_LaunchProjectileCE __instance,
                 IntVec3 root,

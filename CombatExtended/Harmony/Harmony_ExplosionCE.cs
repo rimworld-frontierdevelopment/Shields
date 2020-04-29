@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using CombatExtended;
+﻿using CombatExtended;
 using FrontierDevelopments.Shields.Harmony;
 using HarmonyLib;
+using System.Collections.Generic;
 using Verse;
 
 namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
@@ -14,10 +14,10 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
         }
 
         [HarmonyPatch(typeof(ExplosionCE), nameof(ExplosionCE.Tick))]
-        static class Patch_Tick
+        private static class Patch_Tick
         {
             [HarmonyPrefix]
-            static void HandleOuterEdgesFirst(ExplosionCE __instance, int ___startTick, List<IntVec3> ___cellsToAffect)
+            private static void HandleOuterEdgesFirst(ExplosionCE __instance, int ___startTick, List<IntVec3> ___cellsToAffect)
             {
                 HandleProtected(___cellsToAffect, __instance, ___startTick, GetDamage);
             }
