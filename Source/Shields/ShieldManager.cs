@@ -14,6 +14,10 @@ namespace FrontierDevelopments.Shields
 
         private readonly HashSet<IShield> _shields = new HashSet<IShield>();
 
+        public int ShieldCount ()
+        {
+            return _shields.Count;
+        }
         public void Add(IShield shield)
         {
             _shields.Add(shield);

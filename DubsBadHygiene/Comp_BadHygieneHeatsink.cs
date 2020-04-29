@@ -1,4 +1,5 @@
 ﻿using FrontierDevelopments.General.Comps;
+using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.BadHygiene
@@ -30,14 +31,23 @@ namespace FrontierDevelopments.BadHygiene
 
         protected override float AmbientTemp()
         {
-            return HasAirflow ? -1f : base.AmbientTemp();
+            return HasAirflow ? CalculatedCoolingTemp() : base.AmbientTemp();
+        }
+
+        protected float CalculatedCoolingTemp()
+        {
+            // this number is definitely a const somewhere
+            float num = Cooling.PipeComp.pipeNet.CoolingCap * 4.16666651f;
+            return GenTemperature.ControlTemperatureTempChange(parent.Position, parent.Map, num, -1);
         }
 
         protected override void DissipateHeat(float kilojoules)
         {
-            if (Cooling.WorkingNow)
+
+            if (HasAirflow)
             {
-                base.DissipateHeat(kilojoules);
+                var multiplier = Mathf.Exp(-1 * (CoolingCapacity / 200));
+                base.DissipateHeat(kilojoules * multiplier);
             }
             else
             {

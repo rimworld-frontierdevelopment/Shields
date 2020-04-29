@@ -8,16 +8,14 @@ namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_CastPositionFinder
     {
-        private static float CalculateShieldPreference(float score, Map map, IntVec3 start, IntVec3 end)
+        private static float CalculateShieldPreference(float score, ShieldManager manager, IntVec3 start, IntVec3 end)
         {
-            var shieldManager = map.GetComponent<ShieldManager>();
-
             var startAdjusted = PositionUtility.ToVector3(start);
             var endAdjusted = PositionUtility.ToVector3(end);
 
-            var targetProtected = shieldManager.WhichShielded(startAdjusted, endAdjusted).ToList();
-            var shooterProtected = shieldManager.WhichShielded(endAdjusted, startAdjusted).ToList();
-            var shooterUnderShield = shieldManager.WhichShielded(startAdjusted).ToList();
+            var targetProtected = manager.WhichShielded(startAdjusted, endAdjusted).ToList();
+            var shooterProtected = manager.WhichShielded(endAdjusted, startAdjusted).ToList();
+            var shooterUnderShield = manager.WhichShielded(startAdjusted).ToList();
 
             if (shooterProtected.Any())
             {
@@ -42,9 +40,12 @@ namespace FrontierDevelopments.Shields.Harmony
             [HarmonyPostfix]
             private static float AdjustScoreFromShielding(float __result, IntVec3 c, CastPositionRequest ___req)
             {
+                var shieldManager = ___req.caster.Map.GetComponent<ShieldManager>();
+                if (shieldManager.ShieldCount() == 0) return __result;
+
                 return CalculateShieldPreference(
                     __result,
-                    ___req.caster.Map,
+                    shieldManager,
                     c,
                     ___req.target.Position);
             }

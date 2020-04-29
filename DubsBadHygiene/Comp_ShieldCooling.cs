@@ -34,15 +34,15 @@ namespace FrontierDevelopments.BadHygiene
             yield return new Command_Action
             {
                 action = ReduceCooling,
-                defaultLabel = "LowerPower".Translate(),
-                defaultDesc = "LowerPowerDesc".Translate(),
+                defaultLabel = "Decrease Cooling",
+                defaultDesc = "Decrease the amount of cooling sent to a generator".Translate(),
                 icon = ContentFinder<Texture2D>.Get("UI/Commands/TempLower")
             };
             yield return new Command_Action
             {
                 action = AddCooling,
-                defaultLabel = "RaisePower".Translate(),
-                defaultDesc = "RaisePowerDesc".Translate(),
+                defaultLabel = "Increase Cooling",
+                defaultDesc = "Increase the amount of cooling sent to a generator",
                 icon = ContentFinder<Texture2D>.Get("UI/Commands/TempRaise")
             };
         }
