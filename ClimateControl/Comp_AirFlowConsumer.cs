@@ -1,6 +1,6 @@
-﻿using System.Collections.Generic;
-using CentralizedClimateControl;
+﻿using CentralizedClimateControl;
 using FrontierDevelopments.General;
+using System.Collections.Generic;
 using Verse;
 
 namespace FrontierDevelopments.ClimateControl

@@ -46,10 +46,12 @@ namespace FrontierDevelopments.BadHygiene
                 icon = ContentFinder<Texture2D>.Get("UI/Commands/TempRaise")
             };
         }
+
         public void AddCooling()
         {
             this.Props.Capacity += 100;
         }
+
         public void ReduceCooling()
         {
             if (this.Props.Capacity > 100)

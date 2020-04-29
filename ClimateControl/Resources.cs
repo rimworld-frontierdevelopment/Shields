@@ -14,7 +14,7 @@ namespace FrontierDevelopments.ClimateControl
             BuildingClimateControlAirThermal = GetModTexture("Centralized Climate Control", "Things/Building/AirThermal_north");
         }
 
-        static Texture2D GetModTexture(string modName, string resourcePath)
+        private static Texture2D GetModTexture(string modName, string resourcePath)
         {
             return ModLister.HasActiveModWithName(modName)
                 ? ContentFinder<Texture2D>.Get(resourcePath, ShaderDatabase.Transparent)

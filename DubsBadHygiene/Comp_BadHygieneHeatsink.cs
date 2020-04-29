@@ -1,6 +1,4 @@
 ﻿using FrontierDevelopments.General.Comps;
-using System;
-using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.BadHygiene
@@ -39,7 +37,7 @@ namespace FrontierDevelopments.BadHygiene
         {
             if (Cooling.WorkingNow)
             {
-                 base.DissipateHeat(kilojoules);
+                base.DissipateHeat(kilojoules);
             }
             else
             {

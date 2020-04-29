@@ -7,7 +7,7 @@ using Verse;
 namespace FrontierDevelopments.BadHygiene
 {
     [HarmonyPatch(typeof(DefGenerator), "GenerateImpliedDefs_PostResolve")]
-    static class Patch_GenerateImpliedDefs_PostResolve
+    internal static class Patch_GenerateImpliedDefs_PostResolve
     {
         [HarmonyPostfix]
         public static void Postfix()

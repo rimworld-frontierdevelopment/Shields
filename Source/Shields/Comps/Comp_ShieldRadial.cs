@@ -23,6 +23,7 @@ namespace FrontierDevelopments.Shields.Comps
             compClass = typeof(Comp_ShieldRadial);
         }
     }
+
     public class Comp_ShieldRadial : ThingComp, IShield
     {
         private int? _id;

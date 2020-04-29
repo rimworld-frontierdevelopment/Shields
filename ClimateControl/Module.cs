@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using CentralizedClimateControl;
+﻿using CentralizedClimateControl;
 using HarmonyLib;
 using RimWorld;
+using System.Collections.Generic;
 using Verse;
 
 namespace FrontierDevelopments.ClimateControl
@@ -9,10 +9,10 @@ namespace FrontierDevelopments.ClimateControl
     public class Module
     {
         [HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PostResolve))]
-        class Patch_GenerateImpliedDefs_PostResolve
+        private class Patch_GenerateImpliedDefs_PostResolve
         {
             [HarmonyPostfix]
-            static void Postfix()
+            private static void Postfix()
             {
                 Patch();
             }
