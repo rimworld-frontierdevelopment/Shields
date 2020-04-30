@@ -31,6 +31,7 @@ namespace FrontierDevelopments.Shields.Harmony
             {
                 score /= 1 + targetProtected.Count;
             }
+
             return score;
         }
 

@@ -43,7 +43,6 @@ namespace FrontierDevelopments.BadHygiene
 
         protected override void DissipateHeat(float kilojoules)
         {
-
             if (HasAirflow)
             {
                 var multiplier = Mathf.Exp(-1 * (CoolingCapacity / 200));

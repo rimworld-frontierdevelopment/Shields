@@ -7,7 +7,6 @@ namespace FrontierDevelopments.Shields
     {
         // Integrations
         public bool EnableCentralizedClimateControlSupport = true;
-
         public bool EnableDubsBadHygieneSupport = true;
 
         // General
@@ -57,9 +56,9 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.climatecontrol.description".Translate());
 
             list.CheckboxLabeled(
-                "Dubs Bad Hygiene Integration",
+                "fd.settings.shield.badhygiene.label".Translate(),
                 ref EnableDubsBadHygieneSupport,
-                "placeholder");
+                "fd.settings.shield.badhygiene.description".Translate());
 
             // General
             Heading(list, "fd.settings.shield.general.heading".Translate());
@@ -147,6 +146,8 @@ namespace FrontierDevelopments.Shields
         public override void ExposeData()
         {
             Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
+            Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", true);
+
 
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref EnableShootingIn, "enableShootingIn", false);
