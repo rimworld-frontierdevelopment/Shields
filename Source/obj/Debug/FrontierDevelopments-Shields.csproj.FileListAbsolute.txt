@@ -1,8 +1,0 @@
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\1.1\Assemblies\FrontierDevelopments-Shields.dll
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\Source\obj\Debug\FrontierDevelopments-Shields.csprojAssemblyReference.cache
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\Source\obj\Debug\FrontierDevelopments-Shields.csproj.CoreCompileInputs.cache
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\FrontierShields\Source\obj\Debug\FrontierDevelopments-Shields.dll
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Fronter-MasterMerge\Source\obj\Debug\FrontierDevelopments-Shields.csprojAssemblyReference.cache
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Fronter-MasterMerge\Source\obj\Debug\FrontierDevelopments-Shields.csproj.CoreCompileInputs.cache
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Fronter-MasterMerge\Source\obj\Debug\FrontierDevelopments-Shields.dll
-C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Fronter-MasterMerge\1.1\Assemblies\FrontierDevelopments-Shields.dll
