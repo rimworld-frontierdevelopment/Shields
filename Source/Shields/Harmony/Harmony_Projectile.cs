@@ -1,6 +1,7 @@
 ﻿using FrontierDevelopments.General;
 using HarmonyLib;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using Verse;
 
@@ -9,6 +10,7 @@ namespace FrontierDevelopments.Shields.Harmony
     public class Harmony_Projectile
     {
         private static readonly List<string> BlacklistedDefs = new List<string>();
+        private static MethodInfo Impact = AccessTools.Method(typeof(Projectile), "Impact");
 
         public static void BlacklistDef(string def)
         {
@@ -126,9 +128,19 @@ namespace FrontierDevelopments.Shields.Harmony
             {
                 if (lastExactPos == newExactPos) { __result = false; return false; }
 
-                if (TryBlockProjectile(__instance, lastExactPos, newExactPos, ___ticksToImpact, ___origin)) { __result = true; __instance.Destroy(); return false; }
+                if (TryBlockProjectile(__instance, lastExactPos, newExactPos, ___ticksToImpact, ___origin)) 
+                { 
+                    if (ShouldImpact(__instance))
+                    {
+                        __result = true;
+                        Impact.Invoke(__instance, new object[] { null });
+                        return false;
+                    }
+                    __instance.Destroy(); 
+                    return false; 
+                }
 
-                if (ShouldImpact(__instance)) { __result = true; __instance.Destroy(); return false; }
+
 
                 return true;
             }
