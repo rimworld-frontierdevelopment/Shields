@@ -129,10 +129,10 @@ namespace FrontierDevelopments.Shields.Harmony
                 if (lastExactPos == newExactPos) { __result = false; return false; }
 
                 if (TryBlockProjectile(__instance, lastExactPos, newExactPos, ___ticksToImpact, ___origin)) 
-                { 
+                {
+                    __result = true;
                     if (ShouldImpact(__instance))
                     {
-                        __result = true;
                         Impact.Invoke(__instance, new object[] { null });
                         return false;
                     }
