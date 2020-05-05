@@ -80,7 +80,7 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.scale-heat.description".Translate());
 
             // Power
-            Heading(list, "fd.settings.shield.power.heading".Translate());
+            //Heading(list, "fd.settings.shield.power.heading".Translate());
 
             //            var powerPerTileBuffer = PowerPerTile.ToString();
             //            Widgets.TextFieldNumericLabeled(
