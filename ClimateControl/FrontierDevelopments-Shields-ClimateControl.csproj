@@ -40,8 +40,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="CentralizedClimateControl">
-      <HintPath>..\..\CentralizedClimateControl\1.1\Assemblies\CentralizedClimateControl.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\workshop\content\294100\2007268173\1.1\Assemblies\CentralizedClimateControl.dll</HintPath>
     </Reference>
     <Reference Include="Core">
       <HintPath>..\1.1\Assemblies\Core.dll</HintPath>
