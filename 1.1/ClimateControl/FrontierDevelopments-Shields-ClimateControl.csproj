@@ -71,7 +71,7 @@
     <Compile Include="Resources.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Source\FrontierDevelopments-Shields.csproj">
+    <ProjectReference Include="..\..\Source\FrontierDevelopments-Shields.csproj">
       <Project>{d90e6072-fbe5-4a86-a1e1-11e12dc5e27b}</Project>
       <Name>FrontierDevelopments-Shields</Name>
     </ProjectReference>

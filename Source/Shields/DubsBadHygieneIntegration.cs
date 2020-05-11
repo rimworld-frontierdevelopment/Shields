@@ -9,6 +9,6 @@ namespace FrontierDevelopments.Shields
         public override string OtherModName => "Dubs Bad Hygiene";
         public override string OtherModAssemblyName => "BadHygiene";
         public override Version OtherModVersion => new Version(2, 7, 7273, 33335);
-        public override string IntegrationAssemblyPath => "Integrations/FrontierDevelopments-Shields-BadHygiene.dll";
+        public override string IntegrationAssemblyPath => "1.1/Integrations/FrontierDevelopments-Shields-BadHygiene.dll";
     }
 }

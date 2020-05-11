@@ -9,6 +9,6 @@ namespace FrontierDevelopments.Shields
         public override string OtherModName => "Centralized Climate Control";
         public override string OtherModAssemblyName => "CentralizedClimateControl";
         public override Version OtherModVersion => new Version(1, 5, 0, 0);
-        public override string IntegrationAssemblyPath => "Integrations/FrontierDevelopments-Shields-ClimateControl.dll";
+        public override string IntegrationAssemblyPath => "1.1/Integrations/FrontierDevelopments-Shields-ClimateControl.dll";
     }
 }
