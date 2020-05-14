@@ -7,7 +7,7 @@ namespace FrontierDevelopments.Shields
     {
         // Integrations
         public bool EnableCentralizedClimateControlSupport = true;
-        public bool EnableDubsBadHygieneSupport = true;
+        public bool EnableDubsBadHygieneSupport = false;
 
         // General
         public bool EnableShootingOut = true;
@@ -33,6 +33,14 @@ namespace FrontierDevelopments.Shields
         public bool EnableMinorThermalIncidents = true;
         public bool EnableMajorThermalIncidents = true;
         public bool EnableCriticalThermalIncidents = true;
+
+        // These are exclusively for users with Royalty!	
+        public bool SecondaryColour = true;
+        public Color ShieldColour = new Color(1, 0, 0, .8f);
+        public Color ShieldSecondaryColour = new Color(0, 0, 1, .8f);
+        public Color[] colours = null;
+        public bool EnableFancyShields = false;
+        // End Royalty Exclusive
 
         private static void Heading(Listing_Standard list, string text)
         {
@@ -78,6 +86,35 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.scale-heat.label".Translate(),
                 ref ScaleOnHeat,
                 "fd.settings.shield.scale-heat.description".Translate());
+
+            if (ModLister.RoyaltyInstalled)
+            {
+                Heading(list, "fd.settings.shield.color");
+
+                list.CheckboxLabeled("fd.settings.shield.enable", ref EnableFancyShields);
+                if (EnableFancyShields)
+                {
+                    Rect first = list.GetRect(Text.LineHeight);
+                    ShieldColour.a = Widgets.HorizontalSlider(new Rect(first.position.x, first.position.y, first.width / 5, first.height), ShieldColour.a, 0f, .8f);
+                    ShieldColour.r = Widgets.HorizontalSlider(new Rect(first.position.x + first.width / 5, first.position.y, first.width / 5, first.height), ShieldColour.r, 0f, 1f);
+                    ShieldColour.g = Widgets.HorizontalSlider(new Rect(first.position.x + 2 * (first.width / 5), first.position.y, first.width / 5, first.height), ShieldColour.g, 0f, 1f);
+                    ShieldColour.b = Widgets.HorizontalSlider(new Rect(first.position.x + 3 * (first.width / 5), first.position.y, first.width / 5, first.height), ShieldColour.b, 0f, 1f);
+                    Widgets.DrawBoxSolid(new Rect(first.position.x + 4 * (first.width / 5), first.position.y, first.width / 5, first.height), new Color(ShieldColour.r, ShieldColour.g, ShieldColour.b));
+
+                    list.CheckboxLabeled("fd.settings.shield.secondarycolor", ref SecondaryColour);
+
+                    if (SecondaryColour)
+                    {
+                        Rect second = list.GetRect(Text.LineHeight);
+                        ShieldSecondaryColour.a = Widgets.HorizontalSlider(new Rect(second.position.x, second.position.y, second.width / 5, second.height), ShieldSecondaryColour.a, 0f, .8f);
+                        ShieldSecondaryColour.r = Widgets.HorizontalSlider(new Rect(second.position.x + second.width / 5, second.position.y, second.width / 5, second.height), ShieldSecondaryColour.r, 0f, 1f);
+                        ShieldSecondaryColour.g = Widgets.HorizontalSlider(new Rect(second.position.x + 2 * (second.width / 5), second.position.y, second.width / 5, second.height), ShieldSecondaryColour.g, 0f, 1f);
+                        ShieldSecondaryColour.b = Widgets.HorizontalSlider(new Rect(second.position.x + 3 * (second.width / 5), second.position.y, second.width / 5, second.height), ShieldSecondaryColour.b, 0f, 1f);
+                        Widgets.DrawBoxSolid(new Rect(second.position.x + 4 * (second.width / 5), second.position.y, second.width / 5, second.height), new Color(ShieldSecondaryColour.r, ShieldSecondaryColour.g, ShieldSecondaryColour.b));
+                    }
+                    colours = null;
+                }
+            }
 
             // Power
             //Heading(list, "fd.settings.shield.power.heading".Translate());
@@ -146,13 +183,17 @@ namespace FrontierDevelopments.Shields
         public override void ExposeData()
         {
             Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
-            Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", true);
-
+            Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", false);
 
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref EnableShootingIn, "enableShootingIn", false);
             Scribe_Values.Look(ref OverlapPassThrough, "overlapPassThrough", false);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
+
+            Scribe_Values.Look<bool>(ref EnableFancyShields, "EnableFancyShields", false);
+            Scribe_Values.Look<bool>(ref SecondaryColour, "secondaryColour", false);
+            Scribe_Values.Look<Color>(ref ShieldColour, "shieldColour", new Color(0.1f, 0.1f, 0.1f, 0.8f));
+            Scribe_Values.Look<Color>(ref ShieldSecondaryColour, "shieldSecondaryColour", new Color(0.9f, 0.9f, 0.9f, 0.8f));
 
             // TODO see above
             //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);

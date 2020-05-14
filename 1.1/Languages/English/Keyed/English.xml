@@ -9,7 +9,7 @@
     <fd.settings.shield.climatecontrol.label>Enable Centralized Climate Control support (requires game restart!)</fd.settings.shield.climatecontrol.label>
     <fd.settings.shield.climatecontrol.description>Enables cooling of shields with Centralized Climate Control pipes</fd.settings.shield.climatecontrol.description>
 
-    <fd.settings.shield.badhygiene.label>Enable Dubs Bad Hygiene support (requires game restart!)</fd.settings.shield.badhygiene.label>
+    <fd.settings.shield.badhygiene.label>Enable Dubs Bad Hygiene support (requires game restart, and a new save!)</fd.settings.shield.badhygiene.label>
     <fd.settings.shield.badhygiene.description>Enables cooling of shields with Bad Hygiene cooling units</fd.settings.shield.badhygiene.description>
 
     <!-- This mod has not been updated to 1.1 as far as I know -->
@@ -30,6 +30,11 @@
 
     <fd.settings.shield.scale-heat.label>Scale damage by shield heat</fd.settings.shield.scale-heat.label>
     <fd.settings.shield.scale-heat.description>Blocking damage requires less power when cold and a lot more power when hot. Also using Centralized Climate Control mod is recommended when using this</fd.settings.shield.scale-heat.description>
+
+    <!-- Color section -->
+    <fd.settings.shield.color>Color</fd.settings.shield.color>
+    <fd.settings.shield.enable>Enable Fancy Shield Texturing</fd.settings.shield.enable>
+    <fd.settings.shield.secondarycolor>Enable Shield Secondary Colouring</fd.settings.shield.secondarycolor>
 
     <!-- Power section -->
     <fd.settings.shield.power.heading>Power</fd.settings.shield.power.heading>
