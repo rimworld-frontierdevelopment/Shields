@@ -19,8 +19,6 @@ namespace FrontierDevelopments.Shields
             
             var harmony = new HarmonyLib.Harmony("FrontierDevelopments.Shields");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-
-            new CombatExtendedIntegration().TryEnable(harmony);
         }
 
         public override string SettingsCategory()

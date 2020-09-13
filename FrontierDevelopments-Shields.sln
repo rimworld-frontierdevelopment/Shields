@@ -9,6 +9,8 @@ Project("{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}") = "FrontierDevelopments-Shield
 EndProject
 Project("{D43DE53A-C925-465D-9631-4139618408C0}") = "FrontierDevelopments-ClimateControl", "Source\ClimateControl\FrontierDevelopments-Shields-ClimateControl.csproj", "{D43DE53A-C925-465D-9631-4139618408C0}"
 EndProject
+Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-CombatExtended", "Source\CombatExtended\FrontierDevelopments-Shields-CombatExtended.csproj", "{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,11 @@ Global
         {D43DE53A-C925-465D-9631-4139618408C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {D43DE53A-C925-465D-9631-4139618408C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {D43DE53A-C925-465D-9631-4139618408C0}.Release|Any CPU.Build.0 = Release|Any CPU
+        {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.Build.0 = Release|Any CPU
+        
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

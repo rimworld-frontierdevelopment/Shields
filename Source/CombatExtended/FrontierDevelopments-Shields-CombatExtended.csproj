@@ -17,7 +17,7 @@
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>../Integrations/</OutputPath>
+    <OutputPath>..\..\CombatExtended\1.2\Assemblies</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -26,7 +26,7 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>../Integrations/</OutputPath>
+    <OutputPath>..\..\CombatExtended\1.2\Assemblies</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,16 +34,16 @@
   <ItemGroup>
     <Reference Include="0Harmony, Version=2.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Harmony\Current\Assemblies\0Harmony.dll</HintPath>
+      <HintPath>..\..\..\Harmony\Current\Assemblies\0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FrontierDevelopment-Core">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\FrontierDevelopment-Core\Assemblies\Core.dll</HintPath>
+      <HintPath>..\..\..\FrontierDevelopment-Core\Assemblies\Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
+      <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="System" />
@@ -53,19 +53,23 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
     <Reference Include="UnityEngine">
-      <HintPath>..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\..\..\RimWorldWin_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>..\..\..\..\RimWorldWin_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="CombatExtended">
-      <HintPath>..\..\..\Mods\CombatExtended\Assemblies\CombatExtended.dll</HintPath>
+      <HintPath>..\..\..\CombatExtended\Assemblies\CombatExtended.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FrontierDevelopments-Shields">
-      <HintPath>..\Assemblies\FrontierDevelopments-Shields.dll</HintPath>
+      <HintPath>..\..\Assemblies\FrontierDevelopments-Shields.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="FrontierDevelopments-Shields">
+      <HintPath>..\..\1.2\Assemblies\FrontierDevelopments-Shields-1.2.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
@@ -73,7 +77,7 @@
     <Compile Include="CombatExtendedIntegration\Harmony\Harmony_ExplosionCE.cs" />
     <Compile Include="CombatExtendedIntegration\Harmony\Harmony_ProjectileCE.cs" />
     <Compile Include="CombatExtendedIntegration\Harmony\Harmony_Verb_LaunchProjectileCE.cs" />
-    <Compile Include="CombatExtendedIntegration\Harmony\Module.cs" />
+    <Compile Include="CombatExtendedIntegration\Module.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

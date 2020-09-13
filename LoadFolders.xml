@@ -3,5 +3,6 @@
                 <li>/</li>
                 <li>1.2/</li>
                 <li IfModActive="Mlie.CentralizedClimateControl">ClimateControl/1.2</li>
+                <li IfModActive="CETeam.CombatExtended">CombatExtended/1.2</li>
         </v1.2>
 </loadFolders>
