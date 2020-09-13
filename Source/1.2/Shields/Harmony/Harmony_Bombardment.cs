@@ -85,8 +85,6 @@ namespace FrontierDevelopments.Shields.Harmony
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
             {
-                var success = false;
-                
                 var patchPhase = 0;
         
                 foreach (var instruction in instructions)

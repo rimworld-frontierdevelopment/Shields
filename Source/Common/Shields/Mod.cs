@@ -1,6 +1,4 @@
 ﻿using System.Reflection;
-using FrontierDevelopments.Shields.Harmony;
-using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -21,12 +19,6 @@ namespace FrontierDevelopments.Shields
             
             var harmony = new HarmonyLib.Harmony("FrontierDevelopments.Shields");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
-
-            Harmony_Verb.BlacklistType(typeof(Verb_Bombardment));
-            
-            // support for Cargo Pod transport
-            Harmony_Skyfaller.WhitelistDef("HelicopterIncoming");
-            Harmony_Skyfaller.WhitelistDef("HelicopterLeaving");
 
             LoadOneTemperatureMod(harmony);
             new CombatExtendedIntegration().TryEnable(harmony);
