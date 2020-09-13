@@ -27,6 +27,19 @@
     <fd.settings.shield.scale-heat.label>Scale damage by shield heat</fd.settings.shield.scale-heat.label>
     <fd.settings.shield.scale-heat.description>Blocking damage requires less power when cold and a lot more power when hot. Also using Centralized Climate Control mod is recommended when using this</fd.settings.shield.scale-heat.description>
 
+    <!-- Performance Section -->
+    <fd.settings.shield.performance.heading>Performance</fd.settings.shield.performance.heading>
+    <fd.settings.shield.performance.description>Settings relating to performance. Disabling any will improve game performance at the cost of the AI not understanding what is shielded</fd.settings.shield.performance.description>
+
+    <fd.settings.shield.performance.target.label>Enable AI preference to shoot unshielded targets (Impact: Low)</fd.settings.shield.performance.target.label>
+    <fd.settings.shield.performance.target.description>Enabling allows the AI to prefer to shoot at targets that are unshielded</fd.settings.shield.performance.target.description>
+
+    <fd.settings.shield.performance.cast.label>Enable AI to attempt to shoot from shielded areas (Impact: High)</fd.settings.shield.performance.cast.label>
+    <fd.settings.shield.performance.cast.description>Enabling allows AI to find shielded areas to shoot from. Disabling will cause the AI to not consider shielding as part of cover calculation</fd.settings.shield.performance.cast.description>
+
+    <fd.settings.shield.performance.verb.label>Enable AI to check if their shot will hit a shield (Impact: Medium)</fd.settings.shield.performance.verb.label>
+    <fd.settings.shield.performance.verb.description>Enabling allows the AI to check their shotlines. Disabling will cause pawns to shoot friendly shields in combat and may cause hunters to endlessly shoot at shiels while hunting</fd.settings.shield.performance.verb.description>
+
     <!-- Power section -->
     <fd.settings.shield.power.heading>Power</fd.settings.shield.power.heading>
 

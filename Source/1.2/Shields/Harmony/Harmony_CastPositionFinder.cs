@@ -10,6 +10,8 @@ namespace FrontierDevelopments.Shields.Harmony
     {
         private static float CalculateShieldPreference(float score, Map map, IntVec3 start, IntVec3 end)
         {
+            if (!Mod.Settings.EnableAICastPositionFinder) return score;
+            
             var shieldManager = map.GetComponent<ShieldManager>();
 
             var startAdjusted = PositionUtility.ToVector3(start);

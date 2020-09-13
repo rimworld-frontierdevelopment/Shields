@@ -12,6 +12,8 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             static float Postfix(float __result, IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
             {
+                if (!Mod.Settings.EnableAIAttackTargetFinder) return __result;
+                
                 if (searcher.Thing.Map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(searcher.Thing.Position),
                     PositionUtility.ToVector3(target.Thing.Position)))
                 {

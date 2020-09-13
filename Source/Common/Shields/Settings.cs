@@ -5,15 +5,23 @@ namespace FrontierDevelopments.Shields
 {
     public class Settings : ModSettings
     {
+        private Vector2 _scrollPosition = Vector2.zero;
+        private const float ViewMargin = 20f;
+        private const int WindowHeight = 800;
+        
         // Integrations
         public bool EnableCentralizedClimateControlSupport = true;
         
         // General
         public bool EnableShootingOut = true;
-        public bool EnableShootingIn = false;
         public bool OverlapPassThrough = false;
         public bool ScaleOnHeat = true;
 
+        // Performance
+        public bool EnableAIAttackTargetFinder = true;
+        public bool EnableAICastPositionFinder = true;
+        public bool EnableAIVerbFindShotLine = true;
+        
         // Power
         // TODO include later maybe. rimworld's support for float settings is non-existant in A17 though
         public float PowerPerTile = 0.1f;
@@ -29,6 +37,8 @@ namespace FrontierDevelopments.Shields
         public bool EnableMinorThermalIncidents = true;
         public bool EnableMajorThermalIncidents = true;
         public bool EnableCriticalThermalIncidents = true;
+        
+        
 
         private static void Heading(Listing_Standard list, string text)
         {
@@ -38,11 +48,21 @@ namespace FrontierDevelopments.Shields
             Text.Font = GameFont.Small;
             list.Gap();
         }
+        
+        private static void TextContent(Listing_Standard list, string text)
+        {
+            list.Label(text);
+            list.Gap();
+        }
 
         public void DoWindowContents(Rect inRect)
         {
+            var contents = new Rect(ViewMargin, ViewMargin, inRect.size.x - ViewMargin, WindowHeight);
+            
+            Widgets.BeginScrollView(inRect, ref _scrollPosition, contents, true);
+            
             var list = new Listing_Standard();
-            list.Begin(inRect);
+            list.Begin(contents);
 
             // Integrations
             Heading(list, "fd.settings.shield.integrations.heading".Translate());
@@ -58,10 +78,6 @@ namespace FrontierDevelopments.Shields
                 ref EnableShootingOut, 
                 "fd.settings.shield.shootout.description".Translate());
             list.CheckboxLabeled(
-                "fd.settings.shield.shootin.label".Translate(),
-                ref EnableShootingIn,
-                "fd.settings.shield.shootin.description".Translate());
-            list.CheckboxLabeled(
                 "fd.settings.shield.overlap-passthrough.label".Translate(),
                 ref OverlapPassThrough,
                 "fd.settings.shield.overlap-passthrough.description".Translate());
@@ -69,6 +85,22 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.scale-heat.label".Translate(),
                 ref ScaleOnHeat,
                 "fd.settings.shield.scale-heat.description".Translate());
+            
+            // Performance
+            Heading(list, "fd.settings.shield.performance.heading".Translate());
+            TextContent(list, "fd.settings.shield.performance.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.performance.target.label".Translate(), 
+                ref EnableAIAttackTargetFinder, 
+                "fd.settings.shield.performance.target.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.performance.cast.label".Translate(), 
+                ref EnableAICastPositionFinder, 
+                "fd.settings.shield.performance.cast.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.performance.verb.label".Translate(), 
+                ref EnableAIVerbFindShotLine, 
+                "fd.settings.shield.performance.verb.description".Translate());
 
             // Power
             Heading(list, "fd.settings.shield.power.heading".Translate());
@@ -131,7 +163,9 @@ namespace FrontierDevelopments.Shields
                     ref EnableCriticalThermalIncidents, 
                     "fd.settings.shield.critical_thermal_incidents.description".Translate());
             }
+
             list.End();
+            Widgets.EndScrollView();
         }
 
         public override void ExposeData()
@@ -139,7 +173,6 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
             
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
-            Scribe_Values.Look(ref EnableShootingIn, "enableShootingIn", false);
             Scribe_Values.Look(ref OverlapPassThrough, "overlapPassThrough", false);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
 
@@ -154,6 +187,10 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref EnableMinorThermalIncidents, "EnableMinorThermalIncidents", true);
             Scribe_Values.Look(ref EnableMajorThermalIncidents, "EnableMajorThermalIncidents", true);
             Scribe_Values.Look(ref EnableCriticalThermalIncidents, "EnableCriticalThermalIncidents", true); 
+            
+            Scribe_Values.Look(ref EnableAIAttackTargetFinder, "EnableAIAttackTargetFinder", true);
+            Scribe_Values.Look(ref EnableAICastPositionFinder, "EnableAICastPositionFinder", true);
+            Scribe_Values.Look(ref EnableAIVerbFindShotLine, "EnableAIVerbFindShotLine", true); 
         }
     }
 }
