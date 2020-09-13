@@ -2,15 +2,6 @@
 <LanguageData>
 
     <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
-    
-     <!-- Integrations Section -->
-    <fd.settings.shield.integrations.heading>Integrations</fd.settings.shield.integrations.heading>
-
-    <fd.settings.shield.climatecontrol.label>Activer l'utilisation du mod Contrôle Centralisé du Climat (Nécessite de relancer le jeu)</fd.settings.shield.climatecontrol.label>
-    <fd.settings.shield.climatecontrol.description>Activer le refroidissement des boucliers avec les tuyaux de Contrôle Centralisé du Climat</fd.settings.shield.climatecontrol.description>
-
-    <fd.settings.shield.redistheat.label>Activer l'utilisation de RedistHeat (Nécessite de relancer le jeu)</fd.settings.shield.redistheat.label>
-    <fd.settings.shield.redistheat.description>Activer le refroidissement des boucliers avec les conduites de RedistHeat </fd.settings.shield.redistheat.description>
 
     <!-- General section -->
     <fd.settings.shield.general.heading>Général</fd.settings.shield.general.heading>

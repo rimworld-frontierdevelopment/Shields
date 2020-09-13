@@ -2,15 +2,6 @@
 <LanguageData>
     
     <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
-    
-    <!-- Integrations Section -->
-    <fd.settings.shield.integrations.heading>Integrationen</fd.settings.shield.integrations.heading>
-
-    <fd.settings.shield.climatecontrol.label>Aktiviere 'Centralized Climate Control' (erfordert einen Neustart des Spiel!)</fd.settings.shield.climatecontrol.label>
-    <fd.settings.shield.climatecontrol.description>Aktiviert die Kühlung der Schilder durch 'Centralized Climate Control'</fd.settings.shield.climatecontrol.description>
-
-    <fd.settings.shield.redistheat.label>Aktiviere RedistHeat Unterstützung (erfordert einen Neustart des Spiel!)</fd.settings.shield.redistheat.label>
-    <fd.settings.shield.redistheat.description>Aktiviert die Kühlung der Schilder durch RedistHeat</fd.settings.shield.redistheat.description>
 
     <!-- General section -->
     <fd.settings.shield.general.heading>Allgemein</fd.settings.shield.general.heading>

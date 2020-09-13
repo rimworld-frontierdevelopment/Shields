@@ -2,15 +2,6 @@
 <LanguageData>
     
     <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
-    
-    <!-- Integrations Section -->
-    <fd.settings.shield.integrations.heading>Integrations</fd.settings.shield.integrations.heading>
-
-    <fd.settings.shield.climatecontrol.label>Enable Centralized Climate Control support (requires game restart!)</fd.settings.shield.climatecontrol.label>
-    <fd.settings.shield.climatecontrol.description>Enables cooling of shields with Centralized Climate Control pipes</fd.settings.shield.climatecontrol.description>
-
-    <fd.settings.shield.redistheat.label>Enable RedistHeat support (requires game restart!)</fd.settings.shield.redistheat.label>
-    <fd.settings.shield.redistheat.description>Enables cooling of shields with RedistHeat duct work</fd.settings.shield.redistheat.description>
 
     <!-- General section -->
     <fd.settings.shield.general.heading>General</fd.settings.shield.general.heading>

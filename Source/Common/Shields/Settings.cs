@@ -7,10 +7,7 @@ namespace FrontierDevelopments.Shields
     {
         private Vector2 _scrollPosition = Vector2.zero;
         private const float ViewMargin = 20f;
-        private const int WindowHeight = 800;
-        
-        // Integrations
-        public bool EnableCentralizedClimateControlSupport = true;
+        private const int WindowHeight = 720;
         
         // General
         public bool EnableShootingOut = true;
@@ -64,13 +61,6 @@ namespace FrontierDevelopments.Shields
             var list = new Listing_Standard();
             list.Begin(contents);
 
-            // Integrations
-            Heading(list, "fd.settings.shield.integrations.heading".Translate());
-            list.CheckboxLabeled(
-                "fd.settings.shield.climatecontrol.label".Translate(), 
-                ref EnableCentralizedClimateControlSupport, 
-                "fd.settings.shield.climatecontrol.description".Translate());
-            
             // General
             Heading(list, "fd.settings.shield.general.heading".Translate());
             list.CheckboxLabeled(
@@ -170,8 +160,6 @@ namespace FrontierDevelopments.Shields
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
-            
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref OverlapPassThrough, "overlapPassThrough", false);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
