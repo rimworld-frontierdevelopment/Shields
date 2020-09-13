@@ -41,7 +41,9 @@ to shoot through shields that belong to their own faction. AI will prioritize sh
 prefer to take cover in areas that are shielded.
 
 Tradeships will never shoot cargo pods into an area even if a shield is currently down. Raiders will not attempt to 
-enter via drop pods in shielded areas. 
+enter via drop pods in shielded areas.
+
+Pawns will attempt to flee from orbital bombarbments.
 
 #### Options:
 - Shooting out
@@ -66,9 +68,9 @@ enter via drop pods in shielded areas.
 - No known mod conflicts
 
 ## Mods supported:
+- Combat Extended: Integrated support handles CE automatically
 - Crash Landing: Blocks crashing ship parts
 - Centralized Climate Control: Cool shields with pipes
-- RedistHeat: Cool shields with duct work
 
 ## Contributions
 
