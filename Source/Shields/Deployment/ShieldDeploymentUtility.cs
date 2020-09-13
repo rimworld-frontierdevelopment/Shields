@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General.Energy;
 using FrontierDevelopments.Shields.Comps;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 

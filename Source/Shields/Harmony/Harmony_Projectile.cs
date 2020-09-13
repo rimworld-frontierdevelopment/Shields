@@ -2,7 +2,7 @@
 using System.Reflection;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
-using Harmony;
+using HarmonyLib;
 using UnityEngine;
 using Verse;
 
@@ -142,7 +142,7 @@ namespace FrontierDevelopments.Shields.Harmony
                         }
                         case 1:
                         {
-                            if (instruction.opcode == OpCodes.Brfalse)
+                            if (instruction.opcode == OpCodes.Brfalse_S)
                             {
                                 instruction.operand = shieldTestLabel;
                                 patchPhase = 2;
@@ -194,6 +194,11 @@ namespace FrontierDevelopments.Shields.Harmony
                     }
 
                     yield return instruction;
+                }
+
+                if (patchPhase > 0)
+                {
+                    Log.Error("Patch for Projectile.Tick failed. Reached patchPhase: " + patchPhase);
                 }
             }
         }

@@ -3,7 +3,7 @@ using System.Linq;
 using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Energy;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using UnityEngine;

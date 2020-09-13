@@ -3,7 +3,7 @@ using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -22,7 +22,7 @@ namespace FrontierDevelopments.Shields.Harmony
             return map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(position));
         }
         
-        [HarmonyPatch(typeof(Bombardment), "CreateRandomExplosion")]
+        [HarmonyPatch(typeof(Bombardment), "GetNextExplosionCell")]
         static class Patch_CreateRandomExplosion
         {
             [HarmonyTranspiler]
@@ -71,6 +71,11 @@ namespace FrontierDevelopments.Shields.Harmony
                     
                     yield return instruction;
                 }
+                
+                if (patchPhase > 0)
+                {
+                    Log.Error("Patch for Bombardment.GetNextExplosionCell failed. Reached patchPhase: " + patchPhase);
+                }
             }
         }
 
@@ -80,8 +85,10 @@ namespace FrontierDevelopments.Shields.Harmony
             [HarmonyTranspiler]
             static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
             {
+                var success = false;
+                
                 var patchPhase = 0;
-
+        
                 foreach (var instruction in instructions)
                 {
                     switch (patchPhase)
@@ -100,21 +107,28 @@ namespace FrontierDevelopments.Shields.Harmony
                         {
                             var continueLabel = il.DefineLabel();
                             var localMap = il.DeclareLocal(typeof(Map));
-
+                            var localCoord = il.DeclareLocal(typeof(IntVec3));
+        
                             yield return new CodeInstruction(OpCodes.Stloc, localMap.LocalIndex);
+                            yield return new CodeInstruction(OpCodes.Stloc, localCoord.LocalIndex);
                             yield return new CodeInstruction(OpCodes.Ldloc, localMap.LocalIndex);
-                            yield return new CodeInstruction(OpCodes.Ldloc_0);
+                            yield return new CodeInstruction(OpCodes.Ldloc, localCoord.LocalIndex);
                             yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Bombardment), nameof(IsShielded)));
                             yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
-                            yield return new CodeInstruction(OpCodes.Pop);
                             yield return new CodeInstruction(OpCodes.Ret);
-                            yield return new CodeInstruction(OpCodes.Ldloc, localMap.LocalIndex) { labels =  new List<Label>(new [] { continueLabel })};
+                            yield return new CodeInstruction(OpCodes.Ldloc, localCoord.LocalIndex)  { labels =  new List<Label>(new [] { continueLabel })};
+                            yield return new CodeInstruction(OpCodes.Ldloc, localMap.LocalIndex);
                             patchPhase = -1;
                             break;
                         }
                     }
-
+        
                     yield return instruction;
+                }
+
+                if (patchPhase > 0)
+                {
+                    Log.Error("Patch for Bombardment.StartRandomFire failed. Reached patchPhase: " + patchPhase);
                 }
             }
         }
@@ -136,7 +150,7 @@ namespace FrontierDevelopments.Shields.Harmony
                         .ForEach(pawn =>
                         {
                             var threats = new List<Thing> { __instance };
-                            var fleeDest1 = CellFinderLoose.GetFleeDest(pawn, threats, pawn.Position.DistanceTo(__instance.Position) + Bombardment.EffectiveRadius);
+                            var fleeDest1 = CellFinderLoose.GetFleeDest(pawn, threats, pawn.Position.DistanceTo(__instance.Position) + Bombardment.EffectiveAreaRadius);
                             pawn.jobs.StartJob(new Job(JobDefOf.Flee, fleeDest1, (LocalTargetInfo) __instance), JobCondition.InterruptOptional, null, false, true, null, new JobTag?());
                         });
                     return false;

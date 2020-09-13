@@ -2,7 +2,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 using FrontierDevelopments.Shields.Harmony;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
@@ -18,7 +18,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
                 {
                     ((Action) (() =>
                             {
-                                var harmony = HarmonyInstance.Create("frontierdevelopment.shields");
+                                var harmony = new HarmonyLib.Harmony("frontierdevelopment.shields");
                                 var baseType = Type.GetType("CrashLanding.CrashPod, CrashLanding");
                                 var types = baseType.AllSubclassesNonAbstract();
                                 var blockingTypes = "";
