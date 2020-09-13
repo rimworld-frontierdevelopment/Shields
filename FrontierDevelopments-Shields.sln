@@ -11,6 +11,8 @@ Project("{D43DE53A-C925-465D-9631-4139618408C0}") = "FrontierDevelopments-Climat
 EndProject
 Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-CombatExtended", "Source\CombatExtended\FrontierDevelopments-Shields-CombatExtended.csproj", "{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}"
 EndProject
+Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-CrashLanding", "Source\CrashLanding\FrontierDevelopments-Shields-CrashLanding.csproj", "{35e141f4-5280-46dc-86d0-16e785630337}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
         {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.Build.0 = Release|Any CPU
+        {35e141f4-5280-46dc-86d0-16e785630337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {35e141f4-5280-46dc-86d0-16e785630337}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {35e141f4-5280-46dc-86d0-16e785630337}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {35e141f4-5280-46dc-86d0-16e785630337}.Release|Any CPU.Build.0 = Release|Any CPU
         
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using System.Reflection.Emit;
 using FrontierDevelopments.General;
@@ -11,10 +12,21 @@ namespace FrontierDevelopments.Shields.Harmony
     public class Harmony_Projectile
     {
         private static readonly List<string> BlacklistedDefs = new List<string>();
+        private static readonly List<Type> BlacklistedTypes = new List<Type>();
 
         public static void BlacklistDef(string def)
         {
             BlacklistedDefs.Add(def);
+        }
+        
+        public static void BlacklistType(Type type)
+        {
+            BlacklistedTypes.Add(type);
+        }
+
+        private static bool IsBlacklisted(Thing thing)
+        {
+            return BlacklistedDefs.Contains(thing.def.defName) || BlacklistedTypes.Contains(thing.GetType());
         }
 
         private static bool TryBlockProjectile(
@@ -47,7 +59,7 @@ namespace FrontierDevelopments.Shields.Harmony
             ShieldDamages damages)
         {
             var shieldManager = projectile.Map.GetComponent<ShieldManager>();
-            if (BlacklistedDefs.Contains(projectile.def.defName)) return null;
+            if (IsBlacklisted(projectile)) return null;
 
             if (flyOverhead)
             {
@@ -79,7 +91,7 @@ namespace FrontierDevelopments.Shields.Harmony
             ShieldDamages damages)
         {
             var shieldManager = projectile.Map.GetComponent<ShieldManager>();
-            if (BlacklistedDefs.Contains(projectile.def.defName)) return null;
+            if (IsBlacklisted(projectile)) return null;
 
             if (flyOverhead)
             {
