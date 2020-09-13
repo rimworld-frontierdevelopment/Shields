@@ -12,6 +12,8 @@ namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Bombardment
     {
+        private const float PawnFleeDistance = 24f;
+
         private static bool ShouldStop(Map map, IntVec3 center)
         {
             return map.GetComponent<ShieldManager>().Block(PositionUtility.ToVector3(center), Mod.Settings.SkyfallerDamage);
@@ -143,7 +145,7 @@ namespace FrontierDevelopments.Shields.Harmony
                         .Select(p => (Pawn)p)
                         .Where(p => !p.Downed && !p.Dead && !p.Drafted)
                         .Where(p => p.CurJobDef != JobDefOf.Flee && !p.Downed)
-                        .Where(p => p.Position.DistanceTo(__instance.Position) <= 24.0f)
+                        .Where(p => p.Position.DistanceTo(__instance.Position) <= PawnFleeDistance)
                         .ToList()
                         .ForEach(pawn =>
                         {
