@@ -1,13 +1,22 @@
 using System.Collections.Generic;
+using System.Reflection;
 using CentralizedClimateControl;
-using Harmony;
+using HarmonyLib;
 using RimWorld;
 using Verse;
 
 namespace FrontierDevelopments.ClimateControl
 {
-    public class Module
+    public class Module : Verse.Mod
     {
+        public Module(ModContentPack content) : base(content)
+        {
+            Log.Message("Frontier Developments Shields :: Loading Centralized Climate Control (Continued) support");
+            
+            var harmony = new HarmonyLib.Harmony("FrontierDevelopment.Shields.ClimateControl");
+            harmony.PatchAll(Assembly.GetExecutingAssembly());
+        }
+
         [HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PostResolve))]
         class Patch_GenerateImpliedDefs_PostResolve
         {

@@ -7,6 +7,8 @@ Project("{F904D6F9-B6DC-4DC1-9631-BC581894C15C}") = "FrontierDevelopments-Shield
 EndProject
 Project("{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}") = "FrontierDevelopments-Shields-1.2", "Source\1.2\FrontierDevelopments-Shields-1.2.csproj", "{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}"
 EndProject
+Project("{D43DE53A-C925-465D-9631-4139618408C0}") = "FrontierDevelopments-ClimateControl", "Source\ClimateControl\FrontierDevelopments-Shields-ClimateControl.csproj", "{D43DE53A-C925-465D-9631-4139618408C0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
         {12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Release|Any CPU.Build.0 = Release|Any CPU
+        {D43DE53A-C925-465D-9631-4139618408C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {D43DE53A-C925-465D-9631-4139618408C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {D43DE53A-C925-465D-9631-4139618408C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {D43DE53A-C925-465D-9631-4139618408C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

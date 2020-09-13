@@ -20,26 +20,7 @@ namespace FrontierDevelopments.Shields
             var harmony = new HarmonyLib.Harmony("FrontierDevelopments.Shields");
             harmony.PatchAll(Assembly.GetExecutingAssembly());
 
-            LoadOneTemperatureMod(harmony);
             new CombatExtendedIntegration().TryEnable(harmony);
-        }
-
-        private void LoadOneTemperatureMod(HarmonyLib.Harmony harmony)
-        {
-            foreach (var mod in ModsConfig.ActiveModsInLoadOrder)
-            {
-                switch (mod.Name)
-                {
-                    case CentralizedClimateControlName:
-                        if (!Settings.EnableCentralizedClimateControlSupport)
-                        {
-                            Log.Message("Frontier Developments Shields :: disabling Centralized Climate Control support");
-                            continue;
-                        }
-                        new ClimateControlIntegration().TryEnable(harmony);
-                        return;
-                }
-            }
         }
 
         public override string SettingsCategory()
