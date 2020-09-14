@@ -36,6 +36,9 @@ namespace FrontierDevelopments.Shields.Harmony
             int ticksToImpact,
             Vector3 origin)
         {
+            // allow projectiles that have no damage components through
+            if (projectile.def?.projectile?.damageDef == null) return false;
+
             var damages = new ShieldDamages(
                 new ShieldDamage(
                     projectile.def.projectile.damageDef,
