@@ -9,11 +9,27 @@
   <fd.settings.shield.shootout.label>有効：外への射撃</fd.settings.shield.shootout.label>
   <fd.settings.shield.shootout.description>シールド内からの射撃をシールドの外に対して通すようにします。</fd.settings.shield.shootout.description>
 
+  <fd.settings.shield.shootin.label>有効：自分のシールドへ攻撃</fd.settings.shield.shootin.label>
+  <fd.settings.shield.shootin.description>入植者が自分達のシールドに発砲することを許可します(テスト用で通常のゲームではお勧めしません!)</fd.settings.shield.shootin.description>
+
   <fd.settings.shield.overlap-passthrough.label>有効：シールド重複を透過</fd.settings.shield.overlap-passthrough.label>
   <fd.settings.shield.overlap-passthrough.description>射撃や爆発が重なっているシールドの領域を通過できるようにします。</fd.settings.shield.overlap-passthrough.description>
 
   <fd.settings.shield.scale-heat.label>シールド放熱状態で消費電力変動</fd.settings.shield.scale-heat.label>
-  <fd.settings.shield.scale-heat.description>ダメージをブロックするとシールド内部が涼しいときは消費電力が少なく、熱くなるとさらに多くの電力を消費します。また、これを使用する場合は、「Centralized Climate Control」Modを使用することをお勧めします</fd.settings.shield.scale-heat.description>
+  <fd.settings.shield.scale-heat.description>ダメージをブロックするとシールド内部が涼しいときは消費電力が少なく、熱くなるとさらに多くの電力を消費します。また、これを使用する場合は、「Centralized-Climate-Control」Modを使用することをお勧めします</fd.settings.shield.scale-heat.description>
+
+  <!-- Performance Section -->
+  <fd.settings.shield.performance.heading>パフォーマンス</fd.settings.shield.performance.heading>
+  <fd.settings.shield.performance.description>ゲームの重さに関連する設定です。どれかを無効にすると、シールド対象をAIが判定できなくなる代償を支払うことでゲームのパフォーマンスが向上します。</fd.settings.shield.performance.description>
+
+  <fd.settings.shield.performance.target.label>有効：AIは射撃可能な未シールド目標の攻撃を優先する（影響:低)</fd.settings.shield.performance.target.label>
+  <fd.settings.shield.performance.target.description>有効にすると、AIはシールドされていないターゲットを優先的に射撃することが可能です。</fd.settings.shield.performance.target.description>
+
+  <fd.settings.shield.performance.cast.label>有効：シールドエリアを遮蔽として使用する攻撃を考慮可能（影響:高)</fd.settings.shield.performance.cast.label>
+  <fd.settings.shield.performance.cast.description>有効にすると、AIは遮蔽物として利用できるシールドエリアを探すことが可能です。無効化すると、カバー計算の一要素としてシールドを考慮しなくなります。</fd.settings.shield.performance.cast.description>
+
+  <fd.settings.shield.performance.verb.label>有効：AIは攻撃がシールドに命中するか確認可能（影響：中）</fd.settings.shield.performance.verb.label>
+  <fd.settings.shield.performance.verb.description>有効にすると、AIは射線を確認可能です。これを無効化すると、戦闘時にポーンが友好的なシールドを無視して攻撃するようになり、動物の狩猟中にハンターがシールドを際限なく撃つようになります。</fd.settings.shield.performance.verb.description>
 
   <!-- Power section -->
   <fd.settings.shield.power.heading>電力</fd.settings.shield.power.heading>
