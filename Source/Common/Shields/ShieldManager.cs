@@ -24,7 +24,7 @@ namespace FrontierDevelopments.Shields
             _shields.Remove(shield);
         }
 
-        private IEnumerable<IShield> Shields => _shields;
+        public IEnumerable<IShield> Shields => _shields;
 
         public Vector3? Block(
             Vector3 origin, 

@@ -61,6 +61,11 @@
     <fd.settings.shield.critical_thermal_incidents.label>Enable critical thermal incidents</fd.settings.shield.critical_thermal_incidents.label>
     <fd.settings.shield.critical_thermal_incidents.description>Incidents can affect the shield, power network, and map</fd.settings.shield.critical_thermal_incidents.description>
     
+    <!-- Alerts /////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+    <fd.shields.alert.lowpower.label>Shields are offline due to low power</fd.shields.alert.lowpower.label>
+    <fd.shields.alert.lowpower.description>{0} Shield(s) are offline due to low power. Shields need to be connected to power networks with batteries with atleast {1} stored power to work</fd.shields.alert.lowpower.description>
+
     <!-- Incidents //////////////////////////////////////////////////////////////////////////////////////////////////-->
     
     <fd.shields.incident.offline.body>A shield generator has gone offline</fd.shields.incident.offline.body>
