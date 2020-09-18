@@ -26,14 +26,6 @@ Build shields. Stop bullets, rockets, explosions, drop pods, meteorites, super s
 - Stop movement of pawns in or out of the shields
 - Stop fires
 
-#### Sizes
-- Shields come in three sizes:
-  - small (3m)
-  - medium (3m - 10m)
-  - large (5m - 25m)
-- The small shield is minifiable and portable and contains an internal battery (1000 Wd, 50% efficient)
-- Larger shields can soak more heat before the shield collapses
-
 #### AI
 
 The AI has been modified to be aware of shields. Colonists will not attempt to hunt through shields. AI will not attempt
@@ -43,29 +35,7 @@ prefer to take cover in areas that are shielded.
 Tradeships will never shoot cargo pods into an area even if a shield is currently down. Raiders will not attempt to 
 enter via drop pods in shielded areas.
 
-Pawns will attempt to flee from orbital bombarbments.
-
-#### Options:
-- Shooting out
-- Pass through connected shields
-- Energy per damage
-- Heat
-  - Enable heat
-  - Heat per damage
-  - Power requirement scaling on heat
-  - Enable/disable any of the heat failures
-
-#### Languages
-- English
-- Français (French)
-- 日本語 (Japanese)
-- Pусский (Russian)
-- Español (Spanish)
-- Deutsch (German)
-
-#### Compatibility:
-- Can be added to existing games
-- No known mod conflicts
+Pawns will attempt to flee from orbital bombardments.
 
 ## Mods supported:
 - Combat Extended: Integrated support handles CE automatically
@@ -76,11 +46,6 @@ Pawns will attempt to flee from orbital bombarbments.
 
 Contributions will be credited to the authors. Merged contributions will be owned by the mod itself (important for 
 future license changes, but we anticipate that never happening).
-
-### Localization
-
-We want to support as many languages as possible. If you would like to submit translations please submit them as pull 
-request.
 
 ### Extending
 
