@@ -16,6 +16,10 @@
 		</li>
 	</modDependencies>
 	<incompatibleWith>
+		<!-- support is needed in our end. https://github.com/rimworld-frontierdevelopment/Shields/issues/76 -->
+		<li>rwmt.Multiplayer</li>
+		<!-- their code needs to stabilize before we can add support -->
+		<li>majorhoff.rimthreaded</li>
 	</incompatibleWith>
 	<loadAfter>
 		<li>brrainz.harmony</li>
