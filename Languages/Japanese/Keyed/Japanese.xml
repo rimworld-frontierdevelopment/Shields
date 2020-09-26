@@ -12,9 +12,6 @@
   <fd.settings.shield.shootin.label>有効：自分のシールドへ攻撃</fd.settings.shield.shootin.label>
   <fd.settings.shield.shootin.description>入植者が自分達のシールドに発砲することを許可します(テスト用で通常のゲームではお勧めしません!)</fd.settings.shield.shootin.description>
 
-  <fd.settings.shield.overlap-passthrough.label>有効：シールド重複を透過</fd.settings.shield.overlap-passthrough.label>
-  <fd.settings.shield.overlap-passthrough.description>射撃や爆発が重なっているシールドの領域を通過できるようにします。</fd.settings.shield.overlap-passthrough.description>
-
   <fd.settings.shield.scale-heat.label>シールド放熱状態で消費電力変動</fd.settings.shield.scale-heat.label>
   <fd.settings.shield.scale-heat.description>ダメージをブロックするとシールド内部が涼しいときは消費電力が少なく、熱くなるとさらに多くの電力を消費します。また、これを使用する場合は、「Centralized-Climate-Control」Modを使用することをお勧めします</fd.settings.shield.scale-heat.description>
 

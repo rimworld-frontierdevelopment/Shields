@@ -38,7 +38,7 @@ namespace FrontierDevelopments.Shields
                 {
                     if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(ray, limit);
-                    if (point != null && !ShouldPassThrough(shield, point.Value) && shield.Block(damage, point.Value) >= damage)
+                    if (point != null && shield.Block(damage, point.Value) >= damage)
                     {
                         return point.Value;
                     }
@@ -48,20 +48,6 @@ namespace FrontierDevelopments.Shields
             return null;
         }
 
-        private bool ShouldPassThrough(IShield shield, Vector3 position)
-        {
-            if (Mod.Settings.OverlapPassThrough)
-            {
-                foreach (var otherShield in Shields)
-                {
-                    if (shield == otherShield) continue;
-                    if (otherShield.Collision(position))
-                        return true;
-                }
-            }
-            return false;
-        }
-        
         public Vector3? Block(
             Vector3 origin,
             Vector3 position,
@@ -72,7 +58,7 @@ namespace FrontierDevelopments.Shields
             {
                 foreach(var shield in Shields)
                 {
-                    if(shield == null || !shield.IsActive() || ShouldPassThrough(shield, position) || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
+                    if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(position, end);
                     if (point != null && shield.Block(damage, point.Value) >= damage)
                     {
@@ -94,7 +80,7 @@ namespace FrontierDevelopments.Shields
             {
                 foreach(var shield in Shields)
                 {
-                    if(shield == null || !shield.IsActive() || ShouldPassThrough(shield, position) || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
+                    if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(origin)) continue;
                     var point = shield.Collision(position, end);
                     if (point != null && shield.Block(damages, point.Value) >= damages.Damage)
                     {
@@ -113,7 +99,7 @@ namespace FrontierDevelopments.Shields
                 if(shield == null || !shield.IsActive() || Mod.Settings.EnableShootingOut && shield.Collision(start)) continue;
                 if (friendly != null && shield.Faction != friendly) continue;
                 var position = shield.Collision(start, end);
-                if (position != null && !ShouldPassThrough(shield, position.Value))
+                if (position != null)
                 {
                     yield return shield;
                 }
@@ -144,7 +130,6 @@ namespace FrontierDevelopments.Shields
                 foreach (var shield in Shields)
                 {
                     if (shield?.IsActive() == true
-                        && !ShouldPassThrough(shield, position)
                         && shield.Collision(position)
                         && shield.Block(damage, position) >= damage)
                     {
@@ -163,7 +148,6 @@ namespace FrontierDevelopments.Shields
                 foreach (var shield in Shields)
                 {
                     if (shield?.IsActive() == true
-                        && !ShouldPassThrough(shield, position)
                         && !shield.Collision(origin)
                         && shield.Collision(position)
                         && shield.Block(damage, position) >= damage)
@@ -183,7 +167,6 @@ namespace FrontierDevelopments.Shields
                 foreach (var shield in Shields)
                 {
                     if (shield?.IsActive() == true
-                        && !ShouldPassThrough(shield, position)
                         && !shield.Collision(origin)
                         && shield.Collision(position)
                         && shield.Block(damages, position) >= damages.Damage)
