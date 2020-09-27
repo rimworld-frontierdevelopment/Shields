@@ -13,6 +13,8 @@ Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-Combat
 EndProject
 Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-CrashLanding", "Source\CrashLanding\FrontierDevelopments-Shields-CrashLanding.csproj", "{35e141f4-5280-46dc-86d0-16e785630337}"
 EndProject
+Project("{bedffc19-216d-40ea-a162-c67ecac62de7}") = "FrontierDevelopments-SRTS-Expanded", "Source\SRTS-Expanded\FrontierDevelopments-Shields-SRTS-Expanded.csproj", "{bedffc19-216d-40ea-a162-c67ecac62de7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,7 +41,10 @@ Global
         {35e141f4-5280-46dc-86d0-16e785630337}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {35e141f4-5280-46dc-86d0-16e785630337}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {35e141f4-5280-46dc-86d0-16e785630337}.Release|Any CPU.Build.0 = Release|Any CPU
-        
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

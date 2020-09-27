@@ -5,5 +5,6 @@
                 <li IfModActive="Mlie.CentralizedClimateControl">ClimateControl/1.2</li>
                 <li IfModActive="CETeam.CombatExtended">CombatExtended/1.2</li>
                 <li IfModActive="Katavrik.CrashLanding">CrashLanding/1.2</li>
+                <li IfModActive="smashphil.neceros.srtsexpanded">SRTS-Expanded/1.2</li>
         </v1.2>
 </loadFolders>

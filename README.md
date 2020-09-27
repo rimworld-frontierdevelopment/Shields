@@ -41,6 +41,7 @@ Pawns will attempt to flee from orbital bombardments.
 - Combat Extended: Integrated support handles CE automatically
 - Crash Landing: Blocks crashing ship parts
 - Centralized Climate Control: Cool shields with pipes
+- SRTS-Expanded ships can land and leave from shields
 
 ## Contributions
 
