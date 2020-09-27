@@ -51,8 +51,11 @@
 		<placeWorkers>
 			<li>PlaceWorker_Heater</li>
 		</placeWorkers>
+		<inspectorTabs>
+			<li>FrontierDevelopments.Shields.ITab_Shield</li>
+		</inspectorTabs>
 	</ThingDef>
-	
+
 	<ThingDef Name="StationaryElectricShieldBase" ParentName="ElectricShieldBase" Abstract="True">
 		<thingCategories>
 			<li>Buildings</li>

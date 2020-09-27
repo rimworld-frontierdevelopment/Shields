@@ -96,6 +96,9 @@
     
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+    <!-- ITab -->
+    <FrontierDevelopments.Shields.ITab.Shield>Shield</FrontierDevelopments.Shields.ITab.Shield>
+
     <!-- Stats -->
     <FrontierDevelopments.Shields.Stats.Blocked.Label>Damage blocked</FrontierDevelopments.Shields.Stats.Blocked.Label>
     <FrontierDevelopments.Shields.Stats.Blocked.Desc>The amount of damage this shield has blocked over its lifetime.</FrontierDevelopments.Shields.Stats.Blocked.Desc>

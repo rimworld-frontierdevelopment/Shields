@@ -3,6 +3,7 @@ using System.Linq;
 using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Energy;
+using FrontierDevelopments.General.UI;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -332,5 +333,7 @@ namespace FrontierDevelopments.Shields.Buildings
         {
             Shield.FieldPostDraw();
         }
+
+        public IEnumerable<UiComponent> UiComponents => _shield.UiComponents;
     }
 }

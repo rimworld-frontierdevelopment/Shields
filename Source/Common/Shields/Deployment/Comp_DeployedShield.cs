@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using FrontierDevelopments.General.UI;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -132,5 +133,7 @@ namespace FrontierDevelopments.Shields.Comps
         {
             return "DeployedShield" + _id;
         }
+
+        public IEnumerable<UiComponent> UiComponents => _deployed.UiComponents;
     }
 }

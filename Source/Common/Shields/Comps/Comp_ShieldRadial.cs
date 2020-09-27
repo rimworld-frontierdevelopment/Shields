@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using FrontierDevelopments.General;
-using FrontierDevelopments.General.Windows;
+using FrontierDevelopments.General.UI;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -166,19 +166,20 @@ namespace FrontierDevelopments.Shields.Comps
                 isActive = () => _renderField,
                 toggleAction = () => _renderField = !_renderField
             };
+        }
 
-            if (parent.Faction == Faction.OfPlayer)
+        public IEnumerable<UiComponent> UiComponents
+        {
+            get
             {
-                if (Props.minRadius != Props.maxRadius)        
+                if (Props.minRadius != Props.maxRadius)
                 {
-                    yield return new Command_Action
-                    {
-                        icon = Resources.UiSetRadius,
-                        defaultDesc = "radius.description".Translate(),
-                        defaultLabel = "radius.label".Translate(),
-                        activateSound = SoundDef.Named("Click"),
-                        action = () => Find.WindowStack.Add(new Popup_IntSlider("radius.label".Translate(), Props.minRadius, Props.maxRadius, () => (int)SetRadius, size =>  SetRadius = size))
-                    };
+                    yield return new IntSlider(
+                        "radius.label".Translate(),
+                        Props.minRadius,
+                        Props.maxRadius,
+                        () => (int) SetRadius,
+                        size => SetRadius = size);
                 }
             }
         }

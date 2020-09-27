@@ -1,7 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General;
+using FrontierDevelopments.General.UI;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -79,5 +79,6 @@ namespace FrontierDevelopments.Shields
         IShieldResists Resists { get; }
         float DeploymentSize { get; }
         IEnumerable<Gizmo> ShieldGizmos { get; }
+        IEnumerable<UiComponent> UiComponents { get; }
     }
 }
