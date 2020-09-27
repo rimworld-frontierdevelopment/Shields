@@ -83,6 +83,7 @@ namespace FrontierDevelopments.Shields.Harmony
             static bool Prefix(Skyfaller __instance)
             {
                 if (__instance.Map != null 
+                    && !__instance.def.skyfaller.reversed
                     && __instance.ticksToImpact == ShieldHitPreDelay
                     && !whitelistedDefs.Contains(__instance.def.defName))
                 {
@@ -90,8 +91,6 @@ namespace FrontierDevelopments.Shields.Harmony
                     {
                         case DropPodIncoming incoming:
                             return HandlePod(incoming);
-                        case DropPodLeaving _:
-                            return true;
                         default:
                             return HandleGeneric(__instance);
                             
