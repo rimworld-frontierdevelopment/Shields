@@ -20,7 +20,7 @@ namespace FrontierDevelopments.Shields.Harmony
             whitelistedDefs.Add(defName);
         }
 
-        private static void KillPawns(IEnumerable<Pawn> pawns, Map map, IntVec3 position)
+        public static void KillPawns(IEnumerable<Pawn> pawns, Map map, IntVec3 position)
         {
             pawns.ToList().Do(pawn => KillPawn(pawn, map, position));
         }
@@ -73,6 +73,12 @@ namespace FrontierDevelopments.Shields.Harmony
             return true;
         }
 
+        public static bool? HandleOther(Skyfaller skyfaller, IShieldQueryWithIntersects shields)
+        {
+            // for allowing mod integrations to patch this
+            return null;
+        }
+
         [HarmonyPatch(typeof(Skyfaller), nameof(Skyfaller.Tick))]
         static class Patch_Tick
         {
@@ -86,6 +92,9 @@ namespace FrontierDevelopments.Shields.Harmony
                     var shields = new ShieldQuery(__instance.Map)
                         .IsActive()
                         .Intersects(PositionUtility.ToVector3WithY(__instance.Position, 0));
+
+                    var other = HandleOther(__instance, shields);
+                    if (other != null) return other.Value;
 
                     switch (__instance)
                     {

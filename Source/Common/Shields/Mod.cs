@@ -30,6 +30,11 @@ namespace FrontierDevelopments.Shields
         {
             Settings.DoWindowContents(inRect);
         }
+
+        public static void SetDropCellCheckEnabled(bool enabled)
+        {
+            // intentionally do nothing, patched with harmony in the version specific extension of the mod
+        }
     }
 
     [StaticConstructorOnStartup]
