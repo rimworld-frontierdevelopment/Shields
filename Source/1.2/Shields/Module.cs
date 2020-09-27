@@ -17,6 +17,11 @@ namespace FrontierDevelopments.Shields
             // support for Cargo Pod transport
             Harmony_Skyfaller.WhitelistDef("HelicopterIncoming");
             Harmony_Skyfaller.WhitelistDef("HelicopterLeaving");
+            
+            // support for Trader Ships
+            Harmony_Skyfaller.WhitelistDef("TraderShipsShipIncoming");
+            Harmony_Skyfaller.WhitelistDef("TraderShipsShipLeaving");
+            
         }
     }
 }
