@@ -181,7 +181,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool Collision(Vector3 vector)
         {
-            return Vector3.Distance(PositionUtility.ToVector3(ExactPosition), vector) < Radius + 0.5f;
+            return Vector3.Distance(PositionUtility.ToVector3(ExactPosition), vector) < Radius;
         }
 
         public Vector3? Collision(Ray ray, float limit)
