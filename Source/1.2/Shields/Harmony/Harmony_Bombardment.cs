@@ -16,12 +16,19 @@ namespace FrontierDevelopments.Shields.Harmony
 
         private static bool ShouldStop(Map map, IntVec3 center)
         {
-            return map.GetComponent<ShieldManager>().Block(PositionUtility.ToVector3(center), Mod.Settings.SkyfallerDamage);
+            return new ShieldQuery(map)
+                .IsActive()
+                .Intersects(PositionUtility.ToVector3(center))
+                .Block(Mod.Settings.SkyfallerDamage) != null;
         }
 
         private static bool IsShielded(Map map, IntVec3 position)
         {
-            return map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(position));
+            return new ShieldQuery(map)
+                .IsActive()
+                .Intersects(PositionUtility.ToVector3(position))
+                .Get()
+                .Any();
         }
         
         [HarmonyPatch(typeof(Bombardment), "GetNextExplosionCell")]

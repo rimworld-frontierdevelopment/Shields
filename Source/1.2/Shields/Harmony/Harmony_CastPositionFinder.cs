@@ -17,9 +17,9 @@ namespace FrontierDevelopments.Shields.Harmony
             var startAdjusted = PositionUtility.ToVector3(start);
             var endAdjusted = PositionUtility.ToVector3(end);
 
-            var targetProtected = shieldManager.WhichShielded(startAdjusted, endAdjusted).ToList();
-            var shooterProtected = shieldManager.WhichShielded(endAdjusted, startAdjusted).ToList();
-            var shooterUnderShield = shieldManager.WhichShielded(startAdjusted).ToList();
+            var targetProtected = shieldManager.Query().IsActive().Intersects(startAdjusted, endAdjusted).Get().ToList();
+            var shooterProtected = shieldManager.Query().IsActive().Intersects(endAdjusted, startAdjusted).Get().ToList();
+            var shooterUnderShield = shieldManager.Query().IsActive().Intersects(startAdjusted).Get().ToList();
 
             if (shooterProtected.Any())
             {

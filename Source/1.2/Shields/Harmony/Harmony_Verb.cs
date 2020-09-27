@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using FrontierDevelopments.General;
 using HarmonyLib;
 using Verse;
@@ -20,7 +21,16 @@ namespace FrontierDevelopments.Shields.Harmony
             if (!Mod.Settings.EnableAIVerbFindShotLine) return false;
             if (!verb.verbProps.requireLineOfSight) return false;
             if (UncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
-            return caster.Map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(source), PositionUtility.ToVector3(target.Cell), caster.Faction);
+
+            var friendlyShieldBlocks = new ShieldQuery(caster.Map)
+                .IsActive()
+                .FriendlyTo(caster.Faction)
+                .Intersects(
+                    PositionUtility.ToVector3(source),
+                    PositionUtility.ToVector3(target.Cell))
+                .Get()
+                .Any();
+            return friendlyShieldBlocks;
         }
 
         [HarmonyPatch(typeof(Verb), nameof(Verb.TryFindShootLineFromTo))]

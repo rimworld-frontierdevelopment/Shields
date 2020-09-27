@@ -14,10 +14,13 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             if (damType?.defName == null) return false;
             var damages = new ShieldDamages(new ShieldDamage(damType, damAmount));
-            return explosion.Map.GetComponent<ShieldManager>().Block(
-                explosion.TrueCenter(),
-                PositionUtility.ToVector3(position),
-                damages);
+            
+            var blocked = new ShieldQuery(explosion.Map)
+                .IsActive()
+                .Intersects(explosion.TrueCenter(), true)
+                .Intersects(PositionUtility.ToVector3(position))
+                .Block(damages) != null;
+            return blocked;
         }
 
         // Runs ahead of the standard check of cells to affect

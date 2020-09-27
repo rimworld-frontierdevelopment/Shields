@@ -191,6 +191,11 @@ namespace FrontierDevelopments.Shields.Comps
 
         public Vector3? Collision(Vector3 origin, Vector3 destination)
         {
+            if (Mod.Settings.EnableShootingOut && Collision(origin))
+            {
+                return null;
+            }
+
             var circleOrigin = PositionUtility.ToVector3(ExactPosition);
 
             var radius = Radius;

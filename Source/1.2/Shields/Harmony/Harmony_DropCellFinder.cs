@@ -1,4 +1,5 @@
-﻿using FrontierDevelopments.General;
+﻿using System.Linq;
+using FrontierDevelopments.General;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -9,7 +10,12 @@ namespace FrontierDevelopments.Shields.Harmony
     {
         private static bool CanPhysicallyDropIntoShielded(Map map, IntVec3 c)
         {
-            return !map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(c), false);
+            var shieldProtected = new ShieldQuery(map)
+                .Intersects(PositionUtility.ToVector3(c))
+                .Get()
+                .Any();
+
+            return !shieldProtected;
         }
         
         [HarmonyPatch(typeof(DropCellFinder), "CanPhysicallyDropInto")]

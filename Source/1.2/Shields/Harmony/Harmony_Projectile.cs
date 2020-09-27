@@ -45,43 +45,13 @@ namespace FrontierDevelopments.Shields.Harmony
                     projectile.def.projectile.GetDamageAmount(1f)));
             return TryBlock(
                 projectile,
-                currentPosition,
-                nextPosition,
+                // TODO might be able to calculate overhead projectiles in 3D
+                new Vector3(currentPosition.x, 0, currentPosition.z),
+                new Vector3(nextPosition.x, 0, nextPosition.z),
                 ticksToImpact,
                 origin,
                 projectile.def.projectile.flyOverhead,
                 damages) != null;
-        }
-
-        protected static Vector3? TryBlock(
-            Thing projectile,
-            Vector3 currentPosition,
-            int ticksToImpact,
-            Vector3 origin,
-            bool flyOverhead,
-            ShieldDamages damages)
-        {
-            var shieldManager = projectile.Map.GetComponent<ShieldManager>();
-            if (IsBlacklisted(projectile)) return null;
-
-            if (flyOverhead)
-            {
-                if (ticksToImpact <= 1)
-                {
-                    // fix for fire foam projectiles having 99999 damage
-                    if (projectile.def.defName == "Bullet_Shell_Firefoam")
-                    {
-                        damages.OverrideDamage = 10;
-                    }
-
-                    if (shieldManager.Block(
-                        PositionUtility.ToVector3(origin),
-                        PositionUtility.ToVector3(currentPosition),
-                        // TODO calculate mortar damage better
-                        damages)) return currentPosition;
-                }
-            }
-            return null;
         }
 
         protected static Vector3? TryBlock(
@@ -93,7 +63,6 @@ namespace FrontierDevelopments.Shields.Harmony
             bool flyOverhead,
             ShieldDamages damages)
         {
-            var shieldManager = projectile.Map.GetComponent<ShieldManager>();
             if (IsBlacklisted(projectile)) return null;
 
             if (flyOverhead)
@@ -106,24 +75,35 @@ namespace FrontierDevelopments.Shields.Harmony
                         damages.OverrideDamage = 10;
                     }
 
-                    if (shieldManager.Block(
-                        PositionUtility.ToVector3(origin),
-                        PositionUtility.ToVector3(currentPosition),
-                        // TODO calculate mortar damage better
-                        damages)) return currentPosition;
-                    return null;
+                    var blocked = TryBlockOverhead(projectile, origin, currentPosition, damages) != null;
+                    if (blocked) return currentPosition;
                 }
             }
             else
             {
-                return shieldManager.Block(
-                           PositionUtility.ToVector3(origin),
-                           PositionUtility.ToVector3(currentPosition),
-                           PositionUtility.ToVector3(nextPosition),
-                           damages);
+                return new ShieldQuery(projectile.Map)
+                    .IsActive()
+                    .Intersects(
+                        PositionUtility.ToVector3(currentPosition),
+                        PositionUtility.ToVector3(nextPosition))
+                    .Block(damages);
             }
 
             return null;
+        }
+        
+        protected static Vector3? TryBlockOverhead(
+            Thing projectile,
+            Vector3 origin,
+            Vector3 currentPosition,
+            ShieldDamages damages)
+        {
+            return new ShieldQuery(projectile.Map)
+                .IsActive()
+                .Intersects(origin, true)
+                .Intersects(currentPosition)
+                // TODO calculate mortar damage better
+                .Block(damages);
         }
 
         private static bool ShouldImpact(Projectile projectile)

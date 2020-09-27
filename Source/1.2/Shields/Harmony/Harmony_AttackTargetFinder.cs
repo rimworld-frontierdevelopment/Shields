@@ -1,3 +1,4 @@
+using System.Linq;
 using FrontierDevelopments.General;
 using HarmonyLib;
 using Verse;
@@ -13,9 +14,14 @@ namespace FrontierDevelopments.Shields.Harmony
             static float Postfix(float __result, IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
             {
                 if (!Mod.Settings.EnableAIAttackTargetFinder) return __result;
-                
-                if (searcher.Thing.Map.GetComponent<ShieldManager>().Shielded(PositionUtility.ToVector3(searcher.Thing.Position),
-                    PositionUtility.ToVector3(target.Thing.Position)))
+                var targetShielded = new ShieldQuery(searcher.Thing.Map)
+                    .IsActive()
+                    .Intersects(
+                        PositionUtility.ToVector3(searcher.Thing.Position),
+                        PositionUtility.ToVector3(target.Thing.Position))
+                    .Get()
+                    .Any();
+                if (targetShielded)
                 {
                     return __result / 2;
                 }
