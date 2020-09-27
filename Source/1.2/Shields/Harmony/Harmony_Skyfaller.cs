@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General;
 using HarmonyLib;
@@ -21,7 +20,12 @@ namespace FrontierDevelopments.Shields.Harmony
             whitelistedDefs.Add(defName);
         }
 
-        private static void KillPawn(Pawn pawn, IntVec3 position, Map map)
+        private static void KillPawns(IEnumerable<Pawn> pawns, Map map, IntVec3 position)
+        {
+            pawns.ToList().Do(pawn => KillPawn(pawn, map, position));
+        }
+
+        private static void KillPawn(Pawn pawn, Map map, IntVec3 position)
         {
             // spawn on map for just an instant
             GenPlace.TryPlaceThing(pawn, position, map, ThingPlaceMode.Near);
@@ -31,49 +35,41 @@ namespace FrontierDevelopments.Shields.Harmony
             TaleRecorder.RecordTale(LocalDefOf.KilledByImpactingOnShield, pawn, position, map);
         }
 
-        private static bool HandlePod(DropPodIncoming pod)
+        private static bool HandlePod(
+            Skyfaller pod,
+            ActiveDropPodInfo podInfo,
+            IShieldQueryWithIntersects shields,
+            float damage,
+            string messageBody = "fd.shields.incident.droppod.blocked.body")
         {
-            try
+            if (shields.Block(damage) != null)
             {
-                var podBlocked = new ShieldQuery(pod.Map)
-                    .IsActive()
-                    .Intersects(PositionUtility.ToVector3WithY(pod.Position, 0))
-                    .Block(Mod.Settings.DropPodDamage) != null;
-                
-                if (podBlocked)
-                {
-                    // OfType<Pawn>() causes weirdness here
-                    foreach (var pawn in pod.Contents.innerContainer.Where(p => p is Pawn).Select(p => (Pawn)p))
-                    {
-                        KillPawn(pawn, pod.Position, pod.Map);
-                    }
-                    pod.Destroy();
-                    Messages.Message("fd.shields.incident.droppod.blocked.body".Translate(), new GlobalTargetInfo(pod.Position, pod.Map), MessageTypeDefOf.NeutralEvent);
-                    return false;
-                }
+                KillPawns(podInfo.GetDirectlyHeldThings().OfType<Pawn>(), pod.Map, pod.Position);
+                Messages.Message(messageBody.Translate(),
+                    new GlobalTargetInfo(pod.Position, pod.Map),
+                    MessageTypeDefOf.NeutralEvent);
+                pod.Destroy();
+                return false;
             }
-            catch (InvalidOperationException) {}
             return true;
         }
 
-        private static bool HandleGeneric(Skyfaller skyfaller)
+        private static bool HandleGeneric(
+            Skyfaller skyfaller,
+            IShieldQueryWithIntersects shields,
+            float damage,
+            string messageBody = "fd.shields.incident.skyfaller.blocked.body")
         {
-            try
+            if (shields.Block(damage) != null)
             {
-                var skyfallerBlocked = new ShieldQuery(skyfaller.Map)
-                    .IsActive()
-                    .Intersects(PositionUtility.ToVector3WithY(skyfaller.Position, 0))
-                    .Block(Mod.Settings.SkyfallerDamage) != null;
-                if (skyfallerBlocked)
-                {
-                    skyfaller.def.skyfaller.impactSound?.PlayOneShot(
-                        SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
-                    Messages.Message("fd.shields.incident.skyfaller.blocked.body".Translate(), new GlobalTargetInfo(skyfaller.Position, skyfaller.Map), MessageTypeDefOf.NeutralEvent);
-                    skyfaller.Destroy();
-                    return false;
-                }
+                skyfaller.def.skyfaller.impactSound?.PlayOneShot(
+                    SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));
+                Messages.Message(messageBody.Translate(),
+                    new GlobalTargetInfo(skyfaller.Position, skyfaller.Map),
+                    MessageTypeDefOf.NeutralEvent);
+                skyfaller.Destroy();
+                return false;
             }
-            catch (InvalidOperationException) {}
             return true;
         }
 
@@ -87,13 +83,16 @@ namespace FrontierDevelopments.Shields.Harmony
                     && __instance.ticksToImpact == ShieldHitPreDelay
                     && !whitelistedDefs.Contains(__instance.def.defName))
                 {
+                    var shields = new ShieldQuery(__instance.Map)
+                        .IsActive()
+                        .Intersects(PositionUtility.ToVector3WithY(__instance.Position, 0));
+
                     switch (__instance)
                     {
-                        case DropPodIncoming incoming:
-                            return HandlePod(incoming);
+                        case IActiveDropPod incoming:
+                            return HandlePod(__instance, incoming.Contents, shields, Mod.Settings.DropPodDamage);
                         default:
-                            return HandleGeneric(__instance);
-                            
+                            return HandleGeneric(__instance, shields, Mod.Settings.SkyfallerDamage);
                     }
                 }
                 return true;
