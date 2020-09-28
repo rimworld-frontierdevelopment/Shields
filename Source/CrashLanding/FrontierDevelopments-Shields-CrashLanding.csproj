@@ -39,7 +39,7 @@
     </Reference>
     <Reference Include="FrontierDevelopment-Core">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\FrontierDevelopment-Core\Assemblies\Core.dll</HintPath>
+      <HintPath>..\..\Assemblies\Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
