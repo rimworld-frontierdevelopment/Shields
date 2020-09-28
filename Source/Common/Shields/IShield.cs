@@ -80,5 +80,6 @@ namespace FrontierDevelopments.Shields
         float DeploymentSize { get; }
         IEnumerable<Gizmo> ShieldGizmos { get; }
         IEnumerable<UiComponent> UiComponents { get; }
+        IEnumerable<ShieldSetting> ShieldSettings { get; set; }
     }
 }

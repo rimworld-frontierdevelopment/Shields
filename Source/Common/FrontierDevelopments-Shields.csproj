@@ -78,6 +78,8 @@
     <Compile Include="Shields\Settings.cs" />
     <Compile Include="Shields\ShieldManager.cs" />
     <Compile Include="Shields\IShieldResists.cs" />
+    <Compile Include="Shields\ShieldSetting.cs" />
+    <Compile Include="Shields\ShieldSettingsClipboard.cs" />
     <Compile Include="Shields\ShieldTargetingParams.cs" />
     <Compile Include="Shields\ShieldQuery.cs" />
     <Compile Include="Shields\ShieldUtility.cs" />

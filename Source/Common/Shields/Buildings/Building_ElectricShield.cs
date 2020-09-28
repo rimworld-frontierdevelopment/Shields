@@ -142,6 +142,18 @@ namespace FrontierDevelopments.Shields.Buildings
             return stringBuilder.ToString();
         }
 
+        public override IEnumerable<Gizmo> GetGizmos()
+        {
+            foreach (var gizmo in base.GetGizmos())
+            {
+                yield return gizmo;
+            }
+            foreach (var gizmo in ShieldGizmos)
+            {
+                yield return gizmo;
+            }
+        }
+        
         public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
         {
             foreach (var stat in base.SpecialDisplayStats())
@@ -178,7 +190,15 @@ namespace FrontierDevelopments.Shields.Buildings
         public bool OverTemperature => Heatsink.OverTemperature;
 
         public float Temp => Heatsink.Temp;
-        
+
+        public bool WantThermalShutoff
+        {
+            get =>  Heatsink.WantThermalShutoff;
+            set => Heatsink.WantThermalShutoff = value;
+        }
+
+        public bool ThermalShutoff => Heatsink.ThermalShutoff;
+
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
         // Energy Net
@@ -254,8 +274,24 @@ namespace FrontierDevelopments.Shields.Buildings
         public float CellProtectionFactor => Shield.CellProtectionFactor;
 
         public float DeploymentSize => _shield.DeploymentSize;
-        
-        public IEnumerable<Gizmo> ShieldGizmos => _shield.ShieldGizmos;
+
+        public IEnumerable<Gizmo> ShieldGizmos
+        {
+            get
+            {
+                foreach (var gizmo in _shield.ShieldGizmos)
+                {
+                    yield return gizmo;
+                }
+                if (Faction == Faction.OfPlayer)
+                {
+                    foreach (var gizmo in ShieldSettingsClipboard.Gizmos(this))
+                    {
+                        yield return gizmo;
+                    }
+                }
+            }
+        }
 
         public void SetParent(IShield shieldParent)
         {
@@ -335,5 +371,32 @@ namespace FrontierDevelopments.Shields.Buildings
         }
 
         public IEnumerable<UiComponent> UiComponents => _shield.UiComponents;
+
+        public IEnumerable<ShieldSetting> ShieldSettings
+        {
+            get
+            {
+                foreach (var setting in _shield.ShieldSettings)
+                {
+                    yield return setting;
+                }
+                yield return new ThermalShutoffSetting(Heatsink.WantThermalShutoff);
+            }
+            set
+            {
+                _shield.ShieldSettings = value;
+                value.Do(Apply);
+            }
+        }
+
+        private void Apply(ShieldSetting setting)
+        {
+            switch (setting)
+            {
+                case ThermalShutoffSetting thermalShutoff:
+                    WantThermalShutoff = thermalShutoff.Get();
+                    break;
+            }
+        }
     }
 }

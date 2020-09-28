@@ -135,5 +135,11 @@ namespace FrontierDevelopments.Shields.Comps
         }
 
         public IEnumerable<UiComponent> UiComponents => _deployed.UiComponents;
+
+        public IEnumerable<ShieldSetting> ShieldSettings
+        {
+            get => _deployed.ShieldSettings;
+            set => _deployed.ShieldSettings = value;
+        }
     }
 }

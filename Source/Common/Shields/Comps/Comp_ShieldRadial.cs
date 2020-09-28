@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using FrontierDevelopments.General;
+using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.General.UI;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -29,6 +31,7 @@ namespace FrontierDevelopments.Shields.Comps
     {
         private int? _id;
         private int _fieldRadius;
+        private int _wantRadius;
         private int _cellCount;
         private bool _renderField = true;
 
@@ -48,13 +51,14 @@ namespace FrontierDevelopments.Shields.Comps
         public float DeploymentSize => Props.deploymentSize;
 
         public string Label => parent.Label;
-        public IEnumerable<Gizmo> ShieldGizmos => CompGetGizmosExtra();
 
         public IShieldResists Resists => parent.TryGetComp<Comp_ShieldResistance>();
 
         private Vector3 ExactPosition => (PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter()).Yto0();
 
         private static int NextId => Find.UniqueIDsManager.GetNextThingID();
+
+        private bool WantFlick => _wantRadius != _fieldRadius;
 
         public void SetParent(IShield shieldParent)
         {
@@ -64,7 +68,7 @@ namespace FrontierDevelopments.Shields.Comps
         public override void Initialize(CompProperties compProperties)
         {
             base.Initialize(compProperties);
-            SetRadius = Props.maxRadius;
+            WantRadius = Props.maxRadius;
         }
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
@@ -94,23 +98,28 @@ namespace FrontierDevelopments.Shields.Comps
         public CompProperties_ShieldRadial Props => 
             (CompProperties_ShieldRadial)props;
 
-        public float SetRadius
+        public int WantRadius
         {
-            get => _fieldRadius;
+            get => _wantRadius;
             set
             {
                 if (value < 0)
                 {
-                    _fieldRadius = 0;
-                    return;
+                    _wantRadius = 0;
                 }
-                if (value > Props.maxRadius)
+                else if (value > Props.maxRadius)
                 {
-                    _fieldRadius = Props.maxRadius;
-                    return;
+                    _wantRadius = Props.maxRadius;
                 }
-                _fieldRadius = (int)value;
-                _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
+                else
+                {
+                    _wantRadius = value;
+                }
+
+                if (WantFlick)
+                    Comp_FlickBoard.EmitWantFlick(this);
+                else
+                    Comp_FlickBoard.EmitWantReset(this);
             }
         }
         
@@ -129,7 +138,12 @@ namespace FrontierDevelopments.Shields.Comps
                     return _fieldRadius;
                 }
             }
-            
+
+            set
+            {
+                _fieldRadius = (int)value;
+                _cellCount = GenRadial.NumCellsInRadius(value);
+            }
         }
 
         public override void CompTick()
@@ -152,20 +166,34 @@ namespace FrontierDevelopments.Shields.Comps
                 _warmingUpTicks--;
             }
         }
-
-        public override IEnumerable<Gizmo> CompGetGizmosExtra()
+        
+        public override void ReceiveCompSignal(string signal)
         {
-            foreach (var current in base.CompGetGizmosExtra())
-                yield return current;
-            
-            yield return new Command_Toggle
+            switch (signal)
             {
-                icon = Resources.UiToggleVisibility,
-                defaultDesc = "fd.shield.render_field.description".Translate(),
-                defaultLabel = "fd.shield.render_field.label".Translate(),
-                isActive = () => _renderField,
-                toggleAction = () => _renderField = !_renderField
-            };
+                case Comp_FlickBoard.SignalFlicked:
+                    Radius = WantRadius;
+                    break;
+                case Comp_FlickBoard.SignalReset:
+                    if(WantFlick)
+                        parent.BroadcastCompSignal(Comp_FlickBoard.SignalWant);
+                    break;
+            }
+        }
+
+        public IEnumerable<Gizmo> ShieldGizmos
+        {
+            get
+            {
+                yield return new Command_Toggle
+                {
+                    icon = Resources.UiToggleVisibility,
+                    defaultDesc = "fd.shield.render_field.description".Translate(),
+                    defaultLabel = "fd.shield.render_field.label".Translate(),
+                    isActive = () => _renderField,
+                    toggleAction = () => _renderField = !_renderField
+                };
+            }
         }
 
         public IEnumerable<UiComponent> UiComponents
@@ -178,8 +206,8 @@ namespace FrontierDevelopments.Shields.Comps
                         "radius.label".Translate(),
                         Props.minRadius,
                         Props.maxRadius,
-                        () => (int) SetRadius,
-                        size => SetRadius = size);
+                        () => WantRadius,
+                        size => WantRadius = size);
                 }
             }
         }
@@ -252,6 +280,7 @@ namespace FrontierDevelopments.Shields.Comps
         {
             Scribe_Values.Look(ref _id, "shieldRadialId");
             Scribe_Values.Look(ref _fieldRadius, "radius", Props.maxRadius);
+            Scribe_Values.Look(ref _wantRadius, "shieldRadialWantRadius", Props.maxRadius);
             Scribe_Values.Look(ref _renderField, "renderField", true);
             Scribe_Values.Look(ref _warmingUpTicks, "warmingUpTicks");
             Scribe_Values.Look(ref _activeLastTick, "activeLastTick");
@@ -318,7 +347,30 @@ namespace FrontierDevelopments.Shields.Comps
         {
             return "ShieldRadial" + _id;
         }
+
+        public IEnumerable<ShieldSetting> ShieldSettings
+        {
+            get
+            {
+                yield return new RadiusSetting(WantRadius);
+                yield return new RenderFieldSetting(_renderField);
+            }
+
+            set => value.Do(Apply);
+        }
+
+        private void Apply(ShieldSetting setting)
+        {
+            switch (setting)
+            {
+                case RadiusSetting radiusSetting:
+                    WantRadius = radiusSetting.Get();
+                    break;
+                case RenderFieldSetting renderFieldSetting:
+                    _renderField = renderFieldSetting.Get();
+                    break;
+            }
+        }
     }
-    
     
 }

@@ -64,6 +64,7 @@
 			<li Class="CompProperties_Power">
 				<compClass>CompPowerTrader</compClass>
 			</li>
+			<li Class="FrontierDevelopments.General.Comps.CompProperties_FlickBoard"/>
 		</comps>
 	</ThingDef>
 </Defs>
