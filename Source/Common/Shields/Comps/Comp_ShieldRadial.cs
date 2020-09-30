@@ -43,6 +43,8 @@ namespace FrontierDevelopments.Shields.Comps
         private bool _renderLast = true;
         private IntVec3 _positionLast;
 
+        private bool _resizingShield = false;
+        
         private IShield _parent;
 
         public Faction Faction => parent.Faction;
@@ -207,7 +209,8 @@ namespace FrontierDevelopments.Shields.Comps
                         Props.minRadius,
                         Props.maxRadius,
                         () => WantRadius,
-                        size => WantRadius = size);
+                        size => WantRadius = size,
+                        hasMouse => _resizingShield = hasMouse);
                 }
             }
         }
@@ -262,7 +265,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public override void PostDrawExtraSelectionOverlays()
         {
-            GenDraw.DrawRadiusRing(parent.Position, _fieldRadius);
+            GenDraw.DrawRadiusRing(parent.Position, _resizingShield ? WantRadius : _fieldRadius);
         }
 
         private IShield TryGetParent()

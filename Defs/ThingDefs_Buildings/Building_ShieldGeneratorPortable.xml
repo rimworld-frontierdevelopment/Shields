@@ -19,7 +19,6 @@
         <size>(1,1)</size>
         <uiIconPath>Things/Buildings/PortableShield</uiIconPath>
         <fillPercent>0.15</fillPercent>
-        <specialDisplayRadius>3</specialDisplayRadius>
         <passability>Standable</passability>
         <statBases>
             <MaxHitPoints>250</MaxHitPoints>

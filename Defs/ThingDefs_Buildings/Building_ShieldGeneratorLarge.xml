@@ -15,7 +15,6 @@
         <uiIconPath>Things/Buildings/ShieldGeneratorLarge</uiIconPath>
         <size>(2,2)</size>
         <fillPercent>0.5</fillPercent>
-        <specialDisplayRadius>25</specialDisplayRadius>
         <passability>Impassable</passability>
         <statBases>
             <MaxHitPoints>1000</MaxHitPoints>
