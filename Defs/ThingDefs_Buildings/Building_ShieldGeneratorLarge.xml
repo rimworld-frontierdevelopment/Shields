@@ -32,7 +32,7 @@
             <li Class="FrontierDevelopments.Shields.Comps.CompProperties_ShieldRadial">
                 <minRadius>5</minRadius>
                 <maxRadius>25</maxRadius>
-                <warmupTicks>20</warmupTicks>
+                <ticksPerExpansion>2</ticksPerExpansion>
                 <deploymentSize>6.0</deploymentSize>
             </li>
             <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.General.UI;
@@ -14,10 +15,10 @@ namespace FrontierDevelopments.Shields.Comps
     {
         public int minRadius;
         public int maxRadius;
-
+        
         public float powerPerTile = 0.1f;
 
-        public int warmupTicks;
+        public int ticksPerExpansion;
 
         public int deploymentSize;
 
@@ -75,6 +76,7 @@ namespace FrontierDevelopments.Shields.Comps
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
+            _fieldRadius = Props.maxRadius;
             _cellCount = GenRadial.NumCellsInRadius(_fieldRadius);
             _positionLast = parent.Position;
             _radiusLast = (int)Radius;
@@ -129,22 +131,35 @@ namespace FrontierDevelopments.Shields.Comps
         {
             get
             {
-                if (_warmingUpTicks > 0)
+                if (_warmingUpTicks != 0)
                 {
-                    var result = Mathf.Lerp(Props.maxRadius, 0f, 1.0f * _warmingUpTicks / Props.warmupTicks);
-                    if(result < _fieldRadius) return result;
-                    return _fieldRadius;
+                    var current = ((float)_fieldRadius * Props.ticksPerExpansion - _warmingUpTicks) / Props.ticksPerExpansion;
+                    var difference = _fieldRadius - current;
+                    var factor = difference / _warmingUpTicks / difference;
+                    if (_warmingUpTicks > 0)
+                    {
+                        return Mathf.Lerp(
+                            Math.Min(_fieldRadius, current),
+                            Math.Max(_fieldRadius, current),
+                            factor);
+                    } 
+                    return Mathf.Lerp(
+                        Math.Max(_fieldRadius, current),
+                        Math.Min(_fieldRadius, current),
+                        factor);
                 }
-                else
-                {
-                    return _fieldRadius;
-                }
+                return _fieldRadius;
             }
 
             set
             {
-                _fieldRadius = (int)value;
-                _cellCount = GenRadial.NumCellsInRadius(value);
+                var difference = value - _fieldRadius;
+                if (difference != 0)
+                {
+                    _fieldRadius = (int)value;
+                    _warmingUpTicks = (int)difference * Props.ticksPerExpansion;
+                    _cellCount = GenRadial.NumCellsInRadius(value);
+                }
             }
         }
 
@@ -156,16 +171,22 @@ namespace FrontierDevelopments.Shields.Comps
             var active = IsActive();
             if (active != _activeLastTick)
             {
-                if (active && _warmingUpTicks < Props.warmupTicks)
+                if (active)
                 {
-                    _warmingUpTicks = Props.warmupTicks;
+                    _warmingUpTicks = _fieldRadius * Props.ticksPerExpansion;
                 }
             }
             _activeLastTick = active;
 
-            if (active && _warmingUpTicks > 0)
+            if (active)
             {
-                _warmingUpTicks--;
+                if (_warmingUpTicks > 0)
+                {
+                    _warmingUpTicks--;
+                } else if (_warmingUpTicks < 0)
+                {
+                    _warmingUpTicks++;
+                }
             }
         }
         
