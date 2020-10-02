@@ -284,7 +284,14 @@ namespace FrontierDevelopments.Shields.Buildings
                             ApplyEfficiency(damage, temp) * Mod.Settings.PowerPerDamage
                         ) / Mod.Settings.PowerPerDamage;
             HandleBlockingHeat(drawn);
-            return UnapplyEfficiency(drawn, temp);
+            
+            // fix cases where floating point rounding causes the unapplied to be 0.00000001 shy of the damage
+            var unapplied = UnapplyEfficiency(drawn, temp);
+            if (damage - unapplied > 1f)
+            {
+                return damage;
+            }
+            return unapplied;
         }
 
         public float Block(float damage, Vector3 position)
