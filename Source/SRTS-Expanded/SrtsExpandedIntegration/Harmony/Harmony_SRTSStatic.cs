@@ -27,7 +27,7 @@ namespace FrontierDevelopments.Shields.SrtsExpandedIntegration.Harmony
             public IEnumerable<CodeInstruction> Apply(IEnumerable<CodeInstruction> instructions)
             {
                 var original = instructions.ToList();
-                var patched = SwapTargeterCalls(AddStoreLocalCaravan(original)).ToList();
+                var patched = SwapTargeterCalls(AddStoreShipFaction(original)).ToList();
                 
                 if (storedFaction && swappedTargetCounts > 0)
                 {
@@ -40,7 +40,7 @@ namespace FrontierDevelopments.Shields.SrtsExpandedIntegration.Harmony
                 }
             }
 
-            private IEnumerable<CodeInstruction> AddStoreLocalCaravan(IEnumerable<CodeInstruction> instructions)
+            private IEnumerable<CodeInstruction> AddStoreShipFaction(IEnumerable<CodeInstruction> instructions)
             {
                 foreach (var instruction in instructions)
                 {
@@ -50,7 +50,7 @@ namespace FrontierDevelopments.Shields.SrtsExpandedIntegration.Harmony
                         storedFaction = true;
                         yield return instruction;
                         yield return new CodeInstruction(OpCodes.Dup);
-                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Property(typeof(Caravan), nameof(Caravan.Faction)).GetGetMethod());
+                        yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_SRTSStatic), nameof(Harmony_SRTSStatic.GetCaravanFaction)));
                         yield return new CodeInstruction(OpCodes.Stloc, faction);
                     }
                     else
@@ -84,6 +84,16 @@ namespace FrontierDevelopments.Shields.SrtsExpandedIntegration.Harmony
                     }
                 }
             }
+        }
+
+        private static Faction GetCaravanFaction(Caravan caravan)
+        {
+            if (caravan == null)
+            {
+                return Faction.OfPlayer;
+            }
+
+            return caravan.Faction;
         }
 
         [HarmonyPatch]
