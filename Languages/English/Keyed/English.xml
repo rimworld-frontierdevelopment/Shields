@@ -69,6 +69,7 @@
 
     <fd.shields.incident.skyfaller.blocked.body>Falling debris has impacted on a shield and was destroyed</fd.shields.incident.skyfaller.blocked.body>
     <fd.shields.incident.droppod.blocked.body>A drop pod has impacted on a shield and was destroyed</fd.shields.incident.droppod.blocked.body>
+    <fd.shields.incident.shuttle.blocked.body>A shuttle has impacted on a shield and was destroyed</fd.shields.incident.shuttle.blocked.body>
     <fd.shields.incident.ship.blocked.body>A ship has impacted on a shield and was destroyed</fd.shields.incident.ship.blocked.body>
     <fd.shields.incident.crashpod.blocked.body>A crashed ship part has impacted on a shield and was destroyed</fd.shields.incident.crashpod.blocked.body>
 

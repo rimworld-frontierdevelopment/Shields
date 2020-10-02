@@ -1,9 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using FrontierDevelopments.General;
 using HarmonyLib;
+using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
+using UnityEngine;
 using Verse;
 using Verse.Sound;
 
@@ -33,6 +36,35 @@ namespace FrontierDevelopments.Shields.Harmony
             pawn.Kill(new DamageInfo(DamageDefOf.Crush, 100));
             pawn.Corpse.Destroy();
             TaleRecorder.RecordTale(LocalDefOf.KilledByImpactingOnShield, pawn, position, map);
+        }
+
+        private static bool HandleShuttle(
+            ShuttleIncoming shuttle,
+            IShieldQueryWithIntersects shields,
+            float damage,
+            string messageBody = "fd.shields.incident.shuttle.blocked.body")
+        {
+            var faction = shuttle.Faction ?? Faction.Empire;
+            if (shields.HostileTo(faction, true).Block(damage) != null)
+            {
+                // get around a bug in 1.2 where the shuttle has no contents
+                ActiveDropPodInfo contents = null;
+                try
+                {
+                    contents = shuttle.Contents;
+                }
+                catch (InvalidCastException) {}
+
+                if(contents != null)
+                    KillPawns(contents.GetDirectlyHeldThings().OfType<Pawn>(), shuttle.Map, shuttle.Position);
+
+                Messages.Message(messageBody.Translate(),
+                    new GlobalTargetInfo(shuttle.Position, shuttle.Map),
+                    MessageTypeDefOf.NeutralEvent);
+                shuttle.Destroy();
+                return false;
+            }
+            return true;
         }
 
         private static bool HandlePod(
@@ -98,6 +130,8 @@ namespace FrontierDevelopments.Shields.Harmony
 
                     switch (__instance)
                     {
+                        case ShuttleIncoming shuttle:
+                            return HandleShuttle(shuttle, shields, Mod.Settings.SkyfallerDamage);
                         case IActiveDropPod incoming:
                             return HandlePod(__instance, incoming.Contents, shields, Mod.Settings.DropPodDamage);
                         default:
