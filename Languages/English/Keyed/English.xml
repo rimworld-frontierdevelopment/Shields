@@ -3,6 +3,15 @@
     
     <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+    <!-- Integrations Section -->
+    <fd.settings.shield.integrations.heading>Integrations</fd.settings.shield.integrations.heading>
+
+    <fd.settings.shield.climatecontrol.label>Enable Centralized Climate Control support (requires game restart!)</fd.settings.shield.climatecontrol.label>
+    <fd.settings.shield.climatecontrol.description>Enables cooling of shields with Centralized Climate Control pipes</fd.settings.shield.climatecontrol.description>
+
+    <fd.settings.shield.badhygiene.label>Enable Dubs Bad Hygiene support (requires game restart!)</fd.settings.shield.badhygiene.label>
+    <fd.settings.shield.badhygiene.description>Enables cooling of shields with Bad Hygiene cooling units</fd.settings.shield.badhygiene.description>
+
     <!-- General section -->
     <fd.settings.shield.general.heading>General</fd.settings.shield.general.heading>
 
@@ -111,5 +120,8 @@
 
     <fd.heatsink.climate.net.connect.label>Use air network</fd.heatsink.climate.net.connect.label>
     <fd.heatsink.climate.net.connect.description>Connect shield to air network</fd.heatsink.climate.net.connect.description>
+
+    <fd.heatsink.dubs.net.connect.label>Use air-con pipes</fd.heatsink.dubs.net.connect.label>
+    <fd.heatsink.dubs.net.connect.description>Connect shield to air-con pipes</fd.heatsink.dubs.net.connect.description>
     
 </LanguageData>

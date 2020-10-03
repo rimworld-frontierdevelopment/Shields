@@ -4,6 +4,7 @@ using CentralizedClimateControl;
 using HarmonyLib;
 using RimWorld;
 using Verse;
+using Mod = FrontierDevelopments.Shields.Mod;
 
 namespace FrontierDevelopments.ClimateControl
 {
@@ -17,13 +18,37 @@ namespace FrontierDevelopments.ClimateControl
             harmony.PatchAll(Assembly.GetExecutingAssembly());
         }
 
+        private static bool EnableThisMod()
+        {
+            if (!Mod.Settings.EnableCentralizedClimateControlSupport)
+                return false;
+
+            if (!Mod.Settings.EnableDubsBadHygieneSupport)
+                return true;
+
+            foreach (var modInfo in ModsConfig.ActiveModsInLoadOrder)
+            {
+                switch (modInfo.PackageId.ToLower())
+                {
+                    case "mlie.centralizedclimatecontrol": return true;
+                    case "dubwise.dubsbadhygiene": return false;
+                }
+            }
+
+            return false;
+        }
+
         [HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PostResolve))]
         class Patch_GenerateImpliedDefs_PostResolve
         {
             [HarmonyPostfix]
-            static void Postfix()
+            static void PatchShieldsForClimateSupport()
             {
-                Patch();
+                if (EnableThisMod())
+                {
+                    Log.Message("Frontier Developments Shields :: Using Centralized Climate Control cooling. To support Dubs disable CCC support or load Dubs before CCC in the mod list.");
+                    Patch();
+                }
             }
         }
         

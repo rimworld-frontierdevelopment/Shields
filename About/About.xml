@@ -24,6 +24,7 @@
 	<loadAfter>
 		<li>brrainz.harmony</li>
 		<li>Mlie.CentralizedClimateControl</li>
+		<li>Dubwise.DubsBadHygiene</li>
 		<li>CETeam.CombatExtended</li>
 		<li>Katavrik.CrashLanding</li>
 		<li>smashphil.neceros.srtsexpanded</li>

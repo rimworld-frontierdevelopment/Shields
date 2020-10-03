@@ -17,6 +17,8 @@ Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-CrashL
 EndProject
 Project("{bedffc19-216d-40ea-a162-c67ecac62de7}") = "FrontierDevelopments-SRTS-Expanded", "Source\SRTS-Expanded\FrontierDevelopments-Shields-SRTS-Expanded.csproj", "{bedffc19-216d-40ea-a162-c67ecac62de7}"
 EndProject
+Project("{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}") = "CombatExtended", "Source\DubsHygiene\FrontierDevelopments-Shields-DubsHygiene.csproj", "{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
         {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.Build.0 = Release|Any CPU
+        {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

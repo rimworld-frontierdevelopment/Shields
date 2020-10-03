@@ -9,6 +9,10 @@ namespace FrontierDevelopments.Shields
         private const float ViewMargin = 20f;
         private const int WindowHeight = 720;
         
+        // Integrations
+        public bool EnableCentralizedClimateControlSupport = true;
+        public bool EnableDubsBadHygieneSupport = false;
+
         // General
         public bool EnableShootingOut = true;
         public bool ScaleOnHeat = true;
@@ -59,6 +63,18 @@ namespace FrontierDevelopments.Shields
             
             var list = new Listing_Standard();
             list.Begin(contents);
+
+            // Integrations
+            Heading(list, "fd.settings.shield.integrations.heading".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.climatecontrol.label".Translate(),
+                ref EnableCentralizedClimateControlSupport,
+                "fd.settings.shield.climatecontrol.description".Translate());
+
+            list.CheckboxLabeled(
+                "fd.settings.shield.badhygiene.label".Translate(),
+                ref EnableDubsBadHygieneSupport,
+                "fd.settings.shield.badhygiene.description".Translate());
 
             // General
             Heading(list, "fd.settings.shield.general.heading".Translate());
@@ -155,6 +171,9 @@ namespace FrontierDevelopments.Shields
 
         public override void ExposeData()
         {
+            Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
+            Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", false);
+
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
 

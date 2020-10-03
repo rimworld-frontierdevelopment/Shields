@@ -3,6 +3,15 @@
     
     <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+    <!-- Integrations Section -->
+    <fd.settings.shield.integrations.heading>Integrationen</fd.settings.shield.integrations.heading>
+
+    <fd.settings.shield.climatecontrol.label>Erlaube die Unterstützung von Centralized Climate Control (Benötigt einen Spielneustart!)</fd.settings.shield.climatecontrol.label>
+    <fd.settings.shield.climatecontrol.description>Ermöglicht die Kühlung von Schutzschildern durch Verwendung von Gebäuden aus Centralized Climate Control.</fd.settings.shield.climatecontrol.description>
+
+    <fd.settings.shield.badhygiene.label>Erlaube die Unterstützung von Bad Hygiene (Benötigt einen Spielneustart!)</fd.settings.shield.badhygiene.label>
+    <fd.settings.shield.badhygiene.description>Ermöglicht die Kühlung von Schutzschildern durch Verwendung von Gebäuden aus Bad Hygiene.</fd.settings.shield.badhygiene.description>
+
     <!-- General section -->
     <fd.settings.shield.general.heading>Allgemein</fd.settings.shield.general.heading>
 

@@ -3,6 +3,12 @@
 
   <!-- Settings ///////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+  <!-- Integrations Section -->
+  <fd.settings.shield.integrations.heading>統合</fd.settings.shield.integrations.heading>
+
+  <fd.settings.shield.climatecontrol.label>「Centralized Climate Control」Modサポート有効（再稼働が必要!)</fd.settings.shield.climatecontrol.label>
+  <fd.settings.shield.climatecontrol.description>「Centralized Climate Control」の換気通風パイプによるシールド冷却を有効化します。</fd.settings.shield.climatecontrol.description>
+
   <!-- General section -->
   <fd.settings.shield.general.heading>一般設定</fd.settings.shield.general.heading>
 
