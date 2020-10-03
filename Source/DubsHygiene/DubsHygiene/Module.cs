@@ -2,6 +2,7 @@ using DubsBadHygiene;
 using HarmonyLib;
 using RimWorld;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using Verse;
 
@@ -50,36 +51,41 @@ namespace FrontierDevelopments.Shields.BadHygiene
                 }
             }
 
-            public static void Patch()
+            private static void ReplaceHeatsink(ThingDef def)
             {
-                List<string> defs = new List<string>() { "Building_ShieldGenerator", "Building_ShieldGeneratorLarge" };
-
-                foreach (string def in defs)
+                foreach (CompProperties comp in def.comps)
                 {
-                    var tDef = DefDatabase<ThingDef>.GetNamed(def);
-
-                    foreach (CompProperties comp in tDef.comps)
+                    if (comp.compClass == typeof(General.Comps.Comp_HeatSink))
                     {
-                        if (comp.compClass == typeof(General.Comps.Comp_HeatSink))
-                        {
-                            comp.compClass = typeof(Comp_BadHygieneHeatsink);
-                        }
+                        comp.compClass = typeof(Comp_BadHygieneHeatsink);
                     }
-
-                    tDef.comps.Add(new CompProperties_CompAirconUnit()
-                    {
-                        compClass = typeof(Comp_DubsAirVent),
-                        energyPerSecond = -25,
-                        CoolingRate = 100,
-                        Capacity = 100
-                    });
-
-                    var compProperties_Pipe = new CompProperties_Pipe
-                    {
-                        mode = PipeType.Air
-                    };
-                    tDef.comps.Add(compProperties_Pipe);
                 }
+                
+                def.comps.Add(new CompProperties_CompAirconUnit()
+                {
+                    compClass = typeof(Comp_DubsAirVent),
+                    energyPerSecond = -25,
+                    CoolingRate = 100,
+                    Capacity = 100
+                });
+                
+                def.comps.Add(new CompProperties_Pipe
+                {
+                    mode = PipeType.Air
+                });
+            }
+
+            private static bool HasHeatsink(ThingDef def)
+            {
+                if (def.comps == null || def.comps.Count < 1) return false;
+                return def.comps.Any(comp => comp.compClass == typeof(General.Comps.Comp_HeatSink));
+            }
+
+            private static void Patch()
+            {
+                DefDatabase<ThingDef>.AllDefs
+                    .Where(HasHeatsink)
+                    .Do(ReplaceHeatsink);
             }
         }
     }

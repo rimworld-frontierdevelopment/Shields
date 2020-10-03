@@ -1,6 +1,7 @@
-using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using CentralizedClimateControl;
+using FrontierDevelopments.General.Comps;
 using HarmonyLib;
 using RimWorld;
 using Verse;
@@ -52,44 +53,39 @@ namespace FrontierDevelopments.ClimateControl
             }
         }
         
-        private struct VentPair
+        private static void ReplaceHeatsink(ThingDef def)
         {
-            public string defName;
-            public float exhaust;
+            float exhaust = 1000;
+            
+            foreach (CompProperties comp in def.comps)
+            {
+                if (comp.compClass == typeof(Comp_HeatSink))
+                {
+                    comp.compClass = typeof(Comp_ClimateControlHeatsink);
+
+                    exhaust = ((CompProperties_HeatSink) comp).grams / 0.8f;
+                }
+            }
+            
+            def.comps.Add(new CompProperties_AirFlow()
+            {
+                compClass = typeof(Comp_AirFlowConsumer),
+                flowType = AirFlowType.Any,
+                baseAirExhaust = exhaust
+            });
         }
 
-        // TODO this didn't work in an XML patch. can that be fixed?
-        public static void Patch()
+        private static bool HasHeatsink(ThingDef def)
         {
-            var toPatch = new List<VentPair>();
-            toPatch.Add(new VentPair
-            {
-                defName = "Building_ShieldGenerator",
-                exhaust = 1000
-            });
-            toPatch.Add(new VentPair
-            {
-                defName = "Building_ShieldGeneratorLarge",
-                exhaust = 2500
-            });
+            if (def.comps == null || def.comps.Count < 1) return false;
+            return def.comps.Any(comp => comp.compClass == typeof(Comp_HeatSink));
+        }
 
-            foreach (var ventPair in toPatch)
-            {
-                var def = DefDatabase<ThingDef>.GetNamed(ventPair.defName);
-                foreach (var comp in def.comps)
-                {
-                    if (comp.compClass == typeof(General.Comps.Comp_HeatSink))
-                    {
-                        comp.compClass = typeof(Comp_ClimateControlHeatsink);
-                    }
-                }
-                def.comps.Add(new CompProperties_AirFlow()
-                {
-                    compClass = typeof(Comp_AirFlowConsumer),
-                    flowType = AirFlowType.Any,
-                    baseAirExhaust = ventPair.exhaust
-                });
-            }
+        private static void Patch()
+        {
+            DefDatabase<ThingDef>.AllDefs
+                .Where(HasHeatsink)
+                .Do(ReplaceHeatsink);
         }
     }
 }
