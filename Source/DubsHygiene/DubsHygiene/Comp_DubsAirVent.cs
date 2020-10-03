@@ -23,6 +23,7 @@ namespace FrontierDevelopments.Shields.BadHygiene
             if (PipeComp.pipeNet.CoolingCap < 1f)
             {
                 stringBuilder.Append("LowCoolingCap".Translate());
+                stringBuilder.Append("\n");
             }
             stringBuilder.Append("CoolingUnits".Translate((int)Props.Capacity));
             return stringBuilder.ToString().TrimEndNewlines();
