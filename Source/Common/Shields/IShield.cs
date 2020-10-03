@@ -63,6 +63,8 @@ namespace FrontierDevelopments.Shields
         Map Map { get; }
         int ProtectedCellCount { get; }
         float CellProtectionFactor { get; }
+        IShield Parent { get; }
+        Thing Thing { get; }
         void SetParent(IShield shieldParent);
         bool IsActive();
         bool Collision(Vector3 point);

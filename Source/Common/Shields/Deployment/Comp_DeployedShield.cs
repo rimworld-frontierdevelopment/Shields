@@ -39,6 +39,8 @@ namespace FrontierDevelopments.Shields.Comps
         public float DeploymentSize => _deployed.DeploymentSize;
         public IEnumerable<Gizmo> ShieldGizmos => _deployed.ShieldGizmos;
         public IShieldResists Resists => _deployed.Resists;
+        public IShield Parent => _deployed.Parent;
+        public Thing Thing => _deployed.Thing;
 
         public void SetParent(IShield shieldParent)
         {

@@ -17,7 +17,7 @@ namespace FrontierDevelopments.Shields.Comps
     public abstract class Comp_ShieldBase : ThingComp, IShield, ILoadReferenceable
     {
         private int? _id;
-        protected IShield Parent;
+        private IShield _parent;
         private bool _renderField = true;
         
         public virtual string Label => parent.Label;
@@ -33,6 +33,9 @@ namespace FrontierDevelopments.Shields.Comps
         public abstract IEnumerable<UiComponent> UiComponents { get; }
         
         public abstract bool WantFlick { get; }
+
+        public IShield Parent => _parent;
+        public Thing Thing => _parent.Thing;
 
         protected bool RenderField => _renderField;
 
@@ -77,7 +80,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public virtual void SetParent(IShield shieldParent)
         {
-            Parent = shieldParent;
+            _parent = shieldParent;
         }
 
         public virtual bool IsActive()
@@ -171,7 +174,7 @@ namespace FrontierDevelopments.Shields.Comps
         public override void PostExposeData()
         {
             Scribe_Values.Look(ref _id, "shieldRadialId");
-            Scribe_References.Look(ref Parent, "shieldRadialParent");
+            Scribe_References.Look(ref _parent, "shieldRadialParent");
             Scribe_Values.Look(ref _renderField, "renderField", true);
         }
         

@@ -30,6 +30,10 @@ namespace FrontierDevelopments.Shields.Buildings
         private bool _activeLastTick;
         private float _lifetimeDamageBlocked;
 
+        IShield IShield.Parent => null;
+
+        public Thing Thing => this;
+
         public IShield Shield {
             get
             {
