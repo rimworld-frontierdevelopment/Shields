@@ -10,7 +10,7 @@ namespace FrontierDevelopments.ClimateControl
 
         static Resources()
         {
-            BuildingClimateControlAirThermal = GetModTexture("Centralized Climate Control", "Things/Building/AirThermal_north");
+            BuildingClimateControlAirThermal = GetModTexture("Centralized Climate Control (Continued)", "Things/Building/AirThermal_north");
         }
 
         static Texture2D GetModTexture(string modName, string resourcePath)
