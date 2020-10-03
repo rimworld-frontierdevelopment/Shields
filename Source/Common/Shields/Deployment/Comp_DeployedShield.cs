@@ -18,6 +18,7 @@ namespace FrontierDevelopments.Shields.Comps
         private int _id;
         
         private Pawn pawn => parent as Pawn;
+        public Map Map => pawn.Map;
 
         public Comp_DeployedShield()
         {
@@ -32,6 +33,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public string Label => _deployed.Label;
         public int ProtectedCellCount => _deployed.ProtectedCellCount;
+        public float CellProtectionFactor => _deployed.CellProtectionFactor;
         public Faction Faction => parent.Faction;
         public float DeploymentSize => _deployed.DeploymentSize;
         public IEnumerable<Gizmo> ShieldGizmos => _deployed.ShieldGizmos;
@@ -92,9 +94,19 @@ namespace FrontierDevelopments.Shields.Comps
             return _deployed.Block(damages, position);
         }
 
-        public void Draw(CellRect cameraRect)
+        public void FieldPreDraw()
         {
-            _deployed.Draw(cameraRect);
+            _deployed.FieldPreDraw();
+        }
+
+        public void FieldDraw(CellRect cameraRect)
+        {
+            _deployed.FieldDraw(cameraRect);
+        }
+
+        public void FieldPostDraw()
+        {
+            _deployed.FieldPostDraw();
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()

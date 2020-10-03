@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -25,9 +26,21 @@ namespace FrontierDevelopments.Shields
 
         public void DrawShields(CellRect cameraRect)
         {
-            foreach (var shield in Shields)
+            var shields = Shields.ToList();
+            
+            foreach (var shield in shields)
             {
-                shield.Draw(cameraRect);
+                shield.FieldPreDraw();
+            }
+
+            foreach (var shield in shields)
+            {
+                shield.FieldDraw(cameraRect);
+            }
+
+            foreach (var shield in shields)
+            {
+                shield.FieldPostDraw();
             }
         }
 

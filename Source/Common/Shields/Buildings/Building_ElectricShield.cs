@@ -50,7 +50,19 @@ namespace FrontierDevelopments.Shields.Buildings
         private bool WantActive => _flickable?.SwitchIsOn ?? true;
 
         private bool IsActive => WantActive && RateAvailable > 0 && !Heatsink.OverTemperature;
-        private float BasePowerConsumption => _shield?.ProtectedCellCount * Mod.Settings.PowerPerTile ?? 0f;
+
+        private float BasePowerConsumption
+        {
+            get
+            {
+                if (_shield != null)
+                {
+                    return _shield.ProtectedCellCount * _shield.CellProtectionFactor;
+                }
+
+                return 0;
+            }
+        }
 
         public IShieldResists Resists => _shield.Resists;
 
@@ -221,6 +233,8 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public int ProtectedCellCount => Shield.ProtectedCellCount;
 
+        public float CellProtectionFactor => Shield.CellProtectionFactor;
+
         public float DeploymentSize => _shield.DeploymentSize;
         
         public IEnumerable<Gizmo> ShieldGizmos => _shield.ShieldGizmos;
@@ -304,9 +318,19 @@ namespace FrontierDevelopments.Shields.Buildings
             return _shield.Block(damages, position);
         }
 
-        public void Draw(CellRect cameraRect)
+        public void FieldPreDraw()
         {
-            Shield.Draw(cameraRect);
+            Shield.FieldPreDraw();
+        }
+
+        public void FieldDraw(CellRect cameraRect)
+        {
+            Shield.FieldDraw(cameraRect);
+        }
+
+        public void FieldPostDraw()
+        {
+            Shield.FieldPostDraw();
         }
     }
 }

@@ -60,7 +60,9 @@ namespace FrontierDevelopments.Shields
 
     public interface IShield : ILabeled, ILoadReferenceable
     {
+        Map Map { get; }
         int ProtectedCellCount { get; }
+        float CellProtectionFactor { get; }
         void SetParent(IShield shieldParent);
         bool IsActive();
         bool Collision(Vector3 point);
@@ -70,7 +72,9 @@ namespace FrontierDevelopments.Shields
         float SinkDamage(float damage);
         float Block(float damage, Vector3 position);
         float Block(ShieldDamages damages, Vector3 position);
-        void Draw(CellRect cameraRect);
+        void FieldPreDraw();
+        void FieldDraw(CellRect cameraRect);
+        void FieldPostDraw();
         Faction Faction { get; }
         IShieldResists Resists { get; }
         float DeploymentSize { get; }

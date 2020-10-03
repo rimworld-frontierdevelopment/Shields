@@ -42,6 +42,7 @@ namespace FrontierDevelopments.Shields.Comps
         private IShield _parent;
 
         public Faction Faction => parent.Faction;
+        public Map Map => parent.Map;
 
         public float DeploymentSize => Props.deploymentSize;
 
@@ -86,6 +87,8 @@ namespace FrontierDevelopments.Shields.Comps
         }
 
         public int ProtectedCellCount => _cellCount;
+
+        public float CellProtectionFactor => Mod.Settings.PowerPerTile;
 
         public CompProperties_ShieldRadial Props => 
             (CompProperties_ShieldRadial)props;
@@ -280,7 +283,11 @@ namespace FrontierDevelopments.Shields.Comps
             return collides;
         }
 
-        public void Draw(CellRect cameraRect)
+        public void FieldPreDraw()
+        {
+        }
+
+        public void FieldDraw(CellRect cameraRect)
         {
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
             var position = PositionUtility.ToVector3(ExactPosition);
@@ -290,6 +297,10 @@ namespace FrontierDevelopments.Shields.Comps
             var matrix = new Matrix4x4();
             matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
             Graphics.DrawMesh(MeshPool.plane10, matrix, Resources.ShieldMat, 0);
+        }
+
+        public void FieldPostDraw()
+        {
         }
 
         public override void PostDrawExtraSelectionOverlays()
