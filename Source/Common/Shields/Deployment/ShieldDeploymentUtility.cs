@@ -10,12 +10,12 @@ namespace FrontierDevelopments.Shields
 {
     public static class ShieldDeploymentUtility
     {
-        public static bool CanDeploy(Pawn pawn, IShield shield)
+        public static bool CanDeploy(Pawn pawn, IShieldManageable shield)
         {
             return pawn.RaceProps.baseBodySize >= shield.DeploymentSize;
         }
 
-        public static void DeployShield(Pawn pawn, IShield shield)
+        public static void DeployShield(Pawn pawn, IShieldManageable shield)
         {
             var deployed = new Comp_DeployedShield(shield);
             deployed.props = new CompProperties_DeployedShield();
@@ -27,11 +27,11 @@ namespace FrontierDevelopments.Shields
                     break;
             }
             
-            pawn.Map.GetComponent<ShieldManager>().Add(shield);
             pawn.AllComps.Add(deployed);
+            pawn.Map.GetComponent<ShieldManager>().Add(deployed);
         }
 
-        public static void UndeployShield(Pawn pawn, IShield shield)
+        public static void UndeployShield(Pawn pawn, IShieldManageable shield)
         {
             pawn.AllComps
                 .Where(comp => comp == shield)
@@ -50,9 +50,9 @@ namespace FrontierDevelopments.Shields
             pawn.Map.GetComponent<ShieldManager>().Del(shield);
         }
         
-        public static IEnumerable<IShield> DeployedShields(Pawn pawn)
+        public static IEnumerable<IShieldManageable> DeployedShields(Pawn pawn)
         {
-            var results = new List<IShield>();
+            var results = new List<IShieldManageable>();
 
             var deployed = pawn.TryGetComp<Comp_DeployedShield>();
             if (deployed != null) results.Add(deployed);

@@ -19,7 +19,7 @@ namespace FrontierDevelopments.Shields
                     yield return gizmo;
                 }
 
-                var shields = ShieldUtility.InventoryShields(__instance).ToList();
+                var shields = ShieldUtility.InventoryShields(__instance).OfType<IShieldManageable>().ToList();
                 if (shields.Any())
                 {
                     yield return new DeployShieldGizmo(__instance, shields);

@@ -17,7 +17,7 @@ namespace FrontierDevelopments.Shields.Comps
     public abstract class Comp_ShieldBase : ThingComp, IShield, ILoadReferenceable
     {
         private int? _id;
-        private IShield _parent;
+        private IShieldParent _parent;
         private bool _renderField = true;
         
         public virtual string Label => parent.Label;
@@ -34,8 +34,7 @@ namespace FrontierDevelopments.Shields.Comps
         
         public abstract bool WantFlick { get; }
 
-        public IShield Parent => _parent;
-        public Thing Thing => _parent.Thing;
+        public IShieldParent Parent => _parent;
 
         protected bool RenderField => _renderField;
 
@@ -64,28 +63,17 @@ namespace FrontierDevelopments.Shields.Comps
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
-            parent.Map.GetComponent<ShieldManager>().Add(this);
             if (_id == null) _id = Find.UniqueIDsManager.GetNextThingID();
         }
 
-        public override void PostDeSpawn(Map map)
-        {
-            map.GetComponent<ShieldManager>().Del(this);
-        }
-
-        public override void PostDestroy(DestroyMode mode, Map previousMap)
-        {
-            previousMap.GetComponent<ShieldManager>().Del(this);
-        }
-
-        public virtual void SetParent(IShield shieldParent)
+        public virtual void SetParent(IShieldParent shieldParent)
         {
             _parent = shieldParent;
         }
 
         public virtual bool IsActive()
         {
-            return Parent?.IsActive() ?? true;
+            return Parent?.ParentActive ?? true;
         }
 
         public abstract bool Collision(Vector3 point);

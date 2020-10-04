@@ -33,7 +33,6 @@
                 <minRadius>3</minRadius>
                 <maxRadius>10</maxRadius>
                 <ticksPerExpansion>5</ticksPerExpansion>
-                <deploymentSize>4.0</deploymentSize>
             </li>
             <li Class="FrontierDevelopments.General.Comps.CompProperties_HeatSink">
                 <grams>800</grams>
@@ -49,5 +48,10 @@
                 <glowColor>(100,200,255,0)</glowColor>
             </li>
         </comps>
+        <modExtensions>
+            <li Class="FrontierDevelopments.Shields.Deployment.ShieldDeploymentSizeExtension">
+                <deploymentSize>4.0</deploymentSize>
+            </li>
+        </modExtensions>
     </ThingDef>
 </Defs>

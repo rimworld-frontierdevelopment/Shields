@@ -13,19 +13,19 @@ namespace FrontierDevelopments.Shields.Comps
             compClass = typeof(Comp_DeployedShield);
         }
     }
-    public class Comp_DeployedShield : ThingComp, IShield
+    public class Comp_DeployedShield : ThingComp, IShieldManageable, IShieldParent
     {
-        private IShield _deployed;
+        private IShieldManageable _deployed;
         private int _id;
-        
+        private bool _isActive = true;
+
         private Pawn pawn => parent as Pawn;
-        public Map Map => pawn.Map;
 
         public Comp_DeployedShield()
         {
         }
 
-        public Comp_DeployedShield(IShield deployed)
+        public Comp_DeployedShield(IShieldManageable deployed)
         {
             _deployed = deployed;
             _id = Find.UniqueIDsManager.GetNextThingID();
@@ -39,12 +39,13 @@ namespace FrontierDevelopments.Shields.Comps
         public float DeploymentSize => _deployed.DeploymentSize;
         public IEnumerable<Gizmo> ShieldGizmos => _deployed.ShieldGizmos;
         public IShieldResists Resists => _deployed.Resists;
-        public IShield Parent => _deployed.Parent;
-        public Thing Thing => _deployed.Thing;
+        public IShieldParent Parent => _deployed.Parent;
+        public Thing Thing => parent;
 
-        public void SetParent(IShield shieldParent)
+        bool IShieldParent.ParentActive => _isActive;
+
+        public void SetParent(IShieldParent shieldParent)
         {
-            _deployed = shieldParent;
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -55,6 +56,11 @@ namespace FrontierDevelopments.Shields.Comps
         public override void PostDeSpawn(Map map)
         {
             map.GetComponent<ShieldManager>().Del(this);
+        }
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            previousMap.GetComponent<ShieldManager>().Del(this);
         }
 
         public bool IsActive()
@@ -75,11 +81,6 @@ namespace FrontierDevelopments.Shields.Comps
         public Vector3? Collision(Vector3 start, Vector3 end)
         {
             return _deployed.Collision(start, end);
-        }
-
-        public float CalculateDamage(ShieldDamages damages)
-        {
-            return _deployed.CalculateDamage(damages);
         }
 
         public float SinkDamage(float damage)

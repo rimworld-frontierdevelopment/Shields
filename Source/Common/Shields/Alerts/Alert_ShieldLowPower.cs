@@ -36,9 +36,6 @@ namespace FrontierDevelopments.Shields.Alerts
                     break;
             }
 
-            if (shield.Parent != null)
-                return IsOffender(shield.Parent);
-
             return false;
         }
 

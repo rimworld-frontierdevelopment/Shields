@@ -10,19 +10,19 @@ namespace FrontierDevelopments.Shields
         {
         }
 
-        private readonly HashSet<IShield> _shields = new HashSet<IShield>();
+        private readonly HashSet<IShieldManageable> _shields = new HashSet<IShieldManageable>();
 
-        public void Add(IShield shield)
+        public void Add(IShieldManageable shield)
         {
             _shields.Add(shield);
         }
 
-        public void Del(IShield shield)
+        public void Del(IShieldManageable shield)
         {
             _shields.Remove(shield);
         }
 
-        public IEnumerable<IShield> Shields => _shields;
+        public IEnumerable<IShieldManageable> Shields => _shields;
 
         public void DrawShields(CellRect cameraRect)
         {

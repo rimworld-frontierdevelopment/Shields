@@ -8,7 +8,7 @@ namespace FrontierDevelopments.Shields
 {
     public class DeployShieldGizmo : Command_Action
     {
-        public DeployShieldGizmo(Pawn pawn, IList<IShield> shields)
+        public DeployShieldGizmo(Pawn pawn, IList<IShieldManageable> shields)
         {
             action = delegate
             {
@@ -23,7 +23,7 @@ namespace FrontierDevelopments.Shields
             };
         }
         
-        private FloatMenu ShowSelectShield(Pawn pawn, IList<IShield> shields)
+        private FloatMenu ShowSelectShield(Pawn pawn, IList<IShieldManageable> shields)
         {
             return new FloatMenu(
                     shields.Select(shield =>

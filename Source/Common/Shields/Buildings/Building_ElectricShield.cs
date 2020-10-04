@@ -4,6 +4,8 @@ using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Energy;
 using FrontierDevelopments.General.UI;
+using FrontierDevelopments.Shields.Comps;
+using FrontierDevelopments.Shields.Deployment;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -12,7 +14,7 @@ using Verse;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
-    public class Building_ElectricShield : Building, IHeatsink, IEnergyNet, IShield
+    public class Building_ElectricShield : Building, IHeatsink, IEnergyNet, IShieldManageable, IShieldParent
     {
         public enum ShieldStatus
         {
@@ -30,7 +32,7 @@ namespace FrontierDevelopments.Shields.Buildings
         private bool _activeLastTick;
         private float _lifetimeDamageBlocked;
 
-        IShield IShield.Parent => null;
+        IShieldParent IShield.Parent => null; // TODO FIXME needed for proper deployment
 
         public Thing Thing => this;
 
@@ -55,7 +57,7 @@ namespace FrontierDevelopments.Shields.Buildings
 
         private bool WantActive => _flickable?.SwitchIsOn ?? true;
 
-        private bool IsActive => WantActive && RateAvailable > 0 && !Heatsink.OverTemperature;
+        public bool ParentActive => WantActive && RateAvailable > 0 && !Heatsink.OverTemperature;
 
         private float BasePowerConsumption
         {
@@ -70,7 +72,7 @@ namespace FrontierDevelopments.Shields.Buildings
             }
         }
 
-        public IShieldResists Resists => _shield.Resists;
+        public IShieldResists Resists => this.TryGetComp<Comp_ShieldResistance>();
 
         public ShieldStatus Status
         {
@@ -102,19 +104,32 @@ namespace FrontierDevelopments.Shields.Buildings
             base.SpawnSetup(map, respawningAfterLoad);
             _activeLastTick = false;
             Init();
+            Map.GetComponent<ShieldManager>().Add(this);
+        }
+
+        private void RemoveShield()
+        {
+            _activeLastTick = false;
+            Map.GetComponent<ShieldManager>().Del(this);
         }
 
         public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
         {
+            RemoveShield();
             base.DeSpawn(mode);
-            _activeLastTick = false;
+        }
+
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            RemoveShield();
+            base.Destroy(mode);
         }
 
         public override void Tick()
         {
             base.Tick();
             _energyNet.Update();
-            var active = IsActive;
+            var active = ParentActive;
             if (active)
             {
                 _energyNet.Consume(BasePowerConsumption / GenDate.TicksPerDay);
@@ -277,8 +292,8 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public float CellProtectionFactor => Shield.CellProtectionFactor;
 
-        public float DeploymentSize => _shield.DeploymentSize;
-
+        public float DeploymentSize => def.GetModExtension<ShieldDeploymentSizeExtension>()?.deploymentSize ?? -1;
+        
         public IEnumerable<Gizmo> ShieldGizmos
         {
             get
@@ -297,13 +312,13 @@ namespace FrontierDevelopments.Shields.Buildings
             }
         }
 
-        public void SetParent(IShield shieldParent)
+        public void SetParent(IShieldParent shieldParent)
         {
         }
 
         bool IShield.IsActive()
         {
-            return IsActive;
+            return ParentActive;
         }
 
         public bool Collision(Vector3 point)
@@ -324,11 +339,6 @@ namespace FrontierDevelopments.Shields.Buildings
         private void HandleBlockingHeat(float handled)
         {
             Heatsink?.PushHeat(handled * Mod.Settings.HeatPerPower);
-        }
-
-        public float CalculateDamage(ShieldDamages damages)
-        {
-            return _shield.CalculateDamage(damages);
         }
 
         public float SinkDamage(float damage)
