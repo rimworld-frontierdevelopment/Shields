@@ -32,14 +32,23 @@ namespace FrontierDevelopments.Shields.Comps
         public abstract IEnumerable<UiComponent> UiComponents { get; }
         
         public abstract bool HasWantSettings { get; }
-        
+
+        public virtual void NotifyWantSettings()
+        {
+            FlickBoardUtility.FindBoard(parent)?.Notify_Want(HasWantSettings);
+        }
+
         public abstract IEnumerable<IShieldField> Fields { get; }
 
         public virtual Thing Thing => parent;
 
         public IShieldParent Parent => _parent;
 
-        protected bool RenderField => _renderField;
+        protected virtual bool RenderField
+        {
+            get => _renderField;
+            set => _renderField = value;
+        } 
 
         public virtual IEnumerable<IShieldStatus> Status
         {
@@ -58,7 +67,7 @@ namespace FrontierDevelopments.Shields.Comps
         {
             get
             {
-                yield return new RenderFieldSetting(_renderField);
+                yield return new RenderFieldSetting(RenderField);
             } 
             
             set => value.Do(Apply);
@@ -69,7 +78,7 @@ namespace FrontierDevelopments.Shields.Comps
             switch (setting)
             {
                 case RenderFieldSetting renderFieldSetting:
-                    _renderField = renderFieldSetting.Get();
+                    RenderField = renderFieldSetting.Get();
                     break;
             }
         }
@@ -170,8 +179,8 @@ namespace FrontierDevelopments.Shields.Comps
                     icon = Resources.UiToggleVisibility,
                     defaultDesc = "fd.shield.render_field.description".Translate(),
                     defaultLabel = "fd.shield.render_field.label".Translate(),
-                    isActive = () => _renderField,
-                    toggleAction = () => _renderField = !_renderField
+                    isActive = () => RenderField,
+                    toggleAction = () => RenderField = !RenderField
                 };
 
                 foreach (var gizmo in Parent.ShieldGizmos)
@@ -180,6 +189,14 @@ namespace FrontierDevelopments.Shields.Comps
                 }
                 
                 if (Faction == Faction.OfPlayer)
+                {
+                    foreach (var gizmo in ShieldSettingsClipboard.Gizmos(this))
+                    {
+                        yield return gizmo;
+                    }
+                }
+            
+                if (parent.Faction == Faction.OfPlayer)
                 {
                     foreach (var gizmo in ShieldSettingsClipboard.Gizmos(this))
                     {

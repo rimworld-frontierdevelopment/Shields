@@ -64,6 +64,11 @@ namespace FrontierDevelopments.Shields.Comps
             return _deployed.IsActive();
         }
 
+        public void NotifyWantSettings()
+        {
+            _deployed.NotifyWantSettings();
+        }
+
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
             foreach (var gizmo in base.CompGetGizmosExtra())

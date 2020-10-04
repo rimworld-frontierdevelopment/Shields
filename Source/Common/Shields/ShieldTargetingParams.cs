@@ -1,6 +1,8 @@
 using System.Linq;
 using FrontierDevelopments.General;
+using FrontierDevelopments.Shields.Linear;
 using RimWorld;
+using UnityEngine;
 
 namespace FrontierDevelopments.Shields
 {
@@ -27,6 +29,27 @@ namespace FrontierDevelopments.Shields
                     .Any();
                 
                 return !shielded && goodDropSpot;
+            }
+        };
+
+        public static TargetingParameters LinearLink(ILinearShield source) => new TargetingParameters
+        {
+            canTargetLocations = false,
+            canTargetSelf = false,
+            canTargetPawns = false,
+            canTargetFires = false,
+            canTargetBuildings = true,
+            canTargetItems = false,
+            validator = targetInfo =>
+            {
+                var shield = LinearShieldUtility.Find(targetInfo.Thing);
+                if (shield != null && source.CanLinkWith(shield))
+                {
+                    // TODO add efficiency
+                    LinearShieldUtility.DrawFieldBetween(source.Position, shield.Position, shield.Map, Color.grey);
+                    return true;
+                }
+                return false;
             }
         };
     }

@@ -26,6 +26,8 @@ namespace FrontierDevelopments.Shields
         private int _overrideDamage;
         private int _damageLimit = 500;
 
+        public float Factor { get; set; }
+
         public ShieldDamage Primary => _primary;
         public List<ShieldDamage> Secondaries => secondaries;
 
@@ -50,7 +52,7 @@ namespace FrontierDevelopments.Shields
         {
             secondaries.Add(damage);
         }
-        
-        public float Damage => Secondaries.Aggregate(Primary.Damage, (sum, damage) => sum + damage.Damage);
+
+        public float Damage => Secondaries.Aggregate(Primary.Damage, (sum, damage) => sum + damage.Damage) * Factor;
     }
 }

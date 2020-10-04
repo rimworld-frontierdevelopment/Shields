@@ -341,5 +341,10 @@ namespace FrontierDevelopments.Shields.Buildings
             _shield.ClearWantSettings();
             WantThermalShutoff = Heatsink.ThermalShutoff;
         }
+
+        public void NotifyWantSettings()
+        {
+            _shield.NotifyWantSettings();
+        }
     }
 }

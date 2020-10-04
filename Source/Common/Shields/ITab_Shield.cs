@@ -33,6 +33,7 @@ namespace FrontierDevelopments.Shields
                 GUI.color = GreyOutColor;
             }
 
+            // TODO doesnt cancel other linear shield
             if (list.ButtonText("FrontierDevelopments.General.CancelFlick".Translate()) && resetActive)
                 SelShield.ClearWantSettings();
 

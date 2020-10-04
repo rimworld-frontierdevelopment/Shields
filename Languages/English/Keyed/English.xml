@@ -75,9 +75,19 @@
     <fd.shields.alert.lowpower.label>Shields are offline due to low power</fd.shields.alert.lowpower.label>
     <fd.shields.alert.lowpower.description>{0} Shield(s) are offline due to low power. Shields need to be connected to power networks with batteries with atleast {1} stored power to work</fd.shields.alert.lowpower.description>
 
+    <fd.shields.alert.pylons.unlinked.label>Pylons are offline due to being unlinked</fd.shields.alert.pylons.unlinked.label>
+    <fd.shields.alert.pylons.unlinked.description>{0} pylon(s) are offline due to being unlinked. Pylons need to be linked to other pylons to work</fd.shields.alert.pylons.unlinked.description>
+
+    <fd.shields.alert.pylons.blocked.label>Pylons are offline due to being blocked.</fd.shields.alert.pylons.blocked.label>
+    <fd.shields.alert.pylons.blocked.description>{0} pylon(s) are offline due to being blocked. The fields will need to be cleared of obstruction before the field can come backonline</fd.shields.alert.pylons.blocked.description>
+
     <!-- Incidents //////////////////////////////////////////////////////////////////////////////////////////////////-->
     
     <fd.shields.incident.offline.body>A shield generator has gone offline</fd.shields.incident.offline.body>
+
+    <fd.shields.pylon.blocked.body>Something is blocking some linked pylons. The field will be offline it is it cleared</fd.shields.pylon.blocked.body>
+    <fd.shields.pylon.unblocked.body>Blocked pylons are now unblocked</fd.shields.pylon.unblocked.body>
+    <fd.shields.pylon.destroyed.body>A linked pylon was destroyed. Some pylons are now unlinked</fd.shields.pylon.destroyed.body>
 
     <fd.shields.incident.skyfaller.blocked.body>Falling debris has impacted on a shield and was destroyed</fd.shields.incident.skyfaller.blocked.body>
     <fd.shields.incident.droppod.blocked.body>A drop pod has impacted on a shield and was destroyed</fd.shields.incident.droppod.blocked.body>
@@ -96,14 +106,22 @@
     
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+    <FrontierDevelopments.General.Cancel>Cancel</FrontierDevelopments.General.Cancel>
     <FrontierDevelopments.General.CancelFlick>Cancel flick</FrontierDevelopments.General.CancelFlick>
+
+    <FrontierDevelopments.General.Linked>Linked</FrontierDevelopments.General.Linked>
+    <FrontierDevelopments.General.Unlinked>Unlinked</FrontierDevelopments.General.Unlinked>
     
     <!-- ITab -->
     <FrontierDevelopments.Shields.ITab.Shield>Shield</FrontierDevelopments.Shields.ITab.Shield>
     <FrontierDevelopments.Shields.ITab.PowerRequired>Power required: {0}</FrontierDevelopments.Shields.ITab.PowerRequired>
     <FrontierDevelopments.Shields.ITab.Efficiency>Efficiency: {0}%</FrontierDevelopments.Shields.ITab.Efficiency>
     <FrontierDevelopments.Shields.ITab.CanBlock>Damage can block: {0}</FrontierDevelopments.Shields.ITab.CanBlock>
-
+    <FrontierDevelopments.Shields.ITab.LinkWith>{0} at ({1},{2})</FrontierDevelopments.Shields.ITab.LinkWith>
+    <FrontierDevelopments.Shields.ITab.PendingLinks>Pending link</FrontierDevelopments.Shields.ITab.PendingLinks>
+    <FrontierDevelopments.Shields.ITab.ActiveLinks>Active links</FrontierDevelopments.Shields.ITab.ActiveLinks>
+    <FrontierDevelopments.Shields.Linear.FieldBlocked>Field Blocked</FrontierDevelopments.Shields.Linear.FieldBlocked>
+    
     <!-- Stats -->
     <FrontierDevelopments.Shields.Stats.Blocked.Label>Damage blocked</FrontierDevelopments.Shields.Stats.Blocked.Label>
     <FrontierDevelopments.Shields.Stats.Blocked.Desc>The amount of damage this shield has blocked over its lifetime.</FrontierDevelopments.Shields.Stats.Blocked.Desc>
@@ -132,6 +150,13 @@
     
     <fd.shield.render_field.label>Toggle visibility</fd.shield.render_field.label>
     <fd.shield.render_field.description>Toggles field visibility (cosmetic only)</fd.shield.render_field.description>
+
+    <fd.shields.linear.link.label>Link</fd.shields.linear.link.label>
+    <fd.shields.linear.link.description>Link pylons together</fd.shields.linear.link.description>
+
+    <fd.shields.linear.unlink.label>Unlink</fd.shields.linear.unlink.label>
+    <fd.shields.linear.unlink.description>Unlink shield pylons</fd.shields.linear.unlink.description>
+    <fd.shields.linear.link.disabled>Can't link any more shields, maximum of {0}</fd.shields.linear.link.disabled>
 
     <fd.heatsink.climate.net.connect.label>Use air network</fd.heatsink.climate.net.connect.label>
     <fd.heatsink.climate.net.connect.description>Connect shield to air network</fd.heatsink.climate.net.connect.description>

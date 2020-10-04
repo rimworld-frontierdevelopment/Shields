@@ -80,6 +80,13 @@
     <Compile Include="Shields\Deployment\ShieldDeploymentUtility.cs" />
     <Compile Include="Shields\IShieldStatus.cs" />
     <Compile Include="Shields\ITab_Shield.cs" />
+    <Compile Include="Shields\Linear\Alert_BlockedLinearShieldLink.cs" />
+    <Compile Include="Shields\Linear\Alert_UnlinkedPylon.cs" />
+    <Compile Include="Shields\Linear\Comp_ShieldLinear.cs" />
+    <Compile Include="Shields\Linear\ILinearShield.cs" />
+    <Compile Include="Shields\Linear\LinearShieldLink.cs" />
+    <Compile Include="Shields\Linear\LinearShieldUtility.cs" />
+    <Compile Include="Shields\Linear\ShieldLinearUiComponent.cs" />
     <Compile Include="Shields\LocalDefOf.cs" />
     <Compile Include="Shields\Mod.cs" />
     <Compile Include="Shields\IShield.cs" />

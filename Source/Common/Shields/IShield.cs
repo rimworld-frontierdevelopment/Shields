@@ -10,6 +10,7 @@ namespace FrontierDevelopments.Shields
 {
     public interface IShieldField
     {
+        Map Map { get; }
         bool IsActive();
         int ProtectedCellCount { get; }
         float CellProtectionFactor { get; }
@@ -52,6 +53,7 @@ namespace FrontierDevelopments.Shields
         IEnumerable<ShieldSetting> ShieldSettings { get; set; }
         bool HasWantSettings { get; }
         void ClearWantSettings();
+        void NotifyWantSettings();
     }
 
     public interface IShieldUserInterface : IShieldSettable
