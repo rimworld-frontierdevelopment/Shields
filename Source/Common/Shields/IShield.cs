@@ -60,6 +60,7 @@ namespace FrontierDevelopments.Shields
 
     public interface IShield : ILabeled, ILoadReferenceable
     {
+        IEnumerable<IShieldStatus> Status { get; }
         int ProtectedCellCount { get; }
         float CellProtectionFactor { get; }
         IShieldParent Parent { get; }

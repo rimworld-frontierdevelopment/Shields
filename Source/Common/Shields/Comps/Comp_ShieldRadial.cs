@@ -48,8 +48,15 @@ namespace FrontierDevelopments.Shields.Comps
 
         public override float CellProtectionFactor => Props.powerPerTile;
 
-        public CompProperties_ShieldRadial Props => 
-            (CompProperties_ShieldRadial)props;
+        private CompProperties_ShieldRadial Props => (CompProperties_ShieldRadial) props;
+        
+        public override IEnumerable<IShieldStatus> Status
+        {
+            get
+            {
+                yield break;
+            }
+        }
 
         public int WantRadius
         {

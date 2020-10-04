@@ -73,6 +73,7 @@
     <Compile Include="Shields\Deployment\Harmony_ThingOwner.cs" />
     <Compile Include="Shields\Deployment\ShieldDeploymentSizeExtension.cs" />
     <Compile Include="Shields\Deployment\ShieldDeploymentUtility.cs" />
+    <Compile Include="Shields\IShieldStatus.cs" />
     <Compile Include="Shields\ITab_Shield.cs" />
     <Compile Include="Shields\LocalDefOf.cs" />
     <Compile Include="Shields\Mod.cs" />

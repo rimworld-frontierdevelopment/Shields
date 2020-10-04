@@ -28,20 +28,7 @@ namespace FrontierDevelopments.Shields.Alerts
 
         private static bool IsOffender(IShield shield)
         {
-            switch (shield)
-            {
-                case Building_ElectricShield electricShield:
-                    if (IsUnpowered(electricShield))
-                        return true;
-                    break;
-            }
-
-            return false;
-        }
-
-        private static bool IsUnpowered(Building_ElectricShield shield)
-        {
-            return shield.Status == Building_ElectricShield.ShieldStatus.Unpowered;
+            return shield.Status.OfType<Building_ElectricShield.ShieldStatusBatteryLow>().Any();
         }
 
         protected override Color BGColor => Color.grey;

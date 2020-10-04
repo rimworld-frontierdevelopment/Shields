@@ -16,13 +16,18 @@ namespace FrontierDevelopments.Shields.Buildings
 {
     public class Building_ElectricShield : Building, IHeatsink, IEnergyNet, IShieldManageable, IShieldParent
     {
-        public enum ShieldStatus
+        public class ShieldStatusThermalShutdown : IShieldStatus
         {
-            Unpowered,
-            ThermalShutdown,
-            Online
+            public bool Online => false;
+            public string Description => "shield.status.thermal_safety".Translate();
         }
-
+    
+        public class ShieldStatusBatteryLow : IShieldStatus
+        {
+            public bool Online => false;
+            public string Description => "shield.status.battery_too_low".Translate();
+        }
+        
         private EnergyNet _energyNet = new EnergyNet();
         private IShield _shield;
 
@@ -74,13 +79,18 @@ namespace FrontierDevelopments.Shields.Buildings
 
         public IShieldResists Resists => this.TryGetComp<Comp_ShieldResistance>();
 
-        public ShieldStatus Status
+        public IEnumerable<IShieldStatus> Status
         {
             get
             {
-                if (Heatsink != null && Heatsink.OverTemperature) return ShieldStatus.ThermalShutdown;
-                if (_energyNet.RateAvailable <= 0) return ShieldStatus.Unpowered;
-                return ShieldStatus.Online;
+                if (Heatsink != null && Heatsink.OverTemperature)
+                    yield return new ShieldStatusThermalShutdown();
+
+                if (_energyNet.RateAvailable <= 0)
+                    yield return new ShieldStatusBatteryLow();
+
+                foreach (var status in _shield.Status)
+                    yield return status;
             }
         }
 
@@ -145,18 +155,7 @@ namespace FrontierDevelopments.Shields.Buildings
         public override string GetInspectString()
         {
             var stringBuilder = new StringBuilder();
-            switch (Status)
-            {
-                case ShieldStatus.Unpowered:
-                    stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.battery_too_low".Translate());
-                    break;
-                case ShieldStatus.ThermalShutdown:
-                    stringBuilder.AppendLine("shield.status.offline".Translate() + " - " + "shield.status.thermal_safety".Translate());
-                    break;
-                case ShieldStatus.Online:
-                    stringBuilder.AppendLine("shield.status.online".Translate());
-                    break;
-            }
+            stringBuilder.AppendLine(ShieldStatus.GetStringFromStatuses(Status.ToList()));
             stringBuilder.Append(base.GetInspectString());
             return stringBuilder.ToString();
         }

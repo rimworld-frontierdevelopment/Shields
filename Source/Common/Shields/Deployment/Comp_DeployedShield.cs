@@ -21,6 +21,8 @@ namespace FrontierDevelopments.Shields.Comps
 
         private Pawn pawn => parent as Pawn;
 
+        public IEnumerable<IShieldStatus> Status => _deployed.Status;
+
         public Comp_DeployedShield()
         {
         }

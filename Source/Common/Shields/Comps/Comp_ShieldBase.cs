@@ -23,6 +23,7 @@ namespace FrontierDevelopments.Shields.Comps
         public virtual string Label => parent.Label;
 
         protected abstract string ShieldLoadType { get; }
+        public abstract IEnumerable<IShieldStatus> Status { get; }
         public Map Map => parent.Map;
         public abstract int ProtectedCellCount { get; }
         public abstract float CellProtectionFactor { get; }
