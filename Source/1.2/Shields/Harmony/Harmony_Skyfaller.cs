@@ -45,7 +45,7 @@ namespace FrontierDevelopments.Shields.Harmony
             string messageBody = "fd.shields.incident.shuttle.blocked.body")
         {
             var faction = shuttle.Faction ?? Faction.Empire;
-            if (shields.HostileTo(faction, true).Block(damage) != null)
+            if (shields.HostileTo(faction).Block(damage) != null)
             {
                 // get around a bug in 1.2 where the shuttle has no contents
                 ActiveDropPodInfo contents = null;
