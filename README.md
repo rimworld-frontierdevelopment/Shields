@@ -43,6 +43,7 @@ Pawns will attempt to flee from orbital bombardments.
 - Centralized Climate Control: Cool shields with pipes
 - Dubs Bad Hygiene: Cool shields with air-con pipes
 - SRTS-Expanded ships can land and leave from shields
+- AvoidFriendlyFire: Pawns will treat active shields providing cover
 
 ## Contributions
 
