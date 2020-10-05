@@ -116,6 +116,7 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             static bool Prefix(Skyfaller __instance)
             {
+                if (!Mod.Settings.BlockSkyfallers) return true;
                 if (__instance.Map != null 
                     && !__instance.def.skyfaller.reversed
                     && __instance.ticksToImpact == ShieldHitPreDelay

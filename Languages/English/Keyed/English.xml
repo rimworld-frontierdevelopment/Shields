@@ -24,6 +24,9 @@
     <fd.settings.shield.scale-heat.label>Scale damage by shield heat</fd.settings.shield.scale-heat.label>
     <fd.settings.shield.scale-heat.description>Blocking damage requires less power when cold and a lot more power when hot. Also using Centralized Climate Control mod is recommended when using this</fd.settings.shield.scale-heat.description>
 
+    <fd.settings.shield.blockskyfallers.label>Block skyfallers</fd.settings.shield.blockskyfallers.label>
+    <fd.settings.shield.blockskyfallers.description>Enables blocking of skyfallers. Disabling this feature can be useful to allow mods that are unsupported to land within shields</fd.settings.shield.blockskyfallers.description>
+
     <!-- Performance Section -->
     <fd.settings.shield.performance.heading>Performance</fd.settings.shield.performance.heading>
     <fd.settings.shield.performance.description>Settings relating to performance. Disabling any will improve game performance at the cost of the AI not understanding what is shielded</fd.settings.shield.performance.description>

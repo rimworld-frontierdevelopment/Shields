@@ -16,6 +16,7 @@ namespace FrontierDevelopments.Shields
         // General
         public bool EnableShootingOut = true;
         public bool ScaleOnHeat = true;
+        public bool BlockSkyfallers = true;
 
         // Performance
         public bool EnableAIAttackTargetFinder = true;
@@ -86,7 +87,12 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.scale-heat.label".Translate(),
                 ref ScaleOnHeat,
                 "fd.settings.shield.scale-heat.description".Translate());
-            
+
+            list.CheckboxLabeled(
+                "fd.settings.shield.blockskyfallers.label".Translate(),
+                ref BlockSkyfallers,
+                "fd.settings.shield.blockskyfallers.description".Translate());
+
             // Performance
             Heading(list, "fd.settings.shield.performance.heading".Translate());
             TextContent(list, "fd.settings.shield.performance.description".Translate());
@@ -176,6 +182,7 @@ namespace FrontierDevelopments.Shields
 
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
+            Scribe_Values.Look(ref BlockSkyfallers, "blockSkyfallers", true);
 
             // TODO see above
 //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
