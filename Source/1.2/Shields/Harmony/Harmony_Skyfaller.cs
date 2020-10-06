@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using FrontierDevelopments.General;
 using HarmonyLib;
-using JetBrains.Annotations;
 using RimWorld;
 using RimWorld.Planet;
-using UnityEngine;
 using Verse;
 using Verse.Sound;
 
@@ -15,8 +14,18 @@ namespace FrontierDevelopments.Shields.Harmony
     public class Harmony_Skyfaller
     {
         private const int ShieldHitPreDelay = 20;
+        private const int ShieldAutosavePreDelay = 30;
 
         private static readonly List<string> whitelistedDefs = new List<string>();
+
+        private const int MinimumTicksBetweenSkyfallerAutosave = GenDate.TicksPerHour;
+        private static readonly FieldInfo autosaverTicksSinceLast = AccessTools.Field(typeof(Autosaver), "ticksSinceSave");
+
+        private static int TicksSinceLastAutosave
+        {
+            get => (int) autosaverTicksSinceLast.GetValue(Find.Autosaver);
+            set => autosaverTicksSinceLast.SetValue(Find.Autosaver, value);
+        }
 
         public static void WhitelistDef(string defName)
         {
@@ -111,6 +120,35 @@ namespace FrontierDevelopments.Shields.Harmony
             return null;
         }
 
+        private static bool AutosaveIfNeeded()
+        {
+            if (Mod.Settings.AutosaveOnSkyfallers && TicksSinceLastAutosave >= MinimumTicksBetweenSkyfallerAutosave)
+            {
+                TicksSinceLastAutosave = 0;
+                LongEventHandler.QueueLongEvent(() => Find.Autosaver.DoAutosave(), "Autosaving", false, null);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static void TryAutosave(Skyfaller skyfaller, Map map)
+        {
+            if (!Mod.Settings.AutosaveOnSkyfallers) return;
+
+            var shielded = new ShieldQuery(map)
+                .Intersects(PositionUtility.ToVector3WithY(skyfaller.Position, 0))
+                .Get()
+                .Any();
+            if (shielded)
+            {
+                if (AutosaveIfNeeded())
+                {
+                    Log.Message("Frontier Development Shields :: " + skyfaller.Label + " can fall within a shield, autosaving");
+                }
+            }
+        }
+
         [HarmonyPatch(typeof(Skyfaller), nameof(Skyfaller.Tick))]
         static class Patch_Tick
         {
@@ -119,27 +157,43 @@ namespace FrontierDevelopments.Shields.Harmony
                 if (!Mod.Settings.BlockSkyfallers) return true;
                 if (__instance.Map != null 
                     && !__instance.def.skyfaller.reversed
-                    && __instance.ticksToImpact == ShieldHitPreDelay
                     && !whitelistedDefs.Contains(__instance.def.defName))
                 {
-                    var shields = new ShieldQuery(__instance.Map)
-                        .IsActive()
-                        .Intersects(PositionUtility.ToVector3WithY(__instance.Position, 0));
-
-                    var other = HandleOther(__instance, shields);
-                    if (other != null) return other.Value;
-
-                    switch (__instance)
+                    if (__instance.ticksToImpact == ShieldAutosavePreDelay)
                     {
-                        case ShuttleIncoming shuttle:
-                            return HandleShuttle(shuttle, shields, Mod.Settings.SkyfallerDamage);
-                        case IActiveDropPod incoming:
-                            return HandlePod(__instance, incoming.Contents, shields, Mod.Settings.DropPodDamage);
-                        default:
-                            return HandleGeneric(__instance, shields, Mod.Settings.SkyfallerDamage);
+                        TryAutosave(__instance, __instance.Map);
+                    }
+                    else if(__instance.ticksToImpact == ShieldHitPreDelay)
+                    {
+                        var shields = new ShieldQuery(__instance.Map)
+                            .IsActive()
+                            .Intersects(PositionUtility.ToVector3WithY(__instance.Position, 0));
+
+                        var other = HandleOther(__instance, shields);
+                        if (other != null) return other.Value;
+
+                        switch (__instance)
+                        {
+                            case ShuttleIncoming shuttle:
+                                return HandleShuttle(shuttle, shields, Mod.Settings.SkyfallerDamage);
+                            case IActiveDropPod incoming:
+                                return HandlePod(__instance, incoming.Contents, shields, Mod.Settings.DropPodDamage);
+                            default:
+                                return HandleGeneric(__instance, shields, Mod.Settings.SkyfallerDamage);
+                        }
                     }
                 }
                 return true;
+            }
+        }
+
+        [HarmonyPatch(typeof(Skyfaller), nameof(Skyfaller.SpawnSetup))]
+        static class Patch_SpawnSetup
+        {
+            [HarmonyPostfix]
+            static void HandleAutosaveIfCanImpactShields(Skyfaller __instance, Map map)
+            {
+                TryAutosave(__instance, map);
             }
         }
     }

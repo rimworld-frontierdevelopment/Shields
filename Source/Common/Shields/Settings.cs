@@ -17,6 +17,7 @@ namespace FrontierDevelopments.Shields
         public bool EnableShootingOut = true;
         public bool ScaleOnHeat = true;
         public bool BlockSkyfallers = true;
+        public bool AutosaveOnSkyfallers = true;
 
         // Performance
         public bool EnableAIAttackTargetFinder = true;
@@ -92,6 +93,10 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.blockskyfallers.label".Translate(),
                 ref BlockSkyfallers,
                 "fd.settings.shield.blockskyfallers.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.autosaveskyfallers.label".Translate(),
+                ref AutosaveOnSkyfallers,
+                "fd.settings.shield.autosaveskyfallers.description".Translate());
 
             // Performance
             Heading(list, "fd.settings.shield.performance.heading".Translate());
@@ -183,6 +188,7 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
             Scribe_Values.Look(ref BlockSkyfallers, "blockSkyfallers", true);
+            Scribe_Values.Look(ref AutosaveOnSkyfallers, "autosaveOnSkyfallers", true);
 
             // TODO see above
 //            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
