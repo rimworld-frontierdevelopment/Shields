@@ -11,60 +11,79 @@ Project("{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}") = "FrontierDevelopments-Shield
 EndProject
 Project("{809cc256-a508-4775-9f9b-6ad20d32c112}") = "FrontierDevelopments-Shields-AvoidFriendlyFire", "Source\AvoidFriendlyFire\FrontierDevelopments-Shields-AvoidFriendlyFire.csproj", "{809cc256-a508-4775-9f9b-6ad20d32c112}"
 EndProject
-Project("{D43DE53A-C925-465D-9631-4139618408C0}") = "FrontierDevelopments-ClimateControl", "Source\ClimateControl\FrontierDevelopments-Shields-ClimateControl.csproj", "{D43DE53A-C925-465D-9631-4139618408C0}"
+Project("{D43DE53A-C925-465D-9631-4139618408C0}") = "FrontierDevelopments-Shields-ClimateControl", "Source\ClimateControl\FrontierDevelopments-Shields-ClimateControl.csproj", "{D43DE53A-C925-465D-9631-4139618408C0}"
 EndProject
-Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-CombatExtended", "Source\CombatExtended\FrontierDevelopments-Shields-CombatExtended.csproj", "{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}"
+Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-Shields-CombatExtended", "Source\CombatExtended\FrontierDevelopments-Shields-CombatExtended.csproj", "{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}"
 EndProject
-Project("{1f7b860c-9807-4222-b6ad-6897e0c6d7a5}") = "FrontierDevelopments-CrashLanding", "Source\CrashLanding\FrontierDevelopments-Shields-CrashLanding.csproj", "{35e141f4-5280-46dc-86d0-16e785630337}"
+Project("{35e141f4-5280-46dc-86d0-16e785630337}") = "FrontierDevelopments-Shields-CrashLanding", "Source\CrashLanding\FrontierDevelopments-Shields-CrashLanding.csproj", "{35e141f4-5280-46dc-86d0-16e785630337}"
 EndProject
-Project("{bedffc19-216d-40ea-a162-c67ecac62de7}") = "FrontierDevelopments-SRTS-Expanded", "Source\SRTS-Expanded\FrontierDevelopments-Shields-SRTS-Expanded.csproj", "{bedffc19-216d-40ea-a162-c67ecac62de7}"
+Project("{bedffc19-216d-40ea-a162-c67ecac62de7}") = "FrontierDevelopments-Shields-SRTS-Expanded", "Source\SRTS-Expanded\FrontierDevelopments-Shields-SRTS-Expanded.csproj", "{bedffc19-216d-40ea-a162-c67ecac62de7}"
 EndProject
-Project("{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}") = "CombatExtended", "Source\DubsHygiene\FrontierDevelopments-Shields-DubsHygiene.csproj", "{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}"
+Project("{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}") = "FrontierDevelopments-Shields-DubsHygiene", "Source\DubsHygiene\FrontierDevelopments-Shields-DubsHygiene.csproj", "{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}"
 EndProject
 Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|Any CPU = Debug|Any CPU
-		Release|Any CPU = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+    GlobalSection(SolutionConfigurationPlatforms) = preSolution
+        Debug|Any CPU = Debug|Any CPU
+        Release|Any CPU = Release|Any CPU
+    EndGlobalSection
+    GlobalSection(ProjectConfigurationPlatforms) = postSolution
+
+        # Core
         {0C9B1441-FA49-4942-9D0D-B8ED81EA5D20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {0C9B1441-FA49-4942-9D0D-B8ED81EA5D20}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {0C9B1441-FA49-4942-9D0D-B8ED81EA5D20}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {0C9B1441-FA49-4942-9D0D-B8ED81EA5D20}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        
+        # Shields
+        {D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}.Release|Any CPU.Build.0 = Release|Any CPU
+        
+        # Shields for Rimworld 1.2
+        {12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {12dd5535-7aa8-4d5f-8fec-f14d9437a99c}.Release|Any CPU.Build.0 = Release|Any CPU
+        
+        # Avoid Friendly Fire
         {809cc256-a508-4775-9f9b-6ad20d32c112}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {809cc256-a508-4775-9f9b-6ad20d32c112}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {809cc256-a508-4775-9f9b-6ad20d32c112}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {809cc256-a508-4775-9f9b-6ad20d32c112}.Release|Any CPU.Build.0 = Release|Any CPU
+        
+        # Centralized Climate Control
         {D43DE53A-C925-465D-9631-4139618408C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {D43DE53A-C925-465D-9631-4139618408C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {D43DE53A-C925-465D-9631-4139618408C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {D43DE53A-C925-465D-9631-4139618408C0}.Release|Any CPU.Build.0 = Release|Any CPU
+        
+        # Combat Extended
         {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {1f7b860c-9807-4222-b6ad-6897e0c6d7a5}.Release|Any CPU.Build.0 = Release|Any CPU
+        
+        # Crash landing
         {35e141f4-5280-46dc-86d0-16e785630337}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {35e141f4-5280-46dc-86d0-16e785630337}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {35e141f4-5280-46dc-86d0-16e785630337}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {35e141f4-5280-46dc-86d0-16e785630337}.Release|Any CPU.Build.0 = Release|Any CPU
-        {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-        {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-        {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-        {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.Build.0 = Release|Any CPU
+        
+        # Dubs Bad Hygiene
         {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
         {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {7a2d3884-67f8-4e22-92fc-bc423f9f26d3}.Release|Any CPU.Build.0 = Release|Any CPU
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
+        
+        # SRTS-Expanded
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.Build.0 = Release|Any CPU
+
+    EndGlobalSection
+    GlobalSection(SolutionProperties) = preSolution
+        HideSolutionNode = FALSE
+    EndGlobalSection
 EndGlobal
