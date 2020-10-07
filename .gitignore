@@ -9,3 +9,6 @@
 Assemblies/
 
 Integrations/
+
+*sln.DotSettings.user
+packages/
