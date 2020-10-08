@@ -42,7 +42,6 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             Vector2 origin)
         {
             if(ticksToImpact > 1) return false;
-            // TODO might be able to calculate the exact path with 3d CE projectiles
             return TryBlockOverhead(projectile, origin, currentPosition, CalculateDamages(projectile)) != null;
         }
 
@@ -55,9 +54,8 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
         {
             return TryBlock(
                 projectile,
-                // TODO might be able to calculate the exact path with 3d CE projectiles
-                new Vector3(currentPosition.x, 0, currentPosition.z),
-                new Vector3(nextPosition.x, 0, nextPosition.z),
+                currentPosition,
+                nextPosition,
                 ticksToImpact,
                 PositionUtility.ToVector3(origin),
                 projectile.def.projectile.flyOverhead,
@@ -84,7 +82,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 {
                     if (ShouldImpact(__instance))
                     {
-                        __instance.ExactPosition = last;
+                        new Traverse(__instance).Field("ticksToImpact").SetValue(___ticksToImpact + 1);
                         impactMethod.Invoke(__instance, new object[] { null });
                     }
                     else

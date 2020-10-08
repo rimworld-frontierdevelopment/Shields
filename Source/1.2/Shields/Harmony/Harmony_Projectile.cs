@@ -52,9 +52,8 @@ namespace FrontierDevelopments.Shields.Harmony
                     projectile.def.projectile.GetDamageAmount(1f)));
             return TryBlock(
                 projectile,
-                // TODO might be able to calculate overhead projectiles in 3D
-                new Vector3(currentPosition.x, 0, currentPosition.z),
-                new Vector3(nextPosition.x, 0, nextPosition.z),
+                currentPosition,
+                nextPosition,
                 ticksToImpact,
                 origin,
                 projectile.def.projectile.flyOverhead,
@@ -91,8 +90,8 @@ namespace FrontierDevelopments.Shields.Harmony
                 return new ShieldQuery(projectile.Map)
                     .IsActive()
                     .Intersects(
-                        PositionUtility.ToVector3(currentPosition),
-                        PositionUtility.ToVector3(nextPosition))
+                        currentPosition,
+                        nextPosition)
                     .Block(damages);
             }
 
@@ -133,8 +132,8 @@ namespace FrontierDevelopments.Shields.Harmony
                 int ___ticksToImpact)
             {
                 if(__result == false && TryBlockProjectile(__instance,
-                    lastExactPos,
-                    newExactPos,
+                    lastExactPos.Yto0(),
+                    newExactPos.Yto0(),
                     ___ticksToImpact,
                     ___origin))
                 {

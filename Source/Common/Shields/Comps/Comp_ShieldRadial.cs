@@ -51,7 +51,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public IShieldResists Resists => parent.TryGetComp<Comp_ShieldResistance>();
 
-        private Vector3 ExactPosition => PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter();
+        private Vector3 ExactPosition => (PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter()).Yto0();
 
         private static int NextId => Find.UniqueIDsManager.GetNextThingID();
 
@@ -184,7 +184,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool Collision(Vector3 vector)
         {
-            return CollisionUtility.Circle.Point(PositionUtility.ToVector3(ExactPosition), Radius, vector);
+            return CollisionUtility.Circle.Point(ExactPosition.Yto0(), Radius, vector);
         }
 
         public Vector3? Collision(Ray ray, float limit)
@@ -196,7 +196,7 @@ namespace FrontierDevelopments.Shields.Comps
         {
             if (Mod.Settings.EnableShootingOut && Collision(origin))
                 return null;
-            return CollisionUtility.Circle.LineSegment(PositionUtility.ToVector3(ExactPosition), Radius, origin, destination);
+            return CollisionUtility.Circle.LineSegment(ExactPosition, Radius, origin, destination);
         }
 
         private bool ShouldDraw(CellRect cameraRect)
@@ -217,7 +217,7 @@ namespace FrontierDevelopments.Shields.Comps
         public void FieldDraw(CellRect cameraRect)
         {
             if (!IsActive() || !_renderField || !ShouldDraw(cameraRect)) return;
-            var position = PositionUtility.ToVector3(ExactPosition);
+            var position = ExactPosition;
             position.y = Altitudes.AltitudeFor(AltitudeLayer.MoteOverhead);
             var scalingFactor = (float)(Radius * 2.2);
             var scaling = new Vector3(scalingFactor, 1f, scalingFactor);

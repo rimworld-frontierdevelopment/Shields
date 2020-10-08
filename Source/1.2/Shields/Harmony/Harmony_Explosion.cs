@@ -4,19 +4,20 @@ using System.Linq;
 using FrontierDevelopments.General;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Explosion
     {
-        protected static bool TryBlock(Thing explosion, DamageDef damType, int damAmount, IntVec3 position)
+        protected static bool TryBlock(Map map, Vector3 origin, DamageDef damType, int damAmount, Vector3 position)
         {
             if (damType?.defName == null) return false;
             var damages = new ShieldDamages(new ShieldDamage(damType, damAmount));
-            var blocked = new ShieldQuery(explosion.Map)
+            var blocked = new ShieldQuery(map)
                 .IsActive()
-                .Intersects(explosion.TrueCenter().Yto0(), PositionUtility.ToVector3(position).Yto0())
+                .Intersects(origin, PositionUtility.ToVector3(position).Yto0())
                 .Block(damages) != null;
             return blocked;
         }
@@ -26,6 +27,7 @@ namespace FrontierDevelopments.Shields.Harmony
         protected static void HandleProtected<T>(
             ICollection<IntVec3> cellsToAffect,
             T explosion,
+            Vector3 origin,
             int startTick,
             Func<T, IntVec3, int> getDamage) where T : Explosion
         {
@@ -33,7 +35,7 @@ namespace FrontierDevelopments.Shields.Harmony
             cellsToAffect
                 .Where(cell => ticksGame >= GetCellAffectTickReversed(explosion, startTick, cell))
                 .OrderByDescending(cell => cell.DistanceTo(explosion.Position))
-                .Where(cell => TryBlock(explosion, explosion.damType, getDamage(explosion, cell), cell))
+                .Where(cell => TryBlock(explosion.Map, origin, explosion.damType, getDamage(explosion, cell), PositionUtility.ToVector3(cell).Yto0()))
                 .Do(blocked => cellsToAffect.Remove(blocked));
         }
 
@@ -53,7 +55,7 @@ namespace FrontierDevelopments.Shields.Harmony
             [HarmonyPrefix]
             static void HandleOuterEdgesFirst(Explosion __instance, List<IntVec3> ___cellsToAffect, int ___startTick)
             {
-                HandleProtected(___cellsToAffect, __instance, ___startTick, GetDamage);
+                HandleProtected(___cellsToAffect, __instance, __instance.TrueCenter().Yto0(), ___startTick, GetDamage);
             } 
         }
 
@@ -63,7 +65,7 @@ namespace FrontierDevelopments.Shields.Harmony
             [HarmonyPrefix]
             static bool CheckCellShielded(Explosion __instance, IntVec3 c)
             {
-                return !TryBlock(__instance, __instance.damType, GetDamage(__instance, c), c);
+                return !TryBlock(__instance.Map, __instance.TrueCenter().Yto0(), __instance.damType, GetDamage(__instance, c), PositionUtility.ToVector3(c).Yto0());
             }
         }
     }
