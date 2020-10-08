@@ -19,7 +19,7 @@ namespace FrontierDevelopments.Shields.Harmony
             return new ShieldQuery(map)
                 .IsActive()
                 .Intersects(PositionUtility.ToVector3(center))
-                .Block(Mod.Settings.SkyfallerDamage) != null;
+                .Block(Mod.Settings.SkyfallerDamage);
         }
 
         private static bool IsShielded(Map map, IntVec3 position)

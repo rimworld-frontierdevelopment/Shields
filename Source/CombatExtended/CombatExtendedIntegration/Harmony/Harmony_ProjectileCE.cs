@@ -1,3 +1,4 @@
+using System;
 using System.Reflection;
 using CombatExtended;
 using FrontierDevelopments.General;
@@ -39,10 +40,11 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             ProjectileCE projectile,
             Vector3 currentPosition,
             int ticksToImpact,
-            Vector2 origin)
+            Vector2 origin,
+            Action<IShield, Vector3> onBlock = null)
         {
             if(ticksToImpact > 1) return false;
-            return TryBlockOverhead(projectile, origin, currentPosition, CalculateDamages(projectile)) != null;
+            return TryBlockOverhead(projectile, origin, currentPosition, CalculateDamages(projectile), onBlock);
         }
 
         private static bool TryBlockProjectileCE(
@@ -50,7 +52,8 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             Vector3 currentPosition,
             Vector3 nextPosition,
             int ticksToImpact,
-            Vector2 origin)
+            Vector2 origin,
+            Action<IShield, Vector3> onBlock = null)
         {
             return TryBlock(
                 projectile,
@@ -59,7 +62,8 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 ticksToImpact,
                 PositionUtility.ToVector3(origin),
                 projectile.def.projectile.flyOverhead,
-                CalculateDamages(projectile)) != null;
+                CalculateDamages(projectile),
+                onBlock);
         }
 
         [HarmonyPatch(typeof(ProjectileCE), "CheckForCollisionBetween")]

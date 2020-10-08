@@ -29,7 +29,7 @@ namespace FrontierDevelopments.Shields.SrtsExpandedIntegration.Harmony
                                 .FriendlyTo(faction, true)
                                 // TODO calculate damage based on mass and cargo
                                 .Block(Mod.Settings.SkyfallerDamage);
-                            if (blocked != null)
+                            if (blocked)
                             {
                                 Harmony_Skyfaller.KillPawns(
                                     incoming.Contents.GetDirectlyHeldThings().OfType<Pawn>(),

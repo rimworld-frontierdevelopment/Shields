@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using System.Reflection.Emit;
-using FrontierDevelopments.General;
 using HarmonyLib;
 using UnityEngine;
 using Verse;
@@ -41,7 +39,8 @@ namespace FrontierDevelopments.Shields.Harmony
             Vector3 currentPosition,
             Vector3 nextPosition,
             int ticksToImpact,
-            Vector3 origin)
+            Vector3 origin,
+            Action<IShield, Vector3> onBlock = null)
         {
             // allow projectiles that have no damage components through
             if (projectile.def?.projectile?.damageDef == null) return false;
@@ -57,19 +56,21 @@ namespace FrontierDevelopments.Shields.Harmony
                 ticksToImpact,
                 origin,
                 projectile.def.projectile.flyOverhead,
-                damages) != null;
+                damages,
+                onBlock);
         }
 
-        protected static Vector3? TryBlock(
+        protected static bool TryBlock(
             Thing projectile,
             Vector3 currentPosition,
             Vector3 nextPosition,
             int ticksToImpact,
             Vector3 origin,
             bool flyOverhead,
-            ShieldDamages damages)
+            ShieldDamages damages,
+            Action<IShield, Vector3> onBlock = null)
         {
-            if (IsBlacklisted(projectile)) return null;
+            if (IsBlacklisted(projectile)) return false;
 
             if (flyOverhead)
             {
@@ -81,8 +82,8 @@ namespace FrontierDevelopments.Shields.Harmony
                         damages.OverrideDamage = 10;
                     }
 
-                    var blocked = TryBlockOverhead(projectile, origin, currentPosition, damages) != null;
-                    if (blocked) return currentPosition;
+                    var blocked = TryBlockOverhead(projectile, origin, currentPosition, damages);
+                    return blocked;
                 }
             }
             else
@@ -92,24 +93,25 @@ namespace FrontierDevelopments.Shields.Harmony
                     .Intersects(
                         currentPosition,
                         nextPosition)
-                    .Block(damages);
+                    .Block(damages, onBlock);
             }
 
-            return null;
+            return false;
         }
         
-        protected static Vector3? TryBlockOverhead(
+        protected static bool TryBlockOverhead(
             Thing projectile,
             Vector3 origin,
             Vector3 currentPosition,
-            ShieldDamages damages)
+            ShieldDamages damages,
+            Action<IShield, Vector3> onBlock = null)
         {
             return new ShieldQuery(projectile.Map)
                 .IsActive()
                 .Intersects(origin, true)
                 .Intersects(currentPosition)
                 // TODO calculate mortar damage better
-                .Block(damages);
+                .Block(damages, onBlock);
         }
 
         private static bool ShouldImpact(Projectile projectile)

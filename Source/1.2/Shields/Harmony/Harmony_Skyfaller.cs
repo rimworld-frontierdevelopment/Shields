@@ -54,7 +54,7 @@ namespace FrontierDevelopments.Shields.Harmony
             string messageBody = "fd.shields.incident.shuttle.blocked.body")
         {
             var faction = shuttle.Faction ?? Faction.Empire;
-            if (shields.HostileTo(faction).Block(damage) != null)
+            if (shields.HostileTo(faction).Block(damage))
             {
                 // get around a bug in 1.2 where the shuttle has no contents
                 ActiveDropPodInfo contents = null;
@@ -83,7 +83,7 @@ namespace FrontierDevelopments.Shields.Harmony
             float damage,
             string messageBody = "fd.shields.incident.droppod.blocked.body")
         {
-            if (shields.Block(damage) != null)
+            if (shields.Block(damage))
             {
                 KillPawns(podInfo.GetDirectlyHeldThings().OfType<Pawn>(), pod.Map, pod.Position);
                 Messages.Message(messageBody.Translate(),
@@ -101,7 +101,7 @@ namespace FrontierDevelopments.Shields.Harmony
             float damage,
             string messageBody = "fd.shields.incident.skyfaller.blocked.body")
         {
-            if (shields.Block(damage) != null)
+            if (shields.Block(damage))
             {
                 skyfaller.def.skyfaller.impactSound?.PlayOneShot(
                     SoundInfo.InMap(new TargetInfo(skyfaller.Position, skyfaller.Map)));

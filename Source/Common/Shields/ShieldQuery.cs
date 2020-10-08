@@ -27,8 +27,8 @@ namespace FrontierDevelopments.Shields
         IShieldQueryWithIntersects Intersects(Vector3 start, Vector3 end, bool invert = false);
         IShieldQueryWithIntersects Intersects(Vector3 position, bool invert = false);
         IEnumerable<IShield> Get();
-        Vector3? Block(ShieldDamages damages);
-        Vector3? Block(float damage);
+        bool Block(ShieldDamages damages, Action<IShield, Vector3> onBlock = null);
+        bool Block(float damage, Action<IShield, Vector3> onBlock = null);
     }
 
     internal static class ShieldQueryUtils
@@ -194,36 +194,38 @@ namespace FrontierDevelopments.Shields
             return _elements.Select(e => e.Shield);
         }
 
-        public Vector3? Block(ShieldDamages damages)
+        public bool Block(ShieldDamages damages, Action<IShield, Vector3> onBlock)
         {
             try
             {
-                return _elements
+                var result = _elements
                     .Where(e => e.Intersect != null)
-                    .Where(e => e.Shield.Block(damages, e.Intersect.Value) >= damages.Damage)
-                    .Select(e => e.Intersect)
-                    .First();
+                    .First(e => e.Shield.Block(damages, e.Intersect.Value) >= damages.Damage);
+                if (result.Intersect != null)
+                {
+                    onBlock?.Invoke(result.Shield, result.Intersect.Value);
+                    return true;
+                }
             }
-            catch (InvalidOperationException)
-            {
-                return null;
-            }
+            catch(InvalidOperationException) {}
+            return false;
         }
 
-        public Vector3? Block(float damage)
+        public bool Block(float damage, Action<IShield, Vector3> onBlock)
         {
             try
             {
-                return _elements
+                var result = _elements
                     .Where(e => e.Intersect != null)
-                    .Where(e => e.Shield.Block(damage, e.Intersect.Value) >= damage)
-                    .Select(e => e.Intersect)
-                    .First();
+                    .First(e => e.Shield.Block(damage, e.Intersect.Value) >= damage);
+                if (result.Intersect != null)
+                {
+                    onBlock?.Invoke(result.Shield, result.Intersect.Value);
+                    return true;
+                }
             }
-            catch (InvalidOperationException)
-            {
-                return null;
-            }
+            catch(InvalidOperationException) {}
+            return false;
         }
     }
 }

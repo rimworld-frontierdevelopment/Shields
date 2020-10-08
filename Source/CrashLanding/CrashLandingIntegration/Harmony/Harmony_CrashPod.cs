@@ -27,7 +27,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
             var crashPodBlocked = new ShieldQuery(crashPod.Map)
                 .IsActive()
                 .Intersects(PositionUtility.ToVector3WithY(crashPod.Position, 0))
-                .Block(damage) != null;
+                .Block(damage);
             if (crashPodBlocked)
             {
                 Messages.Message("fd.shields.incident.crashpod.blocked.body".Translate(),

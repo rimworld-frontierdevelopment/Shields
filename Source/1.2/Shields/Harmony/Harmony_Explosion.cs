@@ -18,7 +18,7 @@ namespace FrontierDevelopments.Shields.Harmony
             var blocked = new ShieldQuery(map)
                 .IsActive()
                 .Intersects(origin, PositionUtility.ToVector3(position).Yto0())
-                .Block(damages) != null;
+                .Block(damages);
             return blocked;
         }
 
