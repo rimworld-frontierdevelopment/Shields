@@ -10,14 +10,13 @@ namespace FrontierDevelopments.Shields.Harmony
 {
     public class Harmony_Explosion
     {
-        private static bool TryBlock(Thing explosion, DamageDef damType, int damAmount, IntVec3 position)
+        protected static bool TryBlock(Thing explosion, DamageDef damType, int damAmount, IntVec3 position)
         {
             if (damType?.defName == null) return false;
             var damages = new ShieldDamages(new ShieldDamage(damType, damAmount));
-            
             var blocked = new ShieldQuery(explosion.Map)
                 .IsActive()
-                .Intersects(explosion.TrueCenter(), PositionUtility.ToVector3(position))
+                .Intersects(explosion.TrueCenter().Yto0(), PositionUtility.ToVector3(position).Yto0())
                 .Block(damages) != null;
             return blocked;
         }
@@ -56,6 +55,16 @@ namespace FrontierDevelopments.Shields.Harmony
             {
                 HandleProtected(___cellsToAffect, __instance, ___startTick, GetDamage);
             } 
+        }
+
+        [HarmonyPatch(typeof(Explosion), "AffectCell")]
+        static class Patch_AffectCell
+        {
+            [HarmonyPrefix]
+            static bool CheckCellShielded(Explosion __instance, IntVec3 c)
+            {
+                return !TryBlock(__instance, __instance.damType, GetDamage(__instance, c), c);
+            }
         }
     }
 }

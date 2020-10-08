@@ -22,5 +22,15 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 HandleProtected(___cellsToAffect, __instance, ___startTick, GetDamage);
             }
         }
+
+        [HarmonyPatch(typeof(ExplosionCE), "AffectCell")]
+        static class Patch_AffectCell
+        {
+            [HarmonyPrefix]
+            static bool CheckCellShielded(ExplosionCE __instance, IntVec3 c)
+            {
+                return !TryBlock(__instance, __instance.damType, GetDamage(__instance, c), c);
+            }
+        }
     }
 }
