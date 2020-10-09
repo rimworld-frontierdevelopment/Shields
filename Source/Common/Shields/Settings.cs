@@ -7,7 +7,7 @@ namespace FrontierDevelopments.Shields
     {
         private Vector2 _scrollPosition = Vector2.zero;
         private const float ViewMargin = 20f;
-        private const int WindowHeight = 720;
+        private const int WindowHeight = 820;
         
         // Integrations
         public bool EnableCentralizedClimateControlSupport = true;
