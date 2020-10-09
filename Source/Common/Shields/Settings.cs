@@ -11,7 +11,7 @@ namespace FrontierDevelopments.Shields
         
         // Integrations
         public bool EnableCentralizedClimateControlSupport = true;
-        public bool EnableDubsBadHygieneSupport = false;
+        public bool EnableDubsBadHygieneSupport = true;
 
         // General
         public bool EnableShootingOut = true;
@@ -183,7 +183,7 @@ namespace FrontierDevelopments.Shields
         public override void ExposeData()
         {
             Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
-            Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", false);
+            Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", true);
 
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
             Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
