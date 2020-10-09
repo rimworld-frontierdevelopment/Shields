@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Reflection;
 using CombatExtended;
 using FrontierDevelopments.General;
@@ -6,6 +7,7 @@ using FrontierDevelopments.Shields;
 using FrontierDevelopments.Shields.Harmony;
 using HarmonyLib;
 using UnityEngine;
+using Verse;
 
 namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
 {
@@ -16,18 +18,17 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
         private static bool ShouldImpact(ProjectileCE projectile)
         {
             if (projectile.def.projectile.flyOverhead) return false;
-            var type = projectile.GetType();
-            return typeof(ProjectileCE_Explosive).IsAssignableFrom(type);
+            return projectile is ProjectileCE_Explosive;
         }
 
-        private static ShieldDamages CalculateDamages(ProjectileCE projectile)
+        private static ShieldDamages CalculateDamages(ThingDef def)
         {
-            var ap = projectile.def.projectile.GetArmorPenetration(1f);
+            var ap = def.projectile.GetArmorPenetration(1f);
             var damages = new ShieldDamages(
                 new ShieldDamage(
-                    projectile.def.projectile.damageDef, 
-                    projectile.def.projectile.GetDamageAmount(ap)));
-            (projectile.def.projectile as ProjectilePropertiesCE)?.secondaryDamage.ForEach(second =>
+                    def.projectile.damageDef,
+                    def.projectile.GetDamageAmount(ap)));
+            (def.projectile as ProjectilePropertiesCE)?.secondaryDamage.ForEach(second =>
             {
                 damages.Add(new ShieldDamage(
                     second.def,
@@ -44,7 +45,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             Action<IShield, Vector3> onBlock = null)
         {
             if(ticksToImpact > 1) return false;
-            return TryBlockOverhead(projectile, origin, currentPosition, CalculateDamages(projectile), onBlock);
+            return TryBlockOverhead(projectile, origin, currentPosition, CalculateDamages(projectile.def), onBlock);
         }
 
         private static bool TryBlockProjectileCE(
@@ -62,8 +63,31 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 ticksToImpact,
                 PositionUtility.ToVector3(origin),
                 projectile.def.projectile.flyOverhead,
-                CalculateDamages(projectile),
+                CalculateDamages(projectile.def),
                 onBlock);
+        }
+
+        private static bool Impact(ProjectileCE projectile, IShield shield, Vector3 position)
+        {
+            var traverse = new Traverse(projectile);
+            var ticksToImpact = traverse.Field("ticksToImpact");
+            var startingTicksToImpact = traverse.Property("StartingTicksToImpact").GetValue<float>();
+
+            // rewind the projectile 1 tick to get the last position before the CheckForCollisionBetween we are in
+            ticksToImpact.SetValue(ticksToImpact.GetValue<int>() + 1);
+
+            while (shield.Collision(projectile.ExactPosition.Yto0()))
+            {
+                var amount = ticksToImpact.GetValue<int>();
+                if (amount > startingTicksToImpact)
+                {
+                    Log.Message("Unable to find good place to detonate " + projectile.ThingID + ", destroying without detonating");
+                    return false;
+                }
+                ticksToImpact.SetValue(amount + 1);
+            }
+            impactMethod.Invoke(projectile, new object[] { null });
+            return true;
         }
 
         [HarmonyPatch(typeof(ProjectileCE), "CheckForCollisionBetween")]
@@ -75,26 +99,16 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 var current = __instance.ExactPosition;
                 var last = current - __instance.ExactMinusLastPos;
 
-                var shouldBlock = TryBlockProjectileCE(
+                return !TryBlockProjectileCE(
                     __instance,
                     last,
                     current,
                     ___ticksToImpact,
-                    ___origin);
-
-                if (shouldBlock)
-                {
-                    if (ShouldImpact(__instance))
+                    ___origin, (shield, point) =>
                     {
-                        new Traverse(__instance).Field("ticksToImpact").SetValue(___ticksToImpact + 1);
-                        impactMethod.Invoke(__instance, new object[] { null });
-                    }
-                    else
-                    {
-                        __instance.Destroy();
-                    }
-                }
-                return !shouldBlock;
+                        if (!ShouldImpact(__instance) || !Impact(__instance, shield, point))
+                            __instance.Destroy();
+                    });
             }
         }
 
