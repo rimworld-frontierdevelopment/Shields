@@ -36,11 +36,6 @@ namespace FrontierDevelopments.Shields
         // Thermal
         public bool EnableThermal = true;
         public float HeatPerPower = 1.0f;
-        public bool EnableMinorThermalIncidents = true;
-        public bool EnableMajorThermalIncidents = true;
-        public bool EnableCriticalThermalIncidents = true;
-        
-        
 
         private static void Heading(Listing_Standard list, string text)
         {
@@ -164,15 +159,15 @@ namespace FrontierDevelopments.Shields
                     ref heatPerPowerBuffer);
                 list.CheckboxLabeled(
                     "fd.settings.shield.minor_thermal_incidents.label".Translate(), 
-                    ref EnableMinorThermalIncidents, 
+                    ref General.Settings.EnableMinorThermalIncidents, 
                     "fd.settings.shield.minor_thermal_incidents.description".Translate());
                 list.CheckboxLabeled(
                     "fd.settings.shield.major_thermal_incidents.label".Translate(), 
-                    ref EnableMajorThermalIncidents, 
+                    ref General.Settings.EnableMajorThermalIncidents, 
                     "fd.settings.shield.major_thermal_incidents.description".Translate());
                 list.CheckboxLabeled(
                     "fd.settings.shield.critical_thermal_incidents.label".Translate(), 
-                    ref EnableCriticalThermalIncidents, 
+                    ref General.Settings.EnableCriticalThermalIncidents, 
                     "fd.settings.shield.critical_thermal_incidents.description".Translate());
             }
 
@@ -198,9 +193,9 @@ namespace FrontierDevelopments.Shields
             
             Scribe_Values.Look(ref EnableThermal, "EnableThermal", true);
             Scribe_Values.Look(ref HeatPerPower, "HeatPerPower", 1f);
-            Scribe_Values.Look(ref EnableMinorThermalIncidents, "EnableMinorThermalIncidents", true);
-            Scribe_Values.Look(ref EnableMajorThermalIncidents, "EnableMajorThermalIncidents", true);
-            Scribe_Values.Look(ref EnableCriticalThermalIncidents, "EnableCriticalThermalIncidents", true); 
+            Scribe_Values.Look(ref General.Settings.EnableMinorThermalIncidents, "EnableMinorThermalIncidents", true);
+            Scribe_Values.Look(ref General.Settings.EnableMajorThermalIncidents, "EnableMajorThermalIncidents", true);
+            Scribe_Values.Look(ref General.Settings.EnableCriticalThermalIncidents, "EnableCriticalThermalIncidents", true); 
             
             Scribe_Values.Look(ref EnableAIAttackTargetFinder, "EnableAIAttackTargetFinder", true);
             Scribe_Values.Look(ref EnableAICastPositionFinder, "EnableAICastPositionFinder", true);
