@@ -47,7 +47,7 @@
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <!-- Text inspection -->
-    <fd.heatsink.temperature>Температура радиатора</fd.heatsink.temperature>
+    <fd.heatsink.temperature>Температура радиатора: {0}</fd.heatsink.temperature>
 
     <shield.status.offline>Щит отключен</shield.status.offline>
     <shield.status.no_power>Не подключен к источнику питания</shield.status.no_power>

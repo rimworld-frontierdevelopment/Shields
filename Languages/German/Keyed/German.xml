@@ -68,7 +68,7 @@
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <!-- Text inspection -->
-    <fd.heatsink.temperature>Kühlkörper Temperatur</fd.heatsink.temperature>
+    <fd.heatsink.temperature>Kühlkörper Temperatur: {0}</fd.heatsink.temperature>
 
     <shield.status.offline>Schild offline</shield.status.offline>
     <shield.status.no_power>Keine Energie verfügbar</shield.status.no_power>

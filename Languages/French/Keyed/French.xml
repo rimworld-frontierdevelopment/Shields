@@ -60,7 +60,7 @@
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <!-- Text inspection -->
-    <fd.heatsink.temperature>Temperature du radiateur</fd.heatsink.temperature>
+    <fd.heatsink.temperature>Temperature du radiateur: {0}</fd.heatsink.temperature>
 
     <shield.status.offline>Bouclier hors-service</shield.status.offline>
     <shield.status.no_power>Déconnecté du réseau électrique</shield.status.no_power>

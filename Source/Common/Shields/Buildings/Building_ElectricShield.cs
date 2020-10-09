@@ -383,7 +383,36 @@ namespace FrontierDevelopments.Shields.Buildings
             Shield.FieldPostDraw();
         }
 
-        public IEnumerable<UiComponent> UiComponents => _shield.UiComponents;
+        private TextComponent GetTextComponent()
+        {
+            var powerRequired = -(int)GetComp<CompPowerTrader>().PowerOutput;
+            var canBlock = (int)(_energyNet.AmountAvailable * Mod.Settings.PowerPerDamage);
+
+            var text = new StringBuilder();
+            text.AppendLine(ShieldStatus.GetStringFromStatuses(Status.ToList()));
+            text.AppendLine(("PowerNeeded".Translate() + ": " + (powerRequired).ToString("#####0") + " W"));
+            text.AppendLine("fd.heatsink.temperature".Translate(Temp.ToStringTemperature()));
+            text.AppendLine("FrontierDevelopments.Shields.ITab.CanBlock".Translate(canBlock));
+            return new TextComponent(text);
+        }
+
+        public IEnumerable<UiComponent> UiComponents
+        {
+            get
+            {
+                yield return GetTextComponent();
+
+                foreach (var component in _shield.UiComponents)
+                {
+                    yield return component;
+                }
+
+                yield return new CheckboxComponent(
+                    "thermal_shutoff.label".Translate() + "\n" + "thermal_shutoff.description".Translate(),
+                    () => Heatsink.WantThermalShutoff,
+                    value => WantThermalShutoff = value);
+            }
+        }
 
         public IEnumerable<ShieldSetting> ShieldSettings
         {

@@ -83,7 +83,7 @@
   <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
   <!-- Text inspection -->
-  <fd.heatsink.temperature>散热器温度</fd.heatsink.temperature>
+  <fd.heatsink.temperature>散热器温度: {0}</fd.heatsink.temperature>
 
   <shield.status.offline>屏障断开电力</shield.status.offline>
   <shield.status.no_power>未连接电源</shield.status.no_power>

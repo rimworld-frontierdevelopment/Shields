@@ -98,13 +98,16 @@
 
     <!-- ITab -->
     <FrontierDevelopments.Shields.ITab.Shield>Shield</FrontierDevelopments.Shields.ITab.Shield>
+    <FrontierDevelopments.Shields.ITab.PowerRequired>Power required: {0}</FrontierDevelopments.Shields.ITab.PowerRequired>
+    <FrontierDevelopments.Shields.ITab.Efficiency>Efficiency: {0}%</FrontierDevelopments.Shields.ITab.Efficiency>
+    <FrontierDevelopments.Shields.ITab.CanBlock>Damage can block: {0}</FrontierDevelopments.Shields.ITab.CanBlock>
 
     <!-- Stats -->
     <FrontierDevelopments.Shields.Stats.Blocked.Label>Damage blocked</FrontierDevelopments.Shields.Stats.Blocked.Label>
     <FrontierDevelopments.Shields.Stats.Blocked.Desc>The amount of damage this shield has blocked over its lifetime.</FrontierDevelopments.Shields.Stats.Blocked.Desc>
 
     <!-- Text inspection -->
-    <fd.heatsink.temperature>Heatsink temperature</fd.heatsink.temperature>
+    <fd.heatsink.temperature>Heatsink temperature: {0}</fd.heatsink.temperature>
 
     <shield.status.offline>Shield offline</shield.status.offline>
     <shield.status.no_power>Not connected to power</shield.status.no_power>

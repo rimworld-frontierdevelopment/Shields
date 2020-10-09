@@ -53,7 +53,7 @@
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <!-- Text inspection -->
-    <fd.heatsink.temperature>Temperatura del disipador térmico</fd.heatsink.temperature>
+    <fd.heatsink.temperature>Temperatura del disipador térmico: {0}</fd.heatsink.temperature>
 
     <shield.status.offline>Escudo desconectado</shield.status.offline>
     <shield.status.no_power>No conectado a la red eléctrica</shield.status.no_power>

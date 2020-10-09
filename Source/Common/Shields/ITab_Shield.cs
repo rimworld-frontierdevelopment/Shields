@@ -8,7 +8,6 @@ namespace FrontierDevelopments.Shields
     public class ITab_Shield : ITab
     {
         private const float ViewMargin = 24f;
-        private const float ComponentHeight = 72f;
 
         public ITab_Shield()
         {
@@ -29,10 +28,8 @@ namespace FrontierDevelopments.Shields
 
             foreach (var component in SelShield.UiComponents)
             {
-                var section = list.BeginSection(ComponentHeight);
-                
-                component.Draw(section.GetRect(ComponentHeight));
-                
+                var section = list.BeginSection(component.Height);
+                component.Draw(section.GetRect(component.Height));
                 list.EndSection(section);
                 list.Gap();
             }
