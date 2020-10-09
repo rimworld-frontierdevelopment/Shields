@@ -40,6 +40,9 @@
     <fd.settings.shield.performance.verb.label>Enable AI to check if their shot will hit a shield (Impact: Medium)</fd.settings.shield.performance.verb.label>
     <fd.settings.shield.performance.verb.description>Enabling allows the AI to check their shotlines. Disabling will cause pawns to shoot friendly shields in combat and may cause hunters to endlessly shoot at shiels while hunting</fd.settings.shield.performance.verb.description>
 
+    <fd.settings.shield.performance.flee.label>Enable AI to flee prefer to flee to shielded areas (Impact: Low)</fd.settings.shield.performance.flee.label>
+    <fd.settings.shield.performance.flee.description>Enables allows the AI to prefer to flee to areas that are shielded from the threat</fd.settings.shield.performance.flee.description>
+
     <!-- Power section -->
     <fd.settings.shield.power.heading>Power</fd.settings.shield.power.heading>
 

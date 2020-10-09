@@ -71,6 +71,7 @@
     <Compile Include="Shields\Harmony\Harmony_Bombardment.cs" />
     <Compile Include="Shields\Harmony\Harmony_AttackTargetFinder.cs" />
     <Compile Include="Shields\Harmony\Harmony_CastPositionFinder.cs" />
+    <Compile Include="Shields\Harmony\Harmony_CellFinderLoose.cs" />
     <Compile Include="Shields\Harmony\Harmony_DropCellFinder.cs" />
     <Compile Include="Shields\Harmony\Harmony_Explosion.cs" />
     <Compile Include="Shields\Harmony\Harmony_Map.cs" />

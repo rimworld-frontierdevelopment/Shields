@@ -22,6 +22,7 @@ namespace FrontierDevelopments.Shields
         public bool EnableAIAttackTargetFinder = true;
         public bool EnableAICastPositionFinder = true;
         public bool EnableAIVerbFindShotLine = true;
+        public bool EnableAIFleeToShields = true;
 
         // Integrity
         public float PowerPerDamage = 1.0f;
@@ -99,6 +100,10 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.performance.verb.label".Translate(), 
                 ref EnableAIVerbFindShotLine, 
                 "fd.settings.shield.performance.verb.description".Translate());
+            list.CheckboxLabeled(
+                "fd.settings.shield.performance.flee.label".Translate(),
+                ref EnableAIFleeToShields,
+                "fd.settings.shield.performance.flee.description".Translate());
 
             // Integrity
             Heading(list, "fd.settings.shield.integrity.heading".Translate());
