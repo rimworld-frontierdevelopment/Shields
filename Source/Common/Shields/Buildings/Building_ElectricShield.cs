@@ -303,9 +303,9 @@ namespace FrontierDevelopments.Shields.Buildings
             var unapplied = UnapplyEfficiency(drawn, temp);
             if (damage - unapplied > 1f)
             {
-                return damage;
+                return unapplied;
             }
-            return unapplied;
+            return damage;
         }
 
         public float Block(float damage, Vector3 position)
