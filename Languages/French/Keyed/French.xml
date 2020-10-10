@@ -15,9 +15,6 @@
     <fd.settings.shield.shootout.label>Autoriser tirs intérieurs</fd.settings.shield.shootout.label>
     <fd.settings.shield.shootout.description>Autorise les tirs provenant de l'intérieur de traverser le bouclier</fd.settings.shield.shootout.description>
 
-    <fd.settings.shield.scale-heat.label>Proportion des dégats selon la température</fd.settings.shield.scale-heat.label>
-    <fd.settings.shield.scale-heat.description>Bloquer les dégats demande moins d'énergie quand le bouclier est froid et plus quand il est chaud. L'utilisation du mod de Contrôle de Climat Centralisé est recommandée pour l'utiliser</fd.settings.shield.scale-heat.description>
-
     <!-- Power section -->
     <fd.settings.shield.power.heading>Puissance</fd.settings.shield.power.heading>
 

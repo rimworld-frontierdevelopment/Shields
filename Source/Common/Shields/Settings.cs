@@ -15,7 +15,6 @@ namespace FrontierDevelopments.Shields
 
         // General
         public bool EnableShootingOut = true;
-        public bool ScaleOnHeat = true;
         public bool BlockSkyfallers = true;
         public bool AutosaveOnSkyfallers = true;
 
@@ -79,10 +78,6 @@ namespace FrontierDevelopments.Shields
                 "fd.settings.shield.shootout.label".Translate(), 
                 ref EnableShootingOut, 
                 "fd.settings.shield.shootout.description".Translate());
-            list.CheckboxLabeled(
-                "fd.settings.shield.scale-heat.label".Translate(),
-                ref ScaleOnHeat,
-                "fd.settings.shield.scale-heat.description".Translate());
 
             list.CheckboxLabeled(
                 "fd.settings.shield.blockskyfallers.label".Translate(),
@@ -181,7 +176,6 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", true);
 
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
-            Scribe_Values.Look(ref ScaleOnHeat, "scaleOnHeat", true);
             Scribe_Values.Look(ref BlockSkyfallers, "blockSkyfallers", true);
             Scribe_Values.Look(ref AutosaveOnSkyfallers, "autosaveOnSkyfallers", true);
 

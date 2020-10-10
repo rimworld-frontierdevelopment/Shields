@@ -21,9 +21,6 @@
     <fd.settings.shield.shootin.label>Enable shooting at friendly shields</fd.settings.shield.shootin.label>
     <fd.settings.shield.shootin.description>Allow colonists to attempt to shoot into friendly shields (for testing, not recommended for normal gameplay!)</fd.settings.shield.shootin.description>
 
-    <fd.settings.shield.scale-heat.label>Scale damage by shield heat</fd.settings.shield.scale-heat.label>
-    <fd.settings.shield.scale-heat.description>Blocking damage requires less power when cold and a lot more power when hot. Also using Centralized Climate Control mod is recommended when using this</fd.settings.shield.scale-heat.description>
-
     <fd.settings.shield.blockskyfallers.label>Block skyfallers</fd.settings.shield.blockskyfallers.label>
     <fd.settings.shield.blockskyfallers.description>Enables blocking of skyfallers. Disabling this feature can be useful to allow mods that are unsupported to land within shields</fd.settings.shield.blockskyfallers.description>
 

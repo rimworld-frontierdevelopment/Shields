@@ -263,24 +263,6 @@ namespace FrontierDevelopments.Shields.Buildings
             return Shield.Collision(start, end);
         }
 
-        private float ApplyEfficiency(float damage, float temp)
-        {
-            if (Mod.Settings.ScaleOnHeat && Heatsink != null)
-            {
-                return damage * Mathf.Pow(1.01f, temp);
-            }
-            return damage;
-        }
-
-        private float UnapplyEfficiency(float damage, float temp)
-        {
-            if (Mod.Settings.ScaleOnHeat && Heatsink != null)
-            {
-                return damage / Mathf.Pow(1.01f, temp);
-            }
-            return damage;
-        }
-
         private void HandleBlockingHeat(float handled)
         {
             Heatsink?.PushHeat(handled * Mod.Settings.HeatPerPower);
@@ -294,16 +276,14 @@ namespace FrontierDevelopments.Shields.Buildings
         public float SinkDamage(float damage)
         {
             var temp = Heatsink.Temp;
-            var drawn = _energyNet.Consume(
-                            ApplyEfficiency(damage, temp) * Mod.Settings.PowerPerDamage
-                        ) / Mod.Settings.PowerPerDamage;
+            var drawn = _energyNet.Consume(damage * Mod.Settings.PowerPerDamage);
             HandleBlockingHeat(drawn);
             
             // fix cases where floating point rounding causes the unapplied to be 0.00000001 shy of the damage
-            var unapplied = UnapplyEfficiency(drawn, temp);
-            if (damage - unapplied > 1f)
+            var blocked = drawn / Mod.Settings.PowerPerDamage;
+            if (damage - blocked > 1f)
             {
-                return unapplied;
+                return blocked;
             }
             return damage;
         }

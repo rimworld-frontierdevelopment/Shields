@@ -28,9 +28,6 @@
   <fd.settings.shield.overlap-passthrough.label>启用重叠通过</fd.settings.shield.overlap-passthrough.label>
   <fd.settings.shield.overlap-passthrough.description>允许子弹和炮弹穿过重叠区域的屏障</fd.settings.shield.overlap-passthrough.description>
 
-  <fd.settings.shield.scale-heat.label>屏障过热造成的损伤</fd.settings.shield.scale-heat.label>
-  <fd.settings.shield.scale-heat.description>阻挡伤害在冷却的时候需要更少的能量，而在过热的时候需要更多的能量。在使用时，建议使用“Centralized Climate Control”mod</fd.settings.shield.scale-heat.description>
-
   <!-- Color section -->
   <fd.settings.shield.color>颜色</fd.settings.shield.color>
   <fd.settings.shield.enable>启用花式护盾纹理</fd.settings.shield.enable>

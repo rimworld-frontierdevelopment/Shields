@@ -18,9 +18,6 @@
     <fd.settings.shield.shootout.label>Aktiviere Herausschießen</fd.settings.shield.shootout.label>
     <fd.settings.shield.shootout.description>Schüße können das Schild verlassen</fd.settings.shield.shootout.description>
 
-    <fd.settings.shield.scale-heat.label>Skaliere absorbierten Schaden anhand der Schildtemperatur</fd.settings.shield.scale-heat.label>
-    <fd.settings.shield.scale-heat.description>Absorbierter Schaden braucht weniger Energie wenn es Kalt ist und viel mehr wenn es heiß ist. Der 'Centralized Climate Control' Mod wird empfohlen</fd.settings.shield.scale-heat.description>
-
     <!-- Power section -->
     <fd.settings.shield.power.heading>Energie</fd.settings.shield.power.heading>
 
