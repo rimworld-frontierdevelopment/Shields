@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="DubsHygiene\Comp_DubsHygieneHeatsink.cs" />
     <Compile Include="DubsHygiene\Comp_DubsAirVent.cs" />
+    <Compile Include="DubsHygiene\Harmony\Harmony_CompAirconIndoorUnit.cs" />
     <Compile Include="DubsHygiene\Module.cs" />
     <Compile Include="DubsHygiene\Resources.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -29,7 +29,7 @@ namespace FrontierDevelopments.Shields.BadHygiene
 
         private bool CapacityIsAvailable()
         {
-            return Vent.PipeComp.pipeNet.CoolingCap - Vent.Props.Capacity > 0;
+            return Vent.PipeComp.pipeNet.CoolingCap - Vent.VentCapacity > 0;
         }
         
         public override void PostSpawnSetup(bool respawningAfterLoad)
@@ -45,7 +45,7 @@ namespace FrontierDevelopments.Shields.BadHygiene
 
         private float CalculatedCoolingTemp()
         {
-            var capacityDifference = Vent.PipeComp.pipeNet.CoolingCap - Vent.Props.Capacity;
+            var capacityDifference = Vent.PipeComp.pipeNet.CoolingCap - Vent.VentCapacity;
             if (capacityDifference < 0)
             {
                 return Mathf.Lerp(Temp, TargetTemp, Mathf.Pow(-capacityDifference, CapacityEfficiencyFactor) / 1000f);
@@ -58,7 +58,7 @@ namespace FrontierDevelopments.Shields.BadHygiene
             if (HasAirflow)
             {
                 var additional = Mathf.Pow(Temp - TargetTemp, CapacityFactor);
-                Vent.Props.Capacity = BaseCapacityRequired + (additional > 0 ? additional : 0);
+                Vent.VentCapacity = BaseCapacityRequired + (additional > 0 ? additional : 0);
             }
             else
             {

@@ -10,8 +10,21 @@ namespace FrontierDevelopments.Shields.BadHygiene
     public class Comp_DubsAirVent : CompAirconIndoorUnit
     {
         private bool _connected = true;
+        private float _capacity = 0f;
 
         public bool Active => _connected && PipeComp.pipeNet.CoolingCap > 0;
+
+        public float VentCapacity
+        {
+            get => WorkingNow? _capacity : 0f;
+            set => _capacity = value;
+        }
+
+        public override void PostSpawnSetup(bool respawningAfterLoad)
+        {
+            base.PostSpawnSetup(respawningAfterLoad);
+            _capacity = Props.Capacity;
+        }
 
         public override string CompInspectStringExtra()
         {
@@ -25,7 +38,7 @@ namespace FrontierDevelopments.Shields.BadHygiene
                 stringBuilder.Append("LowCoolingCap".Translate());
                 stringBuilder.Append("\n");
             }
-            stringBuilder.Append("CoolingUnits".Translate((int)Props.Capacity));
+            stringBuilder.Append("CoolingUnits".Translate((int)VentCapacity));
             return stringBuilder.ToString().TrimEndNewlines();
         }
 
@@ -53,6 +66,7 @@ namespace FrontierDevelopments.Shields.BadHygiene
         {
             base.PostExposeData();
             Scribe_Values.Look(ref _connected, "connectedToDubsCoolingNetwork", true);
+            Scribe_Values.Look(ref _capacity, "ventCapacity");
         }
     }
 }
