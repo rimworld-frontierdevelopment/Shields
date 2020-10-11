@@ -10,7 +10,7 @@ namespace FrontierDevelopments.Shields
         private const int WindowHeight = 820;
         
         // Integrations
-        public bool EnableCentralizedClimateControlSupport = true;
+        public bool EnableCentralizedClimateControlSupport = false;
         public bool EnableDubsBadHygieneSupport = true;
 
         // General
@@ -172,7 +172,7 @@ namespace FrontierDevelopments.Shields
 
         public override void ExposeData()
         {
-            Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", true);
+            Scribe_Values.Look(ref EnableCentralizedClimateControlSupport, "enableCentralizedClimateControlSupport", false);
             Scribe_Values.Look(ref EnableDubsBadHygieneSupport, "enableDubsBadHygieneSupport", true);
 
             Scribe_Values.Look(ref EnableShootingOut, "enableShootingOut", true);
