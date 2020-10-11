@@ -22,11 +22,7 @@ namespace FrontierDevelopments.Shields
         public bool EnableAIAttackTargetFinder = true;
         public bool EnableAICastPositionFinder = true;
         public bool EnableAIVerbFindShotLine = true;
-        
-        // Power
-        // TODO include later maybe. rimworld's support for float settings is non-existant in A17 though
-        public float PowerPerTile = 0.1f;
-        
+
         // Integrity
         public float PowerPerDamage = 1.0f;
         public int DropPodDamage = 100;
@@ -104,16 +100,6 @@ namespace FrontierDevelopments.Shields
                 ref EnableAIVerbFindShotLine, 
                 "fd.settings.shield.performance.verb.description".Translate());
 
-            // Power
-            Heading(list, "fd.settings.shield.power.heading".Translate());
-            
-//            var powerPerTileBuffer = PowerPerTile.ToString();
-//            Widgets.TextFieldNumericLabeled(
-//                list.GetRect(Text.LineHeight),
-//                "fd.settings.shield.power.per_tile.label".Translate(), 
-//                ref PowerPerTile, 
-//                ref powerPerTileBuffer);
-            
             // Integrity
             Heading(list, "fd.settings.shield.integrity.heading".Translate());
             
@@ -179,9 +165,6 @@ namespace FrontierDevelopments.Shields
             Scribe_Values.Look(ref BlockSkyfallers, "blockSkyfallers", true);
             Scribe_Values.Look(ref AutosaveOnSkyfallers, "autosaveOnSkyfallers", true);
 
-            // TODO see above
-//            Scribe_Values.Look(ref PowerPerTile, "powerPerTile", 0.1f);
-            
             Scribe_Values.Look(ref PowerPerDamage, "powerPerDamage", 1f);
             Scribe_Values.Look(ref DropPodDamage, "dropPodDamage", 100);
             

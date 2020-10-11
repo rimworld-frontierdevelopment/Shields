@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Windows;
 using RimWorld;
@@ -13,6 +12,8 @@ namespace FrontierDevelopments.Shields.Comps
     {
         public int minRadius;
         public int maxRadius;
+
+        public float powerPerTile = 0.1f;
 
         public int warmupTicks;
 
@@ -88,7 +89,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public int ProtectedCellCount => _cellCount;
 
-        public float CellProtectionFactor => Mod.Settings.PowerPerTile;
+        public float CellProtectionFactor => Props.powerPerTile;
 
         public CompProperties_ShieldRadial Props => 
             (CompProperties_ShieldRadial)props;
