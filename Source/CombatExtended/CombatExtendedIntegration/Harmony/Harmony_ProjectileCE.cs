@@ -37,17 +37,6 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             return damages;
         }
 
-        private static bool TryBlockOverheadProjectileCE(
-            ProjectileCE projectile,
-            Vector3 currentPosition,
-            int ticksToImpact,
-            Vector2 origin,
-            Action<IShield, Vector3> onBlock = null)
-        {
-            if(ticksToImpact > 1) return false;
-            return TryBlockOverhead(projectile, origin, currentPosition, CalculateDamages(projectile.def), onBlock);
-        }
-
         private static bool TryBlockProjectileCE(
             ProjectileCE projectile,
             Vector3 currentPosition,
@@ -62,7 +51,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 nextPosition,
                 ticksToImpact,
                 PositionUtility.ToVector3(origin),
-                projectile.def.projectile.flyOverhead,
+                false, // not needed since CE mortars are calculated in 3D
                 CalculateDamages(projectile.def),
                 onBlock);
         }
@@ -109,21 +98,6 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                         if (!ShouldImpact(__instance) || !Impact(__instance, shield, point))
                             __instance.Destroy();
                     });
-            }
-        }
-
-        [HarmonyPatch(typeof(ProjectileCE), "ImpactSomething")]
-        static class Patch_CheckCellForCollision
-        {
-            [HarmonyPrefix]
-            static bool BlockMortarImpacts(ProjectileCE __instance, int ___ticksToImpact, Vector2 ___origin)
-            {
-                if (!__instance.def.projectile.flyOverhead) return true;
-
-                var shouldBlock = TryBlockOverheadProjectileCE(__instance, __instance.ExactPosition, ___ticksToImpact, ___origin);
-                if(shouldBlock)
-                    __instance.Destroy();
-                return !shouldBlock;
             }
         }
     }
