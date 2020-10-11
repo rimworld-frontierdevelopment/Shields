@@ -78,6 +78,8 @@ namespace FrontierDevelopments.Shields
         IEnumerable<Gizmo> ShieldGizmos { get; }
         IEnumerable<UiComponent> UiComponents { get; }
         IEnumerable<ShieldSetting> ShieldSettings { get; set; }
+        void ClearWantSettings();
+        bool HasWantSettings { get; }
     }
 
     public interface IShieldParent : ILoadReferenceable

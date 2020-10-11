@@ -46,6 +46,8 @@ namespace FrontierDevelopments.Shields.Comps
 
         bool IShieldParent.ParentActive => _isActive;
 
+        public bool HasWantSettings => _deployed.HasWantSettings;
+
         public void SetParent(IShieldParent shieldParent)
         {
         }
@@ -145,6 +147,11 @@ namespace FrontierDevelopments.Shields.Comps
         {
             get => _deployed.ShieldSettings;
             set => _deployed.ShieldSettings = value;
+        }
+
+        public void ClearWantSettings()
+        {
+            _deployed.ClearWantSettings();
         }
     }
 }

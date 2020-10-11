@@ -292,6 +292,8 @@ namespace FrontierDevelopments.Shields.Buildings
         public float CellProtectionFactor => Shield.CellProtectionFactor;
 
         public float DeploymentSize => def.GetModExtension<ShieldDeploymentSizeExtension>()?.deploymentSize ?? -1;
+
+        public bool HasWantSettings => WantThermalShutoff != ThermalShutoff || _shield.HasWantSettings;
         
         public IEnumerable<Gizmo> ShieldGizmos
         {
@@ -439,6 +441,12 @@ namespace FrontierDevelopments.Shields.Buildings
                     WantThermalShutoff = thermalShutoff.Get();
                     break;
             }
+        }
+
+        public void ClearWantSettings()
+        {
+            _shield.ClearWantSettings();
+            WantThermalShutoff = Heatsink.ThermalShutoff;
         }
     }
 }

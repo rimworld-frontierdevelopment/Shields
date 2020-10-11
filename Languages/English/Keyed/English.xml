@@ -96,6 +96,8 @@
     
     <!-- UI /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
 
+    <FrontierDevelopments.General.CancelFlick>Cancel flick</FrontierDevelopments.General.CancelFlick>
+    
     <!-- ITab -->
     <FrontierDevelopments.Shields.ITab.Shield>Shield</FrontierDevelopments.Shields.ITab.Shield>
     <FrontierDevelopments.Shields.ITab.PowerRequired>Power required: {0}</FrontierDevelopments.Shields.ITab.PowerRequired>

@@ -42,7 +42,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         protected override string ShieldLoadType => "ShieldRadial";
 
-        public override bool WantFlick => _wantRadius != _fieldRadius;
+        public override bool HasWantSettings => _wantRadius != _fieldRadius;
 
         public override int ProtectedCellCount => _cellCount;
 
@@ -76,7 +76,7 @@ namespace FrontierDevelopments.Shields.Comps
                     _wantRadius = value;
                 }
 
-                if (WantFlick)
+                if (HasWantSettings)
                     Comp_FlickBoard.EmitWantFlick(this);
                 else
                     Comp_FlickBoard.EmitWantReset(this);
@@ -267,6 +267,11 @@ namespace FrontierDevelopments.Shields.Comps
                     WantRadius = radiusSetting.Get();
                     break;
             }
+        }
+
+        public override void ClearWantSettings()
+        {
+            WantRadius = _fieldRadius;
         }
     }
     

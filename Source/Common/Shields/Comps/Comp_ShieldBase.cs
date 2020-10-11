@@ -33,7 +33,7 @@ namespace FrontierDevelopments.Shields.Comps
         public virtual float DeploymentSize => Props.deploymentSize;
         public abstract IEnumerable<UiComponent> UiComponents { get; }
         
-        public abstract bool WantFlick { get; }
+        public abstract bool HasWantSettings { get; }
 
         public IShieldParent Parent => _parent;
 
@@ -177,7 +177,7 @@ namespace FrontierDevelopments.Shields.Comps
             switch (signal)
             {
                 case Comp_FlickBoard.SignalReset:
-                    if(WantFlick)
+                    if(HasWantSettings)
                         Comp_FlickBoard.EmitWantFlick(this);
                     break;
             }
@@ -193,5 +193,7 @@ namespace FrontierDevelopments.Shields.Comps
 
             return null;
         }
+
+        public abstract void ClearWantSettings();
     }
 }
