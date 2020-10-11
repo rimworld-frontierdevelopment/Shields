@@ -27,6 +27,7 @@ namespace FrontierDevelopments.Shields.Buildings
         private CompFlickable _flickable;
 
         private bool _activeLastTick;
+        private float _lifetimeDamageBlocked;
 
         public IShield Shield {
             get
@@ -140,10 +141,26 @@ namespace FrontierDevelopments.Shields.Buildings
             return stringBuilder.ToString();
         }
 
+        public override IEnumerable<StatDrawEntry> SpecialDisplayStats()
+        {
+            foreach (var stat in base.SpecialDisplayStats())
+            {
+                yield return stat;
+            }
+
+            yield return new StatDrawEntry(
+                StatCategoryDefOf.Building,
+                "FrontierDevelopments.Shields.Stats.Blocked.Label".Translate(),
+                "" + _lifetimeDamageBlocked,
+                "FrontierDevelopments.Shields.Stats.Blocked.Desc".Translate(),
+                100);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
             Scribe_Deep.Look(ref _energyNet, "energyNet");
+            Scribe_Values.Look(ref _lifetimeDamageBlocked, "lifetimeDamageBlocked");
         }
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -283,8 +300,11 @@ namespace FrontierDevelopments.Shields.Buildings
             var blocked = drawn / Mod.Settings.PowerPerDamage;
             if (damage - blocked > 1f)
             {
+                _lifetimeDamageBlocked += blocked;
                 return blocked;
             }
+
+            _lifetimeDamageBlocked += damage;
             return damage;
         }
 
