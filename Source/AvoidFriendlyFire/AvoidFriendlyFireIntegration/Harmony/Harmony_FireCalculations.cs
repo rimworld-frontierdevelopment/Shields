@@ -9,9 +9,9 @@ namespace FrontierDevelopments.Shields.AvoidFriendlyFireIntegration.Harmony
 {
     public class Harmony_FireCalculations
     {
-        private static bool IsCellShielded(IntVec3 origin, int cellIndex, Map map, IEnumerable<IShield> shields)
+        private static bool IsCellShielded(IntVec3 origin, int cellIndex, Map map, IEnumerable<IShieldField> shields)
         {
-            return new ShieldQuery(shields)
+            return new FieldQuery(shields)
                 .IsActive()
                 .Intersects(
                     PositionUtility.ToVector3WithY(origin, 0),
@@ -26,13 +26,13 @@ namespace FrontierDevelopments.Shields.AvoidFriendlyFireIntegration.Harmony
             [HarmonyPostfix]
             static IEnumerable<int> AddShieldCheck(IEnumerable<int> results, IntVec3 origin, IntVec3 target, Map map)
             {
-                if (Shields.Mod.Settings.EnableAIVerbFindShotLine)
+                if (Mod.Settings.EnableAIVerbFindShotLine)
                 {
-                    var shields = map.GetComponent<ShieldManager>().Shields.ToList();
+                    var fields = map.GetComponent<ShieldManager>().Fields.ToList();
 
                     foreach (var cellIndex in results)
                     {
-                        if(!IsCellShielded(origin, cellIndex, map, shields))
+                        if(!IsCellShielded(origin, cellIndex, map, fields))
                         {
                             yield return cellIndex;
                         }

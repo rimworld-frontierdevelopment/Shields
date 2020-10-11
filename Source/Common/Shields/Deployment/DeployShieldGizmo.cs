@@ -1,14 +1,12 @@
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
-using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.Shields
 {
     public class DeployShieldGizmo : Command_Action
     {
-        public DeployShieldGizmo(Pawn pawn, IList<IShieldManageable> shields)
+        public DeployShieldGizmo(Pawn pawn, IList<IShield> shields)
         {
             action = delegate
             {
@@ -23,7 +21,7 @@ namespace FrontierDevelopments.Shields
             };
         }
         
-        private FloatMenu ShowSelectShield(Pawn pawn, IList<IShieldManageable> shields)
+        private FloatMenu ShowSelectShield(Pawn pawn, IList<IShield> shields)
         {
             return new FloatMenu(
                     shields.Select(shield =>

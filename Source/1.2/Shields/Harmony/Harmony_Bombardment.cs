@@ -16,7 +16,7 @@ namespace FrontierDevelopments.Shields.Harmony
 
         private static bool ShouldStop(Map map, IntVec3 center)
         {
-            return new ShieldQuery(map)
+            return new FieldQuery(map)
                 .IsActive()
                 .Intersects(PositionUtility.ToVector3(center))
                 .Block(Mod.Settings.SkyfallerDamage);
@@ -24,7 +24,7 @@ namespace FrontierDevelopments.Shields.Harmony
 
         private static bool IsShielded(Map map, IntVec3 position)
         {
-            return new ShieldQuery(map)
+            return new FieldQuery(map)
                 .IsActive()
                 .Intersects(PositionUtility.ToVector3(position))
                 .Get()

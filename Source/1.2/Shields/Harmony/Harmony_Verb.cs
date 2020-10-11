@@ -22,7 +22,7 @@ namespace FrontierDevelopments.Shields.Harmony
             if (!verb.verbProps.requireLineOfSight) return false;
             if (UncheckedTypes.Exists(a => a.IsInstanceOfType(verb))) return false;
 
-            var friendlyShieldBlocks = new ShieldQuery(caster.Map)
+            var friendlyShieldBlocks = new FieldQuery(caster.Map)
                 .IsActive()
                 .FriendlyTo(caster.Faction)
                 .Intersects(

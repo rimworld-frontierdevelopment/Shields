@@ -15,7 +15,7 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             if (damType?.defName == null) return false;
             var damages = new ShieldDamages(new ShieldDamage(damType, damAmount));
-            var blocked = new ShieldQuery(map)
+            var blocked = new FieldQuery(map)
                 .IsActive()
                 .Intersects(origin, PositionUtility.ToVector3(position).Yto0())
                 .Block(damages);

@@ -24,7 +24,7 @@ namespace FrontierDevelopments.Shields.Module.CrashLandingModule
 
         private static bool Block(Bullet crashPod, int damage)
         {
-            var crashPodBlocked = new ShieldQuery(crashPod.Map)
+            var crashPodBlocked = new FieldQuery(crashPod.Map)
                 .IsActive()
                 .Intersects(PositionUtility.ToVector3WithY(crashPod.Position, 0))
                 .Block(damage);

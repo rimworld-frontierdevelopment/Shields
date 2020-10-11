@@ -4,17 +4,14 @@ using System.Text;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Energy;
 using FrontierDevelopments.General.UI;
-using FrontierDevelopments.Shields.Comps;
-using FrontierDevelopments.Shields.Deployment;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
-using UnityEngine;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
-    public class Building_ElectricShield : Building, IHeatsink, IEnergyNet, IShieldManageable, IShieldParent
+    public class Building_ElectricShield : Building, IHeatsink, IEnergyNet, IShieldParent
     {
         public class ShieldStatusThermalShutdown : IShieldStatus
         {
@@ -37,19 +34,6 @@ namespace FrontierDevelopments.Shields.Buildings
         private bool _activeLastTick;
         private float _lifetimeDamageBlocked;
 
-        IShieldParent IShield.Parent => null; // TODO FIXME needed for proper deployment
-
-        public Thing Thing => this;
-
-        public IShield Shield {
-            get
-            {
-                if (_shield == null) 
-                    _shield = ShieldUtility.FindComp(AllComps);
-                return _shield;
-            }
-        }
-
         private IHeatsink Heatsink
         {
             get
@@ -70,14 +54,16 @@ namespace FrontierDevelopments.Shields.Buildings
             {
                 if (_shield != null)
                 {
-                    return _shield.ProtectedCellCount * _shield.CellProtectionFactor;
+                    return Fields.Aggregate(0f,
+                        (total, field) => 
+                            total + field.ProtectedCellCount * field.CellProtectionFactor);
                 }
-
-                return 0;
+                else
+                {
+                    return 0;
+                }
             }
         }
-
-        public IShieldResists Resists => this.TryGetComp<Comp_ShieldResistance>();
 
         public IEnumerable<IShieldStatus> Status
         {
@@ -88,9 +74,6 @@ namespace FrontierDevelopments.Shields.Buildings
 
                 if (_energyNet.RateAvailable <= 0)
                     yield return new ShieldStatusBatteryLow();
-
-                foreach (var status in _shield.Status)
-                    yield return status;
             }
         }
 
@@ -114,25 +97,6 @@ namespace FrontierDevelopments.Shields.Buildings
             base.SpawnSetup(map, respawningAfterLoad);
             _activeLastTick = false;
             Init();
-            Map.GetComponent<ShieldManager>().Add(this);
-        }
-
-        private void RemoveShield()
-        {
-            _activeLastTick = false;
-            Map.GetComponent<ShieldManager>().Del(this);
-        }
-
-        public override void DeSpawn(DestroyMode mode = DestroyMode.Vanish)
-        {
-            RemoveShield();
-            base.DeSpawn(mode);
-        }
-
-        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
-        {
-            RemoveShield();
-            base.Destroy(mode);
         }
 
         public override void Tick()
@@ -163,10 +127,6 @@ namespace FrontierDevelopments.Shields.Buildings
         public override IEnumerable<Gizmo> GetGizmos()
         {
             foreach (var gizmo in base.GetGizmos())
-            {
-                yield return gizmo;
-            }
-            foreach (var gizmo in ShieldGizmos)
             {
                 yield return gizmo;
             }
@@ -287,55 +247,11 @@ namespace FrontierDevelopments.Shields.Buildings
         //
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        public int ProtectedCellCount => Shield.ProtectedCellCount;
-
-        public float CellProtectionFactor => Shield.CellProtectionFactor;
-
-        public float DeploymentSize => def.GetModExtension<ShieldDeploymentSizeExtension>()?.deploymentSize ?? -1;
-
         public bool HasWantSettings => WantThermalShutoff != ThermalShutoff || _shield.HasWantSettings;
         
-        public IEnumerable<Gizmo> ShieldGizmos
-        {
-            get
-            {
-                foreach (var gizmo in _shield.ShieldGizmos)
-                {
-                    yield return gizmo;
-                }
-                if (Faction == Faction.OfPlayer)
-                {
-                    foreach (var gizmo in ShieldSettingsClipboard.Gizmos(this))
-                    {
-                        yield return gizmo;
-                    }
-                }
-            }
-        }
-
-        public void SetParent(IShieldParent shieldParent)
-        {
-        }
-
-        bool IShield.IsActive()
-        {
-            return ParentActive;
-        }
-
-        public bool Collision(Vector3 point)
-        {
-            return Shield.Collision(point);
-        }
-
-        public Vector3? Collision(Ray ray, float limit)
-        {
-            return Shield.Collision(ray, limit);
-        }
-
-        public Vector3? Collision(Vector3 start, Vector3 end)
-        {
-            return Shield.Collision(start, end);
-        }
+        private IEnumerable<IShieldField> Fields => _shield.Fields;
+        
+        public IEnumerable<Gizmo> ShieldGizmos => new List<Gizmo>();
 
         private void HandleBlockingHeat(float handled)
         {
@@ -358,31 +274,6 @@ namespace FrontierDevelopments.Shields.Buildings
 
             _lifetimeDamageBlocked += damage;
             return damage;
-        }
-
-        public float Block(float damage, Vector3 position)
-        {
-            return _shield.Block(damage, position);
-        }
-
-        public float Block(ShieldDamages damages, Vector3 position)
-        {
-            return _shield.Block(damages, position);
-        }
-
-        public void FieldPreDraw()
-        {
-            Shield.FieldPreDraw();
-        }
-
-        public void FieldDraw(CellRect cameraRect)
-        {
-            Shield.FieldDraw(cameraRect);
-        }
-
-        public void FieldPostDraw()
-        {
-            Shield.FieldPostDraw();
         }
 
         private TextComponent GetTextComponent()

@@ -1,7 +1,6 @@
 using System.Collections.Generic;
 using FrontierDevelopments.General.UI;
-using RimWorld;
-using UnityEngine;
+using HarmonyLib;
 using Verse;
 
 namespace FrontierDevelopments.Shields.Comps
@@ -13,13 +12,12 @@ namespace FrontierDevelopments.Shields.Comps
             compClass = typeof(Comp_DeployedShield);
         }
     }
-    public class Comp_DeployedShield : ThingComp, IShieldManageable, IShieldParent
+
+    public class Comp_DeployedShield : ThingComp, IShield
     {
-        private IShieldManageable _deployed;
+        private IShield _deployed;
         private int _id;
         private bool _isActive = true;
-
-        private Pawn pawn => parent as Pawn;
 
         public IEnumerable<IShieldStatus> Status => _deployed.Status;
 
@@ -27,24 +25,16 @@ namespace FrontierDevelopments.Shields.Comps
         {
         }
 
-        public Comp_DeployedShield(IShieldManageable deployed)
+        public Comp_DeployedShield(IShield deployed)
         {
             _deployed = deployed;
             _id = Find.UniqueIDsManager.GetNextThingID();
-            parent.Map.GetComponent<ShieldManager>().Add(this);
         }
 
         public string Label => _deployed.Label;
-        public int ProtectedCellCount => _deployed.ProtectedCellCount;
-        public float CellProtectionFactor => _deployed.CellProtectionFactor;
-        public Faction Faction => parent.Faction;
         public float DeploymentSize => _deployed.DeploymentSize;
         public IEnumerable<Gizmo> ShieldGizmos => _deployed.ShieldGizmos;
-        public IShieldResists Resists => _deployed.Resists;
         public IShieldParent Parent => _deployed.Parent;
-        public Thing Thing => parent;
-
-        bool IShieldParent.ParentActive => _isActive;
 
         public bool HasWantSettings => _deployed.HasWantSettings;
 
@@ -54,67 +44,22 @@ namespace FrontierDevelopments.Shields.Comps
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            parent.Map.GetComponent<ShieldManager>().Add(this);
+            parent.Map.GetComponent<ShieldManager>().Add(Fields);
         }
 
         public override void PostDeSpawn(Map map)
         {
-            map.GetComponent<ShieldManager>().Del(this);
+            map.GetComponent<ShieldManager>().Del(Fields);
         }
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
-            previousMap.GetComponent<ShieldManager>().Del(this);
+            previousMap.GetComponent<ShieldManager>().Del(Fields);
         }
 
         public bool IsActive()
         {
             return _deployed.IsActive();
-        }
-
-        public bool Collision(Vector3 point)
-        {
-            return _deployed.Collision(point);
-        }
-
-        public Vector3? Collision(Ray ray, float limit)
-        {
-            return _deployed.Collision(ray, limit);
-        }
-
-        public Vector3? Collision(Vector3 start, Vector3 end)
-        {
-            return _deployed.Collision(start, end);
-        }
-
-        public float SinkDamage(float damage)
-        {
-            return _deployed.SinkDamage(damage);
-        }
-
-        public float Block(float damage, Vector3 position)
-        {
-            return _deployed.Block(damage, position);
-        }
-
-        public float Block(ShieldDamages damages, Vector3 position)
-        {
-            return _deployed.Block(damages, position);
-        }
-
-        public void FieldPreDraw()
-        {
-            _deployed.FieldPreDraw();
-        }
-
-        public void FieldDraw(CellRect cameraRect)
-        {
-            _deployed.FieldDraw(cameraRect);
-        }
-
-        public void FieldPostDraw()
-        {
-            _deployed.FieldPostDraw();
         }
 
         public override IEnumerable<Gizmo> CompGetGizmosExtra()
@@ -152,6 +97,16 @@ namespace FrontierDevelopments.Shields.Comps
         public void ClearWantSettings()
         {
             _deployed.ClearWantSettings();
+        }
+
+        public IEnumerable<IShieldField> Fields => _deployed.Fields;
+
+        public IEnumerable<Thing> Things
+        {
+            get
+            {
+                yield return parent;
+            }
         }
     }
 }

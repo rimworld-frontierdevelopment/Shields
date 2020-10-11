@@ -24,7 +24,7 @@ namespace FrontierDevelopments.Shields.Comps
         }
     }
 
-    public class Comp_ShieldRadial : Comp_ShieldBase
+    public class Comp_ShieldRadial : Comp_ShieldBase, IShieldField
     {
         private int _fieldRadius;
         private int _wantRadius;
@@ -44,19 +44,11 @@ namespace FrontierDevelopments.Shields.Comps
 
         public override bool HasWantSettings => _wantRadius != _fieldRadius;
 
-        public override int ProtectedCellCount => _cellCount;
+        public int ProtectedCellCount => _cellCount;
 
-        public override float CellProtectionFactor => Props.powerPerTile;
+        public float CellProtectionFactor => Props.powerPerTile;
 
         private CompProperties_ShieldRadial Props => (CompProperties_ShieldRadial) props;
-        
-        public override IEnumerable<IShieldStatus> Status
-        {
-            get
-            {
-                yield break;
-            }
-        }
 
         public int WantRadius
         {
@@ -190,17 +182,17 @@ namespace FrontierDevelopments.Shields.Comps
             }
         }
 
-        public override bool Collision(Vector3 vector)
+        public bool Collision(Vector3 vector)
         {
             return CollisionUtility.Circle.Point(ExactPosition.Yto0(), Radius, vector);
         }
 
-        public override Vector3? Collision(Ray ray, float limit)
+        public Vector3? Collision(Ray ray, float limit)
         {
             return Collision(ray.origin, ray.GetPoint(limit));
         }
 
-        public override Vector3? Collision(Vector3 origin, Vector3 destination)
+        public Vector3? Collision(Vector3 origin, Vector3 destination)
         {
             if (Mod.Settings.EnableShootingOut && Collision(origin))
                 return null;
@@ -218,11 +210,11 @@ namespace FrontierDevelopments.Shields.Comps
             return collides;
         }
 
-        public override void FieldPreDraw()
+        public void FieldPreDraw()
         {
         }
 
-        public override void FieldDraw(CellRect cameraRect)
+        public void FieldDraw(CellRect cameraRect)
         {
             if (!IsActive() || !RenderField || !ShouldDraw(cameraRect)) return;
             var position = PositionUtility.ToVector3(ExactPosition);
@@ -232,6 +224,10 @@ namespace FrontierDevelopments.Shields.Comps
             var matrix = new Matrix4x4();
             matrix.SetTRS(position, Quaternion.AngleAxis(0, Vector3.up), scaling);
             Graphics.DrawMesh(MeshPool.plane10, matrix, Resources.ShieldMat, 0);
+        }
+
+        public void FieldPostDraw()
+        {
         }
 
         public override void PostDrawExtraSelectionOverlays()
@@ -272,6 +268,30 @@ namespace FrontierDevelopments.Shields.Comps
         public override void ClearWantSettings()
         {
             WantRadius = _fieldRadius;
+        }
+
+        public IEnumerable<IShield> Emitters
+        {
+            get
+            {
+                yield return this;
+            }
+        }
+
+        public override IEnumerable<IShieldField> Fields
+        {
+            get
+            {
+                yield return this;
+            }
+        }
+
+        public override IEnumerable<Thing> Things
+        {
+            get
+            {
+                yield return parent;
+            }
         }
     }
     

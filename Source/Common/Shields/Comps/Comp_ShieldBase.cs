@@ -13,8 +13,8 @@ namespace FrontierDevelopments.Shields.Comps
     public abstract class CompProperties_ShieldBase : CompProperties {
         public int deploymentSize;
     }
-    
-    public abstract class Comp_ShieldBase : ThingComp, IShield, ILoadReferenceable
+
+    public abstract class Comp_ShieldBase : ThingComp, IShield
     {
         private int? _id;
         private IShieldParent _parent;
@@ -23,21 +23,33 @@ namespace FrontierDevelopments.Shields.Comps
         public virtual string Label => parent.Label;
 
         protected abstract string ShieldLoadType { get; }
-        public abstract IEnumerable<IShieldStatus> Status { get; }
         public Map Map => parent.Map;
-        public abstract int ProtectedCellCount { get; }
-        public abstract float CellProtectionFactor { get; }
         public virtual Faction Faction => parent.Faction;
         protected Vector3 ExactPosition => (PositionUtility.GetRealPosition(parent.holdingOwner.Owner) ?? parent.TrueCenter()).Yto0();
-        public virtual IShieldResists Resists => parent.TryGetComp<Comp_ShieldResistance>();
+        protected virtual IShieldResists Resists => parent.TryGetComp<Comp_ShieldResistance>();
         public virtual float DeploymentSize => Props.deploymentSize;
         public abstract IEnumerable<UiComponent> UiComponents { get; }
         
         public abstract bool HasWantSettings { get; }
+        
+        public abstract IEnumerable<IShieldField> Fields { get; }
+
+        public abstract IEnumerable<Thing> Things { get; }
 
         public IShieldParent Parent => _parent;
 
         protected bool RenderField => _renderField;
+
+        public virtual IEnumerable<IShieldStatus> Status
+        {
+            get
+            {
+                foreach (var status in Parent.Status)
+                {
+                    yield return status;
+                }
+            }
+        }
 
         public virtual IEnumerable<ShieldSetting> ShieldSettings
         {
@@ -65,6 +77,19 @@ namespace FrontierDevelopments.Shields.Comps
         {
             base.PostSpawnSetup(respawningAfterLoad);
             if (_id == null) _id = Find.UniqueIDsManager.GetNextThingID();
+            Map.GetComponent<ShieldManager>().Add(Fields);
+        }
+        
+        public override void PostDeSpawn(Map map)
+        {
+            map.GetComponent<ShieldManager>().Del(Fields);
+            base.PostDeSpawn(map);
+        }
+
+        public override void PostDestroy(DestroyMode mode, Map previousMap)
+        {
+            previousMap.GetComponent<ShieldManager>().Del(Fields);
+            base.PostDestroy(mode, previousMap);
         }
 
         public virtual void SetParent(IShieldParent shieldParent)
@@ -76,12 +101,6 @@ namespace FrontierDevelopments.Shields.Comps
         {
             return Parent?.ParentActive ?? true;
         }
-
-        public abstract bool Collision(Vector3 point);
-
-        public abstract Vector3? Collision(Ray ray, float limit);
-
-        public abstract Vector3? Collision(Vector3 start, Vector3 end);
 
         public float CalculateDamage(ShieldDamages damages)
         {
@@ -99,12 +118,6 @@ namespace FrontierDevelopments.Shields.Comps
             return total;
         }
 
-        public virtual float SinkDamage(float damage)
-        {
-            if (!IsActive()) return 0f;
-            return Parent?.SinkDamage(damage) ?? damage;
-        }
-
         public float Block(ShieldDamages damages, Vector3 position)
         {
             return Block(CalculateDamage(damages), position);
@@ -113,36 +126,30 @@ namespace FrontierDevelopments.Shields.Comps
         public float Block(float damage, Vector3 position)
         {
             if (!IsActive()) return 0f;
-
-            var handled = SinkDamage(damage);
-
-            if (handled >= damage)
+            var handled = Parent?.SinkDamage(damage) ?? 0f;
+            if (Mathf.Abs(damage - handled) < 1)
             {
                 RenderImpactEffect(PositionUtility.ToVector2(position), Map);
                 PlayBulletImpactSound(PositionUtility.ToVector2(position), Map);
+                return damage;
             }
 
             return handled;
         }
         
-        protected static void RenderImpactEffect(Vector2 position, Map map)
+        protected virtual void RenderImpactEffect(Vector2 position, Map map)
         {
             MoteMaker.ThrowLightningGlow(PositionUtility.ToVector3(position), map, 0.5f);
         }
 
-        protected static void PlayBulletImpactSound(Vector2 position, Map map)
+        protected virtual void PlayBulletImpactSound(Vector2 position, Map map)
         {
             SoundDefOf.EnergyShield_AbsorbDamage.PlayOneShot(new TargetInfo(PositionUtility.ToIntVec3(position), map));
         }
 
-        public virtual void FieldPreDraw()
+        public override IEnumerable<Gizmo> CompGetGizmosExtra()
         {
-        }
-
-        public abstract void FieldDraw(CellRect cameraRect);
-
-        public virtual void FieldPostDraw()
-        {
+            return ShieldGizmos;
         }
 
         public IEnumerable<Gizmo> ShieldGizmos
@@ -157,6 +164,19 @@ namespace FrontierDevelopments.Shields.Comps
                     isActive = () => _renderField,
                     toggleAction = () => _renderField = !_renderField
                 };
+
+                foreach (var gizmo in Parent.ShieldGizmos)
+                {
+                    yield return gizmo;
+                }
+                
+                if (Faction == Faction.OfPlayer)
+                {
+                    foreach (var gizmo in ShieldSettingsClipboard.Gizmos(this))
+                    {
+                        yield return gizmo;
+                    }
+                }
             }
         }
 
@@ -181,17 +201,6 @@ namespace FrontierDevelopments.Shields.Comps
                         Comp_FlickBoard.EmitWantFlick(this);
                     break;
             }
-        }
-
-        protected IShield TryGetParent()
-        {
-            switch (parent)
-            {
-                case IShield shield:
-                    return shield;
-            }
-
-            return null;
         }
 
         public abstract void ClearWantSettings();

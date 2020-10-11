@@ -26,7 +26,7 @@ namespace FrontierDevelopments.Shields.Harmony
             {
                 if (result)
                 {
-                    var blocked = new ShieldQuery(target.Map)
+                    var blocked = new FieldQuery(target.Map)
                         .Intersects(target.Cell.ToVector3().Yto0())
                         .Get()
                         .Any();

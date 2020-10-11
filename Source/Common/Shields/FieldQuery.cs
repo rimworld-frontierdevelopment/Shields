@@ -15,7 +15,7 @@ namespace FrontierDevelopments.Shields
         IShieldQuery HostileTo(Faction faction, bool invert = false);
         IShieldQueryWithIntersects Intersects(Vector3 start, Vector3 end, bool invert = false);
         IShieldQueryWithIntersects Intersects(Vector3 position, bool invert = false);
-        IEnumerable<IShield> Get();
+        IEnumerable<IShieldField> Get();
     }
 
     public interface IShieldQueryWithIntersects
@@ -26,38 +26,38 @@ namespace FrontierDevelopments.Shields
         IShieldQueryWithIntersects HostileTo(Faction faction, bool invert = false);
         IShieldQueryWithIntersects Intersects(Vector3 start, Vector3 end, bool invert = false);
         IShieldQueryWithIntersects Intersects(Vector3 position, bool invert = false);
-        IEnumerable<IShield> Get();
-        bool Block(ShieldDamages damages, Action<IShield, Vector3> onBlock = null);
-        bool Block(float damage, Action<IShield, Vector3> onBlock = null);
+        IEnumerable<IShieldField> Get();
+        bool Block(ShieldDamages damages, Action<IShieldField, Vector3> onBlock = null);
+        bool Block(float damage, Action<IShieldField, Vector3> onBlock = null);
     }
 
     internal static class ShieldQueryUtils
     {
-        public static bool IsActive(IShield shield, bool isActive = true)
+        public static bool IsActive(IShieldField shield, bool isActive = true)
         {
             return shield.IsActive() == isActive;
         }
 
-        public static bool OfFaction(IShield shield, Faction faction, bool invert = false)
+        public static bool OfFaction(IShieldField shield, Faction faction, bool invert = false)
         {
             return shield.Faction == faction != invert;
         }
 
-        public static bool FriendlyTo(IShield shield, Faction faction, bool invert = false)
+        public static bool FriendlyTo(IShieldField shield, Faction faction, bool invert = false)
         {
             return (shield.Faction == faction ||
                     shield.Faction.RelationKindWith(faction) == FactionRelationKind.Ally)
                    != invert;
         }
 
-        public static bool HostileTo(IShield shield, Faction faction, bool invert = false)
+        public static bool HostileTo(IShieldField shield, Faction faction, bool invert = false)
         {
             return (shield.Faction != faction &&
                     shield.Faction.RelationKindWith(faction) == FactionRelationKind.Hostile)
                    != invert;
         }
 
-        public static IShieldQueryWithIntersects Intersects(IEnumerable<IShield> shields, Vector3 start, Vector3 end, bool invert = false)
+        public static IShieldQueryWithIntersects Intersects(IEnumerable<IShieldField> shields, Vector3 start, Vector3 end, bool invert = false)
         {
             return new ShieldQueryWithIntersects(shields
                 .Select(shield => new ShieldQueryWithIntersects.ShieldWithIntersects
@@ -68,7 +68,7 @@ namespace FrontierDevelopments.Shields
                 .Where(elements => elements.Intersect != null != invert));
         }
 
-        public static IShieldQueryWithIntersects Intersects(IEnumerable<IShield> shields, Vector3 position, bool invert = false)
+        public static IShieldQueryWithIntersects Intersects(IEnumerable<IShieldField> shields, Vector3 position, bool invert = false)
         {
             return new ShieldQueryWithIntersects(shields
                 .Select(shield =>
@@ -88,38 +88,38 @@ namespace FrontierDevelopments.Shields
         }
     }
 
-    public class ShieldQuery : IShieldQuery
+    public class FieldQuery : IShieldQuery
     {
-        private readonly IEnumerable<IShield> _shields;
+        private readonly IEnumerable<IShieldField> _shields;
 
-        public ShieldQuery(IEnumerable<IShield> shields)
+        public FieldQuery(IEnumerable<IShieldField> shields)
         {
             _shields = shields;
         }
 
-        public ShieldQuery(Map map)
+        public FieldQuery(Map map)
         {
-            _shields = map.GetComponent<ShieldManager>().Shields;
+            _shields = map.GetComponent<ShieldManager>().Fields;
         }
             
         public IShieldQuery IsActive(bool isActive = true)
         {
-            return new ShieldQuery(_shields.Where(shield => ShieldQueryUtils.IsActive(shield, isActive)));
+            return new FieldQuery(_shields.Where(shield => ShieldQueryUtils.IsActive(shield, isActive)));
         }
 
         public IShieldQuery OfFaction(Faction faction, bool invert = false)
         {
-            return new ShieldQuery(_shields.Where(shield => ShieldQueryUtils.OfFaction(shield, faction, invert)));
+            return new FieldQuery(_shields.Where(shield => ShieldQueryUtils.OfFaction(shield, faction, invert)));
         }
 
         public IShieldQuery FriendlyTo(Faction faction, bool invert = false)
         {
-            return new ShieldQuery(_shields.Where(shield => ShieldQueryUtils.FriendlyTo(shield, faction, invert)));
+            return new FieldQuery(_shields.Where(shield => ShieldQueryUtils.FriendlyTo(shield, faction, invert)));
         }
 
         public IShieldQuery HostileTo(Faction faction, bool invert = false)
         {
-            return new ShieldQuery(_shields.Where(shield => ShieldQueryUtils.HostileTo(shield, faction, invert)));
+            return new FieldQuery(_shields.Where(shield => ShieldQueryUtils.HostileTo(shield, faction, invert)));
         }
 
         public IShieldQueryWithIntersects Intersects(Vector3 start, Vector3 end, bool invert = false)
@@ -132,7 +132,7 @@ namespace FrontierDevelopments.Shields
             return ShieldQueryUtils.Intersects(_shields, position, invert);
         }
 
-        public IEnumerable<IShield> Get()
+        public IEnumerable<IShieldField> Get()
         {
             return _shields;
         }
@@ -142,13 +142,13 @@ namespace FrontierDevelopments.Shields
     {
         public struct ShieldWithIntersects
         { 
-            public IShield Shield;
+            public IShieldField Shield;
             public Vector3? Intersect;
         }
 
         private readonly IEnumerable<ShieldWithIntersects> _elements;
 
-        private IEnumerable<IShield> Shields => _elements.Select(e => e.Shield);
+        private IEnumerable<IShieldField> Shields => _elements.Select(e => e.Shield);
 
         public ShieldQueryWithIntersects(IEnumerable<ShieldWithIntersects> elements)
         {
@@ -189,12 +189,12 @@ namespace FrontierDevelopments.Shields
             return ShieldQueryUtils.Intersects(Shields, position, invert);
         }
 
-        public IEnumerable<IShield> Get()
+        public IEnumerable<IShieldField> Get()
         {
             return _elements.Select(e => e.Shield);
         }
 
-        public bool Block(ShieldDamages damages, Action<IShield, Vector3> onBlock)
+        public bool Block(ShieldDamages damages, Action<IShieldField, Vector3> onBlock)
         {
             try
             {
@@ -211,7 +211,7 @@ namespace FrontierDevelopments.Shields
             return false;
         }
 
-        public bool Block(float damage, Action<IShield, Vector3> onBlock)
+        public bool Block(float damage, Action<IShieldField, Vector3> onBlock)
         {
             try
             {

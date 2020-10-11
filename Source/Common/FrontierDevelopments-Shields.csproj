@@ -89,7 +89,7 @@
     <Compile Include="Shields\ShieldSetting.cs" />
     <Compile Include="Shields\ShieldSettingsClipboard.cs" />
     <Compile Include="Shields\ShieldTargetingParams.cs" />
-    <Compile Include="Shields\ShieldQuery.cs" />
+    <Compile Include="Shields\FieldQuery.cs" />
     <Compile Include="Shields\ShieldUtility.cs" />
     <Compile Include="Shields\Tale\Tale_KilledByImpactingOnShield.cs" />
   </ItemGroup>

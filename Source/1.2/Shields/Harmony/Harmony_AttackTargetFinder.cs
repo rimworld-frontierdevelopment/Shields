@@ -14,7 +14,7 @@ namespace FrontierDevelopments.Shields.Harmony
             static float Postfix(float __result, IAttackTarget target, IAttackTargetSearcher searcher, Verb verb)
             {
                 if (!Mod.Settings.EnableAIAttackTargetFinder) return __result;
-                var targetShielded = new ShieldQuery(searcher.Thing.Map)
+                var targetShielded = new FieldQuery(searcher.Thing.Map)
                     .IsActive()
                     .Intersects(
                         PositionUtility.ToVector3(searcher.Thing.Position),

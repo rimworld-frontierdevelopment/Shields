@@ -40,7 +40,7 @@ namespace FrontierDevelopments.Shields.Harmony
             Vector3 nextPosition,
             int ticksToImpact,
             Vector3 origin,
-            Action<IShield, Vector3> onBlock = null)
+            Action<IShieldField, Vector3> onBlock = null)
         {
             // allow projectiles that have no damage components through
             if (projectile.def?.projectile?.damageDef == null) return false;
@@ -68,7 +68,7 @@ namespace FrontierDevelopments.Shields.Harmony
             Vector3 origin,
             bool flyOverhead,
             ShieldDamages damages,
-            Action<IShield, Vector3> onBlock = null)
+            Action<IShieldField, Vector3> onBlock = null)
         {
             if (IsBlacklisted(projectile)) return false;
 
@@ -88,7 +88,7 @@ namespace FrontierDevelopments.Shields.Harmony
             }
             else
             {
-                return new ShieldQuery(projectile.Map)
+                return new FieldQuery(projectile.Map)
                     .IsActive()
                     .Intersects(
                         currentPosition,
@@ -104,9 +104,9 @@ namespace FrontierDevelopments.Shields.Harmony
             Vector3 origin,
             Vector3 currentPosition,
             ShieldDamages damages,
-            Action<IShield, Vector3> onBlock = null)
+            Action<IShieldField, Vector3> onBlock = null)
         {
-            return new ShieldQuery(projectile.Map)
+            return new FieldQuery(projectile.Map)
                 .IsActive()
                 .Intersects(origin, true)
                 .Intersects(currentPosition)

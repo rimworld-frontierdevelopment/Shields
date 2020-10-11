@@ -136,7 +136,7 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             if (!Mod.Settings.AutosaveOnSkyfallers) return;
 
-            var shielded = new ShieldQuery(map)
+            var shielded = new FieldQuery(map)
                 .Intersects(PositionUtility.ToVector3WithY(skyfaller.Position, 0))
                 .Get()
                 .Any();
@@ -165,7 +165,7 @@ namespace FrontierDevelopments.Shields.Harmony
                     }
                     else if(__instance.ticksToImpact == ShieldHitPreDelay)
                     {
-                        var shields = new ShieldQuery(__instance.Map)
+                        var shields = new FieldQuery(__instance.Map)
                             .IsActive()
                             .Intersects(PositionUtility.ToVector3WithY(__instance.Position, 0));
 

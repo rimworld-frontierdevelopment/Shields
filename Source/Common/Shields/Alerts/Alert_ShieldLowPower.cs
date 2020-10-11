@@ -21,9 +21,10 @@ namespace FrontierDevelopments.Shields.Alerts
         private static IEnumerable<Thing> GetOffenders()
         {
             return Find.Maps
-                .SelectMany(map => map.GetComponent<ShieldManager>().Shields)
+                .SelectMany(map => map.GetComponent<ShieldManager>().Fields)
+                .SelectMany(field => field.Emitters)
                 .Where(IsOffender)
-                .Select(shield => shield.Thing);
+                .SelectMany(shield => shield.Things);
         }
 
         private static bool IsOffender(IShield shield)

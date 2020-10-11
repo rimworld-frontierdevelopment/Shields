@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using Verse;
 
 namespace FrontierDevelopments.Shields
@@ -10,43 +11,53 @@ namespace FrontierDevelopments.Shields
         {
         }
 
-        private readonly HashSet<IShieldManageable> _shields = new HashSet<IShieldManageable>();
+        private readonly HashSet<IShieldField> _fields = new HashSet<IShieldField>();
 
-        public void Add(IShieldManageable shield)
+        public void Add(IShieldField field)
         {
-            _shields.Add(shield);
+            _fields.Add(field);
         }
 
-        public void Del(IShieldManageable shield)
+        public void Del(IShieldField field)
         {
-            _shields.Remove(shield);
+            _fields.Remove(field);
+        }
+        
+        public void Add(IEnumerable<IShieldField> fields)
+        {
+            _fields.AddRange(fields);
+        }
+        
+        public void Del(IEnumerable<IShieldField> fields)
+        {
+            fields.Do(field => _fields.Remove(field));
         }
 
-        public IEnumerable<IShieldManageable> Shields => _shields;
+        public IEnumerable<IShieldField> Fields => _fields;
 
         public void DrawShields(CellRect cameraRect)
         {
-            var shields = Shields.ToList();
+            var fields = Fields.ToList();
             
-            foreach (var shield in shields)
+            foreach (var field in fields)
             {
-                shield.FieldPreDraw();
+                field.FieldPreDraw();
             }
 
-            foreach (var shield in shields)
+            foreach (var field in fields)
             {
-                shield.FieldDraw(cameraRect);
+                field.FieldDraw(cameraRect);
             }
 
-            foreach (var shield in shields)
+            foreach (var field in fields)
             {
-                shield.FieldPostDraw();
+                field.FieldPostDraw();
             }
         }
 
-        public ShieldQuery Query()
+        public FieldQuery Query()
         {
-            return new ShieldQuery(_shields);
+            return new FieldQuery(_fields);
         }
     }
 }

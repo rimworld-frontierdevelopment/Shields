@@ -43,7 +43,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
             Vector3 nextPosition,
             int ticksToImpact,
             Vector2 origin,
-            Action<IShield, Vector3> onBlock = null)
+            Action<IShieldField, Vector3> onBlock = null)
         {
             return TryBlock(
                 projectile,
@@ -56,7 +56,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                 onBlock);
         }
 
-        private static bool Impact(ProjectileCE projectile, IShield shield, Vector3 position)
+        private static bool Impact(ProjectileCE projectile, IShieldField shield, Vector3 position)
         {
             var traverse = new Traverse(projectile);
             var ticksToImpact = traverse.Field("ticksToImpact");

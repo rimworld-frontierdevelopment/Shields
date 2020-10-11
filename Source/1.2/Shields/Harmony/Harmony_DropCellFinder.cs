@@ -12,7 +12,7 @@ namespace FrontierDevelopments.Shields.Harmony
         
         private static bool CanPhysicallyDropIntoShielded(Map map, IntVec3 c)
         {
-            var shieldProtected = new ShieldQuery(map)
+            var shieldProtected = new FieldQuery(map)
                 .Intersects(PositionUtility.ToVector3(c))
                 .Get()
                 .Any();

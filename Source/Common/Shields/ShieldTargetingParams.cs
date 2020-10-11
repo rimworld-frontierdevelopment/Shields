@@ -20,7 +20,7 @@ namespace FrontierDevelopments.Shields
                 var goodDropSpot = DropCellFinder.IsGoodDropSpot(targetInfo.Cell, targetInfo.Map, false, true);
                 Mod.SetDropCellCheckEnabled(true);
 
-                var shielded = new ShieldQuery(targetInfo.Map)
+                var shielded = new FieldQuery(targetInfo.Map)
                     .FriendlyTo(faction, true)
                     .Intersects(PositionUtility.ToVector3(targetInfo.Cell))
                     .Get()

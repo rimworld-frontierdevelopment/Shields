@@ -19,7 +19,7 @@ namespace FrontierDevelopments.Shields
 
         public override bool IsVisible => SelThing.Faction == Faction.OfPlayer && SelShield.UiComponents.Any();
 
-        private IShield SelShield => SelThing as IShield;
+        private IShieldUserInterface SelShield => SelThing as IShieldUserInterface;
 
         private void ResetButton(Listing_Standard list)
         {

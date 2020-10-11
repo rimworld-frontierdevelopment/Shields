@@ -7,14 +7,11 @@ using Verse;
 
 namespace FrontierDevelopments.Shields
 {
-    public interface IShield : ILabeled, ILoadReferenceable
+    public interface IShieldField
     {
-        IEnumerable<IShieldStatus> Status { get; }
+        bool IsActive();
         int ProtectedCellCount { get; }
         float CellProtectionFactor { get; }
-        IShieldParent Parent { get; }
-        void SetParent(IShieldParent shieldParent);
-        bool IsActive();
         bool Collision(Vector3 point);
         Vector3? Collision(Ray ray, float limit);
         Vector3? Collision(Vector3 start, Vector3 end);
@@ -24,25 +21,40 @@ namespace FrontierDevelopments.Shields
         void FieldDraw(CellRect cameraRect);
         void FieldPostDraw();
         Faction Faction { get; }
-        IEnumerable<Gizmo> ShieldGizmos { get; }
-        IEnumerable<UiComponent> UiComponents { get; }
-        IEnumerable<ShieldSetting> ShieldSettings { get; set; }
-        void ClearWantSettings();
-        bool HasWantSettings { get; }
+        IEnumerable<IShield> Emitters { get; }
     }
 
-    public interface IShieldParent : ILoadReferenceable
+    public interface IShield : IShieldWithStatus, IShieldUserInterface, ILabeled, ILoadReferenceable
+    {
+        IShieldParent Parent { get; }
+        void SetParent(IShieldParent shieldParent);
+        bool IsActive();
+        IEnumerable<IShieldField> Fields { get; }
+        IEnumerable<Thing> Things { get; }
+        float DeploymentSize { get; }
+    }
+
+    public interface IShieldParent : IShieldWithStatus, IShieldUserInterface, ILoadReferenceable
     {
         bool ParentActive { get; }
         float SinkDamage(float damage);
-        IShieldResists Resists { get; }
     }
 
-    public interface IShieldManageable : IShield
+    public interface IShieldWithStatus
     {
-        Thing Thing { get; }
-        float DeploymentSize { get; }
-        float SinkDamage(float damage);
-        IShieldResists Resists { get; }
+        IEnumerable<IShieldStatus> Status { get; }
+    }
+    
+    public interface IShieldSettable
+    {
+        IEnumerable<ShieldSetting> ShieldSettings { get; set; }
+        bool HasWantSettings { get; }
+        void ClearWantSettings();
+    }
+
+    public interface IShieldUserInterface : IShieldSettable
+    {
+        IEnumerable<Gizmo> ShieldGizmos { get; }
+        IEnumerable<UiComponent> UiComponents { get; }
     }
 }
