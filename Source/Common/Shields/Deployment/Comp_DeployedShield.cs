@@ -101,12 +101,6 @@ namespace FrontierDevelopments.Shields.Comps
 
         public IEnumerable<IShieldField> Fields => _deployed.Fields;
 
-        public IEnumerable<Thing> Things
-        {
-            get
-            {
-                yield return parent;
-            }
-        }
+        public Thing Thing => parent;
     }
 }

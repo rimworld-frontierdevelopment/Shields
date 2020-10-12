@@ -285,14 +285,6 @@ namespace FrontierDevelopments.Shields.Comps
                 yield return this;
             }
         }
-
-        public override IEnumerable<Thing> Things
-        {
-            get
-            {
-                yield return parent;
-            }
-        }
     }
     
 }

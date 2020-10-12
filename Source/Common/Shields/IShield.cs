@@ -30,7 +30,7 @@ namespace FrontierDevelopments.Shields
         void SetParent(IShieldParent shieldParent);
         bool IsActive();
         IEnumerable<IShieldField> Fields { get; }
-        IEnumerable<Thing> Things { get; }
+        Thing Thing { get; }
         float DeploymentSize { get; }
     }
 

@@ -34,7 +34,7 @@ namespace FrontierDevelopments.Shields.Comps
         
         public abstract IEnumerable<IShieldField> Fields { get; }
 
-        public abstract IEnumerable<Thing> Things { get; }
+        public virtual Thing Thing => parent;
 
         public IShieldParent Parent => _parent;
 

@@ -24,7 +24,7 @@ namespace FrontierDevelopments.Shields.Alerts
                 .SelectMany(map => map.GetComponent<ShieldManager>().Fields)
                 .SelectMany(field => field.Emitters)
                 .Where(IsOffender)
-                .SelectMany(shield => shield.Things);
+                .Select(shield => shield.Thing);
         }
 
         private static bool IsOffender(IShield shield)
