@@ -68,10 +68,7 @@ namespace FrontierDevelopments.Shields.Comps
                     _wantRadius = value;
                 }
 
-                if (HasWantSettings)
-                    Comp_FlickBoard.EmitWantFlick(this);
-                else
-                    Comp_FlickBoard.EmitWantReset(this);
+                FlickBoardUtility.FindBoard(parent)?.Notify_Want(WantFlick);
             }
         }
         
@@ -153,16 +150,10 @@ namespace FrontierDevelopments.Shields.Comps
                 }
             }
         }
-        
-        public override void ReceiveCompSignal(string signal)
+
+        public override void Notify_Flicked()
         {
-            base.ReceiveCompSignal(signal);
-            switch (signal)
-            {
-                case Comp_FlickBoard.SignalFlicked:
-                    Radius = WantRadius;
-                    break;
-            }
+            Radius = WantRadius;
         }
 
         public override IEnumerable<UiComponent> UiComponents

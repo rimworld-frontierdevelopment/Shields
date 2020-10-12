@@ -14,7 +14,7 @@ namespace FrontierDevelopments.Shields.Comps
         public int deploymentSize;
     }
 
-    public abstract class Comp_ShieldBase : ThingComp, IShield
+    public abstract class Comp_ShieldBase : ThingComp, IShield, IFlickBoardSwitch
     {
         private int? _id;
         private IShieldParent _parent;
@@ -192,16 +192,8 @@ namespace FrontierDevelopments.Shields.Comps
             return ShieldLoadType + _id;
         }
 
-        public override void ReceiveCompSignal(string signal)
-        {
-            switch (signal)
-            {
-                case Comp_FlickBoard.SignalReset:
-                    if(HasWantSettings)
-                        Comp_FlickBoard.EmitWantFlick(this);
-                    break;
-            }
-        }
+        public virtual bool WantFlick => HasWantSettings;
+        public abstract void Notify_Flicked();
 
         public abstract void ClearWantSettings();
     }
