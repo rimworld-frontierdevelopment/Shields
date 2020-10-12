@@ -10,10 +10,12 @@ namespace FrontierDevelopments.Shields
         private static readonly Color GreyOutColor = new Color(0.5f, 0.5f, 0.5f);
 
         private const float ViewMargin = 24f;
+        
+        private Vector2 _scrollPosition = Vector2.zero;
 
         public ITab_Shield()
         {
-            size = new Vector2(630f, 430f);
+            size = new Vector2(640f, 480f);
             labelKey = "FrontierDevelopments.Shields.ITab.Shield";
         }
 
@@ -39,22 +41,34 @@ namespace FrontierDevelopments.Shields
 
         protected override void FillTab()
         {
-            var outRect = new Rect(ViewMargin, ViewMargin, size.x - ViewMargin*2, size.y - ViewMargin*2);
+            var components = SelShield.UiComponents.ToList();
+
+            const float buttonHeight = 30f;
+            const float sectionBorder = 4f;
+            const float gapHeight = 12f;
+
+            var viewHeight = components.Aggregate(buttonHeight, (total, component) => total + component.Height + sectionBorder * 2 + gapHeight);
+            
+            var outRect = new Rect(ViewMargin, ViewMargin, size.x - ViewMargin, size.y - ViewMargin);
+            var viewRect = new Rect(0, 0, size.x - ViewMargin*2, viewHeight);
+            
+            Widgets.BeginScrollView(outRect, ref _scrollPosition, viewRect, true);
 
             var list = new Listing_Standard();
-            list.Begin(outRect);
+            list.Begin(viewRect);
 
             ResetButton(list);
 
-            foreach (var component in SelShield.UiComponents)
+            foreach (var component in components)
             {
-                var section = list.BeginSection(component.Height);
+                var section = list.BeginSection_NewTemp(component.Height, sectionBorder, sectionBorder);
                 component.Draw(section.GetRect(component.Height));
                 list.EndSection(section);
-                list.Gap();
+                list.Gap(gapHeight);
             }
 
             list.End();
+            Widgets.EndScrollView();
         }
     }
 }
