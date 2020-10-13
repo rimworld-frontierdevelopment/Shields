@@ -12,6 +12,28 @@ namespace FrontierDevelopments.Shields
         }
 
         private readonly HashSet<IShieldField> _fields = new HashSet<IShieldField>();
+        private readonly HashSet<IShield> _shields = new HashSet<IShield>();
+
+        public HashSet<IShield> AllEmitters
+        {
+            get
+            {
+                IEnumerable<IShield> Union()
+                {
+                    foreach (var shield in _shields)
+                    {
+                        yield return shield;
+                    }
+
+                    foreach (var shield in _fields.SelectMany(field => field.Emitters))
+                    {
+                        yield return shield;
+                    }
+                }
+
+                return Union().ToHashSet();
+            }
+        }
 
         public void Add(IShieldField field)
         {
@@ -33,7 +55,18 @@ namespace FrontierDevelopments.Shields
             fields.Do(field => _fields.Remove(field));
         }
 
+        public void Add(IShield shield)
+        {
+            _shields.Add(shield);
+        }
+
+        public void Del(IShield shield)
+        {
+            _shields.Remove(shield);
+        }
+
         public IEnumerable<IShieldField> Fields => _fields;
+        public IEnumerable<IShield> Shields => _shields;
 
         public void DrawShields(CellRect cameraRect)
         {
@@ -57,7 +90,7 @@ namespace FrontierDevelopments.Shields
 
         public FieldQuery Query()
         {
-            return new FieldQuery(_fields);
+            return new FieldQuery(Fields);
         }
     }
 }

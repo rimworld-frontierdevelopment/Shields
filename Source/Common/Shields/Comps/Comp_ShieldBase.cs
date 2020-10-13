@@ -80,18 +80,24 @@ namespace FrontierDevelopments.Shields.Comps
         {
             base.PostSpawnSetup(respawningAfterLoad);
             if (_id == null) _id = Find.UniqueIDsManager.GetNextThingID();
-            Map.GetComponent<ShieldManager>().Add(Fields);
+            var manager = Map.GetComponent<ShieldManager>();
+            manager.Add(Fields);
+            manager.Add(this);
         }
-        
+
         public override void PostDeSpawn(Map map)
         {
-            map.GetComponent<ShieldManager>().Del(Fields);
+            var manager = map.GetComponent<ShieldManager>();
+            manager.Del(Fields);
+            manager.Del(this);
             base.PostDeSpawn(map);
         }
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
-            previousMap.GetComponent<ShieldManager>().Del(Fields);
+            var manager = previousMap.GetComponent<ShieldManager>();
+            manager.Del(Fields);
+            manager.Del(this);
             base.PostDestroy(mode, previousMap);
         }
 
