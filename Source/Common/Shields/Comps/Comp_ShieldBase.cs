@@ -6,6 +6,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.Noise;
 using Verse.Sound;
 
 namespace FrontierDevelopments.Shields.Comps
@@ -50,6 +51,8 @@ namespace FrontierDevelopments.Shields.Comps
                 }
             }
         }
+
+        public virtual string TextStats => Parent.TextStats;
 
         public virtual IEnumerable<ShieldSetting> ShieldSettings
         {

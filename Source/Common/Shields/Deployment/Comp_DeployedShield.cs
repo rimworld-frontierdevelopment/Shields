@@ -21,6 +21,8 @@ namespace FrontierDevelopments.Shields.Comps
 
         public IEnumerable<IShieldStatus> Status => _deployed.Status;
 
+        public string TextStats => _deployed.TextStats;
+
         public Comp_DeployedShield()
         {
         }

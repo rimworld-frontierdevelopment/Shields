@@ -276,24 +276,26 @@ namespace FrontierDevelopments.Shields.Buildings
             return damage;
         }
 
-        private TextComponent GetTextComponent()
+        public string TextStats
         {
-            var powerRequired = -(int)GetComp<CompPowerTrader>().PowerOutput;
-            var canBlock = (int)(_energyNet.AmountAvailable * Mod.Settings.PowerPerDamage);
-
-            var text = new StringBuilder();
-            text.AppendLine(ShieldStatus.GetStringFromStatuses(Status.ToList()));
-            text.AppendLine(("PowerNeeded".Translate() + ": " + (powerRequired).ToString("#####0") + " W"));
-            text.AppendLine("fd.heatsink.temperature".Translate(Temp.ToStringTemperature()));
-            text.AppendLine("FrontierDevelopments.Shields.ITab.CanBlock".Translate(canBlock));
-            return new TextComponent(text);
+            get
+            {
+                var powerRequired = -(int)GetComp<CompPowerTrader>().PowerOutput;
+                var canBlock = (int)(_energyNet.AmountAvailable * Mod.Settings.PowerPerDamage);
+                var text = new StringBuilder();
+                text.AppendLine(ShieldStatus.GetStringFromStatuses(Status.ToList()));
+                text.AppendLine(("PowerNeeded".Translate() + ": " + (powerRequired).ToString("#####0") + " W"));
+                text.AppendLine("fd.heatsink.temperature".Translate(Temp.ToStringTemperature()));
+                text.AppendLine("FrontierDevelopments.Shields.ITab.CanBlock".Translate(canBlock));
+                return text.ToString().TrimEndNewlines();
+            }
         }
 
         public IEnumerable<UiComponent> UiComponents
         {
             get
             {
-                yield return GetTextComponent();
+                yield return new TextComponent(TextStats);
 
                 foreach (var component in _shield.UiComponents)
                 {

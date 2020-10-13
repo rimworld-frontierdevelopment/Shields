@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.UI;
 using RimWorld;
@@ -43,6 +44,7 @@ namespace FrontierDevelopments.Shields
     public interface IShieldWithStatus
     {
         IEnumerable<IShieldStatus> Status { get; }
+        String TextStats { get; }
     }
     
     public interface IShieldSettable
