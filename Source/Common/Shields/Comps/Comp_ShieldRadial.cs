@@ -26,6 +26,10 @@ namespace FrontierDevelopments.Shields.Comps
 
     public class Comp_ShieldRadial : Comp_ShieldBase, IShieldField
     {
+        // adds an extra half cell to the radius. helps prevent pawns that are standing at the edge hit boxes from
+        // sticking out of the edge of the shield sphere due to the curve
+        private const float radiusOffset = 0.25f;
+
         private int _fieldRadius;
         private int _wantRadius;
         private int _cellCount;
@@ -73,29 +77,31 @@ namespace FrontierDevelopments.Shields.Comps
                 FlickBoardUtility.FindBoard(parent)?.Notify_Want(WantFlick);
             }
         }
-        
+
+        private float AdjustedFieldRadius => _fieldRadius + radiusOffset;
+
         public float Radius
         {
             get
             {
                 if (_warmingUpTicks != 0)
                 {
-                    var current = ((float)_fieldRadius * Props.ticksPerExpansion - _warmingUpTicks) / Props.ticksPerExpansion;
-                    var difference = _fieldRadius - current;
+                    var current = ((float)AdjustedFieldRadius * Props.ticksPerExpansion - _warmingUpTicks) / Props.ticksPerExpansion;
+                    var difference = AdjustedFieldRadius - current;
                     var factor = difference / _warmingUpTicks / difference;
                     if (_warmingUpTicks > 0)
                     {
                         return Mathf.Lerp(
-                            Math.Min(_fieldRadius, current),
-                            Math.Max(_fieldRadius, current),
+                            Math.Min(AdjustedFieldRadius, current),
+                            Math.Max(AdjustedFieldRadius, current),
                             factor);
                     } 
                     return Mathf.Lerp(
-                        Math.Max(_fieldRadius, current),
-                        Math.Min(_fieldRadius, current),
+                        Math.Max(AdjustedFieldRadius, current),
+                        Math.Min(AdjustedFieldRadius, current),
                         factor);
                 }
-                return _fieldRadius;
+                return AdjustedFieldRadius;
             }
 
             set
