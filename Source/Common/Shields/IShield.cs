@@ -11,6 +11,7 @@ namespace FrontierDevelopments.Shields
     public interface IShieldField
     {
         Map Map { get; }
+        bool PresentOnMap(Map map);
         bool IsActive();
         int ProtectedCellCount { get; }
         float CellProtectionFactor { get; }
@@ -28,6 +29,7 @@ namespace FrontierDevelopments.Shields
 
     public interface IShield : IShieldWithStatus, IShieldUserInterface, ILabeled, ILoadReferenceable
     {
+        bool PresentOnMap(Map map);
         IShieldParent Parent { get; }
         void SetParent(IShieldParent shieldParent);
         bool IsActive();

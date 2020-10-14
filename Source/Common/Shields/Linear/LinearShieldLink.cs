@@ -38,6 +38,8 @@ namespace FrontierDevelopments.Shields.Linear
 
         public Map Map => One.Map;
 
+        public bool PresentOnMap(Map map) => Map == map;
+
         public Faction Faction => One.Faction;
 
         public bool HasWantSettings => WantUnlink;
@@ -91,7 +93,7 @@ namespace FrontierDevelopments.Shields.Linear
 
             Init();
             
-            Map.GetComponent<ShieldManager>().Add(this);
+            ShieldManager.For(Map).Add(this);
         }
 
         public void ExposeData()
@@ -135,7 +137,7 @@ namespace FrontierDevelopments.Shields.Linear
             One.UnlinkFrom(Two);
             Two.UnlinkFrom(One);
 
-            Map.GetComponent<ShieldManager>().Del(this);
+            ShieldManager.For(Map).Del(this);
 
             Emitters.Do(emitter => emitter.NotifyWantSettings());
         }

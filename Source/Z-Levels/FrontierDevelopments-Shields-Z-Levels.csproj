@@ -1,31 +1,32 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}</ProjectGuid>
+    <ProjectGuid>{f44c5df9-1081-4b6f-85f8-e9ed86bd02f4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>FrontierDevelopments</RootNamespace>
-    <AssemblyName>FrontierDevelopments-Shields-1.2</AssemblyName>
+    <AssemblyName>FrontierDevelopments-Shields-Z-Levels</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
+    <OutputPath>..\..\Integrations\Z-Levels\1.2\Assemblies</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>none</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>..\..\1.2\Assemblies\</OutputPath>
+    <OutputPath>..\..\Integrations\Z-Levels\1.2\Assemblies</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
@@ -34,11 +35,6 @@
     <Reference Include="0Harmony, Version=2.0.0.8, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\Harmony\Current\Assemblies\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="FrontierDevelopment-Shields">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Assemblies\FrontierDevelopments-Shields.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="FrontierDevelopment-Core">
@@ -64,21 +60,22 @@
       <HintPath>..\..\..\..\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="ZLevels">
+      <HintPath>..\..\..\Z-Levels\1.2\Assemblies\ZLevels.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="FrontierDevelopments-Shields">
+      <HintPath>..\..\Assemblies\FrontierDevelopments-Shields.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="FrontierDevelopments-Shields-1.2">
+      <HintPath>..\..\1.2\Assemblies\FrontierDevelopments-Shields-1.2.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Shields\Harmony\Harmony_Bombardment.cs" />
-    <Compile Include="Shields\Harmony\Harmony_AttackTargetFinder.cs" />
-    <Compile Include="Shields\Harmony\Harmony_CastPositionFinder.cs" />
-    <Compile Include="Shields\Harmony\Harmony_DropCellFinder.cs" />
-    <Compile Include="Shields\Harmony\Harmony_Explosion.cs" />
-    <Compile Include="Shields\Harmony\Harmony_Map.cs" />
-    <Compile Include="Shields\Harmony\Harmony_MapDrawer.cs" />
-    <Compile Include="Shields\Harmony\Harmony_RoyalTitlePermitWorker_DropResources.cs" />
-    <Compile Include="Shields\Harmony\Harmony_Verb.cs" />
-    <Compile Include="Shields\Harmony\Harmony_Projectile.cs" />
-    <Compile Include="Shields\Harmony\Harmony_Skyfaller.cs" />
-    <Compile Include="Shields\Module.cs" />
+    <Compile Include="ZLevelsIntegration\Harmony\Harmony_ZLevelsManager.cs" />
+    <Compile Include="ZLevelsIntegration\Module.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

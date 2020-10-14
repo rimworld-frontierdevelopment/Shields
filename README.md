@@ -44,6 +44,7 @@ Pawns will attempt to flee from orbital bombardments.
 - Dubs Bad Hygiene: Cool shields with air-con pipes
 - SRTS-Expanded ships can land and leave from shields
 - AvoidFriendlyFire: Pawns will treat active shields providing cover
+- Z-Levels: Shields will be projected on all above ground levels
 
 ## Contributions
 

@@ -6,8 +6,72 @@ using Verse;
 
 namespace FrontierDevelopments.Shields
 {
-    public class ShieldManager : MapComponent
+    public class ShieldManager : GameComponent
     {
+        private readonly Dictionary<Map, IShieldManager> _managersByMap = new Dictionary<Map, IShieldManager>();
+        private HashSet<IShieldManager> _managers = new HashSet<IShieldManager>();
+
+        private static ShieldManager Component => Current.Game.GetComponent<ShieldManager>();
+
+        public static IShieldManager For(Map map, bool create = true)
+        {
+            var found = Component._managersByMap.TryGetValue(map, out var result);
+            if (!found && create)
+            {
+                result = new ShieldMapManager(map);
+                Component._managers.Add(result);
+                Component._managersByMap.Add(map, result);
+            }
+            return result;
+        }
+
+        public static IShieldManager For(IShield shield)
+        {
+            return For(shield.Thing.Map, false);
+        }
+
+        public static IShieldManager For(IShieldField shield)
+        {
+            return For(shield.Map, false);
+        }
+
+        public ShieldManager()
+        {
+        }
+
+        public ShieldManager(Game game)
+        {
+        }
+
+        public static void Register(Map map, IShieldManager manager)
+        {
+            var component = Component;
+
+            var existing = component._managersByMap.TryGetValue(map, out var result);
+            if (existing) component._managers.Remove(result);
+
+            component._managersByMap.Add(map, manager);
+            component._managers.Add(manager);
+        }
+
+        public override void GameComponentTick()
+        {
+            _managers.Do(manager => manager.Tick());
+        }
+
+        public override void ExposeData()
+        {
+            Scribe_Collections.Look(ref _managers, "managers", LookMode.Deep);
+            _managers?.Remove(null);
+        }
+    }
+
+    public class ShieldMapManager : IExposable, IShieldManager
+    {
+        private HashSet<Map> _associated = new HashSet<Map>();
+
+        public IEnumerable<Map> AssociatedMaps => _associated;
+
         public IEnumerable<IShield> Shields => _shields;
         
         public IEnumerable<IShieldField> Fields
@@ -20,14 +84,24 @@ namespace FrontierDevelopments.Shields
                     yield return link;
             }
         }
-        
-        public ShieldManager(Map map) : base(map)
-        {
-        }
 
         private readonly HashSet<IShieldField> _fields = new HashSet<IShieldField>();
         private HashSet<LinearShieldLink> _linearLinks = new HashSet<LinearShieldLink>();
         private readonly HashSet<IShield> _shields = new HashSet<IShield>();
+
+        public ShieldMapManager()
+        {
+        }
+
+        public ShieldMapManager(Map map)
+        {
+            AssociateWithMap(map);
+        }
+
+        public void AssociateWithMap(Map map)
+        {
+            _associated.Add(map);
+        }
 
         public HashSet<IShield> AllEmitters
         {
@@ -96,9 +170,19 @@ namespace FrontierDevelopments.Shields
             _shields.Remove(shield);
         }
 
-        public void DrawShields(CellRect cameraRect)
+        public IEnumerable<Map> PresentOnMaps(IShield shield)
         {
-            var fields = Fields.ToList();
+            return _associated.Where(shield.PresentOnMap);
+        }
+
+        public IEnumerable<Map> PresentOnMaps(IShieldField field)
+        {
+            return _associated.Where(field.PresentOnMap);
+        }
+
+        public void DrawShields(CellRect cameraRect, Map map)
+        {
+            var fields = Fields.Where(field => field.PresentOnMap(map)).ToList();
             
             foreach (var field in fields)
             {
@@ -116,23 +200,32 @@ namespace FrontierDevelopments.Shields
             }
         }
 
-        public FieldQuery Query()
+        public FieldQuery Query(Map map)
         {
-            return new FieldQuery(Fields);
+            return new FieldQuery(Fields, map);
         }
 
-        public override void ExposeData()
+        public void ExposeData()
         {
+            Scribe_Collections.Look(ref _associated, "associatedMaps", LookMode.Reference);
             Scribe_Collections.Look(ref _linearLinks, "linearLinks", LookMode.Deep);
 
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 if(_linearLinks == null)
                     _linearLinks = new HashSet<LinearShieldLink>();
+
+                if(_associated == null)
+                    _associated = new HashSet<Map>();
+
+                if (Scribe.mode == LoadSaveMode.PostLoadInit)
+                {
+                    AssociatedMaps.Do(map => ShieldManager.Register(map, this));
+                }
             }
         }
 
-        public override void MapComponentTick()
+        public void Tick()
         {
             _linearLinks.Do(link => link.Tick());
         }

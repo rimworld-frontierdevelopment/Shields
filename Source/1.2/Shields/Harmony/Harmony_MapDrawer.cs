@@ -9,7 +9,7 @@ namespace FrontierDevelopments.Shields.Harmony
         static class Patch_DrawMapMesh
         {
             private static Map last;
-            private static ShieldManager manager;
+            private static IShieldManager manager;
 
             [HarmonyPostfix]
             static void Postfix(Map ___map)
@@ -17,9 +17,9 @@ namespace FrontierDevelopments.Shields.Harmony
                 if (___map != last)
                 {
                     last = ___map;
-                    manager = ___map.GetComponent<ShieldManager>();
+                    manager = ShieldManager.For(___map);
                 }
-                manager?.DrawShields(Find.CameraDriver.CurrentViewRect);
+                manager?.DrawShields(Find.CameraDriver.CurrentViewRect, ___map);
             }
         }
     }

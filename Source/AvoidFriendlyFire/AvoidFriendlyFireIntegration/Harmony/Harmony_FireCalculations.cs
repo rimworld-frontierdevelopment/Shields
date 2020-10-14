@@ -11,7 +11,7 @@ namespace FrontierDevelopments.Shields.AvoidFriendlyFireIntegration.Harmony
     {
         private static bool IsCellShielded(IntVec3 origin, int cellIndex, Map map, IEnumerable<IShieldField> shields)
         {
-            return new FieldQuery(shields)
+            return new FieldQuery(shields, map)
                 .IsActive()
                 .Intersects(
                     PositionUtility.ToVector3WithY(origin, 0),
@@ -28,7 +28,7 @@ namespace FrontierDevelopments.Shields.AvoidFriendlyFireIntegration.Harmony
             {
                 if (Mod.Settings.EnableAIVerbFindShotLine)
                 {
-                    var fields = map.GetComponent<ShieldManager>().Fields.ToList();
+                    var fields = ShieldManager.For(map).Fields.ToList();
 
                     foreach (var cellIndex in results)
                     {

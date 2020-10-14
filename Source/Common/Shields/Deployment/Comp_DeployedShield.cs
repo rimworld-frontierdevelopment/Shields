@@ -40,23 +40,25 @@ namespace FrontierDevelopments.Shields.Comps
 
         public bool HasWantSettings => _deployed.HasWantSettings;
 
+        public bool PresentOnMap(Map map) => _deployed.PresentOnMap(map);
+
         public void SetParent(IShieldParent shieldParent)
         {
         }
 
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
-            parent.Map.GetComponent<ShieldManager>().Add(Fields);
+            ShieldManager.For(parent.Map).Add(Fields);
         }
 
         public override void PostDeSpawn(Map map)
         {
-            map.GetComponent<ShieldManager>().Del(Fields);
+            ShieldManager.For(map).Del(Fields);
         }
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
-            previousMap.GetComponent<ShieldManager>().Del(Fields);
+            ShieldManager.For(previousMap).Del(Fields);
         }
 
         public bool IsActive()

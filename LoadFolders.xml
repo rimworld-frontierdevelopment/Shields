@@ -13,5 +13,6 @@
                 <li IfModActive="Katavrik.CrashLanding">Integrations/CrashLanding/1.2</li>
                 <li IfModActive="smashphil.neceros.srtsexpanded">Integrations/SRTS-Expanded/1.2</li>
                 <li IfModActive="falconne.AFF">Integrations/AvoidFriendlyFire/1.2</li>
+                <li IfModActive="ZLevels1.1">Integrations/Z-Levels/1.2</li>
         </v1.2>
 </loadFolders>

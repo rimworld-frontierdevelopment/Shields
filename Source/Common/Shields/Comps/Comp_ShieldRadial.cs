@@ -50,6 +50,8 @@ namespace FrontierDevelopments.Shields.Comps
 
         private CompProperties_ShieldRadial Props => (CompProperties_ShieldRadial) props;
 
+        public override bool PresentOnMap(Map map) => true;
+
         public int WantRadius
         {
             get => _wantRadius;

@@ -71,6 +71,7 @@ namespace FrontierDevelopments.Shields.Linear
         
         private bool IsLinked => _links.Count > 0;
 
+        public override bool PresentOnMap(Map map) => map == Map;
         public override void ClearWantSettings()
         {
             _wantLinks.Select(LinearShieldUtility.Find).ToList().Do(RemoveWantLinkWith);

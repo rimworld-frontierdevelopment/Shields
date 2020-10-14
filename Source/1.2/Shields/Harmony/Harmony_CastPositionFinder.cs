@@ -12,14 +12,14 @@ namespace FrontierDevelopments.Shields.Harmony
         {
             if (!Mod.Settings.EnableAICastPositionFinder) return score;
             
-            var shieldManager = map.GetComponent<ShieldManager>();
+            var shieldManager = ShieldManager.For(map);
 
             var startAdjusted = PositionUtility.ToVector3(start);
             var endAdjusted = PositionUtility.ToVector3(end);
 
-            var targetProtected = shieldManager.Query().IsActive().Intersects(startAdjusted, endAdjusted).Get().ToList();
-            var shooterProtected = shieldManager.Query().IsActive().Intersects(endAdjusted, startAdjusted).Get().ToList();
-            var shooterUnderShield = shieldManager.Query().IsActive().Intersects(startAdjusted).Get().ToList();
+            var targetProtected = shieldManager.Query(map).IsActive().Intersects(startAdjusted, endAdjusted).Get().ToList();
+            var shooterProtected = shieldManager.Query(map).IsActive().Intersects(endAdjusted, startAdjusted).Get().ToList();
+            var shooterUnderShield = shieldManager.Query(map).IsActive().Intersects(startAdjusted).Get().ToList();
 
             if (shooterProtected.Any())
             {

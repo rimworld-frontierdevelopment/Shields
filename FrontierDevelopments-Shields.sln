@@ -23,6 +23,9 @@ Project("{bedffc19-216d-40ea-a162-c67ecac62de7}") = "FrontierDevelopments-Shield
 EndProject
 Project("{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}") = "FrontierDevelopments-Shields-DubsHygiene", "Source\DubsHygiene\FrontierDevelopments-Shields-DubsHygiene.csproj", "{7a2d3884-67f8-4e22-92fc-bc423f9f26d3}"
 EndProject
+Project("{f44c5df9-1081-4b6f-85f8-e9ed86bd02f4}") = "FrontierDevelopments-Shields-DubsHygiene", "Source\Z-Levels\FrontierDevelopments-Shields-Z-Levels.csproj", "{f44c5df9-1081-4b6f-85f8-e9ed86bd02f4}"
+EndProject
+
 
 Global
     GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -90,6 +93,12 @@ Global
         {bedffc19-216d-40ea-a162-c67ecac62de7}.Debug|Any CPU.Build.0 = Debug|Any CPU
         {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.ActiveCfg = Release|Any CPU
         {bedffc19-216d-40ea-a162-c67ecac62de7}.Release|Any CPU.Build.0 = Release|Any CPU
+
+        # Z-Levels
+        {f44c5df9-1081-4b6f-85f8-e9ed86bd02f4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+        {f44c5df9-1081-4b6f-85f8-e9ed86bd02f4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+        {f44c5df9-1081-4b6f-85f8-e9ed86bd02f4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+        {f44c5df9-1081-4b6f-85f8-e9ed86bd02f4}.Release|Any CPU.Build.0 = Release|Any CPU
 
     EndGlobalSection
     GlobalSection(SolutionProperties) = preSolution

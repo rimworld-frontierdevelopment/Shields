@@ -28,7 +28,7 @@ namespace FrontierDevelopments.Shields
             }
             
             pawn.AllComps.Add(deployed);
-            pawn.Map.GetComponent<ShieldManager>().Add(deployed.Fields);
+            ShieldManager.For(pawn.Map).Add(deployed.Fields);
         }
 
         public static void UndeployShield(Pawn pawn, IShield shield)
@@ -47,7 +47,7 @@ namespace FrontierDevelopments.Shields
                     break;
             }
             
-            pawn.Map.GetComponent<ShieldManager>().Del(shield.Fields);
+            ShieldManager.For(pawn.Map).Del(shield.Fields);
         }
         
         public static IEnumerable<IShield> DeployedShields(Pawn pawn)

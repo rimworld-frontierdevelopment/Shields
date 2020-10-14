@@ -19,7 +19,7 @@ namespace FrontierDevelopments.Shields.Alerts
         protected virtual HashSet<Thing> GetOffenders()
         {
             return Find.Maps
-                .SelectMany(map => map.GetComponent<ShieldManager>().AllEmitters)
+                .SelectMany(map => ShieldManager.For(map).AllEmitters)
                 .Where(IsOffender)
                 .Select(shield => shield.Thing)
                 .ToHashSet();

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using FrontierDevelopments.General;
 using FrontierDevelopments.General.Comps;
 using FrontierDevelopments.General.UI;
@@ -83,20 +84,22 @@ namespace FrontierDevelopments.Shields.Comps
             }
         }
 
+        public abstract bool PresentOnMap(Map map);
+
         private CompProperties_ShieldBase Props => (CompProperties_ShieldBase) props;
         
         public override void PostSpawnSetup(bool respawningAfterLoad)
         {
             base.PostSpawnSetup(respawningAfterLoad);
             if (_id == null) _id = Find.UniqueIDsManager.GetNextThingID();
-            var manager = Map.GetComponent<ShieldManager>();
+            var manager = ShieldManager.For(Map);
             manager.Add(Fields);
             manager.Add(this);
         }
 
         public override void PostDeSpawn(Map map)
         {
-            var manager = map.GetComponent<ShieldManager>();
+            var manager = ShieldManager.For(map);
             manager.Del(Fields);
             manager.Del(this);
             base.PostDeSpawn(map);
@@ -104,7 +107,7 @@ namespace FrontierDevelopments.Shields.Comps
 
         public override void PostDestroy(DestroyMode mode, Map previousMap)
         {
-            var manager = previousMap.GetComponent<ShieldManager>();
+            var manager = ShieldManager.For(previousMap);
             manager.Del(Fields);
             manager.Del(this);
             base.PostDestroy(mode, previousMap);
@@ -147,8 +150,12 @@ namespace FrontierDevelopments.Shields.Comps
             var handled = Parent?.SinkDamage(damage) ?? 0f;
             if (Mathf.Abs(damage - handled) < 1)
             {
-                RenderImpactEffect(PositionUtility.ToVector2(position), Map);
-                PlayBulletImpactSound(PositionUtility.ToVector2(position), Map);
+                if(PresentOnMap(Find.CurrentMap))
+                {
+                    RenderImpactEffect(PositionUtility.ToVector2(position), Find.CurrentMap);
+                    PlayBulletImpactSound(PositionUtility.ToVector2(position), Find.CurrentMap);
+                }
+
                 return damage;
             }
 
