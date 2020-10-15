@@ -105,5 +105,15 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                     });
             }
         }
+
+        [HarmonyPatch(typeof(ProjectileCE), "ImpactSomething")]
+        static class Patch_CheckCellForCollision
+        {
+            [HarmonyPrefix]
+            static bool PreventBlockedProjectilesFromImpacting(ProjectileCE __instance)
+            {
+                return !__instance.Destroyed;
+            }
+        }
     }
 }
