@@ -116,7 +116,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                     {
                         if(IsOverhead(__instance))
                         {
-                            DoSmokeExplosion(__instance, GetExplosionSound(__instance));
+                            ExplosionUtility.DoSmokeExplosion(__instance, GetExplosionSound(__instance));
                             __instance.Destroy();
                         }
                         else

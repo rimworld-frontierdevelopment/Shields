@@ -1,167 +1,238 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 using System.Reflection.Emit;
-using FrontierDevelopments.General;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Verse.AI;
 
 namespace FrontierDevelopments.Shields.Harmony
 {
-    public class Harmony_Bombardment
+    class Harmony_Bombardment : Harmony_OrbitalStrike
     {
-        private const float PawnFleeDistance = 24f;
-
-        private static bool ShouldStop(Map map, IntVec3 center)
+        [HarmonyPatch(typeof(Bombardment), "EffectTick")]
+        static class Patch_EffectTick
         {
-            return new FieldQuery(map)
-                .IsActive()
-                .Intersects(PositionUtility.ToVector3(center))
-                .Block(Mod.Settings.SkyfallerDamage);
-        }
-
-        private static bool IsShielded(Map map, IntVec3 position)
-        {
-            return new FieldQuery(map)
-                .IsActive()
-                .Intersects(PositionUtility.ToVector3(position))
-                .Get()
-                .Any();
-        }
-        
-        [HarmonyPatch(typeof(Bombardment), "GetNextExplosionCell")]
-        static class Patch_CreateRandomExplosion
-        {
-            [HarmonyTranspiler]
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+            // looking for:
+            //
+            //    IntVec3 targetCell = this.projectiles[index].targetCell;
+            //    ...
+            //    GenExplosion.DoExplosion(...);
+            //    this.projectiles.RemoveAt(index);
+            //
+            //  Transform it into:
+            //
+            //    IntVec3 targetCell = this.projectiles[index].targetCell;
+            //    if(!Harmony_Bombardment.ShouldStop(...)) {
+            //      ...
+            //      GenExplosion.DoExplosion(...);
+            //    }
+            //    this.projectiles.RemoveAt(index);
+            private class Transpile_BlockBombardmentProjectile
             {
-                var patchPhase = 0;
-                
-                foreach (var instruction in instructions)
+                private readonly Label _skipExplosion;
+
+                private bool _targetCellFound;
+                private bool _addedSkipExplosionLabel;
+
+                private bool Success => _targetCellFound && _addedSkipExplosionLabel;
+
+                public Transpile_BlockBombardmentProjectile(ILGenerator il)
                 {
-                    switch (patchPhase)
+                    _skipExplosion = il.DefineLabel();
+                }
+
+                private IEnumerable<CodeInstruction> AddShieldCheck(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+                {
+                    var targetCell = il.DeclareLocal(typeof(IntVec3));
+
+                    foreach (var instruction in instructions)
                     {
-                        // search for call to get_Map
-                        case 0:
+                        if (instruction.opcode == OpCodes.Ldfld
+                            && (FieldInfo) instruction.operand == AccessTools.Field(
+                                typeof(Bombardment.BombardmentProjectile),
+                                nameof(Bombardment.BombardmentProjectile.targetCell)))
                         {
-                            if (instruction.opcode == OpCodes.Call && instruction.operand as MethodInfo == AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod())
-                            {
-                                patchPhase = 1;
-                            }
-                            break;
+                            _targetCellFound = true;
+
+                            yield return instruction;
+                            yield return new CodeInstruction(OpCodes.Stloc, targetCell);
+
+                            // the shield check
+                            yield return new CodeInstruction(OpCodes.Ldloc, targetCell);
+                            yield return new CodeInstruction(OpCodes.Ldarg_0);
+                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Property(typeof(Bombardment), nameof(Bombardment.Map)).GetGetMethod());
+                            yield return new CodeInstruction(
+                                OpCodes.Call,
+                                AccessTools.Method(
+                                    typeof(Harmony_OrbitalStrike), 
+                                    nameof(ShouldStopHighDamage)));
+                            yield return new CodeInstruction(OpCodes.Brtrue, _skipExplosion);
+
+                            // restore the stack to its original state
+                            yield return new CodeInstruction(OpCodes.Ldloc, targetCell);
                         }
-                        // find loading map into locals next
-                        case 1:
+                        else
                         {
-                            if (instruction.opcode == OpCodes.Stloc_3)
-                            {
-                                patchPhase = 2;
-                            }
-                            break;
-                        }
-                        // insert check call
-                        case 2:
-                        {
-                            var continueLabel = il.DefineLabel();
-                            instruction.labels.Add(continueLabel);
-                            
-                            yield return new CodeInstruction(OpCodes.Ldloc_3);
-                            yield return new CodeInstruction(OpCodes.Ldloc_0);
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Bombardment), nameof(ShouldStop)));
-                            yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
-                            yield return new CodeInstruction(OpCodes.Ret);
-                            
-                            patchPhase = -1;
-                            break;
+                            yield return instruction;
                         }
                     }
-                    
-                    yield return instruction;
                 }
-                
-                if (patchPhase > 0)
+
+                private IEnumerable<CodeInstruction> AddShieldCheckLabel(IEnumerable<CodeInstruction> instructions)
                 {
-                    Log.Error("Patch for Bombardment.GetNextExplosionCell failed. Reached patchPhase: " + patchPhase);
+                    foreach (var instruction in instructions)
+                    {
+                        if (instruction.opcode == OpCodes.Call
+                            && (MethodInfo)instruction.operand == AccessTools.Method(
+                                typeof(GenExplosion), 
+                                nameof(GenExplosion.DoExplosion)))
+                        {
+                            _addedSkipExplosionLabel = true;
+                            yield return instruction;
+                            yield return new CodeInstruction(OpCodes.Nop)
+                            {
+                                labels = new List<Label>(new []{ _skipExplosion })
+                            };
+                        }
+                        else
+                        {
+                            yield return instruction;
+                        }
+                    }
                 }
+
+                public IEnumerable<CodeInstruction> Apply(IReadOnlyCollection<CodeInstruction> instructions, ILGenerator il)
+                {
+                    var patched = AddShieldCheck(AddShieldCheckLabel(instructions), il).ToList();
+                    if (Success)
+                    {
+                        return patched;
+                    }
+
+                    Log.Warning("Failed patching Bombardment.EffectTick, blocking bombardment projectiles is disabled");
+                    return instructions;
+                }
+            }
+
+            [HarmonyTranspiler]
+            static IEnumerable<CodeInstruction> AddShieldCheck(
+                IEnumerable<CodeInstruction> instructions,
+                ILGenerator il)
+            {
+                return new Transpile_BlockBombardmentProjectile(il).Apply(instructions.ToList(), il);
             }
         }
 
         [HarmonyPatch(typeof(Bombardment), "StartRandomFire")]
         static class Patch_StartRandomFire
         {
-            [HarmonyTranspiler]
-            static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+            // looking for:
+            //
+            //    IntVec3 targetCell = ...
+            //    FireUtility.TryStartFireIn(targetCell, ...);
+            //
+            //  Transform it into:
+            //    
+            //    IntVec3 targetCell = ...
+            //    if(Harmony_Bombardment.IsShielded(targetCell, ...) {
+            //      FireUtility.TryStartFireIn(targetCell, ...);
+            //    }
+            private class Patcher
             {
-                var patchPhase = 0;
-        
-                foreach (var instruction in instructions)
+                private readonly Label _skipFire;
+                
+                private bool _targetCellFound = false;
+                private bool _addedSkipFireLabel = false;
+
+                private bool Success => _targetCellFound && _addedSkipFireLabel;
+
+                public Patcher(ILGenerator il)
                 {
-                    switch (patchPhase)
+                    _skipFire = il.DefineLabel();
+                }
+                
+                private IEnumerable<CodeInstruction> AddShieldCheck(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+                {
+                    var targetCell = il.DeclareLocal(typeof(IntVec3));
+                    
+                    foreach (var instruction in instructions)
                     {
-                        // find get_Map
-                        case 0:
+                        if (instruction.opcode == OpCodes.Call
+                            && (MethodInfo) instruction.operand == AccessTools.Method(
+                                typeof(GenCollection),
+                                nameof(GenCollection.RandomElementByWeight), 
+                                generics: new Type[] {typeof(IntVec3)}))
                         {
-                            if (instruction.opcode == OpCodes.Call && instruction.operand as MethodInfo == AccessTools.Property(typeof(Thing), nameof(Thing.Map)).GetGetMethod())
-                            {
-                                patchPhase = 1;
-                            }
-                            break;
+                            _targetCellFound = true;
+                            
+                            yield return instruction;
+                            yield return new CodeInstruction(OpCodes.Stloc, targetCell);
+
+                            // the shield check
+                            yield return new CodeInstruction(OpCodes.Ldloc, targetCell);
+                            yield return new CodeInstruction(OpCodes.Ldarg_0);
+                            yield return new CodeInstruction(
+                                OpCodes.Call,
+                                AccessTools.Method(
+                                    typeof(Harmony_OrbitalStrike),
+                                    nameof(ShouldStopHighDamageWithSmokeExplosion)));
+                            yield return new CodeInstruction(OpCodes.Brtrue, _skipFire);
+                            
+                            // restore the stack to its original state
+                            yield return new CodeInstruction(OpCodes.Ldloc, targetCell);
                         }
-                        // add check
-                        case 1:
+                        else
                         {
-                            var continueLabel = il.DefineLabel();
-                            var localMap = il.DeclareLocal(typeof(Map));
-                            var localCoord = il.DeclareLocal(typeof(IntVec3));
-        
-                            yield return new CodeInstruction(OpCodes.Stloc, localMap.LocalIndex);
-                            yield return new CodeInstruction(OpCodes.Stloc, localCoord.LocalIndex);
-                            yield return new CodeInstruction(OpCodes.Ldloc, localMap.LocalIndex);
-                            yield return new CodeInstruction(OpCodes.Ldloc, localCoord.LocalIndex);
-                            yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Harmony_Bombardment), nameof(IsShielded)));
-                            yield return new CodeInstruction(OpCodes.Brfalse, continueLabel);
-                            yield return new CodeInstruction(OpCodes.Ret);
-                            yield return new CodeInstruction(OpCodes.Ldloc, localCoord.LocalIndex)  { labels =  new List<Label>(new [] { continueLabel })};
-                            yield return new CodeInstruction(OpCodes.Ldloc, localMap.LocalIndex);
-                            patchPhase = -1;
-                            break;
+                            yield return instruction;
                         }
                     }
-        
-                    yield return instruction;
                 }
 
-                if (patchPhase > 0)
+                private IEnumerable<CodeInstruction> AddShieldCheckLabel(IEnumerable<CodeInstruction> instructions)
                 {
-                    Log.Error("Patch for Bombardment.StartRandomFire failed. Reached patchPhase: " + patchPhase);
+                    foreach (var instruction in instructions)
+                    {
+                        // bool RimWorld.FireUtility::TryStartFireIn(valuetype Verse.IntVec3, class Verse.Map, float32)
+                        if (instruction.opcode == OpCodes.Call
+                            && (MethodInfo)instruction.operand == AccessTools.Method(
+                                typeof(FireUtility), 
+                                nameof(FireUtility.TryStartFireIn)))
+                        {
+                            _addedSkipFireLabel = true;
+                            yield return instruction;
+                            yield return new CodeInstruction(OpCodes.Nop)
+                            {
+                                labels = new List<Label>(new []{ _skipFire })
+                            };
+                        }
+                        else
+                        {
+                            yield return instruction;
+                        }
+                    }
+                }
+
+                public IEnumerable<CodeInstruction> Apply(IReadOnlyCollection<CodeInstruction> instructions, ILGenerator il)
+                {
+                    var patched = AddShieldCheck(AddShieldCheckLabel(instructions), il).ToList();
+                    if (Success)
+                    {
+                        return patched;
+                    }
+
+                    Log.Warning("Failed patching Bombardment.StartRandomFire, blocking bombardment fires is disabled");
+                    return instructions;
                 }
             }
-        }
 
-        [HarmonyPatch(typeof(Bombardment), nameof(Bombardment.Tick))]
-        static class Patch_Tick
-        {
-            [HarmonyPostfix]
-            static void Postfix(Bombardment __instance)
+            [HarmonyTranspiler]
+            static IEnumerable<CodeInstruction> AddShieldCheck(
+                IEnumerable<CodeInstruction> instructions,
+                ILGenerator il)
             {
-                RegionTraverser.BreadthFirstTraverse(__instance.Position, __instance.Map, (from, to) => true, region =>
-                {
-                    region.ListerThings.ThingsInGroup(ThingRequestGroup.Pawn)
-                        .Select(p => (Pawn)p)
-                        .Where(p => !p.Downed && !p.Dead && !p.Drafted)
-                        .Where(p => p.CurJobDef != JobDefOf.Flee && !p.Downed)
-                        .Where(p => p.Position.DistanceTo(__instance.Position) <= PawnFleeDistance)
-                        .ToList()
-                        .ForEach(pawn =>
-                        {
-                            var threats = new List<Thing> { __instance };
-                            var fleeDest1 = CellFinderLoose.GetFleeDest(pawn, threats, pawn.Position.DistanceTo(__instance.Position) + Bombardment.EffectiveAreaRadius);
-                            pawn.jobs.StartJob(new Job(JobDefOf.Flee, fleeDest1, (LocalTargetInfo) __instance), JobCondition.InterruptOptional, null, false, true, null, new JobTag?());
-                        });
-                    return false;
-                }, 25, RegionType.Set_All);
+                return new Patcher(il).Apply(instructions.ToList(), il);
             }
         }
     }

@@ -61,17 +61,6 @@ namespace FrontierDevelopments.Shields.Harmony
             }
         }
 
-        protected static void DoSmokeExplosion(Thing projectile, SoundDef explosionSound)
-        {
-            GenExplosion.DoExplosion(
-                projectile.Position,
-                projectile.Map,
-                1,
-                DamageDefOf.Smoke,
-                projectile,
-                explosionSound: explosionSound);
-        }
-
         private static bool TryBlockProjectile(
             Projectile projectile,
             Vector3 currentPosition,
@@ -181,7 +170,7 @@ namespace FrontierDevelopments.Shields.Harmony
                         {
                             if (IsOverhead(__instance))
                             {
-                                DoSmokeExplosion(__instance, GetExplosionSound(__instance));
+                                ExplosionUtility.DoSmokeExplosion(__instance, GetExplosionSound(__instance));
                                 __instance.Destroy();
                             }
                             else

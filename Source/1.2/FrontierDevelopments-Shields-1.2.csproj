@@ -67,6 +67,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shields\ExplosionUtility.cs" />
     <Compile Include="Shields\Harmony\Harmony_Bombardment.cs" />
     <Compile Include="Shields\Harmony\Harmony_AttackTargetFinder.cs" />
     <Compile Include="Shields\Harmony\Harmony_CastPositionFinder.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="Shields\Harmony\Harmony_Explosion.cs" />
     <Compile Include="Shields\Harmony\Harmony_Map.cs" />
     <Compile Include="Shields\Harmony\Harmony_MapDrawer.cs" />
+    <Compile Include="Shields\Harmony\Harmony_OrbitalStrike.cs" />
+    <Compile Include="Shields\Harmony\Harmony_PowerBeam.cs" />
     <Compile Include="Shields\Harmony\Harmony_RoyalTitlePermitWorker_DropResources.cs" />
     <Compile Include="Shields\Harmony\Harmony_Verb.cs" />
     <Compile Include="Shields\Harmony\Harmony_Projectile.cs" />
