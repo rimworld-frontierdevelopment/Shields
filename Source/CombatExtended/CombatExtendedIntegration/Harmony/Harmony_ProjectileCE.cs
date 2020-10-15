@@ -15,10 +15,15 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
     {
         private static readonly MethodInfo impactMethod = AccessTools.Method(typeof(ProjectileCE), "Impact");
 
+        private static bool IsExplosive(ProjectileCE projectile) =>
+            projectile is ProjectileCE_Explosive || projectile.AllComps.OfType<CompExplosiveCE>().Any();
+
+        private static bool IsOverhead(ProjectileCE projectile) =>
+            projectile.def.projectile.flyOverhead;
+
         private static bool ShouldImpact(ProjectileCE projectile)
         {
-            if (projectile.def.projectile.flyOverhead) return false;
-            return projectile is ProjectileCE_Explosive;
+            return !IsOverhead(projectile) && IsExplosive(projectile);
         }
 
         private static ShieldDamages CalculateDamages(ThingDef def)
