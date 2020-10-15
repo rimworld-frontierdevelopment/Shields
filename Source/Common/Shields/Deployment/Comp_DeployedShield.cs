@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using FrontierDevelopments.General.UI;
-using HarmonyLib;
 using Verse;
+using Verse.AI;
 
 namespace FrontierDevelopments.Shields.Comps
 {
@@ -60,6 +60,15 @@ namespace FrontierDevelopments.Shields.Comps
         {
             ShieldManager.For(previousMap).Del(Fields);
         }
+
+        public bool ThreatDisabled(IAttackTargetSearcher disabledFor)
+        {
+            return _deployed.ThreatDisabled(disabledFor);
+        }
+
+        public LocalTargetInfo TargetCurrentlyAimingAt => (parent as Pawn)?.TargetCurrentlyAimingAt ?? null;
+
+        public float TargetPriorityFactor => _deployed.TargetPriorityFactor;
 
         public bool IsActive()
         {

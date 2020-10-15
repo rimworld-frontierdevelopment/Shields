@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -27,6 +28,7 @@ namespace FrontierDevelopments.Shields
         IShieldQueryWithIntersects Intersects(Vector3 start, Vector3 end, bool invert = false);
         IShieldQueryWithIntersects Intersects(Vector3 position, bool invert = false);
         IEnumerable<IShieldField> Get();
+        IEnumerable<Pair<IShieldField, Vector3?>> GetWithIntersects();
         bool Block(ShieldDamages damages, Action<IShieldField, Vector3> onBlock = null);
         bool Block(float damage, Action<IShieldField, Vector3> onBlock = null);
     }
@@ -60,12 +62,8 @@ namespace FrontierDevelopments.Shields
         public static IShieldQueryWithIntersects Intersects(IEnumerable<IShieldField> shields, Vector3 start, Vector3 end, Map map, bool invert = false)
         {
             return new ShieldQueryWithIntersects(shields
-                .Select(shield => new ShieldQueryWithIntersects.ShieldWithIntersects
-                    {
-                        Shield = shield,
-                        Intersect = shield.Collision(start, end)
-                    })
-                .Where(elements => elements.Intersect != null != invert), map);
+                .Select(shield => new Pair<IShieldField, Vector3?>(shield, shield.Collision(start, end)))
+                .Where(elements => elements.Second != null != invert), map);
         }
 
         public static IShieldQueryWithIntersects Intersects(IEnumerable<IShieldField> shields, Vector3 position, Map map, bool invert = false)
@@ -78,13 +76,9 @@ namespace FrontierDevelopments.Shields
                     {
                         point = position;
                     }
-                    return new ShieldQueryWithIntersects.ShieldWithIntersects
-                    {
-                        Shield = shield,
-                        Intersect = point
-                    };
+                    return new Pair<IShieldField, Vector3?>(shield, point);
                 })
-                .Where(elements => elements.Intersect != null != invert), map);
+                .Where(elements => elements.Second != null != invert), map);
         }
     }
 
@@ -143,45 +137,51 @@ namespace FrontierDevelopments.Shields
 
     public class ShieldQueryWithIntersects : IShieldQueryWithIntersects
     {
-        public struct ShieldWithIntersects
-        { 
-            public IShieldField Shield;
-            public Vector3? Intersect;
+        private readonly Map _map;
+        private readonly IEnumerable<Pair<IShieldField, Vector3?>> _elements;
+
+        private IEnumerable<IShieldField> Shields => _elements.Select(e => e.First);
+
+        [CanBeNull]
+        public static IEnumerable<Pair<IShieldField, Vector3?>> Apply(IEnumerable<IShieldField> shields, Func<IShieldField, Vector3?> collision)
+        {
+            return shields.Select(shield => new Pair<IShieldField, Vector3?>(shield, collision(shield)));
         }
 
-        private readonly Map _map;
-        private readonly IEnumerable<ShieldWithIntersects> _elements;
-
-        private IEnumerable<IShieldField> Shields => _elements.Select(e => e.Shield);
-
-        public ShieldQueryWithIntersects(IEnumerable<ShieldWithIntersects> elements, Map map)
+        public ShieldQueryWithIntersects(IEnumerable<Pair<IShieldField, Vector3?>> elements, Map map)
         {
             _map = map;
             _elements = elements;
+        }
+
+        public ShieldQueryWithIntersects(IEnumerable<IShieldField> shields, Map map, Func<IShieldField, Vector3?> collision)
+        {
+            _map = map;
+            _elements = Apply(shields, collision);
         }
         
         public IShieldQueryWithIntersects IsActive(bool isActive = true)
         {
             return new ShieldQueryWithIntersects(
-                _elements.Where(e => ShieldQueryUtils.IsActive(e.Shield, isActive)), _map);
+                _elements.Where(e => ShieldQueryUtils.IsActive(e.First, isActive)), _map);
         }
 
         public IShieldQueryWithIntersects OfFaction(Faction faction, bool invert = false)
         {
             return new ShieldQueryWithIntersects(
-                _elements.Where(e => ShieldQueryUtils.OfFaction(e.Shield, faction, invert)), _map);
+                _elements.Where(e => ShieldQueryUtils.OfFaction(e.First, faction, invert)), _map);
         }
 
         public IShieldQueryWithIntersects FriendlyTo(Faction faction, bool invert = false)
         {
             return new ShieldQueryWithIntersects(
-                _elements.Where(e => ShieldQueryUtils.FriendlyTo(e.Shield, faction, invert)), _map);
+                _elements.Where(e => ShieldQueryUtils.FriendlyTo(e.First, faction, invert)), _map);
         }
 
         public IShieldQueryWithIntersects HostileTo(Faction faction, bool invert = false)
         {
             return new ShieldQueryWithIntersects(
-                _elements.Where(e => ShieldQueryUtils.HostileTo(e.Shield, faction, invert)), _map);
+                _elements.Where(e => ShieldQueryUtils.HostileTo(e.First, faction, invert)), _map);
         }
 
         public IShieldQueryWithIntersects Intersects(Vector3 start, Vector3 end, bool invert = false)
@@ -196,7 +196,12 @@ namespace FrontierDevelopments.Shields
 
         public IEnumerable<IShieldField> Get()
         {
-            return _elements.Select(e => e.Shield);
+            return _elements.Select(e => e.First);
+        }
+        
+        public IEnumerable<Pair<IShieldField, Vector3?>> GetWithIntersects()
+        {
+            return _elements;
         }
 
         public bool Block(ShieldDamages damages, Action<IShieldField, Vector3> onBlock)
@@ -204,11 +209,11 @@ namespace FrontierDevelopments.Shields
             try
             {
                 var result = _elements
-                    .Where(e => e.Intersect != null)
-                    .First(e => e.Shield.Block(damages, e.Intersect.Value) >= damages.Damage);
-                if (result.Intersect != null)
+                    .Where(e => e.Second != null)
+                    .First(e => e.First.Block(damages, e.Second.Value) >= damages.Damage);
+                if (result.Second != null)
                 {
-                    onBlock?.Invoke(result.Shield, result.Intersect.Value);
+                    onBlock?.Invoke(result.First, result.Second.Value);
                     return true;
                 }
             }
@@ -221,11 +226,11 @@ namespace FrontierDevelopments.Shields
             try
             {
                 var result = _elements
-                    .Where(e => e.Intersect != null)
-                    .First(e => e.Shield.Block(damage, e.Intersect.Value) >= damage);
-                if (result.Intersect != null)
+                    .Where(e => e.Second != null)
+                    .First(e => e.First.Block(damage, e.Second.Value) >= damage);
+                if (result.Second != null)
                 {
-                    onBlock?.Invoke(result.Shield, result.Intersect.Value);
+                    onBlock?.Invoke(result.First, result.Second.Value);
                     return true;
                 }
             }

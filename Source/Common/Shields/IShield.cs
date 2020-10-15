@@ -5,6 +5,7 @@ using FrontierDevelopments.General.UI;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 
 namespace FrontierDevelopments.Shields
 {
@@ -27,18 +28,17 @@ namespace FrontierDevelopments.Shields
         IEnumerable<IShield> Emitters { get; }
     }
 
-    public interface IShield : IShieldWithStatus, IShieldUserInterface, ILabeled, ILoadReferenceable
+    public interface IShield : IShieldWithStatus, IShieldUserInterface, ILabeled, IAttackTarget
     {
         bool PresentOnMap(Map map);
         IShieldParent Parent { get; }
         void SetParent(IShieldParent shieldParent);
         bool IsActive();
         IEnumerable<IShieldField> Fields { get; }
-        Thing Thing { get; }
         float DeploymentSize { get; }
     }
 
-    public interface IShieldParent : IShieldWithStatus, IShieldUserInterface, ILoadReferenceable
+    public interface IShieldParent : IShieldWithStatus, IShieldUserInterface, IAttackTarget
     {
         bool ParentActive { get; }
         float SinkDamage(float damage);

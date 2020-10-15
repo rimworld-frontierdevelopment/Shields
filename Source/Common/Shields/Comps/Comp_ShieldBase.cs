@@ -7,6 +7,7 @@ using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
+using Verse.AI;
 using Verse.Noise;
 using Verse.Sound;
 
@@ -112,6 +113,15 @@ namespace FrontierDevelopments.Shields.Comps
             manager.Del(this);
             base.PostDestroy(mode, previousMap);
         }
+
+        public virtual bool ThreatDisabled(IAttackTargetSearcher disabledFor)
+        {
+            return !IsActive();
+        }
+
+        public LocalTargetInfo TargetCurrentlyAimingAt => null;
+
+        public virtual float TargetPriorityFactor => 1f;
 
         public virtual void SetParent(IShieldParent shieldParent)
         {

@@ -8,6 +8,7 @@ using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
 using Verse;
+using Verse.AI;
 
 namespace FrontierDevelopments.Shields.Buildings
 {
@@ -153,6 +154,23 @@ namespace FrontierDevelopments.Shields.Buildings
             Scribe_Deep.Look(ref _energyNet, "energyNet");
             Scribe_Values.Look(ref _lifetimeDamageBlocked, "lifetimeDamageBlocked");
         }
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        //
+        // Attack target
+        //
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+        public bool ThreatDisabled(IAttackTargetSearcher disabledFor)
+        {
+            return _shield.ThreatDisabled(disabledFor);
+        }
+
+        public Thing Thing => this;
+
+        public LocalTargetInfo TargetCurrentlyAimingAt => null;
+
+        public float TargetPriorityFactor => _shield.TargetPriorityFactor;
 
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //
