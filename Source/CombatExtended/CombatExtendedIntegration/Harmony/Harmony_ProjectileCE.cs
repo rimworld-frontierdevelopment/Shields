@@ -21,9 +21,23 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
         private static bool IsOverhead(ProjectileCE projectile) =>
             projectile.def.projectile.flyOverhead;
 
-        private static bool ShouldImpact(ProjectileCE projectile)
+        private static SoundDef GetExplosionSound(CompProperties_ExplosiveCE props)
         {
-            return !IsOverhead(projectile) && IsExplosive(projectile);
+            return props.explosionSound ?? props.explosiveDamageType.soundExplosion;
+        }
+
+        private static SoundDef GetExplosionSound(ProjectileCE projectile)
+        {
+            switch (projectile)
+            {
+                case ProjectileCE_Explosive explosive:
+                    return GetExplosionSound(explosive.def.projectile);
+                default:
+                    return projectile.AllComps
+                        .OfType<CompExplosiveCE>()
+                        .Select(compExplosive => GetExplosionSound((CompProperties_ExplosiveCE) compExplosive.props))
+                        .FirstOrDefault();
+            }
         }
 
         private static ShieldDamages CalculateDamages(ThingDef def)
@@ -88,7 +102,7 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
         static class Patch_CheckForCollisionBetween
         {
             [HarmonyPrefix]
-            static bool CheckShieldCollision(ProjectileCE __instance, bool __result, Vector2 ___origin, int ___ticksToImpact)
+            static bool CheckShieldCollision(ProjectileCE __instance, Vector2 ___origin, int ___ticksToImpact)
             {
                 var current = __instance.ExactPosition;
                 var last = current - __instance.ExactMinusLastPos;
@@ -100,8 +114,20 @@ namespace FrontierDevelopments.CombatExtendedIntegration.Harmony
                     ___ticksToImpact,
                     ___origin, (shield, point) =>
                     {
-                        if (!ShouldImpact(__instance) || !Impact(__instance, shield, point))
+                        if(IsOverhead(__instance))
+                        {
+                            DoSmokeExplosion(__instance, GetExplosionSound(__instance));
                             __instance.Destroy();
+                        }
+                        else
+                        {
+                            // check if it is an explosive projectile to impact
+                            if (!IsExplosive(__instance) || !Impact(__instance, shield, point))
+                            {
+                                // this is a regular projectile, remove it
+                                __instance.Destroy();
+                            }
+                        }
                     });
             }
         }

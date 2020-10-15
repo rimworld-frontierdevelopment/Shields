@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using HarmonyLib;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -29,9 +31,45 @@ namespace FrontierDevelopments.Shields.Harmony
             return BlacklistedDefs.Contains(thing.def.defName) || BlacklistedTypes.Contains(thing.GetType());
         }
 
-        private static void Impact(Projectile projectile)
+        private static bool Impact(Projectile projectile, IShieldField shield, Vector3 point)
         {
             impactMethod.Invoke(projectile, new object[] { null });
+            return true;
+        }
+
+        protected static SoundDef GetExplosionSound(ProjectileProperties props)
+        {
+            return props.soundExplode ?? props.damageDef.soundExplosion;
+        }
+
+        private static SoundDef GetExplosionSound(CompProperties_Explosive props)
+        {
+            return props.explosionSound ?? props.explosiveDamageType.soundExplosion;
+        }
+
+        private static SoundDef GetExplosionSound(Projectile projectile)
+        {
+            switch (projectile)
+            {
+                case Projectile_Explosive explosive:
+                    return GetExplosionSound(explosive.def.projectile);
+                default:
+                    return projectile.AllComps
+                        .OfType<CompExplosive>()
+                        .Select(compExplosive => GetExplosionSound((CompProperties_Explosive) compExplosive.props))
+                        .FirstOrDefault();
+            }
+        }
+
+        protected static void DoSmokeExplosion(Thing projectile, SoundDef explosionSound)
+        {
+            GenExplosion.DoExplosion(
+                projectile.Position,
+                projectile.Map,
+                1,
+                DamageDefOf.Smoke,
+                projectile,
+                explosionSound: explosionSound);
         }
 
         private static bool TryBlockProjectile(
@@ -82,7 +120,7 @@ namespace FrontierDevelopments.Shields.Harmony
                         damages.OverrideDamage = 10;
                     }
 
-                    var blocked = TryBlockOverhead(projectile, origin, currentPosition, damages);
+                    var blocked = TryBlockOverhead(projectile, origin, currentPosition, damages, onBlock);
                     return blocked;
                 }
             }
@@ -114,12 +152,11 @@ namespace FrontierDevelopments.Shields.Harmony
                 .Block(damages, onBlock);
         }
 
-        private static bool ShouldImpact(Projectile projectile)
-        {
-            if (projectile.def.projectile.flyOverhead) return false;
-            var type = projectile.GetType();
-            return typeof(Projectile_Explosive).IsAssignableFrom(type);
-        }
+        private static bool IsExplosive(Projectile projectile) =>
+            projectile is Projectile_Explosive || projectile.AllComps.OfType<CompExplosive>().Any();
+
+        private static bool IsOverhead(Projectile projectile) =>
+            projectile.def.projectile.flyOverhead;
 
         [HarmonyPatch(typeof(Projectile), "CheckForFreeInterceptBetween")]
         static class Patch_CheckForFreeInterceptBetween
@@ -133,19 +170,30 @@ namespace FrontierDevelopments.Shields.Harmony
                 Vector3 ___origin,
                 int ___ticksToImpact)
             {
-                if(__result == false && TryBlockProjectile(__instance,
-                    lastExactPos.Yto0(),
-                    newExactPos.Yto0(),
-                    ___ticksToImpact,
-                    ___origin))
+                if (__result == false)
                 {
-                    if (ShouldImpact(__instance))
-                    {
-                        Impact(__instance);
-                        return true;
-                    }
-                    __instance.Destroy();
-                    return true;
+                    return TryBlockProjectile(__instance,
+                        lastExactPos.Yto0(),
+                        newExactPos.Yto0(),
+                        ___ticksToImpact,
+                        ___origin,
+                        (shield, point) =>
+                        {
+                            if (IsOverhead(__instance))
+                            {
+                                DoSmokeExplosion(__instance, GetExplosionSound(__instance));
+                                __instance.Destroy();
+                            }
+                            else
+                            {
+                                // check if it is an explosive projectile to impact
+                                if (!IsExplosive(__instance) || !Impact(__instance, shield, point))
+                                {
+                                    // this is a regular projectile, remove it
+                                    __instance.Destroy();
+                                }
+                            }
+                        });
                 }
 
                 return __result;
