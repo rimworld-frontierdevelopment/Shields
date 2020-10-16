@@ -13,7 +13,9 @@ using Verse.Sound;
 
 namespace FrontierDevelopments.Shields.Comps
 {
-    public abstract class CompProperties_ShieldBase : CompProperties {
+    public abstract class CompProperties_ShieldBase : CompProperties
+    {
+        public int restartCooldown = 300;
         public int deploymentSize;
     }
 
@@ -22,7 +24,9 @@ namespace FrontierDevelopments.Shields.Comps
         private int? _id;
         private IShieldParent _parent;
         private bool _renderField = true;
-        
+        private bool _activeLastTick;
+        private int _cooldownTimer;
+
         public virtual string Label => parent.Label;
 
         protected abstract string ShieldLoadType { get; }
@@ -114,6 +118,33 @@ namespace FrontierDevelopments.Shields.Comps
             base.PostDestroy(mode, previousMap);
         }
 
+        public override void CompTick()
+        {
+            base.CompTick();
+
+            if (_cooldownTimer > 0)
+            {
+                _cooldownTimer--;
+            }
+
+            var active = IsActive();
+            
+            if (active != ActiveLastTick)
+            {
+                if (active)
+                {
+                    OnIsNowActive();
+                }
+                else
+                {
+                    _cooldownTimer = Props.restartCooldown;
+                    OnIsNowInactive();
+                }
+            }
+
+            _activeLastTick = active;
+        }
+
         public virtual bool ThreatDisabled(IAttackTargetSearcher disabledFor)
         {
             return !IsActive();
@@ -130,8 +161,14 @@ namespace FrontierDevelopments.Shields.Comps
 
         public virtual bool IsActive()
         {
-            return Parent?.ParentActive ?? true;
+            return _cooldownTimer < 1 && (Parent?.ParentActive ?? true);
         }
+
+        public bool ActiveLastTick => _activeLastTick;
+
+        protected abstract void OnIsNowActive();
+
+        protected abstract void OnIsNowInactive();
 
         public float CalculateDamage(ShieldDamages damages)
         {
@@ -228,6 +265,8 @@ namespace FrontierDevelopments.Shields.Comps
             Scribe_Values.Look(ref _id, "shieldRadialId");
             Scribe_References.Look(ref _parent, "shieldRadialParent");
             Scribe_Values.Look(ref _renderField, "renderField", true);
+            Scribe_Values.Look(ref _cooldownTimer, "cooldownTimer");
+            Scribe_Values.Look(ref _activeLastTick, "activeLastTick");
         }
         
         public string GetUniqueLoadID()

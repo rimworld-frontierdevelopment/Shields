@@ -35,7 +35,6 @@ namespace FrontierDevelopments.Shields.Comps
         private int _cellCount;
 
         private int _warmingUpTicks;
-        private bool _activeLastTick;
 
         private int _radiusLast;
         private CellRect? _cameraLast;
@@ -132,22 +131,22 @@ namespace FrontierDevelopments.Shields.Comps
             LessonAutoActivator.TeachOpportunity(ConceptDef.Named("FD_Shields"), OpportunityType.Critical);
         }
 
+        protected override void OnIsNowActive()
+        {
+            _warmingUpTicks = _fieldRadius * Props.ticksPerExpansion;
+        }
+
+        protected override void OnIsNowInactive()
+        {
+        }
+
         public override void CompTick()
         {
+            base.CompTick();
             _positionLast = parent.Position;
             _radiusLast = (int) Radius;
-            
-            var active = IsActive();
-            if (active != _activeLastTick)
-            {
-                if (active)
-                {
-                    _warmingUpTicks = _fieldRadius * Props.ticksPerExpansion;
-                }
-            }
-            _activeLastTick = active;
 
-            if (active)
+            if (IsActive())
             {
                 if (_warmingUpTicks > 0)
                 {
@@ -239,7 +238,6 @@ namespace FrontierDevelopments.Shields.Comps
             Scribe_Values.Look(ref _fieldRadius, "radius", Props.maxRadius);
             Scribe_Values.Look(ref _wantRadius, "shieldRadialWantRadius", Props.maxRadius);
             Scribe_Values.Look(ref _warmingUpTicks, "warmingUpTicks");
-            Scribe_Values.Look(ref _activeLastTick, "activeLastTick");
         }
 
         public override IEnumerable<ShieldSetting> ShieldSettings

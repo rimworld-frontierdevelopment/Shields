@@ -175,6 +175,14 @@ namespace FrontierDevelopments.Shields.Linear
             return IsLinked && _links.Any(link => !link.FieldBlocked) && (Parent?.ParentActive ?? true);
         }
 
+        protected override void OnIsNowActive()
+        {
+        }
+
+        protected override void OnIsNowInactive()
+        {
+        }
+
         public override void PostDrawExtraSelectionOverlays()
         {
             var hasOverrides = _links.Any(link => link.FieldRenderOverride) || _wantRenderFieldOverride.Count > 0;
