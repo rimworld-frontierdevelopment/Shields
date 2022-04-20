@@ -47,14 +47,14 @@ namespace FrontierDevelopments.Shields
 
         public static bool FriendlyTo(IShieldField shield, Faction faction, bool invert = false)
         {
-            return (shield.Faction == faction ||
+            return faction != null && (shield.Faction == faction ||
                     shield.Faction.RelationKindWith(faction) == FactionRelationKind.Ally)
                    != invert;
         }
 
         public static bool HostileTo(IShieldField shield, Faction faction, bool invert = false)
         {
-            return (shield.Faction != faction &&
+            return faction != null && (shield.Faction != faction &&
                     shield.Faction.RelationKindWith(faction) == FactionRelationKind.Hostile)
                    != invert;
         }
