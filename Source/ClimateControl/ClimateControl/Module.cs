@@ -5,9 +5,8 @@ using FrontierDevelopments.General.Comps;
 using HarmonyLib;
 using RimWorld;
 using Verse;
-using Mod = FrontierDevelopments.Shields.Mod;
 
-namespace FrontierDevelopments.ClimateControl
+namespace FrontierDevelopments.Shields.ClimateControl
 {
     public class Module : Verse.Mod
     {

@@ -53,7 +53,7 @@ namespace FrontierDevelopments.Shields.Harmony
             float damage,
             string messageBody = "fd.shields.incident.shuttle.blocked.body")
         {
-            var faction = shuttle.Faction ?? Faction.Empire;
+            var faction = shuttle.Faction ?? Faction.OfEmpire;
             if (shields.HostileTo(faction).Block(damage))
             {
                 // get around a bug in 1.2 where the shuttle has no contents

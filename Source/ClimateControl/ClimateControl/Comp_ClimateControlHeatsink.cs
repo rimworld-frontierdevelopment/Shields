@@ -1,7 +1,7 @@
 using FrontierDevelopments.General.Comps;
 using Verse;
 
-namespace FrontierDevelopments.ClimateControl
+namespace FrontierDevelopments.Shields.ClimateControl
 {
     public class CompProperties_ClimateControlHeatsink : CompProperties_HeatSink
     {

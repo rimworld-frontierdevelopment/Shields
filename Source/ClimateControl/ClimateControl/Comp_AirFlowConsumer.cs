@@ -3,7 +3,7 @@ using CentralizedClimateControl;
 using FrontierDevelopments.General;
 using Verse;
 
-namespace FrontierDevelopments.ClimateControl
+namespace FrontierDevelopments.Shields.ClimateControl
 {
     public class Comp_AirFlowConsumer : CompAirFlowConsumer
     {

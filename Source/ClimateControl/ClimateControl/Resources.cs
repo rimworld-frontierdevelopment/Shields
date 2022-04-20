@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace FrontierDevelopments.ClimateControl
+namespace FrontierDevelopments.Shields.ClimateControl
 {
     [StaticConstructorOnStartup]
     public class Resources

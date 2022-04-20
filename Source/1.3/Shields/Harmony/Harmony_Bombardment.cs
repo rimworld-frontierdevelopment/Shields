@@ -11,8 +11,8 @@ namespace FrontierDevelopments.Shields.Harmony
 {
     class Harmony_Bombardment : Harmony_OrbitalStrike
     {
-        [HarmonyPatch(typeof(Bombardment), "EffectTick")]
-        static class Patch_EffectTick
+        [HarmonyPatch(typeof(Bombardment), "TryDoExplosion")]
+        static class Patch_TryDoExplosion
         {
             // looking for:
             //

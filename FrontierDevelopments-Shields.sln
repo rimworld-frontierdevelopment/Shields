@@ -5,11 +5,11 @@ VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "FrontierDevelopment-Core\Source\Core.csproj", "{0C9B1441-FA49-4942-9D0D-B8ED81EA5D20}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core-Test", "FrontierDevelopment-Core\Test\Core-Test.csproj", "{3A0AA816-1506-47E6-BA5F-3E444451686C}"
-EndProject
+#Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core-Test", "FrontierDevelopment-Core\Test\Core-Test.csproj", "{3A0AA816-1506-47E6-BA5F-3E444451686C}"
+#EndProject
 Project("{F904D6F9-B6DC-4DC1-9631-BC581894C15C}") = "FrontierDevelopments-Shields", "Source\Common\FrontierDevelopments-Shields.csproj", "{D90E6072-FBE5-4A86-A1E1-11E12DC5E27B}"
 EndProject
-Project("{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}") = "FrontierDevelopments-Shields-1.2", "Source\1.2\FrontierDevelopments-Shields-1.2.csproj", "{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}"
+Project("{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}") = "FrontierDevelopments-Shields-1.3", "Source\1.3\FrontierDevelopments-Shields-1.3.csproj", "{12dd5535-7aa8-4d5f-8fec-f14d9437a99c}"
 EndProject
 Project("{809cc256-a508-4775-9f9b-6ad20d32c112}") = "FrontierDevelopments-Shields-AvoidFriendlyFire", "Source\AvoidFriendlyFire\FrontierDevelopments-Shields-AvoidFriendlyFire.csproj", "{809cc256-a508-4775-9f9b-6ad20d32c112}"
 EndProject

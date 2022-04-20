@@ -199,7 +199,7 @@ namespace FrontierDevelopments.Shields.Comps
             {
                 if(PresentOnMap(Find.CurrentMap))
                 {
-                    RenderImpactEffect(PositionUtility.ToVector2(position), Find.CurrentMap);
+                    RenderImpactEffect(PositionUtility.ToVector2(position), Find.CurrentMap, Mathf.Min(10f, (float) (2.0 + damage / 10.0)));
                     PlayBulletImpactSound(PositionUtility.ToVector2(position), Find.CurrentMap);
                 }
 
@@ -209,9 +209,9 @@ namespace FrontierDevelopments.Shields.Comps
             return handled;
         }
         
-        protected virtual void RenderImpactEffect(Vector2 position, Map map)
+        protected virtual void RenderImpactEffect(Vector2 position, Map map, float scale)
         {
-            MoteMaker.ThrowLightningGlow(PositionUtility.ToVector3(position), map, 0.5f);
+            FleckMaker.Static(PositionUtility.ToVector3(position), map, FleckDefOf.ExplosionFlash, scale);
         }
 
         protected virtual void PlayBulletImpactSound(Vector2 position, Map map)
